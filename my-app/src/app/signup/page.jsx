@@ -80,6 +80,9 @@ export default function SignupPage() {
             Sign up
           </button>
         </form>
+         <div className="mt-6">
+                  <GoogleLoginButton />
+                </div>
 
         <p className="text-sm text-gray-500 text-center mt-6">
           Already have an account?{" "}
@@ -87,7 +90,9 @@ export default function SignupPage() {
             Login
           </a>
         </p>
+       
       </div>
+      
     </div>
   );
 }
