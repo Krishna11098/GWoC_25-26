@@ -1,3 +1,4 @@
+
 export default function Footer() {
   const links = [
     { label: "Home", href: "/" },

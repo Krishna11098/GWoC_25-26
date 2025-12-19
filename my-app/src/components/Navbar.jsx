@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { auth } from "@/lib/firebaseClient";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -15,9 +18,13 @@ const navLinks = [
 
 const Navbar = () => {
   const pathname = usePathname();
+  const router = useRouter();
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
+  // Detect scroll
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8);
     handleScroll();
@@ -25,7 +32,30 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    if (firebaseUser) {
+      setUser({
+        name: firebaseUser.displayName || firebaseUser.email,
+        uid: firebaseUser.uid,
+      });
+    } else {
+      setUser(null);
+    }
+  });
+
+  return () => unsubscribe();
+}, []);
+
   const isActive = (href) => pathname === href;
+
+ const handleLogout = async () => {
+  await signOut(auth);
+  setUser(null);
+  router.push("/home");
+};
+
 
   const linkClasses = (href) =>
     `relative text-sm font-light tracking-wide text-gray-900/80 hover:text-gray-900 transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:bg-gray-900 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
@@ -46,16 +76,18 @@ const Navbar = () => {
             scrolled ? "py-3" : "py-5 md:py-6"
           }`}
         >
+          {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-lime-400 to-emerald-500 text-sm font-semibold text-gray-900 shadow-sm">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-lime-400 to-emerald-500 text-sm font-semibold text-gray-900">
               JJ
             </span>
-            <span className="text-lg font-semibold tracking-tight text-gray-900">
+            <span className="text-lg font-semibold text-gray-900">
               JoyJuncture
             </span>
           </Link>
 
-          <nav className="hidden md:flex flex-1 items-center justify-center gap-8 lg:gap-10">
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex flex-1 items-center justify-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -67,69 +99,48 @@ const Navbar = () => {
             ))}
           </nav>
 
+          {/* AUTH ACTIONS */}
           <div className="hidden md:flex flex-1 items-center justify-end gap-3">
-            <Link
-              href="/login"
-              className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-transform duration-200 hover:-translate-y-[1px]"
-            >
-              <span>Login / Profile</span>
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
-            </Link>
+            {!user ? (
+              <>
+                <Link
+                  href="/login"
+                  className="rounded-full px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className="rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white"
+                >
+                  Sign up
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/profile"
+                  className="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900"
+                >
+                  Welcome {user.name}
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white"
+                >
+                  Logout
+                </button>
+              </>
+            )}
           </div>
 
+          {/* Mobile Toggle */}
           <button
-            className="md:hidden ml-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white transition-all duration-200"
-            onClick={() => setMobileOpen((open) => !open)}
-            aria-label="Toggle menu"
+            className="md:hidden ml-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white"
+            onClick={() => setMobileOpen((o) => !o)}
           >
-            <div className="relative h-4 w-5">
-              <span
-                className={`absolute left-0 top-0 h-[1.5px] w-full bg-current transition-all duration-300 ${
-                  mobileOpen ? "translate-y-1.5 rotate-45" : ""
-                }`}
-              />
-              <span
-                className={`absolute left-0 top-1/2 h-[1.5px] w-full bg-current transition-all duration-300 ${
-                  mobileOpen ? "opacity-0" : "-translate-y-1/2"
-                }`}
-              />
-              <span
-                className={`absolute left-0 bottom-0 h-[1.5px] w-full bg-current transition-all duration-300 ${
-                  mobileOpen ? "-translate-y-1.5 -rotate-45" : ""
-                }`}
-              />
-            </div>
+            ☰
           </button>
-        </div>
-      </div>
-
-      <div
-        className={`md:hidden fixed inset-x-0 top-0 z-40 bg-white/95 backdrop-blur-2xl transition-all duration-300 ease-out ${
-          mobileOpen
-            ? "translate-y-0 opacity-100"
-            : "-translate-y-4 opacity-0 pointer-events-none"
-        }`}
-      >
-        <div className="px-6 pt-20 pb-12 space-y-5">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className={`block text-lg font-light tracking-wide text-gray-900/90 transition-colors duration-200 ${
-                isActive(link.href) ? "text-gray-900" : "hover:text-gray-950"
-              }`}
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.name}
-            </Link>
-          ))}
-          <Link
-            href="/login"
-            className="block text-lg font-light tracking-wide text-gray-900/90 hover:text-gray-950 transition-colors duration-200"
-            onClick={() => setMobileOpen(false)}
-          >
-            Login / Profile
-          </Link>
         </div>
       </div>
     </header>

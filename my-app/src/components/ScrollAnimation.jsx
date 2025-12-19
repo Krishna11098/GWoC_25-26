@@ -66,81 +66,17 @@ export default function ScrollAnimation() {
   }, []);
 
   return (
-    <section className="spotlight">
-      <div className="row four-cards">
-        <div className="four-cards-heading">
-          <h2>Choose your play-style</h2>
-        </div>
-        <div className="card-grid">
-          <div className="card-item">
-            <div className="card">
-              <h3>Play at Home</h3>
-            </div>
-          </div>
-          <div className="card-item">
-            <div className="card">
-              <h3>Play Together (Live)</h3>
-            </div>
-          </div>
-          <div className="card-item">
-            <div className="card">
-              <h3>Play for Occasions</h3>
-            </div>
-          </div>
-          <div className="card-item">
-            <div className="card">
-              <h3>Play and Earn Points</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col">
-          <div className="card">
-            <h2>What's happening now</h2>
-            <p>Currently happening and comming next event updates .</p>
-          </div>
-        </div>
-        <div className="col">
-          <div className="card">
-            <h3>Dynamic content</h3>
-            <div className="img">
-              <Image
-                src="/img2.jpg"
-                alt="Illustration 2"
-                width={800}
-                height={600}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col">
-          <div className="img">
-            <Image
-              src="/img3.jpg"
-              alt="Illustration 3"
-              width={800}
-              height={600}
-            />
-          </div>
-        </div>
-        <div className="col">
-          <div className="card">
-            <h2>Built for increasing information demands</h2>
-            <p>
-              Whether it is files, notes, or incoming messages, the app sorts
-              and prioritizes items automatically. It prevents clutter and helps
-              maintain clarity during busy periods.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="svg-path" ref={containerRef}>
+    <section className="relative w-full px-8 md:px-16 py-16 md:py-32">
+      {/* SVG Background Container - Fixed */}
+      <div 
+        className="absolute inset-0 pointer-events-none overflow-hidden z-0" 
+        style={{
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "100%",
+        }}
+      >
         <svg
           viewBox="0 0 330 809"
           fill="none"
@@ -168,6 +104,84 @@ export default function ScrollAnimation() {
             }}
           />
         </svg>
+      </div>
+
+      {/* Content Container - Trigger for scroll animation */}
+      <div className="relative z-10 max-w-6xl mx-auto flex flex-col gap-40" ref={containerRef}>
+        <div className="flex flex-col gap-6 justify-center">
+          <div>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900">Choose your play-style</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+            <div className="w-full">
+              <div className="w-full px-8 py-12 text-center bg-[#deded5] rounded-2xl flex items-center justify-center min-h-[200px]">
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-900">Play at Home</h3>
+              </div>
+            </div>
+            <div className="w-full">
+              <div className="w-full px-8 py-12 text-center bg-[#deded5] rounded-2xl flex items-center justify-center min-h-[200px]">
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-900">Play Together (Live)</h3>
+              </div>
+            </div>
+            <div className="w-full">
+              <div className="w-full px-8 py-12 text-center bg-[#deded5] rounded-2xl flex items-center justify-center min-h-[200px]">
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-900">Play for Occasions</h3>
+              </div>
+            </div>
+            <div className="w-full">
+              <div className="w-full px-8 py-12 text-center bg-[#deded5] rounded-2xl flex items-center justify-center min-h-[200px]">
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-900">Play and Earn Points</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col lg:flex-row justify-center gap-8 text-gray-900">
+          <div className="flex-1 flex flex-col justify-center">
+            <div className="px-8 py-12 text-center lg:text-left bg-[#deded5] rounded-2xl flex flex-col gap-4">
+              <h2 className="text-2xl md:text-3xl font-bold">What's happening now</h2>
+              <p className="text-base md:text-lg leading-relaxed">Currently happening and comming next event updates .</p>
+            </div>
+          </div>
+          <div className="flex-1 flex flex-col justify-center">
+            <div className="px-8 py-12 bg-[#deded5] rounded-2xl flex flex-col gap-4">
+              <h3 className="text-xl md:text-2xl font-semibold">Dynamic content</h3>
+              <div className="w-full">
+                <Image
+                  src="/img2.jpg"
+                  alt="Illustration 2"
+                  width={800}
+                  height={600}
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col lg:flex-row justify-center gap-8 text-gray-900">
+          <div className="flex-1 flex flex-col justify-center">
+            <div className="w-full">
+              <Image
+                src="/img3.jpg"
+                alt="Illustration 3"
+                width={800}
+                height={600}
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+          <div className="flex-1 flex flex-col justify-center">
+            <div className="px-8 py-12 text-center lg:text-left bg-[#deded5] rounded-2xl flex flex-col gap-4">
+              <h2 className="text-2xl md:text-3xl font-bold">Built for increasing information demands</h2>
+              <p className="text-base md:text-lg leading-relaxed">
+                Whether it is files, notes, or incoming messages, the app sorts
+                and prioritizes items automatically. It prevents clutter and helps
+                maintain clarity during busy periods.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
+import "./custom.css";
 const faqs = [
   {
     question: "Why the name “Joy Juncture”?",

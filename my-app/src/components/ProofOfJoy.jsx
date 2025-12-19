@@ -27,22 +27,22 @@ const articles = [
 
 export default function ProofOfJoy() {
   return (
-    <section className="proof-of-joy">
-      <div className="proof-wrapper">
-        <header className="proof-header">
-          <p className="proof-eyebrow">Featured Articles</p>
-          <h2>Proof of Joy</h2>
-          <p>
+    <section className="w-full bg-[#f7f5ef] px-8 py-24 md:px-16 md:py-32">
+      <div className="mx-auto max-w-6xl flex flex-col gap-10">
+        <header className="max-w-2xl flex flex-col gap-3">
+          <p className="text-sm uppercase tracking-widest font-bold text-gray-900 opacity-70">Featured Articles</p>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900">Proof of Joy</h2>
+          <p className="text-lg md:text-2xl text-gray-900 leading-relaxed opacity-85">
             Real stories, real smiles. See how JoyJuncture experiences bring
             people together across events, workshops, and communities.
           </p>
         </header>
 
-        <div className="proof-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
           {articles.map((article) => (
-            <a key={article.title} className="proof-card" href={article.href}>
-              <span className="proof-meta">{article.tag}</span>
-              <h3>{article.title}</h3>
+            <a key={article.title} className="flex flex-col gap-1 bg-transparent border-0 border-b border-[#e8e1d6] rounded-none p-0 pb-5 no-underline text-gray-900 transition-transform duration-200 ease hover:translate-y-[-3px] hover:text-black" href={article.href}>
+              <span className="text-xs font-semibold tracking-wider opacity-70 uppercase">{article.tag}</span>
+              <h3 className="text-lg leading-relaxed font-bold tracking-tight">{article.title}</h3>
             </a>
           ))}
         </div>
