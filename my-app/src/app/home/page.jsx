@@ -5,7 +5,7 @@ import ScrollAnimation from "@/components/ScrollAnimation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FAQ from "@/components/FAQ";
-import GamificationTeaser from "@/components/Walletsystem";
+import Walletsystem from "@/components/Walletsystem";
 
 export default function HomePage() {
   return (
@@ -16,7 +16,7 @@ export default function HomePage() {
 
       <ScrollAnimation />
       <ProofOfJoy />
-      <GamificationTeaser />
+      <Walletsystem />
       <FAQ />
       <Footer />
     </>

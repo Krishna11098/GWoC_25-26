@@ -43,35 +43,37 @@ export default function FAQ() {
   };
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#14171c] px-6 py-20 md:px-10 md:py-24 flex justify-center">
+    <section className="relative isolate overflow-hidden bg-(--color-background-2) px-6 py-20 md:px-10 md:py-24 flex justify-center">
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="mx-auto h-full max-w-5xl rounded-3xl bg-gradient-to-b from-white/3 to-white/0" />
       </div>
 
       <div className="relative mx-auto flex w-full max-w-4xl flex-col items-center space-y-12 text-center">
         <div className="space-y-3">
-          <p className="text-[11px] uppercase tracking-[0.35em] text-gray-400">
+          <p className="text-[11px] uppercase tracking-[0.35em]">
             Uh huh we know you have questions!!
           </p>
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-50">
+          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
             MOST ASKED… or shall we say.. MOST DOUBTED
           </h2>
         </div>
 
-        <div className="w-full divide-y divide-gray-800/80 overflow-hidden rounded-2xl border border-gray-800/70 bg-[#1b1f26] shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
+        <div className="w-full divide-y divide-gray-800/80 overflow-hidden rounded-2xl border border-gray-800/70 bg-(--color-background) shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
           {faqs.map((item, idx) => {
             const open = openIndex === idx;
             return (
               <div key={item.question}>
                 <button
-                  className="w-full px-7 md:px-8 py-5 md:py-6 flex items-start justify-between gap-4 text-left hover:bg-white/3 transition-colors duration-200"
+                  className={`w-full px-7 md:px-8 py-5 md:py-6 flex items-start justify-between gap-4 text-left ${
+                    open ? "bg-(--color-foreground)" : "hover:bg-white/3"
+                  } transition-colors duration-200`}
                   onClick={() => toggle(idx)}
                 >
-                  <span className="text-base md:text-lg font-semibold text-gray-50">
+                  <span className="text-base md:text-lg font-semibold">
                     {item.question}
                   </span>
                   <span
-                    className={`text-gray-400 text-lg leading-none transition-transform duration-200 ${
+                    className={`text-lg leading-none transition-transform duration-200 ${
                       open ? "rotate-180" : ""
                     }`}
                     aria-hidden
@@ -80,7 +82,7 @@ export default function FAQ() {
                   </span>
                 </button>
                 {open && (
-                  <div className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed text-gray-200">
+                  <div className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed bg-foreground">
                     {item.answer}
                   </div>
                 )}

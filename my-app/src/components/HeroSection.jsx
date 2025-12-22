@@ -23,7 +23,7 @@ export default function HeroSection({ scrollProgress = 0 }) {
 
   return (
     <section
-      className="min-h-screen grid lg:grid-cols-2 grid-cols-1 bg-(--color-stroke)"
+      className="min-h-screen grid lg:grid-cols-2 grid-cols-1 bg-primary"
       style={{
         transform: `scale(${scale}) translateY(${translateY}px)`,
         opacity,
@@ -34,7 +34,7 @@ export default function HeroSection({ scrollProgress = 0 }) {
       }}
     >
       {/* Left Section - Text Content */}
-      <div className="flex flex-col justify-center items-start px-8 md:px-16 lg:px-20 py-16 lg:py-0">
+      <div className="flex flex-col justify-center items-start px-8 md:px-16 lg:px-20 py-16 lg:py-0 bg-(--color-background)">
         <div className="max-w-xl">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
             Joy Juncture
