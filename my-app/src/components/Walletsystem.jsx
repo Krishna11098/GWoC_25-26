@@ -43,12 +43,7 @@ export default function GamificationTeaser() {
           {/* RIGHT — VISUAL WALLET */}
           <div className="lg:col-span-7 relative flex justify-center">
             <div
-              className="relative mx-auto max-w-md rounded-3xl
-                bg-(--color-background-2) backdrop-blur-xl
-                border border-white/15
-                shadow-[0_40px_100px_rgba(0,0,0,0.6)]
-                p-8 space-y-6
-                animate-float"
+              className="relative mx-auto max-w-md rounded-3xl bg-[var(--color-background-2)] backdrop-blur-xl border border-white/15 shadow-[0_40px_100px_rgba(0,0,0,0.6)] p-8 space-y-6 animate-float"
             >
               {/* Wallet Header */}
               <div className="flex items-center justify-between">
@@ -103,11 +98,7 @@ export default function GamificationTeaser() {
 function WalletRow({ label, points }) {
   return (
     <div
-      className="flex items-center justify-between
-        rounded-xl bg-white/5 px-5 py-3
-        border border-white/10
-        transition-transform duration-300
-        hover:-translate-y-0.5 hover:bg-white/10"
+      className="flex items-center justify-between rounded-xl bg-white/5 px-5 py-3 border border-white/10 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-white/10"
     >
       <span className="text-sm ">{label}</span>
       <span className="text-sm font-medium text-accent">{points}</span>
