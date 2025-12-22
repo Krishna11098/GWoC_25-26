@@ -1,6 +1,6 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F6F3C2;
+  --foreground: #91C6BC;
   --font-sans: Inter-5603bc14e377c2cf, "Inter-5603bc14e377c2cf fallback: Arial",
     sans-serif;
 }
@@ -171,11 +171,11 @@ body {
 
 
 :root {
-  --color-bg-light: #ffffff;
-  --color-bg-card: #deded5;
+  --color-bg-light: #F6F3C2;
+  --color-bg-card: #91C6BC;
   --color-text-dark: #0f0f0f;
-  --color-stroke: #e46b1b;
-  --base-200: #deded5;
+  --color-stroke: #E37434;
+  --base-200: #F6F3C2;
 }
 
 

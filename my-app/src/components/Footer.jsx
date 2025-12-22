@@ -10,7 +10,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="border-t border-gray-200 bg-white/90 backdrop-blur-md">
+    <footer className="border-t border-gray-200 bg-foreground backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-10 md:flex-row md:items-start md:justify-between md:py-12">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">

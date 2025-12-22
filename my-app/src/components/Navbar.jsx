@@ -72,7 +72,7 @@ useEffect(() => {
     >
       <div className="mx-auto mt-4 w-full max-w-6xl px-4 md:px-10">
         <div
-          className={`flex items-center gap-5 rounded-2xl border border-white/60 bg-white/90 px-6 md:px-10 shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 ${
+          className={`flex items-center gap-5 rounded-2xl border border-white/60 bg-foreground px-6 md:px-10 shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 ${
             scrolled ? "py-3" : "py-5 md:py-6"
           }`}
         >
