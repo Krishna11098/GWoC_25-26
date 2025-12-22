@@ -9,14 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "firebase": "^10.7.1",
-    "framer-motion": "^10.16.16",
-    "lucide-react": "^0.309.0",
-    "next": "14.0.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-=======
     "firebase": "^12.7.0",
     "firebase-admin": "^12.6.0",
     "gsap": "^3.12.5",
@@ -24,7 +16,6 @@
     "next": "16.0.10",
     "react": "19.2.1",
     "react-dom": "19.2.1"
->>>>>>> 8dfdad754552b02a0d2f8c7ab591d3921992848b
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
