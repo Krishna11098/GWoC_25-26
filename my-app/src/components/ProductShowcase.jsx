@@ -13,6 +13,9 @@ const imageMap = {
   buzzed: "/gallery/marketplace/Buzzed – The Drinking Card Game.webp",
   "dead-mans-deck": "/gallery/marketplace/Dead Man's Deck.webp",
   "court-52": "/gallery/marketplace/Court 52 Pickleball.WEBP",
+    // Use correct extension and character for Dreamer's Fair asset
+    // File present in /public/gallery/marketplace/Dreamer’s Fair.WEBP
+    "dreamers-fair": "/gallery/marketplace/Dreamer’s Fair.WEBP",
   "judge-me-guess": "/gallery/marketplace/Judge Me & Guess.webp",
   mehfil: "/gallery/marketplace/Mehfil – The Ultimate Musical Card Game.webp",
   "one-more-round": "/gallery/marketplace/One More Round.webp",
@@ -22,8 +25,11 @@ const imageMap = {
 
 export default function ProductShowcase({ product, gameId }) {
   const sectionRefs = useRef([]);
+  const howToSectionRef = useRef(null);
+  const howToStepRefs = useRef([]);
 
   useEffect(() => {
+    // Animate general sections on scroll
     sectionRefs.current.forEach((section) => {
       if (!section) return;
       gsap.fromTo(
@@ -42,6 +48,30 @@ export default function ProductShowcase({ product, gameId }) {
         }
       );
     });
+
+    // Sequential arrow reveal for How to Play steps
+    if (howToSectionRef.current && howToStepRefs.current.length > 0) {
+      const steps = howToStepRefs.current.filter(Boolean);
+
+      // Initial state: all hidden
+      gsap.set(steps, { opacity: 0, y: 20 });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: howToSectionRef.current,
+          // Pin the section when its center hits the viewport center
+          // so it stays vertically centered while animating steps
+          start: "center center",
+          end: "+=1000",
+          scrub: 1,
+          pin: true,
+        },
+      });
+
+      steps.forEach((el, i) => {
+        tl.to(el, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, i === 0 ? 0 : "+=0.6");
+      });
+    }
 
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
@@ -285,6 +315,79 @@ export default function ProductShowcase({ product, gameId }) {
           </div>
         </div>
       </section>
+
+      {/* Section: How to Play (with horizontal arrow/chevron steps) */}
+      {product.howToPlay && product.howToPlay.length > 0 && (
+        <section ref={howToSectionRef} className="py-20 px-6 md:px-12 bg-gray-50 overflow-hidden">
+          <div className="mx-auto max-w-7xl">
+            {/* Title Badge */}
+            <div className="flex justify-center mb-12">
+              <div className="bg-gray-900 text-white px-12 py-4 clip-path-hexagon relative">
+                <h2 className="text-4xl md:text-5xl font-black tracking-wider">
+                  HOW TO PLAY
+                </h2>
+              </div>
+            </div>
+
+            {/* Horizontal Arrow Steps */}
+            <div className="relative flex flex-col lg:flex-row items-stretch justify-center gap-0">
+              {product.howToPlay.map((step, idx) => {
+                const colors = [
+                  'bg-purple-200', // Step 1
+                  'bg-teal-400',   // Step 2
+                  'bg-cyan-300',   // Step 3
+                  'bg-purple-300', // Step 4
+                ];
+                
+                return (
+                  <div
+                    key={idx}
+                    ref={(el) => (howToStepRefs.current[idx] = el)}
+                    className={`
+                      relative flex-1 min-h-[400px] lg:min-h-[320px] flex flex-col items-center justify-center px-8 py-12
+                      ${colors[idx % colors.length]}
+                      transition-all duration-700
+                    `}
+                    style={{ 
+                      willChange: 'opacity, transform',
+                      // Both sides pointed chevron (><) for all steps
+                      clipPath: 'polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%)'
+                    }}
+                  >
+                    {/* Step Badge */}
+                    <div className="bg-white rounded-full px-6 py-2 mb-4 shadow-lg">
+                      <span className="text-base md:text-lg font-black text-gray-900 tracking-wide">
+                        STEP {idx + 1}
+                      </span>
+                    </div>
+
+                    {/* Step Content */}
+                    <div className="text-center max-w-xs">
+                      <h3 className="text-xl md:text-2xl font-black text-white mb-3 uppercase leading-tight">
+                        {step.title}
+                      </h3>
+                      <p className="text-base md:text-lg text-white/90 leading-snug">
+                        {step.description}
+                      </p>
+                    </div>
+
+                    {/* Decorative dots (optional) */}
+                    <div className="absolute top-4 left-4 flex gap-1">
+                      <div className="w-2 h-2 bg-black/20 rounded-full"></div>
+                      <div className="w-2 h-2 bg-black/20 rounded-full"></div>
+                      <div className="w-2 h-2 bg-black/20 rounded-full"></div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Bonus Section removed as requested */}
+          </div>
+
+          {/* clip-path-hexagon class moved to global CSS to avoid styled-jsx hydration mismatches */}
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-20 px-6 md:px-12 bg-gray-100 border-t border-gray-200">

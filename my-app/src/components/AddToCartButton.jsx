@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { auth } from "@/lib/firebaseClient";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Check } from "lucide-react";
 
 export default function AddToCartButton({ gameId, className = "" }) {
   const [loading, setLoading] = useState(false);
+  const [added, setAdded] = useState(false);
 
   async function addToCart() {
     if (loading) return;
@@ -32,7 +33,9 @@ export default function AddToCartButton({ gameId, className = "" }) {
         throw new Error(err.error || "Failed to add to cart");
       }
 
-      // Optional: toast or UI feedback
+      // Show temporary "Added" confirmation
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
     } catch (e) {
       console.error(e);
       alert(e.message);
@@ -45,10 +48,14 @@ export default function AddToCartButton({ gameId, className = "" }) {
     <button
       onClick={addToCart}
       disabled={loading}
-      className={`inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-base font-semibold text-white hover:bg-emerald-500 transition disabled:opacity-60 ${className}`}
+      className={`inline-flex items-center gap-2 rounded-full ${added ? "bg-emerald-700" : "bg-emerald-600"} px-6 py-3 text-base font-semibold text-white hover:bg-emerald-500 transition disabled:opacity-60 ${className}`}
     >
-      <ShoppingCart className="h-5 w-5" />
-      {loading ? "Adding..." : "Add to Cart"}
+      {added ? (
+        <Check className="h-5 w-5" />
+      ) : (
+        <ShoppingCart className="h-5 w-5" />
+      )}
+      {loading ? "Adding..." : added ? "Added" : "Add to Cart"}
     </button>
   );
 }

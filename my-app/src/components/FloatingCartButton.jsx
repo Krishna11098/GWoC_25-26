@@ -35,14 +35,15 @@ export default function FloatingCartButton() {
   return (
     <button
       onClick={() => router.push("/cart")}
-      className="flex items-center gap-2 rounded-full bg-gray-900 px-4 py-3 text-sm font-medium text-white shadow-lg hover:bg-gray-800 transition"
+      className="fixed bottom-8 right-8 z-50 flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-emerald-500 transition"
     >
-      <ShoppingCart className="h-5 w-5" />
+      <ShoppingCart className="h-6 w-6" />
       {itemCount > 0 && (
-        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-xs font-semibold">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold">
           {itemCount}
         </span>
       )}
+      Cart
     </button>
   );
 }
