@@ -35,6 +35,28 @@ const dummyProducts = [
         title: "Pocket-Friendly Size",
         description: "Toss it in your bag and take the party anywhere"
       }
+    ],
+    howToPlay: [
+      {
+        title: "Gather Your Crew & Grab Drinks",
+        description: "Get 3-20 friends together and make sure everyone has their favorite drink ready.",
+        emoji: "🍺"
+      },
+      {
+        title: "Shuffle & Draw Cards",
+        description: "Shuffle the deck and take turns drawing cards. Each card has a wild prompt or challenge.",
+        emoji: "🎴"
+      },
+      {
+        title: "Follow the Prompt",
+        description: "Read the card aloud and follow the instructions. Some cards make you drink, some make others drink!",
+        emoji: "🎯"
+      },
+      {
+        title: "Repeat & Have Fun",
+        description: "Keep playing until the laughs run out (or the drinks do). There's no winner—just great memories!",
+        emoji: "🔄"
+      }
     ]
   },
   {
@@ -71,9 +93,31 @@ const dummyProducts = [
       {
         title: "Zombie Memory Showdown",
         description:
-          "Challenge your memory as you keep track of Phase and Power Cards, adding a level of skill that’s unique among party games.",
+          "Challenge your memory as you keep track of Phase and Power Cards, adding a level of skill that's unique among party games.",
       },
     ],
+    howToPlay: [
+      {
+        title: "Deal Cards & Set the Stage",
+        description: "Each player gets dealt cards. Phase cards and Power cards create the zombie apocalypse vibe.",
+        emoji: "🧟"
+      },
+      {
+        title: "Discard Phase & Power Cards Fast",
+        description: "Timing is everything! Beat your opponents to discard matching Phase and Power cards before they do.",
+        emoji: "⚡"
+      },
+      {
+        title: "Track Cards with Your Memory",
+        description: "Remember what's been played. Your memory is your weapon in this zombie showdown.",
+        emoji: "🧠"
+      },
+      {
+        title: "Win by Declaring Freedom",
+        description: "Discard all cards OR shout 'NO MORE A ZOMBIE!' and reveal your hand. Wrong call? Double penalty!",
+        emoji: "🏆"
+      }
+    ]
   },
   {
     id: "court-52",
@@ -115,6 +159,28 @@ const dummyProducts = [
         description: "Predict opponents, adjust your cards, and make smart choices to win every tactical exchange.",
       },
     ],
+    howToPlay: [
+      {
+        title: "Form Teams & Deal Cards",
+        description: "Split into 2v2 teams and deal cards from the 52-card deck with Challenge, Trap, and Wild cards.",
+        emoji: "🎴"
+      },
+      {
+        title: "Play Cards During Rallies",
+        description: "Each rally lasts 3 points. Play cards strategically to activate special effects and gain advantage.",
+        emoji: "🎯"
+      },
+      {
+        title: "Adapt & Capture Momentum",
+        description: "Every 3 points, new card effects trigger! Adjust your strategy and time your best plays.",
+        emoji: "⚡"
+      },
+      {
+        title: "Win with Team Tactics",
+        description: "Work with your partner to predict opponents' moves and dominate the court. First team to target score wins!",
+        emoji: "🏆"
+      }
+    ]
   },
   {
     id: "judge-me-guess",
@@ -147,6 +213,28 @@ const dummyProducts = [
         description: "Friends & siblings, first dates, caf\u00e9 customers, college students, office teams, family gatherings, social communities & clubs. Bulk customisations available (MOQ 25).",
       },
     ],
+    howToPlay: [
+      {
+        title: "Pick a Card & Read Aloud",
+        description: "Draw a card and read the judgment or question. Each card has 3 levels—start light or go bold!",
+        emoji: "👁️"
+      },
+      {
+        title: "Make Your Guess",
+        description: "Other players guess how you'd answer or what you'd choose. The game creates curiosity and laughter.",
+        emoji: "🤔"
+      },
+      {
+        title: "Reveal & Score",
+        description: "Share your real answer! Score points for correct guesses or customize your own rules (punishments, storytelling, etc).",
+        emoji: "💬"
+      },
+      {
+        title: "Keep Going & Connect",
+        description: "Play until everyone's had their turn. Perfect for breaking the ice or deepening friendships!",
+        emoji: "🔄"
+      }
+    ]
   },
   {
     id: "mehfil",
@@ -179,6 +267,28 @@ const dummyProducts = [
         description: "Ideal for house parties, game nights, travel, and family gatherings, bringing musical entertainment to any social occasion.",
       },
     ],
+    howToPlay: [
+      {
+        title: "Shuffle & Pick a Category",
+        description: "Choose from Word Play, Situationship, Jodi Jukebox, or Mic Drop categories. Each has unique Bollywood challenges!",
+        emoji: "🎵"
+      },
+      {
+        title: "Draw a Card & Sing",
+        description: "Read the prompt and sing! It could be matching lyrics, humming tunes, or performing iconic Bollywood songs.",
+        emoji: "🎤"
+      },
+      {
+        title: "Score Points or Just Have Fun",
+        description: "Award points for correct songs, or skip scoring and just enjoy the musical chaos. Your rules, your mehfil!",
+        emoji: "⭐"
+      },
+      {
+        title: "Keep the Music Going",
+        description: "Play until someone wins, or keep going forever! Works with 1 or 99+ players—the party never stops.",
+        emoji: "🔄"
+      }
+    ]
   },
   {
     id: "one-more-round",
@@ -211,6 +321,28 @@ const dummyProducts = [
         description: "A relaxing and engaging activity for game night enthusiasts, perfect for solo sessions or group puzzle nights.",
       },
     ],
+    howToPlay: [
+      {
+        title: "Open the Box & Sort Pieces",
+        description: "Unbox your 150-piece puzzle. Sort edge pieces and similar colors to make assembly easier.",
+        emoji: "🧩"
+      },
+      {
+        title: "Start with the Borders",
+        description: "Build the frame first! Connect edge pieces to form the puzzle boundary and get a sense of the scene.",
+        emoji: "🖼️"
+      },
+      {
+        title: "Fill in the Game Night Scene",
+        description: "Work on different sections—drinks, cards, expressions. Every piece reveals more of the party story!",
+        emoji: "🎲"
+      },
+      {
+        title: "Complete & Display",
+        description: "Place the final piece and admire your work! Frame it or take a photo to celebrate your puzzle night win.",
+        emoji: "🏆"
+      }
+    ]
   },
   {
     id: "tamasha",
@@ -243,6 +375,28 @@ const dummyProducts = [
         description: "Blends acting talent, iconic dance steps, and competitive bidding into one laugh-out-loud party game.",
       },
     ],
+    howToPlay: [
+      {
+        title: "Draw a Bollywood Challenge",
+        description: "Pick a card with a Bollywood acting, dancing, or singing challenge. Get ready to unleash your filmy side!",
+        emoji: "🎬"
+      },
+      {
+        title: "Bid on Your Confidence",
+        description: "How well can you perform? Bid based on your confidence! Higher bids mean bigger rewards (and risks!).",
+        emoji: "💰"
+      },
+      {
+        title: "Perform & Entertain",
+        description: "Act out iconic scenes, perform dance steps, or sing Bollywood hits. Make it dramatic—this is Tamasha!",
+        emoji: "💃"
+      },
+      {
+        title: "Score & Repeat",
+        description: "Earn points for successful performances. Keep playing until someone becomes the ultimate Bollywood champion!",
+        emoji: "🏆"
+      }
+    ]
   },
   {
     id: "the-bloody-inheritance",
@@ -275,6 +429,82 @@ const dummyProducts = [
         description: "A totally fresh kind of game night experience. Best played in teams of 3, playable by 1–5 players. The fastest team to solve it wins bragging rights and eternal detective glory.",
       },
     ],
+    howToPlay: [
+      {
+        title: "Open the Case File",
+        description: "Unbox the murder mystery and spread out evidence—photos, letters, reports, notes, and mysterious objects.",
+        emoji: "📁"
+      },
+      {
+        title: "Examine Every Clue",
+        description: "Study each piece of evidence carefully. Look for connections, inconsistencies, and hidden details. Nothing is random!",
+        emoji: "🔍"
+      },
+      {
+        title: "Discuss & Deduce as a Team",
+        description: "Work together to piece the story together. Share theories, challenge assumptions, and narrow down suspects.",
+        emoji: "🕵️"
+      },
+      {
+        title: "Solve the Mystery",
+        description: "Identify the murderer, motive, and method! The fastest team to crack the case wins eternal detective glory.",
+        emoji: "🏆"
+      }
+    ]
+  },
+  {
+    id: "dreamers-fair",
+    name: "Dreamer's Fair | 36 PCS Silhouette Puzzle",
+    category: "Jigsaw Puzzle",
+    description: "A magical 36-piece silhouette puzzle featuring a fairy, unicorn, and enchanted forest.",
+    longDescription: "Step into a world of wonder with Dreamer's Fair, a beautifully illustrated 36-piece silhouette puzzle by Djeco. This enchanting puzzle features a magical fairy with iridescent wings, a mystical unicorn, and a whimsical forest fair illuminated by fireflies and fairy lights.\n\nPerfect for young dreamers and puzzle enthusiasts, this silhouette puzzle comes in a stunning keepsake box that doubles as artwork. Each piece is crafted with precision, revealing a captivating scene that sparks imagination and creativity.\n\nIdeal for quiet afternoons, family bonding, or as a thoughtful gift for anyone who loves fantasy and art.",
+    regularPrice: 899.0,
+    price: 699.0,
+    stockAvailable: 45,
+    numberOfPlayers: "1-2",
+    ageGroup: "4+",
+    coinsReward: 4,
+    isFeatured: true,
+    keyFeatures: [
+      {
+        title: "Magical Silhouette Design",
+        description: "Features a stunning fairy and unicorn scene with an enchanted forest fair, perfect for sparking imagination.",
+      },
+      {
+        title: "36 Premium Pieces",
+        description: "Just the right size for young puzzlers—challenging enough to engage, easy enough to complete and feel proud.",
+      },
+      {
+        title: "Beautiful Keepsake Box",
+        description: "Comes in an artistic box that can be displayed as decor. Perfect for gifting or keeping as a collectible.",
+      },
+      {
+        title: "High-Quality Djeco Craftsmanship",
+        description: "Made by renowned brand Djeco with precision-cut pieces, vibrant colors, and durable materials.",
+      },
+    ],
+    howToPlay: [
+      {
+        title: "Open & Admire the Art",
+        description: "Unbox the puzzle and take a moment to appreciate the magical illustration on the box cover.",
+        emoji: "🎨"
+      },
+      {
+        title: "Sort Edge Pieces First",
+        description: "Separate the border pieces to build the frame. This helps define the puzzle shape early on.",
+        emoji: "🧩"
+      },
+      {
+        title: "Assemble the Fairy & Unicorn",
+        description: "Focus on the colorful fairy wings and unicorn details. These vibrant areas make great starting points!",
+        emoji: "🦄"
+      },
+      {
+        title: "Complete & Display",
+        description: "Place the final piece and enjoy your finished masterpiece! Frame it or keep it in the beautiful box.",
+        emoji: "✨"
+      }
+    ]
   },
 ];
 

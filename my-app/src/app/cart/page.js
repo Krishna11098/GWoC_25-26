@@ -103,17 +103,18 @@ export default function CartPage() {
           ) : (
             <div className="mt-6 space-y-4">
               {items.map((it) => {
-                const images = [
-                  "/gallery/marketplace/Buzzed – The Drinking Card Game.webp",
-                  "/gallery/marketplace/Dead Man's Deck.webp",
-                  "/gallery/marketplace/Judge Me & Guess.webp",
-                  "/gallery/marketplace/Mehfil – The Ultimate Musical Card Game.webp",
-                  "/gallery/marketplace/One More Round.webp",
-                  "/gallery/marketplace/Tamasha – The Bollywood Bid Card Game.webp",
-                  "/gallery/marketplace/The Bloody Inheritance.webp",
-                ];
-                const imageIndex = items.findIndex(i => i.id === it.id);
-                const imageSrc = images[imageIndex % images.length];
+                const imageMap = {
+                  "buzzed": "/gallery/marketplace/Buzzed – The Drinking Card Game.webp",
+                  "dead-mans-deck": "/gallery/marketplace/Dead Man's Deck.webp",
+                  "court-52": "/gallery/marketplace/Court 52 Pickleball.WEBP",
+                  "dreamers-fair": "/gallery/marketplace/Dreamer's Fair.png",
+                  "judge-me-guess": "/gallery/marketplace/Judge Me & Guess.webp",
+                  "mehfil": "/gallery/marketplace/Mehfil – The Ultimate Musical Card Game.webp",
+                  "one-more-round": "/gallery/marketplace/One More Round.webp",
+                  "tamasha": "/gallery/marketplace/Tamasha – The Bollywood Bid Card Game.webp",
+                  "the-bloody-inheritance": "/gallery/marketplace/The Bloody Inheritance.webp",
+                };
+                const imageSrc = imageMap[it.id] || "/gallery/marketplace/Buzzed – The Drinking Card Game.webp";
 
                 return (
                 <div key={it.id} className="flex items-center gap-4 rounded-2xl border border-white/60 bg-white/90 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">

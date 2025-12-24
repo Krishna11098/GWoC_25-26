@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { db } from "@/lib/firebaseAdmin";
 import ProductShowcase from "@/components/ProductShowcase";
+import FloatingCartButton from "@/components/FloatingCartButton";
 
 export const dynamic = "force-dynamic";
 
@@ -49,6 +50,7 @@ export default async function GameDetailPage({ params }) {
     <>
       <Navbar />
       <ProductShowcase product={product} gameId={id} />
+      <FloatingCartButton />
       <Footer />
     </>
   );
