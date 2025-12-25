@@ -42,7 +42,7 @@ export default function EventsCalendarPage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto max-w-6xl xl:max-w-7xl px-4 md:px-10 py-10">
+      <main className="mx-auto max-w-6xl xl:max-w-7xl px-4 md:px-10 py-10 mt-20">
         <div className="flex flex-col gap-10">
           <div className="flex-1 min-w-0">
             <h1 className="text-3xl md:text-4xl font-bold text-[var(--color-foreground-2)]">Events Calendar</h1>

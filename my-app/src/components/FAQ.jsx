@@ -105,7 +105,7 @@ export default function FAQ() {
                   <div className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed bg-foreground-dark text-left">
                     {item.answer}
                   </div>
-                </div>
+                )}
               </div>
             );
           })}

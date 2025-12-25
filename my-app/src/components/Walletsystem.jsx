@@ -42,14 +42,7 @@ export default function GamificationTeaser() {
 
           {/* RIGHT — VISUAL WALLET */}
           <div className="lg:col-span-7 relative flex justify-center">
-            <div
-              className="relative mx-auto max-w-md rounded-3xl
-                bg-foreground text-font backdrop-blur-xl
-                border border-white/80
-                shadow-[0_40px_100px_rgba(255,255,255,0.12)]
-                p-8 space-y-6
-                animate-float"
-            >
+            <div className="relative mx-auto max-w-md rounded-3xl bg-foreground text-font backdrop-blur-xl border border-white/80 shadow-[0_40px_100px_rgba(255,255,255,0.12)] p-8 space-y-6 animate-float">
               {/* Wallet Header */}
               <div className="flex items-center justify-between">
                 <p className="text-sm uppercase tracking-wider">Joy Wallet</p>
