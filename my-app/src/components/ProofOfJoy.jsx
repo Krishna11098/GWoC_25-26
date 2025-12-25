@@ -4,13 +4,13 @@ import Image from "next/image";
 
 export default function ProofOfJoy() {
   return (
-    <section className="relative bg-gradient-to-b from-(--color-background) to-white py-20 md:py-28">
+    <section className="relative bg-background py-20 md:py-28 text-font">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         {/* ---------- HEADER ---------- */}
         <div className="mb-12">
           <div className="flex items-center gap-3">
-            <span className="h-9 w-2 rounded-full bg-(--color-foreground)" />
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-gray-600">
+            <span className="h-9 w-2 rounded-full bg-foreground" />
+            <p className="text-sm font-bold uppercase tracking-[0.25em]">
               Proof of Joy
             </p>
           </div>
@@ -19,7 +19,7 @@ export default function ProofOfJoy() {
         {/* ---------- IMAGE GRID ---------- */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[800px]">
           {/* Left: Single large image */}
-          <div className="relative overflow-hidden rounded-3xl shadow-xl">
+          <div className="relative overflow-hidden rounded-3xl shadow-2xl">
             <Image
               src="/gallery/image1.png"
               alt="Gallery Image 1"
@@ -33,7 +33,7 @@ export default function ProofOfJoy() {
           {/* Right: Top and bottom sections */}
           <div className="flex flex-col gap-6">
             {/* Top: Single image */}
-            <div className="relative overflow-hidden rounded-3xl shadow-xl h-1/2">
+            <div className="relative overflow-hidden rounded-3xl shadow-2xl h-1/2">
               <Image
                 src="/gallery/image2.png"
                 alt="Gallery Image 2"
@@ -45,7 +45,7 @@ export default function ProofOfJoy() {
 
             {/* Bottom: Two images side by side */}
             <div className="grid grid-cols-2 gap-6 h-1/2">
-              <div className="relative overflow-hidden rounded-3xl shadow-xl">
+              <div className="relative overflow-hidden rounded-3xl shadow-2xl">
                 <Image
                   src="/gallery/image3.png"
                   alt="Gallery Image 3"
@@ -54,7 +54,7 @@ export default function ProofOfJoy() {
                   sizes="(max-width: 768px) 50vw, 25vw"
                 />
               </div>
-              <div className="relative overflow-hidden rounded-3xl shadow-xl">
+              <div className="relative overflow-hidden rounded-3xl shadow-2xl">
                 <Image
                   src="/gallery/image4.png"
                   alt="Gallery Image 4"
