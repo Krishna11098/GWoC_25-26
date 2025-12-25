@@ -47,8 +47,7 @@ export default function GamificationTeaser() {
             >
               {/* Wallet Header */}
               <div className="flex items-center justify-between">
-                <p className="text-sm uppercase tracking-wider text-[var(--color-foreground-2
-                )]">
+                <p className="text-sm uppercase tracking-wider text-[var(--color-foreground-2)]">
                   Joy Wallet
                 </p>
                 <span className="rounded-full bg-accent-soft px-3 py-1 text-xs text-accent">
