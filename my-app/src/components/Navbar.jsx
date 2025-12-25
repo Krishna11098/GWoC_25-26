@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
-
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
@@ -32,30 +31,28 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser({
+          name: firebaseUser.displayName || firebaseUser.email,
+          uid: firebaseUser.uid,
+        });
+      } else {
+        setUser(null);
+      }
+    });
 
-useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-    if (firebaseUser) {
-      setUser({
-        name: firebaseUser.displayName || firebaseUser.email,
-        uid: firebaseUser.uid,
-      });
-    } else {
-      setUser(null);
-    }
-  });
-
-  return () => unsubscribe();
-}, []);
+    return () => unsubscribe();
+  }, []);
 
   const isActive = (href) => pathname === href;
 
- const handleLogout = async () => {
-  await signOut(auth);
-  setUser(null);
-  router.push("/home");
-};
-
+  const handleLogout = async () => {
+    await signOut(auth);
+    setUser(null);
+    router.push("/home");
+  };
 
   const linkClasses = (href) =>
     `relative text-sm font-light tracking-wide text-gray-900/80 hover:text-gray-900 transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:bg-gray-900 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
@@ -64,15 +61,13 @@ useEffect(() => {
 
   return (
     <header
-      className={`sticky top-0 z-50 flex justify-center px-5 md:px-12 pt-5 pb-3 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/80 backdrop-blur-xl shadow-sm"
-          : "bg-white/60 backdrop-blur-2xl"
-      }`}
+      className={
+        "fixed inset-x-0 top-0 z-50 mt-4 md:mt-6 flex justify-center px-5 md:px-12 py-0 transition-all duration-300 bg-transparent"
+      }
     >
-      <div className="mx-auto mt-4 w-full max-w-6xl px-4 md:px-10">
+      <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
         <div
-          className={`flex items-center gap-5 rounded-2xl border border-white/60 bg-foreground px-6 md:px-10 shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 ${
+          className={`flex items-center gap-5 rounded-2xl border border-white/60 bg-font-2 px-6 md:px-10 shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 ${
             scrolled ? "py-3" : "py-5 md:py-6"
           }`}
         >

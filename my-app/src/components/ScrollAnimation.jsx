@@ -66,7 +66,7 @@ export default function ScrollAnimation() {
   }, []);
 
   return (
-    <section className="relative w-full px-8 md:px-16 py-16 md:py-32 bg-(--color-background-2)">
+    <section className="relative w-full px-8 md:px-16 py-16 md:py-32 bg-background-2 text-font-2">
       {/* SVG Background Container - Fixed */}
       <div
         className="absolute inset-0 pointer-events-none overflow-hidden z-0"
@@ -94,7 +94,7 @@ export default function ScrollAnimation() {
           <path
             ref={pathRef}
             d="M294.852 35.0003C294.852 35.0003 45.8518 42.0003 45.8518 184C45.8519 336.633 325.137 355.544 275.852 500C246.852 585 -38.1482 756 52.8518 524C143.852 292 265.852 774 265.852 774"
-            stroke="#E37434"
+            stroke="var(--background)"
             strokeWidth="70"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -113,35 +113,35 @@ export default function ScrollAnimation() {
       >
         <div className="flex flex-col gap-6 justify-center">
           <div>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold">
               Choose your play-style
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full text-font">
             <div className="w-full ">
-              <div className="w-full px-8 py-12 text-center bg-(--color-foreground) rounded-2xl flex items-center justify-center min-h-[200px]">
-                <h3 className="text-xl md:text-2xl font-semibold text-gray-900">
+              <div className="w-full px-8 py-12 text-center bg-foreground rounded-2xl flex items-center justify-center min-h-[200px]">
+                <h3 className="text-xl md:text-2xl font-semibold">
                   Play at Home
                 </h3>
               </div>
             </div>
             <div className="w-full">
-              <div className="w-full px-8 py-12 text-center bg-(--color-foreground) rounded-2xl flex items-center justify-center min-h-[200px]">
-                <h3 className="text-xl md:text-2xl font-semibold text-gray-900">
+              <div className="w-full px-8 py-12 text-center bg-foreground rounded-2xl flex items-center justify-center min-h-[200px]">
+                <h3 className="text-xl md:text-2xl font-semibold">
                   Play Together (Live)
                 </h3>
               </div>
             </div>
             <div className="w-full">
-              <div className="w-full px-8 py-12 text-center bg-(--color-foreground) rounded-2xl flex items-center justify-center min-h-[200px]">
-                <h3 className="text-xl md:text-2xl font-semibold text-gray-900">
+              <div className="w-full px-8 py-12 text-center bg-foreground rounded-2xl flex items-center justify-center min-h-[200px]">
+                <h3 className="text-xl md:text-2xl font-semibold">
                   Play for Occasions
                 </h3>
               </div>
             </div>
             <div className="w-full">
-              <div className="w-full px-8 py-12 text-center bg-(--color-foreground) rounded-2xl flex items-center justify-center min-h-[200px]">
-                <h3 className="text-xl md:text-2xl font-semibold text-gray-900">
+              <div className="w-full px-8 py-12 text-center bg-foreground rounded-2xl flex items-center justify-center min-h-[200px]">
+                <h3 className="text-xl md:text-2xl font-semibold">
                   Play and Earn Points
                 </h3>
               </div>
@@ -149,7 +149,7 @@ export default function ScrollAnimation() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row justify-center gap-8 text-gray-900">
+        <div className="flex flex-col lg:flex-row justify-center gap-8">
           <div className="flex-1 flex flex-col justify-center">
             <div className="px-8 py-12 text-center lg:text-left bg-theme rounded-2xl flex flex-col gap-4">
               <h2 className="text-2xl md:text-3xl font-bold">
@@ -178,7 +178,7 @@ export default function ScrollAnimation() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row justify-center gap-8 text-gray-900">
+        <div className="flex flex-col lg:flex-row justify-center gap-8">
           <div className="flex-1 flex flex-col justify-center">
             <div className="w-full">
               <Image
