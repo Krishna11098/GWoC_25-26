@@ -34,12 +34,12 @@ export default function HeroSection({ scrollProgress = 0 }) {
       }}
     >
       {/* Left Section - Text Content */}
-      <div className="flex flex-col justify-center items-start px-8 md:px-16 lg:px-20 py-16 lg:py-0 bg-(--color-background)">
+      <div className="flex flex-col justify-center items-start px-8 md:px-16 lg:px-20 py-16 lg:py-0 bg-background">
         <div className="max-w-xl">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-font mb-6 leading-tight">
             Joy Juncture
           </h1>
-          <p className="text-xl md:text-2xl text-gray-700 font-medium leading-relaxed">
+          <p className="text-xl md:text-2xl text-font/90 font-medium leading-relaxed">
             Play. Connect. Celebrate — Games as Experiences
           </p>
         </div>

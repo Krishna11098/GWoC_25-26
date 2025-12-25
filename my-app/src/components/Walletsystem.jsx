@@ -2,14 +2,14 @@
 
 export default function GamificationTeaser() {
   return (
-    <section className="relative bg-[var(--color-background)] py-40 overflow-hidden">
+    <section className="relative bg-background-2 py-40 overflow-hidden text-font-2">
       <div className="mx-auto max-w-7xl px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 items-center">
           {/* LEFT — TEXT */}
           <div className="lg:col-span-5 space-y-8 animate-fade-in">
             <div className="flex items-center gap-3">
-              <span className="h-9 w-2 rounded-full bg-[var(--color-foreground)]" />
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-gray-600">
+              <span className="h-9 w-2 rounded-full bg-foreground" />
+              <p className="text-sm font-semibold uppercase tracking-[0.25em]">
                 Gamification
               </p>
             </div>
@@ -43,13 +43,16 @@ export default function GamificationTeaser() {
           {/* RIGHT — VISUAL WALLET */}
           <div className="lg:col-span-7 relative flex justify-center">
             <div
-              className="relative mx-auto max-w-md rounded-3xl bg-[var(--color-background-2)] backdrop-blur-xl border border-white/15 shadow-[0_40px_100px_rgba(0,0,0,0.6)] p-8 space-y-6 animate-float"
+              className="relative mx-auto max-w-md rounded-3xl
+                bg-foreground text-font backdrop-blur-xl
+                border border-white/80
+                shadow-[0_40px_100px_rgba(255,255,255,0.12)]
+                p-8 space-y-6
+                animate-float"
             >
               {/* Wallet Header */}
               <div className="flex items-center justify-between">
-                <p className="text-sm uppercase tracking-wider text-[var(--color-foreground-2)]">
-                  Joy Wallet
-                </p>
+                <p className="text-sm uppercase tracking-wider">Joy Wallet</p>
                 <span className="rounded-full bg-accent-soft px-3 py-1 text-xs text-accent">
                   Active
                 </span>
@@ -58,7 +61,7 @@ export default function GamificationTeaser() {
               {/* Balance */}
               <div className="pt-2">
                 <p className="text-sm">Total Points</p>
-                <p className="text-5xl font-semibold text-[var(--color-foreground-2)] tracking-tight">
+                <p className="text-5xl font-semibold text-background tracking-tight">
                   2,450
                 </p>
               </div>
@@ -71,8 +74,8 @@ export default function GamificationTeaser() {
               </div>
 
               {/* Redeem Preview */}
-              <div className="rounded-2xl bg-[var(--color-foreground)] p-5 border border-white/10 space-y-3">
-                <p className="text-sm">Redeem your points for:</p>
+              <div className="rounded-2xl bg-foreground p-5 border border-white/30 space-y-4">
+                <p className="text-sm text-font">Redeem your points for:</p>
                 <div className="flex flex-wrap gap-3">
                   <RewardChip label="Free Event Pass" />
                   <RewardChip label="Merchandise" />
@@ -82,7 +85,7 @@ export default function GamificationTeaser() {
             </div>
 
             {/* Floating Earned Points */}
-            <div className="absolute -top-6 -right-6 rounded-xl bg-accent px-5 py-2 text-sm font-medium text-black shadow-xl animate-pulse-soft">
+            <div className="absolute -top-6 -right-6 rounded-xl bg-foreground-2 px-5 py-2 text-sm font-medium text-black shadow-xl animate-pulse-soft">
               +250 points earned
             </div>
           </div>
@@ -107,7 +110,7 @@ function WalletRow({ label, points }) {
 
 function RewardChip({ label }) {
   return (
-    <span className="rounded-full bg-background-2 px-4 py-1.5 text-xs border border-white/10 transition-all duration-300 hover:bg-accent-soft hover:text-accent">
+    <span className="rounded-full bg-background-2 text-font-2 px-4 py-1.5 text-xs border border-white/10 transition-all duration-300 hover:bg-accent-soft hover:text-accent">
       {label}
     </span>
   );
