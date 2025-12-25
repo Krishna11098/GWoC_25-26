@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./custom.css";
 const faqs = [
   {
@@ -42,10 +42,12 @@ export default function FAQ() {
     setOpenIndex((prev) => (prev === idx ? -1 : idx));
   };
 
+  const [heights, setHeights] = useState({});
+
   return (
     <section className="relative isolate overflow-hidden bg-background px-6 py-20 md:px-10 md:py-24 flex justify-center">
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="mx-auto h-full max-w-5xl rounded-3xl bg-gradient-to-b from-white/3 to-white/0" />
+        <div className="mx-auto h-full max-w-5xl rounded-3xl bg-linear-to-b from-white/3 to-white/0" />
       </div>
 
       <div className="relative mx-auto flex w-full max-w-4xl flex-col items-center space-y-12 text-center">
@@ -61,6 +63,24 @@ export default function FAQ() {
         <div className="w-full divide-y divide-gray-800/80 overflow-hidden rounded-2xl border border-gray-800/70 bg-foreground shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
           {faqs.map((item, idx) => {
             const open = openIndex === idx;
+            const contentRef = useRef(null);
+
+            useEffect(() => {
+              if (contentRef.current) {
+                if (open) {
+                  setHeights((prev) => ({
+                    ...prev,
+                    [idx]: contentRef.current.scrollHeight,
+                  }));
+                } else {
+                  setHeights((prev) => ({
+                    ...prev,
+                    [idx]: 0,
+                  }));
+                }
+              }
+            }, [open, idx]);
+
             return (
               <div key={item.question}>
                 <button
@@ -73,7 +93,7 @@ export default function FAQ() {
                     {item.question}
                   </span>
                   <span
-                    className={`text-lg leading-none transition-transform duration-200 ${
+                    className={`text-lg leading-none transition-transform duration-300 ${
                       open ? "rotate-180" : ""
                     }`}
                     aria-hidden
@@ -85,7 +105,7 @@ export default function FAQ() {
                   <div className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed bg-foreground-dark text-left">
                     {item.answer}
                   </div>
-                )}
+                </div>
               </div>
             );
           })}

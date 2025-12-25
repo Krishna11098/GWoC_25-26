@@ -1,8 +1,18 @@
 "use client";
 
 import Image from "next/image";
+import "./ProofOfJoy.css";
 
 export default function ProofOfJoy() {
+  const labels = [
+    { image: 1, text: "Community Events" },
+    { image: 2, text: "Player Insights" },
+    { image: 3, text: "Middle East" },
+    { image: 4, text: "Customer Insights" },
+  ];
+
+  const getLabel = (imageNum) => labels.find((l) => l.image === imageNum)?.text || "";
+
   return (
     <section className="relative bg-background py-20 md:py-28 text-font">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
@@ -17,17 +27,20 @@ export default function ProofOfJoy() {
         </div>
 
         {/* ---------- IMAGE GRID ---------- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[800px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-200">
           {/* Left: Single large image */}
           <div className="relative overflow-hidden rounded-3xl shadow-2xl">
             <Image
               src="/gallery/image1.png"
               alt="Gallery Image 1"
               fill
-              className="object-cover"
+              className="object-cover image-hover"
               sizes="(max-width: 768px) 100vw, 50vw"
               priority
             />
+            <div className="image-label">
+              <span>{getLabel(1)}</span>
+            </div>
           </div>
 
           {/* Right: Top and bottom sections */}
@@ -38,9 +51,12 @@ export default function ProofOfJoy() {
                 src="/gallery/image2.png"
                 alt="Gallery Image 2"
                 fill
-                className="object-cover"
+                className="object-cover image-hover"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
+              <div className="image-label">
+                <span>{getLabel(2)}</span>
+              </div>
             </div>
 
             {/* Bottom: Two images side by side */}
@@ -50,18 +66,24 @@ export default function ProofOfJoy() {
                   src="/gallery/image3.png"
                   alt="Gallery Image 3"
                   fill
-                  className="object-cover"
+                  className="object-cover image-hover"
                   sizes="(max-width: 768px) 50vw, 25vw"
                 />
+                <div className="image-label">
+                  <span>{getLabel(3)}</span>
+                </div>
               </div>
               <div className="relative overflow-hidden rounded-3xl shadow-2xl">
                 <Image
                   src="/gallery/image4.png"
                   alt="Gallery Image 4"
                   fill
-                  className="object-cover"
+                  className="object-cover image-hover"
                   sizes="(max-width: 768px) 50vw, 25vw"
                 />
+                <div className="image-label">
+                  <span>{getLabel(4)}</span>
+                </div>
               </div>
             </div>
           </div>
