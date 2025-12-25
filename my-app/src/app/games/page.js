@@ -56,6 +56,7 @@ export default async function GamesPage() {
   return (
     <>
       <Navbar />
+
       <div className="px-5 md:px-12 pt-5 pb-12">
         <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
           <div className="flex items-start justify-between">
@@ -108,6 +109,7 @@ export default async function GamesPage() {
           </div>
         </div>
       </div>
+      
       <Footer />
     </>
   );
