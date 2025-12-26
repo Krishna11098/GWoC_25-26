@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { auth } from "@/lib/firebaseClient";
+import { onAuthStateChanged } from "firebase/auth";
 import { Trash2 } from "lucide-react";
 import gsap from "gsap";
 import Navbar from "@/components/Navbar";
@@ -19,15 +20,15 @@ export default function CartPage() {
     }
   }, []);
 
-  async function fetchCart() {
+  async function fetchCart(user, { showLoading = true } = {}) {
     try {
-      setLoading(true);
-      const user = auth.currentUser;
+      if (showLoading) setLoading(true);
       if (!user) {
         setItems([]);
-        setLoading(false);
+        if (showLoading) setLoading(false);
         return;
       }
+
       const token = await user.getIdToken();
       const res = await fetch("/api/cart", {
         headers: { Authorization: `Bearer ${token}` },
@@ -37,12 +38,15 @@ export default function CartPage() {
     } catch (e) {
       console.error(e);
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   }
 
   useEffect(() => {
-    fetchCart();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      fetchCart(user, { showLoading: true });
+    });
+    return () => unsubscribe();
   }, []);
 
   const subtotal = useMemo(() => {
@@ -57,6 +61,11 @@ export default function CartPage() {
     try {
       const user = auth.currentUser;
       if (!user) return alert("Please login");
+      if (quantity <= 0) {
+        // If quantity drops below 1, remove the item
+        await removeItem(gameId);
+        return;
+      }
       const token = await user.getIdToken();
       const res = await fetch("/api/cart", {
         method: "POST",
@@ -64,7 +73,12 @@ export default function CartPage() {
         body: JSON.stringify({ action: "update", gameId, quantity }),
       });
       if (!res.ok) throw new Error("Failed to update");
-      await fetchCart();
+      // Optimistic: update local state immediately
+      setItems((prev) =>
+        prev.map((item) => (item.id === gameId ? { ...item, quantity } : item)).filter((item) => item.quantity > 0)
+      );
+      // Refresh silently (no loading flicker)
+      fetchCart(user, { showLoading: false });
     } catch (e) {
       console.error(e);
       alert(e.message);
@@ -82,7 +96,10 @@ export default function CartPage() {
         body: JSON.stringify({ action: "remove", gameId }),
       });
       if (!res.ok) throw new Error("Failed to remove");
-      await fetchCart();
+      // Optimistic remove
+      setItems((prev) => prev.filter((item) => item.id !== gameId));
+      // Refresh silently
+      fetchCart(user, { showLoading: false });
     } catch (e) {
       console.error(e);
       alert(e.message);
@@ -92,7 +109,7 @@ export default function CartPage() {
   return (
     <>
       <Navbar />
-      <div className="px-5 md:px-12 pt-5 pb-12">
+      <div className="px-5 md:px-12 pt-24 md:pt-32 pb-12">
         <div className="mx-auto w-full max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <h1 className="text-3xl font-semibold text-gray-900">Your Cart</h1>
@@ -107,7 +124,7 @@ export default function CartPage() {
                   "buzzed": "/gallery/marketplace/Buzzed – The Drinking Card Game.webp",
                   "dead-mans-deck": "/gallery/marketplace/Dead Man's Deck.webp",
                   "court-52": "/gallery/marketplace/Court 52 Pickleball.WEBP",
-                  "dreamers-fair": "/gallery/marketplace/Dreamer's Fair.png",
+                  "dreamers-fair": "/gallery/marketplace/Dreamer’s Fair.WEBP",
                   "judge-me-guess": "/gallery/marketplace/Judge Me & Guess.webp",
                   "mehfil": "/gallery/marketplace/Mehfil – The Ultimate Musical Card Game.webp",
                   "one-more-round": "/gallery/marketplace/One More Round.webp",
@@ -141,7 +158,10 @@ export default function CartPage() {
                     <div className="flex items-center gap-2">
                       <button
                         className="rounded-md bg-gray-100 px-2 py-1 text-sm hover:bg-gray-200 text-gray-900"
-                        onClick={() => updateQuantity(it.id, Math.max(1, (it.quantity || 1) - 1))}
+                        onClick={() => {
+                          const nextQty = (it.quantity || 1) - 1;
+                          updateQuantity(it.id, nextQty);
+                        }}
                       >
                         -
                       </button>
