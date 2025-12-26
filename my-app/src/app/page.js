@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import IntroSequence from "@/components/Intro";
 
 export default function Page() {
-  redirect("/home");
+  return <IntroSequence />;
 }
