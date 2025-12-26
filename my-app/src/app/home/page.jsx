@@ -50,7 +50,9 @@ export default function HomePage() {
       <FadeInSection yOffset={80}>
         <FAQ />
       </FadeInSection>
-      <Footer />
+      <FadeInSection>
+        <Footer/>
+      </FadeInSection>
     </>
   );
 }

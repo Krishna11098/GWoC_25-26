@@ -12,7 +12,7 @@ const navLinks = [
   { name: "Experiences", href: "/experiences" },
   { name: "Play", href: "/play" },
   { name: "Events", href: "/events/calendar" },
-  { name: "Community", href: "/community" },
+  { name: "Community", href: "/about-us" },
 ];
 
 const Navbar = () => {

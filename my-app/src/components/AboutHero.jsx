@@ -1,0 +1,25 @@
+"use client";
+import { easeOut, motion } from "framer-motion";
+
+export default function AboutHero() {
+  return (
+    <section className="min-h-screen flex items-center justify-center text-center px-6">
+      <motion.div
+        initial={{ opacity: 0, y: 60, scale: 0.96 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ amount: 0.4 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="max-w-4xl"
+      >
+        <h1 className="text-5xl md:text-7xl font-bold mb-6 text-font-2">
+          Our <span className="text-foreground">Accidentally Awesome</span>{" "}
+          Story
+        </h1>
+        <p className="text-xl text-font2">
+          No legacies. No rulebooks. <span className="text-foreground">Just fun</span>.
+        </p>
+      </motion.div>
+    </section>
+  );
+}
