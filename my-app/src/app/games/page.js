@@ -1,16 +1,29 @@
 import { db } from "@/lib/firebaseAdmin";
-import AddToCartButton from "@/components/AddToCartButton";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingCartButton from "@/components/FloatingCartButton";
-import Image from "next/image";
+import GameGrid from "@/components/GameGrid";
 
 export const dynamic = "force-dynamic"; // ensure fresh data in dev
 
 async function getProducts() {
   if (!db) return [];
   const snap = await db.collection("products").get();
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  return snap.docs.map((d) => {
+    const raw = d.data();
+    const plain = {};
+
+    Object.entries(raw).forEach(([key, value]) => {
+      if (value && typeof value.toMillis === "function") {
+        // Firestore Timestamp -> number (ms)
+        plain[key] = value.toMillis();
+      } else {
+        plain[key] = value;
+      }
+    });
+
+    return { id: d.id, ...plain };
+  });
 }
 
 export default async function GamesPage() {
@@ -56,7 +69,7 @@ export default async function GamesPage() {
   return (
     <>
       <Navbar />
-      <div className="px-5 md:px-12 pt-5 pb-12">
+      <div className="px-5 md:px-12 pt-24 md:pt-32 pb-12">
         <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
           <div className="flex items-start justify-between">
             <div>
@@ -66,46 +79,7 @@ export default async function GamesPage() {
             <FloatingCartButton />
           </div>
 
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {items.map((p, idx) => (
-              <div
-                key={p.id}
-                className="rounded-2xl border border-white/60 bg-white/90 shadow-[0_10px_30px_rgba(0,0,0,0.08)] overflow-hidden"
-              >
-                {/* Image */}
-                <div className="relative w-full h-48 bg-gray-100">
-                  <Image
-                    src={imageById[p.id] || images[idx % images.length]}
-                    alt={(p.name || p.title || "Game") + " cover"}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
-                    className="object-cover"
-                    priority={idx < 3}
-                  />
-                </div>
-
-                <div className="p-5 flex items-start justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">{p.name || p.title || "Untitled"}</h3>
-                    <p className="mt-1 text-xs text-gray-500">{p.category || "Unknown"}</p>
-                  </div>
-                  <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-gray-900 px-3 py-1 text-base text-white font-semibold">
-                    Rs. {typeof p.price === "number" ? p.price.toFixed(2) : "--"}
-                  </span>
-                </div>
-
-                <div className="px-5 pb-5 flex items-center justify-between">
-                  <a
-                    href={`/games/${p.id}`}
-                    className="rounded-full px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100"
-                  >
-                    View Details
-                  </a>
-                  <AddToCartButton gameId={p.id} />
-                </div>
-              </div>
-            ))}
-          </div>
+          <GameGrid items={items} imageById={imageById} fallbackImages={images} />
         </div>
       </div>
       <Footer />
