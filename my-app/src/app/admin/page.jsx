@@ -1,0 +1,240 @@
+// src/app/admin/page.jsx
+"use client";
+
+import { useState, useEffect } from "react";
+import eventService from "@/app/lib/eventService";
+import userService from "@/app/lib/userService";
+
+export default function AdminDashboard() {
+  const [events, setEvents] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [activeUsers, setActiveUsers] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [userLoading, setUserLoading] = useState(true);
+
+  useEffect(() => {
+    loadEvents();
+    loadUsers();
+  }, []);
+
+  const loadEvents = async () => {
+    try {
+      const allEvents = await eventService.getAllEvents();
+      setEvents(allEvents);
+    } catch (error) {
+      console.error("Dashboard load error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadUsers = async () => {
+    try {
+      // Get total users count
+      const count = await userService.getTotalUsers();
+      setTotalUsers(count);
+
+      // Get active users count (optional)
+      const activeCount = await userService.getActiveUsers();
+      setActiveUsers(activeCount);
+    } catch (error) {
+      console.error("User load error:", error);
+    } finally {
+      setUserLoading(false);
+    }
+  };
+
+  return (
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-2">🔥 JoyJuncture Admin</h1>
+      <p className="text-gray-600 mb-6">Powered by Firebase Firestore</p>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        {/* Total Events Card */}
+        <div className="bg-blue-100 p-6 rounded-xl border border-blue-200">
+          <div className="flex items-center mb-2">
+            <div className="p-2 bg-blue-200 rounded-lg mr-3">
+              <span className="text-blue-600">📅</span>
+            </div>
+            <h3 className="text-lg font-semibold text-blue-800">
+              Total Events
+            </h3>
+          </div>
+          <p className="text-4xl font-bold text-blue-600">
+            {loading ? "..." : events.length}
+          </p>
+          <p className="text-sm text-blue-700 mt-2">Live in database</p>
+        </div>
+
+        {/* Total Users Card */}
+        <div className="bg-green-100 p-6 rounded-xl border border-green-200">
+          <div className="flex items-center mb-2">
+            <div className="p-2 bg-green-200 rounded-lg mr-3">
+              <span className="text-green-600">👥</span>
+            </div>
+            <h3 className="text-lg font-semibold text-green-800">
+              Total Users
+            </h3>
+          </div>
+          <p className="text-4xl font-bold text-green-600">
+            {userLoading ? "..." : totalUsers}
+          </p>
+          <p className="text-sm text-green-700 mt-2">Registered accounts</p>
+        </div>
+
+        {/* Active Users Card (Optional) */}
+        <div className="bg-purple-100 p-6 rounded-xl border border-purple-200">
+          <div className="flex items-center mb-2">
+            <div className="p-2 bg-purple-200 rounded-lg mr-3">
+              <span className="text-purple-600">✅</span>
+            </div>
+            <h3 className="text-lg font-semibold text-purple-800">
+              Active Users
+            </h3>
+          </div>
+          <p className="text-4xl font-bold text-purple-600">
+            {userLoading ? "..." : activeUsers}
+          </p>
+          <p className="text-sm text-purple-700 mt-2">
+            {activeUsers === totalUsers
+              ? "All active"
+              : `${Math.round((activeUsers / totalUsers) * 100)}% active`}
+          </p>
+        </div>
+
+        {/* Quick Actions Card */}
+        <div className="bg-orange-100 p-6 rounded-xl border border-orange-200">
+          <div className="flex items-center mb-2">
+            <div className="p-2 bg-orange-200 rounded-lg mr-3">
+              <span className="text-orange-600">⚡</span>
+            </div>
+            <h3 className="text-lg font-semibold text-orange-800">
+              Quick Actions
+            </h3>
+          </div>
+          <div className="space-y-2 mt-3">
+            <a
+              href="/admin/create-event"
+              className="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+            >
+              ➕ Create Event
+            </a>
+            <a
+              href="/admin/users"
+              className="block w-full text-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+            >
+              👥 Manage Users
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Summary Stats Bar */}
+      <div className="mb-8 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl border">
+        <div className="flex flex-wrap gap-6 justify-around">
+          <div className="text-center">
+            <p className="text-sm text-gray-500">Total Events</p>
+            <p className="text-2xl font-bold">
+              {loading ? "..." : events.length}
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-500">Total Users</p>
+            <p className="text-2xl font-bold">
+              {userLoading ? "..." : totalUsers}
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-500">Active Users</p>
+            <p className="text-2xl font-bold text-green-600">
+              {userLoading ? "..." : activeUsers}
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-500">Platform Status</p>
+            <div className="flex items-center justify-center mt-1">
+              <div className="h-2 w-2 rounded-full bg-green-500 mr-2 animate-pulse"></div>
+              <p className="text-lg font-semibold">Live</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Events Section */}
+      <div className="bg-white rounded-xl shadow p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">Recent Events</h2>
+          <span className="text-sm text-gray-500">
+            Showing {Math.min(events.length, 5)} of {events.length}
+          </span>
+        </div>
+
+        {loading ? (
+          <div className="text-center py-8">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+            <p>Loading events from Firebase...</p>
+          </div>
+        ) : events.length === 0 ? (
+          <div className="text-center py-8">
+            <div className="text-5xl mb-4">📅</div>
+            <h3 className="text-xl font-semibold mb-2">No Events Created</h3>
+            <p className="text-gray-500 mb-6">
+              Get started by creating your first event!
+            </p>
+            <a
+              href="/admin/create-event"
+              className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Create Your First Event
+            </a>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {events.slice(0, 5).map((event) => (
+              <div
+                key={event.id}
+                className="p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <h3 className="font-bold text-lg flex items-center">
+                  <span className="mr-2">🎯</span>
+                  {event.title}
+                </h3>
+                <p className="text-gray-600 mt-1">
+                  {event.description || "No description"}
+                </p>
+                <div className="flex items-center mt-2 text-sm text-gray-500">
+                  <span className="mr-4">
+                    📍 {event.location || "Location not set"}
+                  </span>
+                  <span>
+                    📅{" "}
+                    {event.date
+                      ? new Date(event.date).toLocaleDateString()
+                      : "No date"}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Quick Refresh Button */}
+      <div className="mt-6 flex justify-end">
+        <button
+          onClick={() => {
+            setLoading(true);
+            setUserLoading(true);
+            loadEvents();
+            loadUsers();
+          }}
+          className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 flex items-center"
+        >
+          <span className="mr-2">🔄</span>
+          Refresh Data
+        </button>
+      </div>
+    </div>
+  );
+}
