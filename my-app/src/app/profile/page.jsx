@@ -57,29 +57,32 @@ export default function ProfilePage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 px-4 py-10 md:px-8">
+      <main className="min-h-screen bg-background text-font px-4 py-10 md:px-8 mt-32">
         <div className="mx-auto flex max-w-6xl flex-col gap-8">
           {/* Hero */}
-          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-            <div className="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 px-6 py-10 text-white md:px-10">
+          <div
+            className="overflow-hidden rounded-3xl border bg-background-2 shadow-sm"
+            style={{ borderColor: "var(--color-foreground)" }}
+          >
+            <div className="bg-foreground-2 px-6 py-10 md:px-10">
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div className="flex items-center gap-4 md:gap-6">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-2xl font-bold uppercase">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-background-2 text-font-2 text-2xl font-bold uppercase">
                     {avatarFallback}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.15em] text-white/80">
+                    <p className="text-sm font-semibold uppercase tracking-[0.15em] text-font-2">
                       Profile
                     </p>
-                    <h1 className="text-3xl font-bold md:text-4xl">
+                    <h1 className="text-3xl font-bold md:text-4xl text-font-2">
                       {authUser?.displayName || authUser?.email || "Guest"}
                     </h1>
-                    <p className="text-white/80">
+                    <p className="text-font-2">
                       {authUser?.email || "Not signed in"}
                     </p>
                   </div>
                 </div>
-                <div className="rounded-2xl bg-white/15 px-4 py-3 text-sm font-semibold text-white md:px-6">
+                <div className="rounded-2xl bg-white/15 px-4 py-3 text-sm font-semibold text-font-2 md:px-6">
                   {authUser ? "Signed In" : "Not Signed In"}
                 </div>
               </div>
@@ -87,16 +90,19 @@ export default function ProfilePage() {
           </div>
 
           {!loadingUser && !authUser && (
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-              <p className="text-lg font-semibold text-slate-900">
+            <div
+              className="rounded-2xl border bg-foreground p-6 text-center shadow-sm"
+              style={{ borderColor: "var(--color-foreground-2)" }}
+            >
+              <p className="text-lg font-semibold text-font">
                 You are not signed in.
               </p>
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="mt-1 text-sm text-font">
                 Log in to view your profile and activity.
               </p>
               <button
                 onClick={handleGoToLogin}
-                className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white font-semibold shadow-sm hover:bg-blue-700 transition-colors"
+                className="mt-4 rounded-lg bg-foreground-2 px-4 py-2 text-font-2 font-semibold shadow-sm hover:opacity-90 transition-opacity"
               >
                 Go to Login
               </button>
@@ -106,16 +112,16 @@ export default function ProfilePage() {
           <div className="grid gap-8 md:grid-cols-3">
             {/* Wallet Section */}
             <div className="md:col-span-2 space-y-4">
-              <h2 className="text-xl font-bold text-slate-900">Wallet</h2>
+              <h2 className="text-xl font-bold text-font">Wallet</h2>
               {loadingData ? (
                 <SkeletonCard />
               ) : (
-                <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 shadow-sm">
+                <div className="rounded-2xl border border-slate-200 bg-background-2 text-font-2 p-6 shadow-sm">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-semibold uppercase text-slate-600">
+                    <span className="text-sm font-semibold uppercase">
                       Total Coins
                     </span>
-                    <span className="text-3xl font-bold text-indigo-600">
+                    <span className="text-3xl font-bold text-foreground">
                       {userData?.wallet?.coins || 0}
                     </span>
                   </div>
@@ -134,7 +140,7 @@ export default function ProfilePage() {
 
               {/* Coin History */}
               <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-3">
+                <h3 className="text-lg font-bold text-font mb-3">
                   Recent Transactions
                 </h3>
                 {loadingData ? (
@@ -144,17 +150,18 @@ export default function ProfilePage() {
                     {userData.wallet.coinHistory.slice(0, 5).map((tx, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3"
+                        className="flex items-center justify-between rounded-xl border bg-background-2 px-4 py-3"
+                        style={{ borderColor: "var(--color-foreground)" }}
                       >
                         <div>
-                          <p className="font-semibold text-slate-900 capitalize">
+                          <p className="font-semibold text-font-2 capitalize">
                             {tx.action?.replace(/_/g, " ")}
                           </p>
-                          <p className="text-xs text-slate-500">
+                          <p className="text-xs text-font-2/70">
                             {new Date(tx.date).toLocaleDateString()}
                           </p>
                         </div>
-                        <span className="font-bold text-indigo-600">
+                        <span className="font-bold text-foreground">
                           +{tx.coins}
                         </span>
                       </div>
@@ -170,7 +177,7 @@ export default function ProfilePage() {
 
               {/* Recent Orders */}
               <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-3">
+                <h3 className="text-lg font-bold text-font mb-3">
                   Recent Orders
                 </h3>
                 {loadingData ? (
@@ -180,26 +187,29 @@ export default function ProfilePage() {
                     {userData.userOrders.slice(0, 3).map((order, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3"
+                        className="flex items-center justify-between rounded-xl border bg-font-2 px-4 py-3"
+                        style={{ borderColor: "var(--color-foreground)" }}
                       >
                         <div>
-                          <p className="font-semibold text-slate-900">
+                          <p className="font-semibold text-font">
                             Order {order.orderId}
                           </p>
-                          <p className="text-xs text-slate-500">
+                          <p className="text-xs text-font/70">
                             {new Date(order.createdAt).toLocaleDateString()}
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="font-bold text-slate-900">
+                          <p className="font-bold text-font">
                             ${order.totalAmount}
                           </p>
                           <span
-                            className={`text-xs font-semibold capitalize ${
-                              order.paymentStatus === "paid"
-                                ? "text-emerald-600"
-                                : "text-amber-600"
-                            }`}
+                            className={`text-xs font-semibold capitalize`}
+                            style={{
+                              color:
+                                order.paymentStatus === "paid"
+                                  ? "var(--color-foreground)"
+                                  : "var(--color-foreground-2)",
+                            }}
                           >
                             {order.paymentStatus}
                           </span>
@@ -218,18 +228,18 @@ export default function ProfilePage() {
 
             {/* Activity & Events */}
             <div className="space-y-4">
-              <h2 className="text-lg font-bold text-slate-900">Activity</h2>
+              <h2 className="text-lg font-bold text-font">Activity</h2>
               {loadingData ? (
                 <SkeletonCard />
               ) : (
                 <>
                   <ActivityCard
-                    icon="🎮"
+                    icon="🕹️"
                     label="Games Played"
                     value={userData?.onlineGamesPlayed || 0}
                   />
                   <ActivityCard
-                    icon="🎉"
+                    icon="🎊"
                     label="Events Attended"
                     value={
                       userData?.userEvents?.filter((e) => e.attended)?.length ||
@@ -237,32 +247,45 @@ export default function ProfilePage() {
                     }
                   />
                   <ActivityCard
-                    icon="📚"
+                    icon="📖"
                     label="Workshops"
                     value={userData?.userWorkshops?.length || 0}
                   />
                   {userData?.isCommunityMember && (
-                    <div className="rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 border border-purple-200 p-4 text-center">
-                      <p className="text-2xl mb-1">🏆</p>
-                      <p className="font-bold text-slate-900">
-                        Community Member
-                      </p>
+                    <div
+                      className="rounded-xl border p-4 text-center bg-foreground-2"
+                      style={{
+                        borderColor: "var(--color-foreground-2)",
+                      }}
+                    >
+                      <svg
+                        className="w-8 h-8 mx-auto mb-1"
+                        fill="var(--color-font-2)"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                      </svg>
+                      <p className="font-bold text-font-2">Community Member</p>
                     </div>
                   )}
                 </>
               )}
 
               {/* Cart */}
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <h3 className="text-lg font-bold text-slate-900 mb-3">Cart</h3>
+              <div
+                className="rounded-2xl border bg-font-2 p-5 shadow-sm"
+                style={{ borderColor: "var(--color-foreground)" }}
+              >
+                <h3 className="text-lg font-bold text-font mb-3">Cart</h3>
                 {loadingData ? (
                   <SkeletonCard />
                 ) : userData?.cart?.items?.length > 0 ? (
                   <div>
-                    <p className="text-sm font-semibold text-slate-600 mb-3">
+                    <p className="text-sm font-semibold text-font/70 mb-3">
                       {userData.cart.items.length} item(s) in cart
                     </p>
-                    <button className="w-full rounded-lg bg-blue-600 px-4 py-2 text-white font-semibold hover:bg-blue-700 transition-colors">
+                    <button className="w-full rounded-lg bg-foreground px-4 py-2 text-font-2 font-semibold hover:opacity-90 transition-opacity">
                       View Cart
                     </button>
                   </div>
@@ -286,20 +309,23 @@ function ToggleRow({ label, description, enabled, onChange }) {
   return (
     <div className="flex items-start justify-between gap-3">
       <div>
-        <p className="font-semibold text-slate-900">{label}</p>
-        <p className="text-sm text-slate-500">{description}</p>
+        <p className="font-semibold text-font">{label}</p>
+        <p className="text-sm text-font/70">{description}</p>
       </div>
       <button
         type="button"
         onClick={onChange}
-        className={`relative h-7 w-12 rounded-full transition-colors duration-200 ${
-          enabled ? "bg-blue-600" : "bg-slate-300"
-        }`}
+        className={`relative h-7 w-12 rounded-full transition-colors duration-200`}
+        style={{
+          backgroundColor: enabled
+            ? "var(--color-foreground)"
+            : "var(--color-foreground-dark)",
+        }}
         aria-pressed={enabled}
         aria-label={label}
       >
         <span
-          className={`absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-white shadow transition-transform duration-200 ${
+          className={`absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-font-2 shadow transition-transform duration-200 ${
             enabled ? "translate-x-6" : "translate-x-1"
           }`}
         />
@@ -310,32 +336,88 @@ function ToggleRow({ label, description, enabled, onChange }) {
 
 function EmptyState({ title, description }) {
   return (
-    <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-center">
-      <p className="font-semibold text-slate-900">{title}</p>
-      <p className="text-sm text-slate-600">{description}</p>
+    <div
+      className="rounded-xl border border-dashed p-6 text-center"
+      style={{
+        borderColor: "var(--color-foreground)",
+        backgroundColor: "var(--color-background-2)",
+      }}
+    >
+      <p className="font-semibold text-font-2">{title}</p>
+      <p className="text-sm text-font-2/70">{description}</p>
     </div>
   );
 }
 
 function StatCard({ label, value }) {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
-      <p className="text-xs font-semibold uppercase text-slate-500">{label}</p>
-      <p className="mt-1 text-xl font-bold text-slate-900">{value}</p>
+    <div
+      className="rounded-lg border bg-font-2 px-4 py-3 shadow-sm"
+      style={{ borderColor: "var(--color-foreground)" }}
+    >
+      <p className="text-xs font-semibold uppercase text-font/70">{label}</p>
+      <p className="mt-1 text-xl font-bold text-font">{value}</p>
     </div>
   );
 }
 
 function ActivityCard({ icon, label, value }) {
+  const getIconSvg = () => {
+    switch (icon) {
+      case "🕹️":
+        return (
+          <svg
+            className="w-8 h-8"
+            fill="var(--color-foreground)"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z"></path>
+          </svg>
+        );
+      case "🎊":
+        return (
+          <svg
+            className="w-8 h-8"
+            fill="var(--color-foreground-2)"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+              clipRule="evenodd"
+            ></path>
+          </svg>
+        );
+      case "📖":
+        return (
+          <svg
+            className="w-8 h-8"
+            fill="var(--color-foreground)"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path>
+          </svg>
+        );
+      default:
+        return <span className="text-2xl">{icon}</span>;
+    }
+  };
+
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div
+      className="rounded-xl border bg-font-2 p-4 shadow-sm"
+      style={{ borderColor: "var(--color-foreground)" }}
+    >
       <div className="flex items-center gap-3">
-        <span className="text-2xl">{icon}</span>
+        {getIconSvg()}
         <div>
-          <p className="text-xs font-semibold text-slate-500 uppercase">
+          <p className="text-xs font-semibold text-font/70 uppercase">
             {label}
           </p>
-          <p className="text-2xl font-bold text-slate-900">{value}</p>
+          <p className="text-2xl font-bold text-font">{value}</p>
         </div>
       </div>
     </div>
@@ -344,9 +426,21 @@ function ActivityCard({ icon, label, value }) {
 
 function SkeletonCard() {
   return (
-    <div className="rounded-xl border border-slate-200 bg-slate-100 p-4 shadow-sm animate-pulse">
-      <div className="h-8 bg-slate-300 rounded w-1/3 mb-2"></div>
-      <div className="h-4 bg-slate-300 rounded w-full"></div>
+    <div
+      className="rounded-xl border p-4 shadow-sm animate-pulse"
+      style={{
+        borderColor: "var(--color-foreground)",
+        backgroundColor: "var(--color-foreground-dark)",
+      }}
+    >
+      <div
+        className="h-8 rounded w-1/3 mb-2"
+        style={{ backgroundColor: "var(--color-foreground)" }}
+      ></div>
+      <div
+        className="h-4 rounded w-full"
+        style={{ backgroundColor: "var(--color-foreground)" }}
+      ></div>
     </div>
   );
 }
