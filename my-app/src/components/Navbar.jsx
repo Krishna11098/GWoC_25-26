@@ -10,7 +10,7 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
   { name: "Experiences", href: "/experiences" },
-  { name: "Play", href: "/play" },
+  { name: "Play", href: "/sudoku" },
   { name: "Events", href: "/events/calendar" },
   { name: "Community", href: "/about-us" },
 ];
