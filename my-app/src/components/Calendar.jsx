@@ -34,7 +34,7 @@ function getFirstDayOfMonth(year, month) {
   return new Date(year, month, 1).getDay();
 }
 
-export default function Calendar({ initialDate = new Date() }) {
+export default function Calendar({ initialDate = new Date(), events: externalEvents = [] }) {
   const [viewYear, setViewYear] = useState(initialDate.getFullYear());
   const [viewMonth, setViewMonth] = useState(initialDate.getMonth());
   const [hoveredDate, setHoveredDate] = useState(null);
@@ -42,25 +42,36 @@ export default function Calendar({ initialDate = new Date() }) {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // Simple mocked event for the 29th of the active month
+  // Transform external events to calendar format
   const events = useMemo(
-    () => [
-      {
-        date: new Date(viewYear, viewMonth, 6),
-        title: "Joy Juncture Game Night",
-        location: "Joy Juncture Lounge + Stream",
-        time: "20:00 - 23:00",
-        host: "Joy Juncture Crew",
-        price: "Free entry · Snacks on us",
-        category: "Games & Community",
-        description:
-          "Squad up for casual co-op, card battles, and a surprise mini-tournament. Bring your controller; we have setups for PC, console, and board games.",
-        startHour: 20, // 8pm
-        endHour: 23,   // 11pm
+    () => externalEvents.map(event => {
+      const eventDate = event.date ? new Date(event.date) : null;
+      if (!eventDate || isNaN(eventDate.getTime())) return null;
+
+      // Parse start time
+      const [startHours, startMinutes] = (event.eventStartTime || "09:00").split(":").map(Number);
+      const duration = event.duration || 60;
+      const endHours = startHours + Math.floor(duration / 60);
+      const endMinutes = startMinutes + (duration % 60);
+      
+      const formatTime = (h, m) => `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+      const timeString = `${formatTime(startHours, startMinutes)} - ${formatTime(endHours, endMinutes)}`;
+
+      return {
+        date: eventDate,
+        title: event.title || "Untitled Event",
+        location: event.location || "TBD",
+        time: timeString,
+        host: event.createdBy || "Event Host",
+        price: "Free entry",
+        category: event.category || "general",
+        description: event.description || "No description available.",
+        startHour: startHours,
+        endHour: endHours,
         allDay: false,
-      },
-    ],
-    [viewYear, viewMonth]
+      };
+    }).filter(Boolean),
+    [externalEvents]
   );
 
   const daysGrid = useMemo(() => {
