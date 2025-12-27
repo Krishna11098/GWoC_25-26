@@ -16,13 +16,10 @@ export default function StartSudoku() {
       // Wait for params to resolve before firing the request
       if (!levelId) return;
 
-      const res = await userFetch(
-        "/api/user/sudoku/start",
-        {
-          method: "POST",
-          body: JSON.stringify({ levelId }),
-        }
-      );
+      const res = await userFetch("/api/user/sudoku/start", {
+        method: "POST",
+        body: JSON.stringify({ levelId }),
+      });
 
       if (!res.ok) {
         const errorPayload = await res.json().catch(() => ({}));
@@ -41,10 +38,21 @@ export default function StartSudoku() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center">
+      <div
+        className="min-h-screen flex items-center justify-center mt-32"
+        style={{ backgroundColor: "var(--color-background)" }}
+      >
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mb-4"></div>
-          <p className="text-lg text-gray-600 font-semibold">Starting game…</p>
+          <div
+            className="inline-block animate-spin rounded-full h-16 w-16 border-b-4 mb-4"
+            style={{ borderBottomColor: "var(--color-foreground)" }}
+          ></div>
+          <p
+            className="text-lg font-semibold"
+            style={{ color: "var(--color-font-2)" }}
+          >
+            Starting game…
+          </p>
         </div>
       </div>
       <Footer />

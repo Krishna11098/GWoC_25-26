@@ -1,15 +1,13 @@
 @import "tailwindcss";
 
-
-
 :root {
-  --background: #2F8F8B;
-  --background-2: #0F0F0F;
-  --foreground: #85D5C8;
+  --background: #2f8f8b;
+  --background-2: #0f0f0f;
+  --foreground: #85d5c8;
   --foreground-dark: #75c1b5;
-  --foreground-2: #C392EC;
+  --foreground-2: #c392ec;
   --fontcolor: #000;
-  --fontcolor-2: #F5F3F8;
+  --fontcolor-2: #f5f3f8;
   --font-sans: Inter-5603bc14e377c2cf, "Inter-5603bc14e377c2cf fallback: Arial",
     sans-serif;
 }
@@ -25,7 +23,6 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
-
 
 body {
   background: var(--color-background);
@@ -56,19 +53,36 @@ body {
   }
 }
 @keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pulse-soft {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.04); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
 }
 
 .animate-float {
@@ -83,11 +97,30 @@ body {
   animation: pulse-soft 2.5s ease-in-out infinite;
 }
 
-
 /* Global utility to create a hexagon-shaped badge */
 .clip-path-hexagon {
   clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
 }
 
+/* Feature card glass style */
+.feature-card {
+  background: var(--color-foreground);
+  color: var(--color-font);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(133, 213, 200, 0.2);
+}
 
+/* Helper for SVGs that use currentColor */
+.icon-currentcolor {
+  color: var(--color-foreground-2);
+}
+/* hyphenated variant used in some components */
+.icon-current-color {
+  color: var(--color-foreground-2);
+}
 
+/* Ensure embedded SVGs that use currentColor inherit the intended color */
+.icon-current-color {
+  color: #c392ec;
+}
