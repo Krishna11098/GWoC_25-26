@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
-import { getUserFromRequest } from "@/lib/auth";
+import { getUserFromRequest } from "@/lib/authMiddleware";
 
 /**
  * GET /api/user/wallet/history
