@@ -6,6 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { auth } from "@/lib/firebaseClient";
+import { userFetch } from "@/lib/userFetch";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -15,6 +16,41 @@ export default function ProfilePage() {
   const [loadingData, setLoadingData] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
+  const [walletPage, setWalletPage] = useState(0);
+  const [gamesPage, setGamesPage] = useState(0);
+  const [selectedGame, setSelectedGame] = useState(null);
+  const PAGE_SIZE = 10;
+
+  const parseDateSafe = (value) => {
+    try {
+      if (!value) return null;
+      if (value instanceof Date) return value;
+      if (typeof value === "string") {
+        const d = new Date(value);
+        return isNaN(d.getTime()) ? null : d;
+      }
+      if (typeof value === "number") {
+        const d = new Date(value);
+        return isNaN(d.getTime()) ? null : d;
+      }
+      if (typeof value === "object") {
+        if (typeof value.toDate === "function") {
+          // Firestore Timestamp
+          const d = value.toDate();
+          return isNaN(d.getTime()) ? null : d;
+        }
+        // Firestore Timestamp JSON shapes
+        if (value.seconds != null || value._seconds != null) {
+          const secs = value.seconds ?? value._seconds;
+          const d = new Date(secs * 1000);
+          return isNaN(d.getTime()) ? null : d;
+        }
+      }
+      return null;
+    } catch (_) {
+      return null;
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -22,21 +58,32 @@ export default function ProfilePage() {
       setLoadingUser(false);
 
       if (firebaseUser) {
-        fetchUserData(firebaseUser.uid);
+        fetchUserData();
       }
     });
 
     return () => unsubscribe();
   }, []);
 
-  const fetchUserData = async (uid) => {
+  const fetchUserData = async () => {
     try {
       setLoadingData(true);
-      const response = await fetch(`/api/user/${uid}`);
-      if (response.ok) {
-        const data = await response.json();
-        setUserData(data);
-      }
+      const profileRes = await userFetch(`/api/user/profile`);
+      const profileData = await profileRes.json();
+
+      let walletHistory = [];
+      try {
+        const walletRes = await userFetch(`/api/user/wallet/history`);
+        if (walletRes.ok) walletHistory = await walletRes.json();
+      } catch (_) {}
+
+      let gamesHistory = [];
+      try {
+        const gamesRes = await userFetch(`/api/user/games/history`);
+        if (gamesRes.ok) gamesHistory = await gamesRes.json();
+      } catch (_) {}
+
+      setUserData({ ...profileData, walletHistory, gamesHistory });
     } catch (error) {
       console.error("Error fetching user data:", error);
     } finally {
@@ -51,6 +98,25 @@ export default function ProfilePage() {
       return `${parts[0][0] || ""}${parts[1][0] || ""}`.toUpperCase();
     return displayName.slice(0, 2).toUpperCase();
   }, [authUser]);
+
+  const walletStats = useMemo(() => {
+    if (!userData?.walletHistory && !userData?.wallet?.coinHistory) {
+      return { earned: 0, redeemed: 0 };
+    }
+    const history = userData.walletHistory?.length ? userData.walletHistory : userData.wallet?.coinHistory || [];
+    let earned = 0;
+    let redeemed = 0;
+    history.forEach((tx) => {
+      const amount = typeof tx.coins === "number" ? tx.coins : (tx.amount ?? 0);
+      const type = tx.action || tx.type || "";
+      if (type === "earn" || amount > 0) {
+        earned += Math.abs(amount);
+      } else if (type === "redeem" || type === "redeemed" || amount < 0) {
+        redeemed += Math.abs(amount);
+      }
+    });
+    return { earned, redeemed };
+  }, [userData]);
 
   const handleGoToLogin = () => router.push("/login");
 
@@ -127,12 +193,12 @@ export default function ProfilePage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <StatCard
-                      label="Redeemed"
-                      value={userData?.wallet?.coinsRedeemed || 0}
+                      label="Earned"
+                      value={walletStats.earned}
                     />
                     <StatCard
-                      label="Games Played"
-                      value={userData?.onlineGamesPlayed || 0}
+                      label="Redeemed"
+                      value={walletStats.redeemed}
                     />
                   </div>
                 </div>
@@ -145,9 +211,9 @@ export default function ProfilePage() {
                 </h3>
                 {loadingData ? (
                   <SkeletonCard />
-                ) : userData?.wallet?.coinHistory?.length > 0 ? (
+                ) : (userData?.walletHistory?.length ?? userData?.wallet?.coinHistory?.length ?? 0) > 0 ? (
                   <div className="space-y-2">
-                    {userData.wallet.coinHistory.slice(0, 5).map((tx, idx) => (
+                    {(userData.walletHistory?.length ? userData.walletHistory : userData.wallet?.coinHistory || []).slice(0, 5).map((tx, idx) => (
                       <div
                         key={idx}
                         className="flex items-center justify-between rounded-xl border bg-background-2 px-4 py-3"
@@ -155,14 +221,14 @@ export default function ProfilePage() {
                       >
                         <div>
                           <p className="font-semibold text-font-2 capitalize">
-                            {tx.action?.replace(/_/g, " ")}
+                            {(tx.action || tx.type || "transaction").replace(/_/g, " ")}
                           </p>
                           <p className="text-xs text-font-2/70">
-                            {new Date(tx.date).toLocaleDateString()}
+                            {(parseDateSafe(tx.date || tx.createdAt)?.toLocaleString()) || "—"}
                           </p>
                         </div>
                         <span className="font-bold text-foreground">
-                          +{tx.coins}
+                          {typeof tx.coins === "number" ? (tx.coins > 0 ? `+${tx.coins}` : `${tx.coins}`) : (tx.amount ?? "")}
                         </span>
                       </div>
                     ))}
@@ -172,6 +238,71 @@ export default function ProfilePage() {
                     title="No transactions"
                     description="Play games and attend events to earn coins."
                   />
+                )}
+              </div>
+
+              {/* Wallet History Card with Pagination */}
+              <div>
+                <h3 className="text-lg font-bold text-font mb-3">Wallet History</h3>
+                {loadingData ? (
+                  <SkeletonCard />
+                ) : (userData?.walletHistory?.length ?? userData?.wallet?.coinHistory?.length ?? 0) > 0 ? (
+                  <div className="rounded-2xl border bg-background-2 p-4"
+                    style={{ borderColor: "var(--color-foreground)" }}>
+                    {(() => {
+                      const entries = (userData.walletHistory?.length ? userData.walletHistory : userData.wallet?.coinHistory || []).map((tx) => ({
+                        action: tx.action || tx.type || "transaction",
+                        amount: typeof tx.coins === "number" ? tx.coins : (tx.amount ?? 0),
+                        date: parseDateSafe(tx.createdAt || tx.date),
+                        source: tx.source || null,
+                      }));
+                      const start = walletPage * PAGE_SIZE;
+                      const pageItems = entries.slice(start, start + PAGE_SIZE);
+                      return (
+                        <>
+                          <div className="space-y-2">
+                            {pageItems.map((tx, idx) => (
+                              <div key={idx} className="flex items-center justify-between rounded-xl border bg-background-2 px-4 py-3"
+                                style={{ borderColor: "var(--color-foreground)" }}>
+                                <div>
+                                  <p className="font-semibold text-font-2 capitalize">
+                                    {tx.action.replace(/_/g, " ")}{tx.source ? ` · ${tx.source}` : ""}
+                                  </p>
+                                  <p className="text-xs text-font-2/70">
+                                    {(tx.date?.toLocaleString()) || "—"}
+                                  </p>
+                                </div>
+                                <span className="font-bold" style={{ color: tx.amount >= 0 ? "var(--color-foreground)" : "var(--color-foreground-2)" }}>
+                                  {tx.amount > 0 ? `+${tx.amount}` : `${tx.amount}`}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="flex items-center justify-between mt-4">
+                            <button
+                              className="rounded-lg px-3 py-2 text-sm font-semibold bg-foreground text-font-2 hover:opacity-90 transition disabled:opacity-50"
+                              onClick={() => setWalletPage((p) => Math.max(0, p - 1))}
+                              disabled={walletPage === 0}
+                            >
+                              Prev
+                            </button>
+                            <p className="text-sm text-font-2/70">
+                              Page {walletPage + 1} of {Math.max(1, Math.ceil(entries.length / PAGE_SIZE))}
+                            </p>
+                            <button
+                              className="rounded-lg px-3 py-2 text-sm font-semibold bg-foreground text-font-2 hover:opacity-90 transition disabled:opacity-50"
+                              onClick={() => setWalletPage((p) => (p + 1 < Math.ceil(entries.length / PAGE_SIZE) ? p + 1 : p))}
+                              disabled={walletPage + 1 >= Math.ceil(entries.length / PAGE_SIZE)}
+                            >
+                              Next
+                            </button>
+                          </div>
+                        </>
+                      );
+                    })()}
+                  </div>
+                ) : (
+                  <EmptyState title="No wallet history" description="No wallet changes recorded yet." />
                 )}
               </div>
 
@@ -236,7 +367,7 @@ export default function ProfilePage() {
                   <ActivityCard
                     icon="🕹️"
                     label="Games Played"
-                    value={userData?.onlineGamesPlayed || 0}
+                    value={userData?.gamesHistory?.length || 0}
                   />
                   <ActivityCard
                     icon="🎊"
@@ -272,6 +403,93 @@ export default function ProfilePage() {
                 </>
               )}
 
+              {/* Games Played History with Pagination */}
+              <div className="rounded-2xl border bg-font-2 p-5 shadow-sm"
+                style={{ borderColor: "var(--color-foreground)" }}
+              >
+                <h3 className="text-lg font-bold text-font mb-3">Games Played</h3>
+                {loadingData ? (
+                  <SkeletonCard />
+                ) : (userData?.gamesHistory?.length ?? 0) > 0 ? (
+                  (() => {
+                    const entries = (userData.gamesHistory || []).map((g) => ({
+                      raw: g,
+                      title: g.gameName || g.title || "Game",
+                      difficulty: g.difficulty || null,
+                      completed: !!g.isCompleted,
+                      coins: g.coinsEarned ?? 0,
+                      hintsUsed: g.hintsUsed ?? 0,
+                      attempts: g.attempts ?? 0,
+                      date: parseDateSafe(g.finishedAt || g.createdAt || g.startedAt),
+                      startedAt: parseDateSafe(g.startedAt),
+                      finishedAt: parseDateSafe(g.finishedAt),
+                    }));
+                    const start = gamesPage * PAGE_SIZE;
+                    const pageItems = entries.slice(start, start + PAGE_SIZE);
+                    return (
+                      <>
+                        <div className="space-y-2">
+                          {pageItems.map((g, idx) => (
+                            <div
+                              key={idx}
+                              className="rounded-xl border bg-background-2 px-4 py-3 cursor-pointer hover:opacity-90 transition"
+                              style={{ borderColor: "var(--color-foreground)" }}
+                              onClick={() => setSelectedGame(g)}
+                            >
+                              <div className="flex items-start justify-between gap-3">
+                                <div className="min-w-0">
+                                  <div className="flex items-center gap-2">
+                                    <p className="font-semibold text-font-2 truncate">
+                                      {g.title}
+                                    </p>
+                                    {g.difficulty && (
+                                      <Badge text={g.difficulty} tone="info" />
+                                    )}
+                                  </div>
+                                  <p className="text-xs text-font-2/70">
+                                    {(g.date?.toLocaleString() || "—")}
+                                  </p>
+                                </div>
+                                <div className="text-right">
+                                  <span className="font-bold text-foreground block">
+                                    {g.coins > 0 ? `+${g.coins}` : `${g.coins}`}
+                                  </span>
+                                  <span className="text-xs font-semibold block mt-1"
+                                    style={{ color: g.completed ? "var(--color-foreground)" : "var(--color-foreground-2)" }}>
+                                    {g.completed ? "Completed" : "In Progress"}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex items-center justify-between mt-4">
+                          <button
+                            className="rounded-lg px-3 py-2 text-sm font-semibold bg-foreground text-font-2 hover:opacity-90 transition disabled:opacity-50"
+                            onClick={() => setGamesPage((p) => Math.max(0, p - 1))}
+                            disabled={gamesPage === 0}
+                          >
+                            Prev
+                          </button>
+                          <p className="text-sm text-font/70">
+                            Page {gamesPage + 1} of {Math.max(1, Math.ceil(entries.length / PAGE_SIZE))}
+                          </p>
+                          <button
+                            className="rounded-lg px-3 py-2 text-sm font-semibold bg-foreground text-font-2 hover:opacity-90 transition disabled:opacity-50"
+                            onClick={() => setGamesPage((p) => (p + 1 < Math.ceil(entries.length / PAGE_SIZE) ? p + 1 : p))}
+                            disabled={gamesPage + 1 >= Math.ceil(entries.length / PAGE_SIZE)}
+                          >
+                            Next
+                          </button>
+                        </div>
+                      </>
+                    );
+                  })()
+                ) : (
+                  <EmptyState title="No games yet" description="Play a game to see it here." />
+                )}
+              </div>
+
               {/* Cart */}
               <div
                 className="rounded-2xl border bg-font-2 p-5 shadow-sm"
@@ -301,6 +519,12 @@ export default function ProfilePage() {
         </div>
       </main>
       <Footer />
+      {selectedGame && (
+        <GameDetailModal
+          game={selectedGame}
+          onClose={() => setSelectedGame(null)}
+        />
+      )}
     </>
   );
 }
@@ -441,6 +665,70 @@ function SkeletonCard() {
         className="h-4 rounded w-full"
         style={{ backgroundColor: "var(--color-foreground)" }}
       ></div>
+    </div>
+  );
+}
+
+function Badge({ text, tone = "info" }) {
+  const colors = {
+    info: {
+      bg: "var(--color-foreground-dark)",
+      border: "var(--color-foreground)",
+      text: "var(--color-font)",
+    },
+    success: {
+      bg: "var(--color-foreground)",
+      border: "var(--color-foreground)",
+      text: "var(--color-font-2)",
+    },
+  };
+  const c = colors[tone] || colors.info;
+  return (
+    <span
+      className="text-[11px] font-semibold px-2 py-0.5 rounded-full border"
+      style={{ backgroundColor: c.bg, borderColor: c.border, color: c.text }}
+    >
+      {text}
+    </span>
+  );
+}
+
+function GameDetailModal({ game, onClose }) {
+  const fields = [
+    { label: "Game", value: game.title },
+    { label: "Difficulty", value: game.difficulty || "—" },
+    { label: "Hints Used", value: game.hintsUsed ?? 0 },
+    { label: "Attempts", value: game.attempts ?? 0 },
+    { label: "Coins Earned", value: game.coins ?? 0 },
+    { label: "Started", value: game.startedAt?.toLocaleString() || "—" },
+    { label: "Finished", value: game.finishedAt?.toLocaleString() || (game.completed ? "—" : "In Progress") },
+  ];
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+      <div className="w-full max-w-lg rounded-2xl border bg-background-2 p-6 shadow-lg" style={{ borderColor: "var(--color-foreground)" }}>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <h4 className="text-xl font-bold text-font">Game Details</h4>
+            {game.difficulty && <Badge text={game.difficulty} tone="info" />}
+            <Badge text={game.completed ? "Completed" : "In Progress"} tone={game.completed ? "success" : "info"} />
+          </div>
+          <button
+            className="rounded-lg px-3 py-1 text-sm font-semibold bg-font-2"
+            style={{ border: "1px solid var(--color-foreground)" }}
+            onClick={onClose}
+          >
+            Close
+          </button>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          {fields.map((f, i) => (
+            <div key={i} className="rounded-xl border bg-background-2 px-4 py-3" style={{ borderColor: "var(--color-foreground)" }}>
+              <p className="text-xs font-semibold text-font/70 uppercase">{f.label}</p>
+              <p className="text-sm font-bold text-font">{String(f.value)}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
