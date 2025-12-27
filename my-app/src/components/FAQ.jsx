@@ -1,7 +1,5 @@
 "use client";
-
 import { useState } from "react";
-import "./custom.css";
 
 const faqs = [
   {
@@ -12,87 +10,118 @@ const faqs = [
   {
     question: "Do you host game nights or events?",
     answer:
-      "Oh, we live for it! Check out our Events & Community section or follow us on Gram to join the fun. We bring the games, you bring the squad.",
+      "Oh, we live for it! Check out our Events & Community section or follow us on Gram to join the fun.",
   },
   {
     question: "Can I play these games with strangers?",
     answer:
-      "Absolutely! Nothing breaks the ice faster than a well-timed dare or a hilariously bad bluff. Warning: You may leave as besties or frenemies.",
+      "Absolutely! Nothing breaks the ice faster than a well-timed dare or a hilariously bad bluff.",
   },
   {
     question: "How long do your games take?",
     answer:
-      "Anywhere from quick laughs to epic showdowns. It depends on how often you pause to argue about the rules or fetch more pizza.",
+      "Anywhere from quick laughs to epic showdowns. Depends how often you argue about rules.",
   },
   {
     question: "What if I don’t like one of your games?",
     answer:
-      "First of all, ouch. Second, we’re here to make it right. Drop us a message, and we’ll work some magic. Refunds (jk), swaps, or even a handwritten apology from one of our designers… your joy is our priority!",
+      "Ouch. But don’t worry — we’ll make it right. Your joy comes first.",
   },
   {
     question: "Can I gift your games?",
     answer:
-      "Absolutely! Our games come with built-in “wow” factors that make them perfect for birthdays, weddings, or random Tuesday surprises!!",
+      "Yes! Perfect for birthdays, weddings, or random Tuesday surprises.",
   },
 ];
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(-1);
 
-  const toggle = (idx) => {
-    setOpenIndex((prev) => (prev === idx ? -1 : idx));
-  };
-
   return (
-    <section className="relative isolate overflow-hidden bg-background px-6 py-20 md:px-10 md:py-24 flex justify-center">
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="mx-auto h-full max-w-5xl rounded-3xl bg-linear-to-b from-white/3 to-white/0" />
-      </div>
+    <section className="px-6 py-24 md:px-10 flex justify-center">
+      {/* ENTRY ANIMATION */}
+      <div className="w-full max-w-4xl space-y-16 animate-fade-in">
 
-      <div className="relative mx-auto flex w-full max-w-4xl flex-col items-center space-y-12 text-center">
-        <div className="space-y-3">
-          <p className="text-[11px] uppercase tracking-[0.35em]">
+        {/* ================= HEADER ================= */}
+        <div className="relative mx-auto max-w-3xl text-center space-y-6">
+          {/* depth plate */}
+          <div className="absolute inset-x-0 -top-6 h-24 rounded-2xl bg-black/10 blur-xl" />
+
+          <p className="relative text-[11px] uppercase tracking-[0.4em] text-black/70">
             Uh huh we know you have questions!!
           </p>
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-            MOST ASKED… or shall we say.. MOST DOUBTED
+
+          <h2 className="relative text-3xl md:text-4xl font-extrabold tracking-tight text-black">
+            MOST ASKED…
+            <span className="block text-black/80">
+              or shall we say.. MOST DOUBTED
+            </span>
           </h2>
+
+          {/* OFF-CENTER ACCENT */}
+          <div className="relative mx-auto h-1 w-20 rounded-full bg-black translate-x-6" />
         </div>
 
-        <div className="w-full divide-y divide-gray-800/80 overflow-hidden rounded-2xl border border-gray-800/70 bg-foreground shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
+        {/* ================= FAQ CARD ================= */}
+        <div
+          className="
+            w-full overflow-hidden rounded-2xl
+            border border-white/40 bg-white/70 backdrop-blur-md
+            shadow-[0_25px_70px_rgba(0,0,0,0.25)]
+            transition-transform duration-300
+            hover:-translate-y-1
+          "
+        >
           {faqs.map((item, idx) => {
             const open = openIndex === idx;
 
             return (
-              <div key={item.question}>
+              <div
+                key={item.question}
+                className="border-b border-black/10 last:border-none"
+              >
                 <button
-                  className={`w-full px-7 md:px-8 py-5 md:py-6 flex items-start justify-between gap-4 text-left transition-colors duration-200 ${
-                    open ? "bg-foreground-dark" : ""
-                  }`}
-                  onClick={() => toggle(idx)}
+                  onClick={() => setOpenIndex(open ? -1 : idx)}
+                  className={`w-full flex items-start justify-between gap-4 px-7 md:px-8 py-6 text-left transition-all duration-300
+                    ${
+                      open
+                        ? "bg-[rgba(245,235,220,0.75)]"
+                        : "hover:bg-black/5"
+                    }
+                  `}
                 >
-                  <span className="text-base md:text-lg font-semibold">
+                  <span className="text-base md:text-lg font-semibold text-black">
                     {item.question}
                   </span>
+
                   <span
-                    className={`text-lg leading-none transition-transform duration-300 ${
-                      open ? "rotate-180" : ""
+                    className={`text-xl transition-transform duration-300 ${
+                      open ? "rotate-180 text-black" : "text-black/60"
                     }`}
-                    aria-hidden
                   >
                     ⌄
                   </span>
                 </button>
 
-                {open && (
-                  <div className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed bg-foreground-dark text-left">
-                    {item.answer}
+                {/* ANSWER ANIMATION */}
+                <div
+                  className={`grid transition-all duration-300 ease-out ${
+                    open
+                      ? "grid-rows-[1fr] opacity-100"
+                      : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed text-black bg-[rgba(245,235,220,0.45)]">
+                      {item.answer}
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}
         </div>
+
       </div>
     </section>
   );
