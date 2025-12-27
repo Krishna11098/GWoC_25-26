@@ -12,6 +12,8 @@ export default function CreateEventPage() {
     title: "",
     description: "",
     date: new Date().toISOString().split("T")[0],
+    eventStartTime: "09:00",
+    duration: 60,
     location: "",
     category: "general",
   });
@@ -34,6 +36,8 @@ export default function CreateEventPage() {
         title: "",
         description: "",
         date: new Date().toISOString().split("T")[0],
+        eventStartTime: "09:00",
+        duration: 60,
         location: "",
         category: "general",
       });
@@ -103,8 +107,8 @@ export default function CreateEventPage() {
             />
           </div>
 
-          {/* Date & Location */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Date, Time & Duration */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <label className="block text-gray-700 font-medium mb-2">
                 Event Date *
@@ -121,18 +125,50 @@ export default function CreateEventPage() {
 
             <div>
               <label className="block text-gray-700 font-medium mb-2">
-                Location *
+                Start Time *
               </label>
               <input
-                type="text"
-                name="location"
-                value={formData.location}
+                type="time"
+                name="eventStartTime"
+                value={formData.eventStartTime}
                 onChange={handleChange}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="e.g., Virtual, New York, etc."
                 required
               />
             </div>
+
+            <div>
+              <label className="block text-gray-700 font-medium mb-2">
+                Duration (minutes) *
+              </label>
+              <input
+                type="number"
+                name="duration"
+                value={formData.duration}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="e.g., 60, 90, 120"
+                min="15"
+                step="15"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Location */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">
+              Location *
+            </label>
+            <input
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="e.g., Virtual, New York, etc."
+              required
+            />
           </div>
 
           {/* Category */}
@@ -184,6 +220,8 @@ export default function CreateEventPage() {
                 description:
                   "Annual technology conference with speakers from around the world.",
                 date: "2024-12-25",
+                eventStartTime: "14:00",
+                duration: 120,
                 location: "Virtual / Online",
                 category: "tech",
               });

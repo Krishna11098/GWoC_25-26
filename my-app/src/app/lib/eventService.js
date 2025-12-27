@@ -77,6 +77,8 @@ class EventService {
         title: eventData.title || "Untitled",
         description: eventData.description || "",
         date: eventData.date || new Date().toISOString(),
+        eventStartTime: eventData.eventStartTime || "09:00",
+        duration: eventData.duration || 60,
         location: eventData.location || "Online",
         category: eventData.category || "general",
         createdAt: serverTimestamp(),
