@@ -1,0 +1,30 @@
+.image-hover-wrapper {
+  perspective: 1000px;
+}
+
+.image-hover {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.320, 1) !important;
+}
+
+.image-hover-wrapper:hover .image-hover {
+  transform: scale(1.08) rotateX(2deg) rotateY(-3deg) rotateZ(1deg);
+}
+
+.image-label {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  letter-spacing: 0.5px;
+}

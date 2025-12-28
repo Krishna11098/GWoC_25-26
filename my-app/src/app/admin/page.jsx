@@ -1,310 +1,240 @@
+// src/app/admin/page.jsx
 "use client";
 
-import { useState, useEffect, useContext } from "react";
-import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Plus,
-  LogOut,
-  Calendar,
-  Users,
-  TrendingUp,
-  Package,
-} from "lucide-react";
-import AdminEventCard from "@/components/AdminEventCard";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import Toast from "@/components/Toast";
-import { AuthContext } from "@/context/AuthContext";
-import { getAllEvents, deleteEvent } from "@/lib/events";
-import { logout } from "@/lib/auth";
+import { useState, useEffect } from "react";
+import eventService from "@/app/lib/eventService";
+import userService from "@/app/lib/userService";
 
 export default function AdminDashboard() {
-  const router = useRouter();
-  const { user } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [activeUsers, setActiveUsers] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [eventToDelete, setEventToDelete] = useState(null);
-  const [toast, setToast] = useState({
-    show: false,
-    message: "",
-    type: "success",
-  });
+  const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
-      router.push("/admin/login");
-      return;
-    }
     loadEvents();
-  }, [user, router]);
+    loadUsers();
+  }, []);
 
   const loadEvents = async () => {
     try {
-      const data = await getAllEvents();
-      setEvents(data);
+      const allEvents = await eventService.getAllEvents();
+      setEvents(allEvents);
     } catch (error) {
-      showToast("Error loading events", "error");
+      console.error("Dashboard load error:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async () => {
-    if (!eventToDelete) return;
-
+  const loadUsers = async () => {
     try {
-      await deleteEvent(eventToDelete);
-      setEvents(events.filter((e) => e.id !== eventToDelete));
-      showToast("Event deleted successfully", "success");
+      // Get total users count
+      const count = await userService.getTotalUsers();
+      setTotalUsers(count);
+
+      // Get active users count (optional)
+      const activeCount = await userService.getActiveUsers();
+      setActiveUsers(activeCount);
     } catch (error) {
-      showToast("Error deleting event", "error");
+      console.error("User load error:", error);
     } finally {
-      setShowDeleteModal(false);
-      setEventToDelete(null);
+      setUserLoading(false);
     }
   };
 
-  const showToast = (message, type) => {
-    setToast({ show: true, message, type });
-    setTimeout(
-      () => setToast({ show: false, message: "", type: "success" }),
-      3000
-    );
-  };
-
-  const handleLogout = async () => {
-    await logout();
-    router.push("/admin/login");
-  };
-
-  const stats = {
-    totalEvents: events.length,
-    totalCapacity: events.reduce(
-      (sum, event) => sum + (event.capacity || 0),
-      0
-    ),
-    totalRegistered: events.reduce(
-      (sum, event) => sum + (event.registered || 0),
-      0
-    ),
-    featuredEvents: events.filter((event) => event.isFeatured).length,
-  };
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="border-b border-gray-200 bg-white">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Admin Dashboard
-              </h1>
-              <p className="text-gray-600">Manage events and workshops</p>
-              {user && (
-                <p className="mt-1 text-sm text-gray-500">
-                  Logged in as: {user.email}
-                </p>
-              )}
-            </div>
-
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => router.push("/admin/create")}
-                className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 font-semibold text-white hover:opacity-90"
-              >
-                <Plus className="h-5 w-5" />
-                New Event
-              </button>
-
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50"
-              >
-                <LogOut className="h-5 w-5" />
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-2">🔥 JoyJuncture Admin</h1>
+      <p className="text-gray-600 mb-6">Powered by Firebase Firestore</p>
 
       {/* Stats */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="rounded-xl bg-white p-6 shadow-sm"
-          >
-            <div className="flex items-center gap-4">
-              <div className="rounded-lg bg-purple-100 p-3">
-                <Package className="h-8 w-8 text-purple-600" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Total Events</p>
-                <p className="text-2xl font-bold">{stats.totalEvents}</p>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        {/* Total Events Card */}
+        <div className="bg-blue-100 p-6 rounded-xl border border-blue-200">
+          <div className="flex items-center mb-2">
+            <div className="p-2 bg-blue-200 rounded-lg mr-3">
+              <span className="text-blue-600">📅</span>
             </div>
-          </motion.div>
+            <h3 className="text-lg font-semibold text-blue-800">
+              Total Events
+            </h3>
+          </div>
+          <p className="text-4xl font-bold text-blue-600">
+            {loading ? "..." : events.length}
+          </p>
+          <p className="text-sm text-blue-700 mt-2">Live in database</p>
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="rounded-xl bg-white p-6 shadow-sm"
-          >
-            <div className="flex items-center gap-4">
-              <div className="rounded-lg bg-blue-100 p-3">
-                <Users className="h-8 w-8 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Total Capacity</p>
-                <p className="text-2xl font-bold">{stats.totalCapacity}</p>
-              </div>
+        {/* Total Users Card */}
+        <div className="bg-green-100 p-6 rounded-xl border border-green-200">
+          <div className="flex items-center mb-2">
+            <div className="p-2 bg-green-200 rounded-lg mr-3">
+              <span className="text-green-600">👥</span>
             </div>
-          </motion.div>
+            <h3 className="text-lg font-semibold text-green-800">
+              Total Users
+            </h3>
+          </div>
+          <p className="text-4xl font-bold text-green-600">
+            {userLoading ? "..." : totalUsers}
+          </p>
+          <p className="text-sm text-green-700 mt-2">Registered accounts</p>
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="rounded-xl bg-white p-6 shadow-sm"
-          >
-            <div className="flex items-center gap-4">
-              <div className="rounded-lg bg-green-100 p-3">
-                <TrendingUp className="h-8 w-8 text-green-600" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Total Registered</p>
-                <p className="text-2xl font-bold">{stats.totalRegistered}</p>
-              </div>
+        {/* Active Users Card (Optional) */}
+        <div className="bg-purple-100 p-6 rounded-xl border border-purple-200">
+          <div className="flex items-center mb-2">
+            <div className="p-2 bg-purple-200 rounded-lg mr-3">
+              <span className="text-purple-600">✅</span>
             </div>
-          </motion.div>
+            <h3 className="text-lg font-semibold text-purple-800">
+              Active Users
+            </h3>
+          </div>
+          <p className="text-4xl font-bold text-purple-600">
+            {userLoading ? "..." : activeUsers}
+          </p>
+          <p className="text-sm text-purple-700 mt-2">
+            {activeUsers === totalUsers
+              ? "All active"
+              : `${Math.round((activeUsers / totalUsers) * 100)}% active`}
+          </p>
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="rounded-xl bg-white p-6 shadow-sm"
-          >
-            <div className="flex items-center gap-4">
-              <div className="rounded-lg bg-amber-100 p-3">
-                <Calendar className="h-8 w-8 text-amber-600" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Featured Events</p>
-                <p className="text-2xl font-bold">{stats.featuredEvents}</p>
-              </div>
+        {/* Quick Actions Card */}
+        <div className="bg-orange-100 p-6 rounded-xl border border-orange-200">
+          <div className="flex items-center mb-2">
+            <div className="p-2 bg-orange-200 rounded-lg mr-3">
+              <span className="text-orange-600">⚡</span>
             </div>
-          </motion.div>
+            <h3 className="text-lg font-semibold text-orange-800">
+              Quick Actions
+            </h3>
+          </div>
+          <div className="space-y-2 mt-3">
+            <a
+              href="/admin/create-event"
+              className="block w-full text-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+            >
+              ➕ Create Event
+            </a>
+            <a
+              href="/admin/users"
+              className="block w-full text-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+            >
+              👥 Manage Users
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Events List */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h2 className="text-xl font-bold text-gray-900">
-            All Events ({events.length})
-          </h2>
-          <p className="text-gray-600">Manage your events and workshops</p>
-        </div>
-
-        <div className="space-y-4">
-          <AnimatePresence>
-            {events.map((event) => (
-              <AdminEventCard
-                key={event.id}
-                event={event}
-                onEdit={() => router.push(`/admin/edit/${event.id}`)}
-                onDelete={() => {
-                  setEventToDelete(event.id);
-                  setShowDeleteModal(true);
-                }}
-                onView={() => router.push(`/events/${event.id}/gallery`)}
-              />
-            ))}
-          </AnimatePresence>
-        </div>
-
-        {events.length === 0 && (
-          <div className="rounded-2xl border-2 border-dashed border-gray-300 p-12 text-center">
-            <Package className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-            <h3 className="mb-2 text-xl font-semibold text-gray-900">
-              No events yet
-            </h3>
-            <p className="mb-6 text-gray-600">
-              Create your first event to get started
+      {/* Summary Stats Bar */}
+      <div className="mb-8 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl border">
+        <div className="flex flex-wrap gap-6 justify-around">
+          <div className="text-center">
+            <p className="text-sm text-gray-500">Total Events</p>
+            <p className="text-2xl font-bold">
+              {loading ? "..." : events.length}
             </p>
-            <button
-              onClick={() => router.push("/admin/create")}
-              className="rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-semibold text-white"
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-500">Total Users</p>
+            <p className="text-2xl font-bold">
+              {userLoading ? "..." : totalUsers}
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-500">Active Users</p>
+            <p className="text-2xl font-bold text-green-600">
+              {userLoading ? "..." : activeUsers}
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-500">Platform Status</p>
+            <div className="flex items-center justify-center mt-1">
+              <div className="h-2 w-2 rounded-full bg-green-500 mr-2 animate-pulse"></div>
+              <p className="text-lg font-semibold">Live</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Events Section */}
+      <div className="bg-white rounded-xl shadow p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">Recent Events</h2>
+          <span className="text-sm text-gray-500">
+            Showing {Math.min(events.length, 5)} of {events.length}
+          </span>
+        </div>
+
+        {loading ? (
+          <div className="text-center py-8">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600 mb-4"></div>
+            <p>Loading events from Firebase...</p>
+          </div>
+        ) : events.length === 0 ? (
+          <div className="text-center py-8">
+            <div className="text-5xl mb-4">📅</div>
+            <h3 className="text-xl font-semibold mb-2">No Events Created</h3>
+            <p className="text-gray-500 mb-6">
+              Get started by creating your first event!
+            </p>
+            <a
+              href="/admin/create-event"
+              className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
-              Create First Event
-            </button>
+              Create Your First Event
+            </a>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {events.slice(0, 5).map((event) => (
+              <div
+                key={event.id}
+                className="p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <h3 className="font-bold text-lg flex items-center">
+                  <span className="mr-2">🎯</span>
+                  {event.title}
+                </h3>
+                <p className="text-gray-600 mt-1">
+                  {event.description || "No description"}
+                </p>
+                <div className="flex items-center mt-2 text-sm text-gray-500">
+                  <span className="mr-4">
+                    📍 {event.location || "Location not set"}
+                  </span>
+                  <span>
+                    📅{" "}
+                    {event.date
+                      ? new Date(event.date).toLocaleDateString()
+                      : "No date"}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
 
-      {/* Delete Modal */}
-      <AnimatePresence>
-        {showDeleteModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-            onClick={() => setShowDeleteModal(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="w-full max-w-md rounded-2xl bg-white p-6"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h3 className="mb-4 text-xl font-bold text-gray-900">
-                Delete Event
-              </h3>
-              <p className="mb-6 text-gray-600">
-                Are you sure you want to delete this event? This action cannot
-                be undone.
-              </p>
-              <div className="flex justify-end gap-3">
-                <button
-                  onClick={() => setShowDeleteModal(false)}
-                  className="rounded-lg border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleDelete}
-                  className="rounded-lg bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700"
-                >
-                  Delete Event
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Toast Notification */}
-      <Toast
-        show={toast.show}
-        message={toast.message}
-        type={toast.type}
-        onClose={() => setToast({ ...toast, show: false })}
-      />
+      {/* Quick Refresh Button */}
+      <div className="mt-6 flex justify-end">
+        <button
+          onClick={() => {
+            setLoading(true);
+            setUserLoading(true);
+            loadEvents();
+            loadUsers();
+          }}
+          className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 flex items-center"
+        >
+          <span className="mr-2">🔄</span>
+          Refresh Data
+        </button>
+      </div>
     </div>
   );
 }

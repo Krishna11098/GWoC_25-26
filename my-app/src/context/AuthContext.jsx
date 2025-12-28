@@ -1,47 +1,66 @@
+// context/AuthContext.jsx
 "use client";
 
-import { createContext, useState, useEffect } from "react";
-import { auth } from "@/lib/firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import {
-  login as firebaseLogin,
-  logout as firebaseLogout,
-  isAdmin,
-} from "@/lib/auth";
+import { createContext, useState, useContext, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-export const AuthContext = createContext();
+// Create the context
+const AuthContext = createContext(undefined);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
+  // Check for existing session on mount
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser && isAdmin(firebaseUser.email)) {
-        setUser(firebaseUser);
-      } else {
-        setUser(null);
+    const storedUser = localStorage.getItem("joyjuncture_admin");
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error("Error parsing stored user:", error);
+        localStorage.removeItem("joyjuncture_admin");
       }
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
+    }
+    setLoading(false);
   }, []);
 
+  // Login function
   const login = async (email, password) => {
-    const result = await firebaseLogin(email, password);
-    if (result.success && result.user && isAdmin(result.user.email)) {
-      setUser(result.user);
+    // Hardcoded admin credentials for demo
+    const adminEmails = ["admin@joyjuncture.com", "superadmin@joyjuncture.com"];
+    const adminPassword = "admin123";
+
+    if (adminEmails.includes(email) && password === adminPassword) {
+      const userData = {
+        email: email,
+        displayName: email.split("@")[0],
+      };
+
+      // Store in localStorage
+      localStorage.setItem("joyjuncture_admin", JSON.stringify(userData));
+      setUser(userData);
+
+      return {
+        success: true,
+        user: userData,
+        message: "Login successful!",
+      };
     }
-    return result;
+
+    return {
+      success: false,
+      error: "Invalid email or password. Use admin@joyjuncture.com / admin123",
+    };
   };
 
+  // Logout function
   const logout = async () => {
-    const result = await firebaseLogout();
-    if (result.success) {
-      setUser(null);
-    }
-    return result;
+    localStorage.removeItem("joyjuncture_admin");
+    setUser(null);
+    router.push("/admin/login");
+    return { success: true };
   };
 
   const value = {
@@ -52,4 +71,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+// Custom hook to use auth
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 };

@@ -7,8 +7,12 @@ import {
 
 // Check if user is admin
 export const isAdmin = (email) => {
-  const adminEmails = process.env.ADMIN_EMAILS?.split(",") || [];
-  return adminEmails.includes(email);
+  if (!email) return false;
+  const adminEmails =
+    process.env.NEXT_PUBLIC_ADMIN_EMAILS?.split(",") ||
+    process.env.ADMIN_EMAILS?.split(",") ||
+    [];
+  return adminEmails.includes(email.trim().toLowerCase());
 };
 
 // Login user
@@ -19,9 +23,37 @@ export const login = async (email, password) => {
       email,
       password
     );
-    return { success: true, user: userCredential.user };
+    const user = userCredential.user;
+
+    // Check if user is admin
+    if (!isAdmin(user.email)) {
+      await signOut(auth);
+      return { success: false, error: "Unauthorized access. Admin only." };
+    }
+
+    return { success: true, user };
   } catch (error) {
-    return { success: false, error: error.message };
+    let errorMessage = "Invalid email or password";
+
+    switch (error.code) {
+      case "auth/invalid-email":
+        errorMessage = "Invalid email address";
+        break;
+      case "auth/user-disabled":
+        errorMessage = "Account disabled";
+        break;
+      case "auth/user-not-found":
+        errorMessage = "No account found with this email";
+        break;
+      case "auth/wrong-password":
+        errorMessage = "Incorrect password";
+        break;
+      case "auth/too-many-requests":
+        errorMessage = "Too many failed attempts. Try again later";
+        break;
+    }
+
+    return { success: false, error: errorMessage };
   }
 };
 
@@ -45,18 +77,8 @@ export const getCurrentUser = () => {
   });
 };
 
-// Protected route check
-export const requireAuth = async (context) => {
+// Check if user is authenticated and admin
+export const checkAdminAuth = async () => {
   const user = await getCurrentUser();
-
-  if (!user || !isAdmin(user.email)) {
-    return {
-      redirect: {
-        destination: "/admin/login",
-        permanent: false,
-      },
-    };
-  }
-
-  return { props: {} };
+  return user && isAdmin(user.email);
 };

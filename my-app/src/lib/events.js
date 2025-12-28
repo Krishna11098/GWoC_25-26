@@ -11,9 +11,25 @@ import {
   orderBy,
   where,
   serverTimestamp,
+  Timestamp,
 } from "firebase/firestore";
 
 const eventsCollection = collection(db, "events");
+
+// Helper function to convert Firestore data
+const formatEventData = (doc) => {
+  const data = doc.data();
+  return {
+    id: doc.id,
+    ...data,
+    // Convert Firestore Timestamps to Date objects
+    date: data.date ? data.date.toDate().toISOString().split("T")[0] : "",
+    createdAt:
+      data.createdAt?.toDate()?.toISOString() || new Date().toISOString(),
+    updatedAt:
+      data.updatedAt?.toDate()?.toISOString() || new Date().toISOString(),
+  };
+};
 
 // CREATE: Add new event
 export const createEvent = async (eventData) => {
@@ -21,12 +37,13 @@ export const createEvent = async (eventData) => {
     const eventWithTimestamps = {
       ...eventData,
       registered: 0,
+      date: Timestamp.fromDate(new Date(eventData.date)),
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
 
     const docRef = await addDoc(eventsCollection, eventWithTimestamps);
-    return { id: docRef.id, ...eventWithTimestamps };
+    return { id: docRef.id, ...eventData };
   } catch (error) {
     console.error("Error creating event:", error);
     throw error;
@@ -39,10 +56,7 @@ export const getAllEvents = async () => {
     const q = query(eventsCollection, orderBy("date", "desc"));
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    return querySnapshot.docs.map((doc) => formatEventData(doc));
   } catch (error) {
     console.error("Error fetching events:", error);
     throw error;
@@ -59,10 +73,7 @@ export const getFeaturedEvents = async () => {
     );
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    return querySnapshot.docs.map((doc) => formatEventData(doc));
   } catch (error) {
     console.error("Error fetching featured events:", error);
     throw error;
@@ -76,7 +87,7 @@ export const getEventById = async (eventId) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() };
+      return formatEventData(docSnap);
     } else {
       return null;
     }
@@ -90,8 +101,15 @@ export const getEventById = async (eventId) => {
 export const updateEvent = async (eventId, eventData) => {
   try {
     const eventRef = doc(db, "events", eventId);
+
+    // Convert date to Timestamp if it exists
+    const dataToUpdate = { ...eventData };
+    if (dataToUpdate.date) {
+      dataToUpdate.date = Timestamp.fromDate(new Date(dataToUpdate.date));
+    }
+
     await updateDoc(eventRef, {
-      ...eventData,
+      ...dataToUpdate,
       updatedAt: serverTimestamp(),
     });
 
@@ -124,10 +142,7 @@ export const getEventsByCategory = async (category) => {
     );
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    return querySnapshot.docs.map((doc) => formatEventData(doc));
   } catch (error) {
     console.error("Error fetching events by category:", error);
     throw error;
