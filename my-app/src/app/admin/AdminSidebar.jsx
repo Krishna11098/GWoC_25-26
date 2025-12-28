@@ -54,6 +54,22 @@ export default function AdminSidebar({ user }) {
           All Events
         </Link>
 
+        <Link
+          href="/admin/sudoku"
+          className="flex items-center p-3 hover:bg-gray-800 rounded"
+        >
+          <span className="mr-3">🎮</span>
+          Sudoku
+        </Link>
+
+        <Link
+          href="/admin/blogs"
+          className="flex items-center p-3 hover:bg-gray-800 rounded"
+        >
+          <span className="mr-3">📝</span>
+          Blogs
+        </Link>
+
         <div className="p-3 text-gray-400">
           <span className="mr-3">👥</span>
           Users

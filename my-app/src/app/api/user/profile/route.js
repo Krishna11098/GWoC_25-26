@@ -34,6 +34,11 @@ export async function GET(req) {
     role: data.role,
     wallet: data.wallet,
     onlineGamesPlayed: data.onlineGamesPlayed ?? 0,
+    userOrders: data.userOrders ?? [],
+    userEvents: data.userEvents ?? [],
+    userWorkshops: data.userWorkshops ?? [],
+    cart: data.cart ?? { items: [] },
+    isCommunityMember: data.isCommunityMember ?? false,
     updatedAt: data.updatedAt,
   });
 }

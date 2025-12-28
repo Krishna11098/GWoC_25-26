@@ -22,10 +22,17 @@ export async function GET(req) {
     .limit(50)
     .get();
 
-  const history = snap.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  const history = snap.docs.map(doc => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+      // Normalize Timestamp fields to ISO strings for the client
+      createdAt: data.createdAt?.toDate
+        ? data.createdAt.toDate().toISOString()
+        : (data.createdAt ?? null),
+    };
+  });
 
   return NextResponse.json(history);
 }
