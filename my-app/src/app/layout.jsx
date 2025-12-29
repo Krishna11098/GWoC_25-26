@@ -1,0 +1,32 @@
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { SettingsProvider } from "@/context/SettingsContext";
+import MaintenanceGate from "@/components/MaintenanceGate";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata = {
+  title: "JoyJuncture - Premium Experiences",
+  description:
+    "Crafted experiences, joyful connections, and premium play for communities everywhere.",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className="scroll-smooth">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <body className={`${inter.className} bg-white text-gray-900`}>
+        <SettingsProvider>
+          <MaintenanceGate>
+            {/* Main content */}
+            <main className="min-h-screen">{children}</main>
+          </MaintenanceGate>
+        </SettingsProvider>
+      </body>
+    </html>
+  );
+}
