@@ -30,6 +30,22 @@
 body {
   background: var(--color-background);
   font-family: Arial, Helvetica, sans-serif;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Smooth parallax container */
+.parallax-container {
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Ensure smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
 /* Custom Animations */

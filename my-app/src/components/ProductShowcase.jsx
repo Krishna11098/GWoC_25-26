@@ -56,13 +56,16 @@ export default function ProductShowcase({ product, gameId }) {
       // Initial state: all hidden
       gsap.set(steps, { opacity: 0, y: 20 });
 
+      // Give extra scroll runway so the final (4th) step can finish animating without the page snapping upward
+      const pinDuration = (steps.length + 1) * 350; // 4 steps -> 1750px of scroll
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: howToSectionRef.current,
           // Pin the section when its center hits the viewport center
           // so it stays vertically centered while animating steps
           start: "center center",
-          end: "+=1000",
+          end: `+=${pinDuration}`,
           scrub: 1,
           pin: true,
         },
@@ -106,7 +109,7 @@ export default function ProductShowcase({ product, gameId }) {
   }
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen">
+    <div className="bg-white text-gray-900 min-h-screen pt-24">
       {/* Section 1: Hero (Image Left, Content Right) */}
       <section
         ref={(el) => el && sectionRefs.current.push(el)}
