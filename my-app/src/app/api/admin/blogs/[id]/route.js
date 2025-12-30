@@ -6,25 +6,50 @@ import { getUserFromRequest } from "@/lib/authMiddleware";
  * GET /api/admin/blogs/[id] - Get a single blog
  */
 export async function GET(req, { params }) {
-  const user = await getUserFromRequest(req);
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const userDoc = await db.collection("users").doc(user.uid).get();
-  if (!userDoc.exists || userDoc.data().role !== "admin") {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
-
   try {
-    const { id } = params;
+    console.log("🔍 [Admin API] GET /api/admin/blogs/[id] - Starting...");
+    
+    // ⚠️ IMPORTANT: In Next.js 15, params is a Promise and must be awaited
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
+    console.log("📋 Blog ID:", id);
+
+    const user = await getUserFromRequest(req);
+    console.log("👤 User authenticated:", user ? user.email : "No user");
+    
+    if (!user) {
+      console.log("❌ Authentication failed - No user");
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    console.log("🔍 Checking user role for UID:", user.uid);
+    const userDoc = await db.collection("users").doc(user.uid).get();
+    console.log("📄 User doc exists:", userDoc.exists);
+    
+    if (userDoc.exists) {
+      const userData = userDoc.data();
+      console.log("👤 User role:", userData?.role);
+      
+      if (!userData || userData.role !== "admin") {
+        console.log("❌ Access denied - User role is not admin");
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+    } else {
+      console.log("❌ User document not found in Firestore");
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    console.log("✅ Admin access granted - Fetching blog...");
     const blogDoc = await db.collection("blogs").doc(id).get();
 
     if (!blogDoc.exists) {
+      console.log("❌ Blog not found:", id);
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
 
     const data = blogDoc.data();
+    console.log("✅ Blog fetched successfully:", data.title);
+    
     return NextResponse.json({
       id: blogDoc.id,
       ...data,
@@ -33,9 +58,12 @@ export async function GET(req, { params }) {
       publishedAt: data.publishedAt?.toDate().toISOString() || null,
     });
   } catch (error) {
-    console.error("Error fetching blog:", error);
+    console.error("💥 [Admin API] ERROR fetching blog:");
+    console.error("Error name:", error.name);
+    console.error("Error message:", error.message);
+    console.error("Error stack:", error.stack);
     return NextResponse.json(
-      { error: "Failed to fetch blog" },
+      { error: "Failed to fetch blog", details: error.message },
       { status: 500 }
     );
   }
@@ -56,22 +84,31 @@ export async function PUT(req, { params }) {
   }
 
   try {
-    const { id } = params;
+    // ⚠️ IMPORTANT: In Next.js 15, params is a Promise and must be awaited
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
     const body = await req.json();
-    const { title, content, excerpt, category, tags, coverImage, isPublished } = body;
+    const { title, excerpt, category, tags, coverImage, isPublished, sections } = body;
 
     const blogDoc = await db.collection("blogs").doc(id).get();
     if (!blogDoc.exists) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
 
+    if (coverImage && !coverImage.trim()) {
+      return NextResponse.json(
+        { error: "Cover image is mandatory" },
+        { status: 400 }
+      );
+    }
+
     const updateData = {
       ...(title && { title }),
-      ...(content && { content }),
       ...(excerpt !== undefined && { excerpt }),
       ...(category && { category }),
       ...(tags !== undefined && { tags }),
       ...(coverImage !== undefined && { coverImage }),
+      ...(sections !== undefined && { sections }),
       updatedAt: new Date(),
     };
 
@@ -115,7 +152,9 @@ export async function DELETE(req, { params }) {
   }
 
   try {
-    const { id } = params;
+    // ⚠️ IMPORTANT: In Next.js 15, params is a Promise and must be awaited
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
     const blogDoc = await db.collection("blogs").doc(id).get();
 
     if (!blogDoc.exists) {
