@@ -14,12 +14,12 @@ export default function ProofOfJoy() {
   const getLabel = (imageNum) => labels.find((l) => l.image === imageNum)?.text || "";
 
   return (
-    <section className="relative bg-background py-20 md:py-28 text-font">
+    <section className="relative py-20 md:py-28 bg-darkblue">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         {/* ---------- HEADER ---------- */}
         <div className="mb-12">
           <div className="flex items-center gap-3">
-            <span className="h-9 w-2 rounded-full bg-foreground" />
+            <span className="h-9 w-2 rounded-full bg-font" />
             <p className="text-sm font-bold uppercase tracking-[0.25em]">
               Proof of Joy
             </p>
