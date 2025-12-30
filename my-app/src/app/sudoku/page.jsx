@@ -26,7 +26,6 @@ export default function SudokuPage() {
   useEffect(() => {
     async function load() {
       if (authLoading || !user) return;
-
       setLoading(true);
       try {
         const res = await userFetch("/api/user/sudoku/levels");

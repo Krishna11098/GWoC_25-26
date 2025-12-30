@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  /* --background: #2f8f8b;
-  --background-2: #0f0f0f;
-  --foreground: #85d5c8;
+  --background: #2F8F8B;
+  --background-2: #0F0F0F;
+  --foreground: #85D5C8;
   --foreground-dark: #75c1b5;
-  --foreground-2: #c392ec;
+  --foreground-2: #C392EC;
   --fontcolor: #000;
-  --fontcolor-2: #f5f3f8; */
+  --fontcolor-2: #F5F3F8;
   --font-sans: Inter-5603bc14e377c2cf, "Inter-5603bc14e377c2cf fallback: Arial",
     sans-serif;
 
@@ -37,7 +37,7 @@
 }
 
 body {
-  /*background: var(--color-background);*/
+  background: var(--color-background);
   font-family: Arial, Helvetica, sans-serif;
   background-attachment: fixed;
   background-size: cover;
@@ -136,6 +136,12 @@ html {
 .clip-path-hexagon {
   clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
 }
+
+/* Global utility to create a hexagon-shaped badge */
+.clip-path-hexagon {
+  clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
+}
+
 
 /* Feature card glass style */
 .feature-card {

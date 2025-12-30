@@ -70,15 +70,21 @@ export default function AdminSidebar({ user }) {
           Blogs
         </Link>
 
-        <div className="p-3 text-gray-400">
+        <Link
+          href="/admin/users"
+          className="flex items-center p-3 hover:bg-gray-800 rounded"
+        >
           <span className="mr-3">👥</span>
           Users
-        </div>
+        </Link>
 
-        <div className="p-3 text-gray-400">
+        <Link
+          href="/admin/settings"
+          className="flex items-center p-3 hover:bg-gray-800 rounded"
+        >
           <span className="mr-3">⚙️</span>
           Settings
-        </div>
+        </Link>
       </nav>
 
       <div className="mt-8 p-4 bg-blue-900/30 rounded-lg">

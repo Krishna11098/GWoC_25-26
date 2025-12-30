@@ -1,8 +1,8 @@
-// src/app/admin/layout.jsx - UPDATE AUTH LOGIC
 "use client";
 
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { auth } from "@/app/lib/firebaseConfig";
 import { useRouter, usePathname } from "next/navigation";
 import AdminSidebar from "./AdminSidebar"; // Make sure this exists
@@ -10,23 +10,50 @@ import AdminSidebar from "./AdminSidebar"; // Make sure this exists
 export default function AdminLayout({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminLoading, setAdminLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
+    const checkAdminStatus = async (user) => {
+      if (user) {
+        try {
+          const db = getFirestore();
+          const adminDoc = await getDoc(doc(db, "admins", user.uid));
+
+          if (adminDoc.exists()) {
+            setIsAdmin(true);
+            console.log("✅ User is admin:", user.email);
+          } else {
+            console.log("❌ User is not admin:", user.email);
+            setIsAdmin(false);
+          }
+        } catch (error) {
+          console.error("Admin check error:", error);
+          setIsAdmin(false);
+        } finally {
+          setAdminLoading(false);
+        }
+      } else {
+        setAdminLoading(false);
+        setIsAdmin(false);
+      }
+    };
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in
         setUser(user);
-        console.log("👤 Admin user:", user.email);
+        checkAdminStatus(user);
 
         // If on login page, redirect to dashboard
         if (pathname === "/admin/login") {
           router.push("/admin");
         }
       } else {
-        // User is signed out
         setUser(null);
+        setIsAdmin(false);
+        setAdminLoading(false);
 
         // If not on login page, redirect to login
         if (pathname !== "/admin/login") {
@@ -49,12 +76,42 @@ export default function AdminLayout({ children }) {
     }
   };
 
-  if (loading) {
+  if (loading || adminLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Checking authentication...</p>
+          <p className="mt-4 text-gray-600">Checking permissions...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (user && !isAdmin && pathname !== "/admin/login") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="max-w-md w-full mx-auto p-8 bg-white rounded-xl shadow-lg text-center">
+          <div className="text-6xl mb-4 text-red-500">🚫</div>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            Access Denied
+          </h1>
+          <p className="text-gray-600 mb-6">
+            You don't have permission to access the admin panel.
+          </p>
+          <div className="space-y-3">
+            <button
+              onClick={() => router.push("/")}
+              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Go to Homepage
+            </button>
+            <button
+              onClick={handleLogout}
+              className="w-full px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+            >
+              Switch Account
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -74,6 +131,26 @@ export default function AdminLayout({ children }) {
     <div className="flex min-h-screen bg-gray-100">
       <AdminSidebar user={user} onLogout={handleLogout} />
       <main className="flex-1 p-6">
+        {/* Admin Status Badge */}
+        {isAdmin && (
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                ✅ Admin Mode
+              </span>
+              <span className="text-sm text-gray-500">
+                Logged in as: {user?.email}
+              </span>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+            >
+              Logout
+            </button>
+          </div>
+        )}
+
         <div className="bg-white rounded-lg shadow p-6 min-h-[calc(100vh-3rem)]">
           {children}
         </div>
