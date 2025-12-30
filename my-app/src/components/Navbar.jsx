@@ -21,6 +21,8 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [communityDropdownOpen, setCommunityDropdownOpen] = useState(false);
+  const [communityDropdownClicked, setCommunityDropdownClicked] = useState(false);
 
   // Detect scroll
   useEffect(() => {
@@ -29,6 +31,22 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (communityDropdownClicked) {
+        const dropdown = document.getElementById("community-dropdown");
+        if (dropdown && !dropdown.contains(event.target)) {
+          setCommunityDropdownOpen(false);
+          setCommunityDropdownClicked(false);
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [communityDropdownClicked]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -93,20 +111,53 @@ const Navbar = () => {
             ))}
 
             {/* Community dropdown */}
-            <div className="relative group">
-              <Link href="/community" className={linkClasses("/community")}>
+            <div 
+              id="community-dropdown"
+              className="relative group"
+              onMouseEnter={() => {
+                if (!communityDropdownClicked) setCommunityDropdownOpen(true);
+              }}
+              onMouseLeave={() => {
+                if (!communityDropdownClicked) setCommunityDropdownOpen(false);
+              }}
+            >
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  const newClickedState = !communityDropdownClicked;
+                  setCommunityDropdownClicked(newClickedState);
+                  setCommunityDropdownOpen(newClickedState);
+                }}
+                className={linkClasses("/community")}
+              >
                 Community
-              </Link>
-              <div className="absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200 bg-white shadow-md opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto">
+              </button>
+              <div 
+                className={`absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200 bg-white shadow-md transition-opacity duration-200 ${
+                  communityDropdownOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                }`}
+                onMouseEnter={() => setCommunityDropdownOpen(true)}
+                onMouseLeave={() => {
+                  if (!communityDropdownClicked) setCommunityDropdownOpen(false);
+                }}
+              >
                 <div className="py-2">
                   <Link
                     href="/about-us"
+                    onClick={() => {
+                      setCommunityDropdownOpen(false);
+                      setCommunityDropdownClicked(false);
+                    }}
                     className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
                   >
                     About Us
                   </Link>
                   <Link
                     href="/community/blog"
+                    onClick={() => {
+                      setCommunityDropdownOpen(false);
+                      setCommunityDropdownClicked(false);
+                    }}
                     className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
                   >
                     Blogs
