@@ -32,40 +32,48 @@ export default function BlogCard({ post, index }) {
       }`}
     >
       <div
-        className={`flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10 ${
-          isEven ? "md:flex-row-reverse" : ""
+        className={`flex flex-col ${post.image ? 'md:flex-row items-start md:items-center gap-6 md:gap-10' : ''} ${
+          post.image && isEven ? "md:flex-row-reverse" : ""
         }`}
       >
-        {/* Image */}
-        <div className="w-full md:w-1/2">
-          <div className="aspect-video rounded-3xl overflow-hidden bg-slate-100">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={post.image}
-              alt={post.title}
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
+        {/* Image - only show if exists */}
+        {post.image && (
+          <div className="w-full md:w-1/2">
+            <div className="aspect-video rounded-3xl overflow-hidden bg-slate-100">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={post.image}
+                alt={post.title || "Blog image"}
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Content */}
-        <div className="w-full md:w-1/2">
-          <span className="inline-block rounded-full border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-            {post.category}
-          </span>
-          <h3 className="mt-3 text-2xl md:text-3xl font-bold text-slate-900">
-            {post.title}
-          </h3>
-          <p className="mt-2 text-slate-700">
+        <div className={post.image ? "w-full md:w-1/2" : "w-full"}>
+          {post.category && (
+            <span className="inline-block rounded-full border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+              {post.category}
+            </span>
+          )}
+          {post.title && (
+            <h3 className={`text-2xl md:text-3xl font-bold text-slate-900 ${post.category ? 'mt-3' : ''}`}>
+              {post.title}
+            </h3>
+          )}
+          <p className={`text-slate-700 ${post.title ? 'mt-2' : ''}`}>
             {post.description}
           </p>
-          <Link
-            href={post.href || "#"}
-            className="mt-3 inline-block text-emerald-600 hover:text-emerald-700 font-medium"
-          >
-            Read the full story
-          </Link>
+          {post.href && post.href !== "#" && (
+            <Link
+              href={post.href}
+              className="mt-3 inline-block text-emerald-600 hover:text-emerald-700 font-medium"
+            >
+              Read the full story
+            </Link>
+          )}
         </div>
       </div>
     </article>
