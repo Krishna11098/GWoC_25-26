@@ -79,17 +79,26 @@ export default function CreateBlogPage() {
     setError('');
 
     try {
-      // Convert to base64 for preview/storage
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData((prev) => ({ ...prev, coverImage: reader.result }));
+      // Upload to Cloudinary via backend API
+      const formData = new FormData();
+      formData.append('images', file);
+
+      const res = await userFetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const imageUrl = data.images[0].url;
+        
+        setFormData((prev) => ({ ...prev, coverImage: imageUrl }));
         setUploading(false);
-      };
-      reader.onerror = () => {
-        setError('Failed to read file');
+      } else {
+        const errorData = await res.json();
+        setError(errorData.error || 'Failed to upload image');
         setUploading(false);
-      };
-      reader.readAsDataURL(file);
+      }
     } catch (err) {
       console.error(err);
       setError('Error uploading image');
@@ -110,16 +119,26 @@ export default function CreateBlogPage() {
     setError('');
 
     try {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        handleSectionChange(index, 'image', reader.result);
+      // Upload to Cloudinary via backend API
+      const formDataUpload = new FormData();
+      formDataUpload.append('images', file);
+
+      const res = await userFetch('/api/admin/upload', {
+        method: 'POST',
+        body: formDataUpload,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const imageUrl = data.images[0].url;
+        
+        handleSectionChange(index, 'image', imageUrl);
         setUploading(false);
-      };
-      reader.onerror = () => {
-        setError('Failed to read file');
+      } else {
+        const errorData = await res.json();
+        setError(errorData.error || 'Failed to upload image');
         setUploading(false);
-      };
-      reader.readAsDataURL(file);
+      }
     } catch (err) {
       console.error(err);
       setError('Error uploading image');
@@ -240,7 +259,7 @@ export default function CreateBlogPage() {
                   <input
                     type="url"
                     name="coverImage"
-                    value={formData.coverImage?.startsWith('data:') ? '' : formData.coverImage}
+                    value={formData.coverImage || ''}
                     onChange={handleHeaderChange}
                     className="flex-1 px-4 py-3 rounded-2xl bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-emerald-400"
                     placeholder="https://example.com/image.jpg"
@@ -363,7 +382,7 @@ export default function CreateBlogPage() {
                       <div className="flex items-center gap-2">
                         <input
                           type="url"
-                          value={section.image?.startsWith('data:') ? '' : section.image}
+                          value={section.image || ''}
                           onChange={(e) => handleSectionChange(index, "image", e.target.value)}
                           className="flex-1 px-4 py-3 rounded-2xl bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-emerald-400"
                           placeholder="https://example.com/section-image.jpg"
