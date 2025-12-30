@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { SettingsProvider } from "@/context/SettingsContext";
 import MaintenanceGate from "@/components/MaintenanceGate";
+import BanCheck from "@/components/BanCheck";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +23,10 @@ export default function RootLayout({ children }) {
       <body className={`${inter.className} bg-white text-gray-900`}>
         <SettingsProvider>
           <MaintenanceGate>
-            {/* Main content */}
-            <main className="min-h-screen">{children}</main>
+            <BanCheck>
+              {/* Your existing app content */}
+              {children}
+            </BanCheck>
           </MaintenanceGate>
         </SettingsProvider>
       </body>
