@@ -13,26 +13,14 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      {/* <ParallaxSection speed={0.2}>
-        <HeroSection />
-      </ParallaxSection>
-      <ParallaxSection speed={0.2}>
-        <Subheading />
-      </ParallaxSection>
-      <ParallaxSection speed={0.2}>
-        <ScrollAnimation />
-      </ParallaxSection>
-      <ParallaxSection speed={0.2}>
-        <ProofOfJoy />
-      </ParallaxSection>
-      <ParallaxSection speed={0.2}>
-        <Walletsystem />
-      </ParallaxSection>
-      <ParallaxSection speed={0.2}>
-        <FAQ />
-      </ParallaxSection> */}
+      <HeroSection />
+      <Subheading />
+      <ScrollAnimation />
+      <ProofOfJoy />
+      <FAQ />
+      <Footer />
 
-      <FadeInSection yOffset={80}>
+      {/* <FadeInSection yOffset={80}>
         <HeroSection />
       </FadeInSection>
       <FadeInSection yOffset={80}>
@@ -52,7 +40,7 @@ export default function HomePage() {
       </FadeInSection>
       <FadeInSection>
         <Footer/>
-      </FadeInSection>
+      </FadeInSection> */}
     </>
   );
 }

@@ -44,16 +44,14 @@ export default function FAQ() {
 
         {/* ================= HEADER ================= */}
         <div className="relative mx-auto max-w-3xl text-center space-y-6">
-          {/* depth plate */}
-          <div className="absolute inset-x-0 -top-6 h-24 rounded-2xl bg-black/10 blur-xl" />
-
-          <p className="relative text-[11px] uppercase tracking-[0.4em] text-black/70">
+          
+          <p className="relative text-[11px] uppercase tracking-[0.4em]">
             Uh huh we know you have questions!!
           </p>
 
-          <h2 className="relative text-3xl md:text-4xl font-extrabold tracking-tight text-black">
+          <h2 className="relative text-3xl md:text-4xl font-extrabold tracking-tight">
             MOST ASKED…
-            <span className="block text-black/80">
+            <span className="block">
               or shall we say.. MOST DOUBTED
             </span>
           </h2>
@@ -66,7 +64,7 @@ export default function FAQ() {
         <div
           className="
             w-full overflow-hidden rounded-2xl
-            border border-white/40 bg-white/70 backdrop-blur-md
+            border border-white/40 bg-white backdrop-blur-md
             shadow-[0_25px_70px_rgba(0,0,0,0.25)]
             transition-transform duration-300
             hover:-translate-y-1
@@ -85,12 +83,12 @@ export default function FAQ() {
                   className={`w-full flex items-start justify-between gap-4 px-7 md:px-8 py-6 text-left transition-all duration-300
                     ${
                       open
-                        ? "bg-[rgba(245,235,220,0.75)]"
+                        ? "bg-[rgba(245,235,220,0.75)] text-darkblue"
                         : "hover:bg-black/5"
                     }
                   `}
                 >
-                  <span className="text-base md:text-lg font-semibold text-black">
+                  <span className="text-base md:text-lg font-semibold text-darkgreen">
                     {item.question}
                   </span>
 

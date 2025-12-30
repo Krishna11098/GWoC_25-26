@@ -7,32 +7,26 @@ export default function SudokuCard({ level, refresh }) {
   const [editing, setEditing] = useState(false);
 
   async function removeSudoku() {
-  const user = auth.currentUser;
-  if (!user) return;
+    const user = auth.currentUser;
+    if (!user) return;
 
-  // 🔥 Force refresh so admin claim is guaranteed
-  const token = await user.getIdToken(true);
+    // 🔥 Force refresh so admin claim is guaranteed
+    const token = await user.getIdToken(true);
 
-  await fetch(
-    `/api/admin/sudoku/${level.levelId}/unpublish`,
-    {
+    await fetch(`/api/admin/sudoku/${level.levelId}/unpublish`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
-  );
+    });
 
-  refresh();
-}
-
+    refresh();
+  }
 
   return (
     <>
-      <div className="border rounded p-4 shadow bg-white">
-        <p className="font-semibold capitalize">
-          {level.difficulty}
-        </p>
+      <div className="border rounded p-4 shadow">
+        <p className="font-semibold capitalize">{level.difficulty}</p>
         <p>Coins: {level.coins}</p>
         <p>
           Variation {level.variationNo} • Level {level.levelNo}
@@ -43,13 +37,21 @@ export default function SudokuCard({ level, refresh }) {
         <div className="flex gap-2 mt-3">
           <button
             onClick={() => setEditing(true)}
-            className="px-3 py-1 bg-blue-500 text-white rounded"
+            className="px-3 py-1 rounded"
+            style={{
+              backgroundColor: "var(--color-foreground)",
+              color: "var(--color-font-2)",
+            }}
           >
             Edit
           </button>
           <button
             onClick={removeSudoku}
-            className="px-3 py-1 bg-red-500 text-white rounded"
+            className="px-3 py-1 rounded"
+            style={{
+              backgroundColor: "var(--color-foreground-2)",
+              color: "var(--color-font-2)",
+            }}
           >
             Remove
           </button>
