@@ -54,30 +54,38 @@ export default function SudokuGrid({ grid, initial, setGrid }) {
 
   return (
     <div className="flex flex-col items-center gap-6">
+      {/* Title */}
+      <h1
+        className="text-3xl md:text-4xl font-bold text-center"
+        style={{ color: "var(--color-font)" }}
+      >
+        Sudoku Challenge
+      </h1>
+
       {/* Instructions */}
       <div
-        className="max-w-2xl rounded-lg p-4 text-sm border"
+        className="max-w-2xl rounded-xl p-4 text-sm border-2"
         style={{
-          backgroundColor: "var(--color-background-2)",
-          color: "var(--color-font-2)",
+          backgroundColor: "var(--color-green)",
+          borderColor: "var(--color-font)",
+          color: "white",
         }}
       >
-        <p>
+        <p className="font-medium">
           <strong>Original values:</strong>{" "}
-          <span className="font-bold">Bold black</span> •
-          <strong className="ml-4">Your entries:</strong>{" "}
-          <span>Your entries</span>
+          <span className="font-bold">Bold</span> •
+          <strong className="ml-4">Your entries:</strong> <span>Regular</span>
         </p>
-        <p className="mt-2 text-xs">
-          Use arrow keys to navigate. Type 1-9 to fill cells. Press
+        <p className="mt-2 text-xs opacity-90">
+          💡 Use arrow keys to navigate. Type 1-9 to fill cells. Press
           Delete/Backspace to clear.
         </p>
       </div>
 
       {/* Grid */}
       <div
-        className="inline-block border-4 shadow-2xl rounded-lg overflow-hidden"
-        style={{ borderColor: "var(--color-foreground)" }}
+        className="inline-block border-4 shadow-2xl rounded-2xl overflow-hidden bg-white"
+        style={{ borderColor: "var(--color-font)" }}
       >
         {Array.from({ length: 9 }).map((_, rowIdx) => (
           <div
@@ -128,14 +136,14 @@ export default function SudokuGrid({ grid, initial, setGrid }) {
 
       {/* Footer info */}
       <div
-        className="text-center text-sm"
-        style={{ color: "var(--color-font-2)" }}
+        className="text-center text-base font-semibold px-6 py-3 rounded-xl border-2"
+        style={{
+          color: "var(--color-font)",
+          backgroundColor: "var(--color-pink)",
+          borderColor: "var(--color-font)",
+        }}
       >
-        Filled:{" "}
-        <span className="font-semibold">
-          {grid.filter((v) => v !== 0).length}
-        </span>{" "}
-        / 81
+        Progress: {grid.filter((v) => v !== 0).length} / 81 cells filled
       </div>
     </div>
   );

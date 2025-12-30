@@ -145,25 +145,11 @@ html {
 
 /* Feature card glass style */
 .feature-card {
-  background: var(--color-foreground);
+  background: var(--color-green);
   color: var(--color-font);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(133, 213, 200, 0.2);
-}
-
-/* Helper for SVGs that use currentColor */
-.icon-currentcolor {
-  color: var(--color-foreground-2);
-}
-/* hyphenated variant used in some components */
-.icon-current-color {
-  color: var(--color-foreground-2);
-}
-
-/* Ensure embedded SVGs that use currentColor inherit the intended color */
-.icon-current-color {
-  color: #c392ec;
+  border: 1px solid var(--color-font);
 }
 
 /* Marquee animation for wave border text */

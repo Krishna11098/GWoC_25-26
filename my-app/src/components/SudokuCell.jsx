@@ -29,25 +29,39 @@ const SudokuCell = forwardRef(function SudokuCell(
       onKeyDown={onKeyDown}
       className={`
         h-12 w-12 flex items-center justify-center text-lg font-semibold text-center
-        border
-        transition-colors duration-150
+        border border-gray-300
+        transition-all duration-150
         ${colIdx % 3 === 2 && colIdx !== 8 ? "border-r-4" : ""}
         ${rowIdx % 3 === 2 && rowIdx !== 8 ? "border-b-4" : ""}
-        ${fixed ? "font-bold cursor-default" : "cursor-pointer"}
-        ${isSelected ? "border-2" : ""}
+        ${
+          fixed
+            ? "font-extrabold cursor-default"
+            : "cursor-pointer hover:bg-gray-100"
+        }
+        ${isSelected ? "border-2 ring-2 ring-offset-0" : ""}
         
         focus:outline-none
       `}
       style={{
-        ...(isSelected ? { borderColor: "var(--color-foreground)" } : {}),
-        ...(fixed
+        ...(isSelected
           ? {
-              backgroundColor: "var(--color-background-2)",
-              color: "var(--color-font-2)",
+              borderColor: "var(--color-font)",
+              ringColor: "var(--color-orange)",
+              backgroundColor: "var(--color-orange)",
+              opacity: 0.3,
             }
           : {}),
+        ...(fixed
+          ? {
+              backgroundColor: "var(--color-green)",
+              color: "var(--color-font)",
+              opacity: 0.85,
+            }
+          : {
+              color: "var(--color-font)",
+            }),
         ...(isSameRow || isSameCol || isSameBox
-          ? { backgroundColor: "var(--color-foreground-2)" }
+          ? { backgroundColor: "var(--color-pink)", opacity: 0.6 }
           : {}),
       }}
     />
