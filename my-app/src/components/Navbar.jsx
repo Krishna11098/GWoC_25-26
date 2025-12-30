@@ -54,7 +54,7 @@ const Navbar = () => {
   };
 
   const linkClasses = (href) =>
-    `relative text-sm font-light tracking-wide text-gray-900/80 hover:text-gray-900 transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:bg-gray-900 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
+    `relative text-sm font-light tracking-wide text-white hover:text-gray-900 transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:bg-gray-900 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
       isActive(href) ? "text-gray-900 after:scale-x-100" : ""
     }`;
 
@@ -66,7 +66,7 @@ const Navbar = () => {
     >
       <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
         <div
-          className={`flex items-center gap-5 rounded-2xl border border-white/60 bg-font-2 px-6 md:px-10 shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 ${
+          className={`flex items-center gap-5 rounded-2xl border border-white/60 bg-font px-6 md:px-10 shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 text-bg ${
             scrolled ? "py-3" : "py-5 md:py-6"
           }`}
         >
@@ -75,7 +75,7 @@ const Navbar = () => {
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-lime-400 to-emerald-500 text-sm font-semibold text-gray-900">
               JJ
             </span>
-            <span className="text-lg font-semibold text-gray-900">
+            <span className="text-lg font-semibold">
               JoyJuncture
             </span>
           </Link>
@@ -122,7 +122,7 @@ const Navbar = () => {
               <>
                 <Link
                   href="/login"
-                  className="rounded-full px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100"
+                  className="rounded-full px-4 py-2 text-sm font-medium hover:bg-gray-100"
                 >
                   Login
                 </Link>

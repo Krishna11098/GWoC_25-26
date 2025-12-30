@@ -1,21 +1,25 @@
 @import "tailwindcss";
 
-
-
 :root {
-  --background: #2F8F8B;
-  --background-2: #0F0F0F;
-  --foreground: #85D5C8;
+  /* --background: #2f8f8b;
+  --background-2: #0f0f0f;
+  --foreground: #85d5c8;
   --foreground-dark: #75c1b5;
-  --foreground-2: #C392EC;
+  --foreground-2: #c392ec;
   --fontcolor: #000;
-  --fontcolor-2: #F5F3F8;
+  --fontcolor-2: #f5f3f8; */
   --font-sans: Inter-5603bc14e377c2cf, "Inter-5603bc14e377c2cf fallback: Arial",
     sans-serif;
+
+  --bg: #f9f7eb;
+  --orange: #f7d57c;
+  --green: #cbd8ac;
+  --pink: #f5cfc2;
+  --font: #526355;
 }
 
 @theme inline {
-  --color-background: var(--background);
+  /* --color-background: var(--background);
   --color-background-2: var(--background-2);
   --color-foreground: var(--foreground);
   --color-foreground-2: var(--foreground-2);
@@ -23,13 +27,25 @@
   --color-font: var(--fontcolor);
   --color-font-2: var(--fontcolor-2);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-geist-mono); */
+
+  --color-bg: var(--bg);
+  --color-orange: var(--orange);
+  --color-green: var(--green);
+  --color-pink: var(--pink);
+  --color-font: var(--font);
 }
 
-
 body {
-  background: var(--color-background);
+  /*background: var(--color-background);*/
   font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  background-image: url('data:image/svg+xml;utf8,<svg width="1440" height="939" viewBox="0 0 1440 639" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1435.72 65.3239C1490.83 78.3125 999.107 -31.8236 818.424 27.8566C682.841 72.6399 857.152 148.702 724.727 194.711C572.621 247.557 301.843 140.912 185.973 204.702C97.1739 253.589 287.001 300.744 220.421 354.071C167.666 396.325 9.60393 435.001 -19.3317 435.001H-40" stroke="%23F7D57C" stroke-width="20" stroke-linecap="round" stroke-opacity="0.8"/><path d="M1891.72 259.324C1946.83 272.313 1455.11 162.176 1274.42 221.857C1138.84 266.64 1313.15 342.702 1180.73 388.711C1028.62 441.557 757.843 334.912 641.973 398.702C553.174 447.589 743.001 494.744 676.421 548.071C623.666 590.325 459.164 617.594 315 627.001C188.461 635.257 -9 605.501 -9 605.501" stroke="%23F5CFC2" stroke-width="20" stroke-linecap="round" stroke-opacity="0.8"/><path d="M1619.72 160.324C1674.83 173.313 1183.11 63.1764 1002.42 122.857C866.841 167.64 1041.15 243.702 908.727 289.711C756.621 342.557 485.843 235.912 369.973 299.702C281.174 348.589 471.001 395.744 404.421 449.071C351.666 491.325 262.637 517.061 164.668 530.001C98.2049 538.779 -7 530.001 -7 530.001" stroke="%23CBD8AC" stroke-width="20" stroke-linecap="round" stroke-opacity="0.8"/></svg>');
+  background-repeat: repeat-y;
+  background-attachment: scroll;
+  background-size: 100% auto;
+  background-position: top center;
+  color: black;
 }
 
 /* Custom Animations */
@@ -56,19 +72,36 @@ body {
   }
 }
 @keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pulse-soft {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.04); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
 }
 
 .animate-float {
@@ -83,11 +116,44 @@ body {
   animation: pulse-soft 2.5s ease-in-out infinite;
 }
 
-
 /* Global utility to create a hexagon-shaped badge */
 .clip-path-hexagon {
   clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
 }
 
+/* Feature card glass style */
+.feature-card {
+  background: var(--color-foreground);
+  color: var(--color-font);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(133, 213, 200, 0.2);
+}
 
+/* Helper for SVGs that use currentColor */
+.icon-currentcolor {
+  color: var(--color-foreground-2);
+}
+/* hyphenated variant used in some components */
+.icon-current-color {
+  color: var(--color-foreground-2);
+}
 
+/* Ensure embedded SVGs that use currentColor inherit the intended color */
+.icon-current-color {
+  color: #c392ec;
+}
+
+/* Marquee animation for wave border text */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+}

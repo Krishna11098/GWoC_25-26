@@ -29,39 +29,27 @@ const SudokuCell = forwardRef(function SudokuCell(
       onKeyDown={onKeyDown}
       className={`
         h-12 w-12 flex items-center justify-center text-lg font-semibold text-center
-        border border-gray-400
+        border
         transition-colors duration-150
-        ${
-          colIdx % 3 === 2 && colIdx !== 8
-            ? "border-r-4 border-gray-900"
-            : ""
-        }
-        ${
-          rowIdx % 3 === 2 && rowIdx !== 8
-            ? "border-b-4 border-gray-900"
-            : ""
-        }
-        ${
-          fixed
-            ? "bg-gray-100 text-black font-bold cursor-default"
-            : "bg-white cursor-pointer"
-        }
-        ${isSelected ? "bg-blue-100 border-2 border-blue-500 ring-2 ring-blue-300" : ""}
-        ${
-          !fixed && value !== 0 && !isSelected
-            ? "text-blue-600"
-            : ""
-        }
-        ${
-          isSameRow || isSameCol || isSameBox
-            ? "bg-blue-50"
-            : ""
-        }
-        hover:${
-          !fixed ? "bg-blue-50" : "bg-gray-100"
-        }
+        ${colIdx % 3 === 2 && colIdx !== 8 ? "border-r-4" : ""}
+        ${rowIdx % 3 === 2 && rowIdx !== 8 ? "border-b-4" : ""}
+        ${fixed ? "font-bold cursor-default" : "cursor-pointer"}
+        ${isSelected ? "border-2" : ""}
+        
         focus:outline-none
       `}
+      style={{
+        ...(isSelected ? { borderColor: "var(--color-foreground)" } : {}),
+        ...(fixed
+          ? {
+              backgroundColor: "var(--color-background-2)",
+              color: "var(--color-font-2)",
+            }
+          : {}),
+        ...(isSameRow || isSameCol || isSameBox
+          ? { backgroundColor: "var(--color-foreground-2)" }
+          : {}),
+      }}
     />
   );
 });

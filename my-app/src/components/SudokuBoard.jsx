@@ -11,8 +11,9 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
   const [userGrid, setUserGrid] = useState(initializeGrid());
   const [selectedCell, setSelectedCell] = useState(null);
   const [errors, setErrors] = useState(new Set());
-  const [showHintMessage, setShowHintMessage] = useState("");
   const [checkMessage, setCheckMessage] = useState("");
+  const [showHintMessage, setShowHintMessage] = useState("");
+  const [checkType, setCheckType] = useState(null);
   const gridRefs = useRef([]);
 
   // Handle cell input (1-9 only)
@@ -100,11 +101,14 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
     setErrors(newErrors);
 
     if (hasErrors) {
-      setCheckMessage("❌ Some cells are incorrect. Keep trying!");
+      setCheckType("error");
+      setCheckMessage("Some cells are incorrect. Keep trying!");
     } else if (!isComplete) {
-      setCheckMessage("✓ All entered values are correct! Complete the grid.");
+      setCheckType("partial");
+      setCheckMessage("All entered values are correct! Complete the grid.");
     } else {
-      setCheckMessage("🎉 Puzzle solved! Congratulations!");
+      setCheckType("solved");
+      setCheckMessage("Puzzle solved! Congratulations!");
     }
   };
 
@@ -144,12 +148,12 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
   // Render the 9x9 grid
   const renderGrid = () => {
     return (
-      <div className="inline-block border-4 border-black bg-white">
+      <div className="inline-block border-4">
         {Array.from({ length: 9 }).map((_, rowIdx) => (
           <div
             key={rowIdx}
             className={`flex ${
-              rowIdx % 3 === 2 && rowIdx !== 8 ? "border-b-4 border-black" : ""
+              rowIdx % 3 === 2 && rowIdx !== 8 ? "border-b-4" : ""
             }`}
           >
             {Array.from({ length: 9 }).map((_, colIdx) => {
@@ -185,38 +189,15 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
                   disabled={isOriginal}
                   className={`
                     h-12 w-12 flex items-center justify-center text-lg font-semibold
-                    border border-gray-400
+                    border
                     transition-colors duration-150
+                    ${colIdx % 3 === 2 && colIdx !== 8 ? "border-r-4" : ""}
+                    ${rowIdx % 3 === 2 && rowIdx !== 8 ? "border-b-4" : ""}
                     ${
-                      colIdx % 3 === 2 && colIdx !== 8
-                        ? "border-r-4 border-black"
-                        : ""
+                      isOriginal ? "font-bold cursor-default" : "cursor-pointer"
                     }
-                    ${
-                      rowIdx % 3 === 2 && rowIdx !== 8
-                        ? "border-b-4 border-black"
-                        : ""
-                    }
-                    ${
-                      isOriginal
-                        ? "bg-gray-100 text-black font-bold cursor-default"
-                        : "bg-white cursor-pointer"
-                    }
-                    ${isSelected ? "bg-blue-100 border-2 border-blue-500" : ""}
-                    ${
-                      !isOriginal && userGrid[index] && !isError && !isSelected
-                        ? "text-blue-600"
-                        : ""
-                    }
-                    ${isError ? "bg-red-100 text-red-600 font-bold" : ""}
-                    ${
-                      isSameRow || isSameCol || isSameBox
-                        ? isError
-                          ? ""
-                          : "bg-blue-50"
-                        : ""
-                    }
-                    hover:${!isOriginal ? "bg-blue-50" : "bg-gray-100"}
+                    ${isSelected ? "border-2" : ""}
+                    ${isError ? "font-bold" : ""}
                     focus:outline-none
                   `}
                 />
@@ -227,31 +208,58 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
       </div>
     );
   };
-
   return (
-    <div className="flex flex-col items-center justify-center gap-6 rounded-lg bg-gradient-to-br from-slate-50 to-slate-100 p-8">
+    <div
+      className="flex flex-col items-center justify-center gap-6 rounded-lg p-8"
+      style={{ color: "var(--color-font-2)" }}
+    >
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900">Sudoku</h1>
-        <p className="mt-2 text-lg text-gray-600">
+        <h1
+          className="text-4xl font-bold"
+          style={{
+            color: "#F5F3F8",
+            textShadow: "0 4px 20px rgba(0,0,0,0.25)",
+          }}
+        >
+          Sudoku
+        </h1>
+        <p className="mt-2 text-lg">
           Level {levelNo} •{" "}
-          <span className="capitalize font-semibold text-blue-600">
+          <span
+            className="capitalize font-semibold"
+            style={{ color: "var(--color-font-2)" }}
+          >
             {difficulty}
           </span>
         </p>
       </div>
 
       {/* Instructions */}
-      <div className="max-w-2xl rounded-lg bg-white p-4 text-sm text-gray-700 shadow-sm border border-gray-200">
-        <p>
-          <strong>Original values:</strong>{" "}
-          <span className="font-bold">Bold black</span> •
-          <strong className="ml-4">Your entries:</strong>{" "}
-          <span className="text-blue-600">Blue</span> •
-          <strong className="ml-4">Errors:</strong>{" "}
-          <span className="bg-red-100 px-1">Red highlight</span>
+      <div
+        className="max-w-2xl rounded-lg p-4 text-sm shadow-sm border"
+        style={{
+          backgroundColor: "var(--color-background-2)",
+        }}
+      >
+        <p style={{ color: "#85D5C8", opacity: 0.9 }}>
+          <strong style={{ color: "#F5F3F8" }}>Original values:</strong>{" "}
+          <span className="font-bold" style={{ color: "#85D5C8" }}>
+            Bold black
+          </span>{" "}
+          •
+          <strong className="ml-4" style={{ color: "#F5F3F8" }}>
+            Your entries:
+          </strong>{" "}
+          <span style={{ color: "#85D5C8" }}>Your entries</span> •
+          <strong className="ml-4" style={{ color: "#F5F3F8" }}>
+            Errors:
+          </strong>{" "}
+          <span className="px-1" style={{ color: "#85D5C8" }}>
+            Highlight
+          </span>
         </p>
-        <p className="mt-2 text-xs text-gray-500">
+        <p className="mt-2 text-xs" style={{ color: "#85D5C8", opacity: 0.9 }}>
           Use arrow keys to navigate. Type 1-9 to fill cells.
         </p>
       </div>
@@ -262,20 +270,36 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
       {/* Messages */}
       {checkMessage && (
         <div
-          className={`rounded-lg px-6 py-3 font-semibold text-center ${
-            checkMessage.includes("🎉")
-              ? "bg-green-100 text-green-800"
-              : checkMessage.includes("❌")
-              ? "bg-red-100 text-red-800"
-              : "bg-blue-100 text-blue-800"
-          }`}
+          className="rounded-lg px-6 py-3 font-semibold text-center flex items-center justify-center gap-2"
+          style={{
+            backgroundColor: "var(--color-foreground-2)",
+            color: "var(--color-font-2)",
+          }}
         >
-          {checkMessage}
+          <img
+            src={
+              checkType === "error"
+                ? "/icons/cross.svg"
+                : checkType === "partial"
+                ? "/icons/check.svg"
+                : "/icons/party.svg"
+            }
+            alt=""
+            className="inline-block h-5 w-5 icon-current-color"
+            style={{ color: "#C392EC" }}
+          />
+          <span>{checkMessage}</span>
         </div>
       )}
 
       {showHintMessage && (
-        <div className="rounded-lg bg-yellow-100 px-6 py-3 font-semibold text-yellow-800">
+        <div
+          className="rounded-lg px-6 py-3 font-semibold"
+          style={{
+            backgroundColor: "var(--color-foreground)",
+            color: "var(--color-font-2)",
+          }}
+        >
           {showHintMessage}
         </div>
       )}
@@ -284,28 +308,40 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
       <div className="flex gap-4">
         <button
           onClick={checkProgress}
-          className="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-3 font-semibold text-white shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
+          className="rounded-lg px-6 py-3 font-semibold shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
+          style={{
+            backgroundColor: "var(--color-foreground)",
+            color: "var(--color-font-2)",
+          }}
         >
           Check Progress
         </button>
         <button
           onClick={getHint}
-          className="rounded-lg bg-gradient-to-r from-yellow-500 to-yellow-600 px-6 py-3 font-semibold text-white shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
+          className="rounded-lg px-6 py-3 font-semibold shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
+          style={{
+            backgroundColor: "var(--color-foreground-2)",
+            color: "var(--color-font-2)",
+          }}
         >
           Get Hint
         </button>
         <button
           onClick={resetPuzzle}
-          className="rounded-lg bg-gradient-to-r from-gray-500 to-gray-600 px-6 py-3 font-semibold text-white shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
+          className="rounded-lg px-6 py-3 font-semibold shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
+          style={{
+            backgroundColor: "var(--color-background-2)",
+            color: "var(--color-font-2)",
+          }}
         >
           Reset
         </button>
       </div>
 
       {/* Footer info */}
-      <div className="text-center text-sm text-gray-500">
+      <div className="text-center text-sm">
         Filled:{" "}
-        <span className="font-semibold text-gray-700">
+        <span className="font-semibold">
           {userGrid.filter((v) => v !== "").length}
         </span>{" "}
         / 81
