@@ -8,7 +8,7 @@ import gsap from "gsap";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
-import { P } from "framer-motion/dist/types.d-DagZKalS";
+
 
 export default function CartPage() {
   const [items, setItems] = useState([]);
