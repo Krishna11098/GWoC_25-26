@@ -5,8 +5,8 @@ export default function SudokuHeader({ difficulty, coins }) {
       <span
         className="text-sm px-3 py-1 rounded"
         style={{
-          backgroundColor: "var(--color-foreground)",
-          color: "var(--color-font-2)",
+          backgroundColor: "var(--color-green)",
+          color: "white",
         }}
       >
         🪙 {coins} coins

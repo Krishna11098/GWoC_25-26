@@ -22,7 +22,10 @@ export default function FloatingCartButton() {
         });
         if (res.ok) {
           const data = await res.json();
-          const total = (data.items || []).reduce((sum, it) => sum + (it.quantity || 0), 0);
+          const total = (data.items || []).reduce(
+            (sum, it) => sum + (it.quantity || 0),
+            0
+          );
           setItemCount(total);
         }
       } catch (e) {
@@ -62,7 +65,10 @@ export default function FloatingCartButton() {
       const token = await user.getIdToken();
       const res = await fetch("/api/cart", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ action: "update", gameId, quantity: 1 }),
       });
       if (!res.ok) throw new Error("Failed to add to cart");
@@ -84,8 +90,11 @@ export default function FloatingCartButton() {
       }}
       onDragLeave={() => setIsDragOver(false)}
       onDrop={handleDrop}
-      className={`fixed right-6 md:right-10 top-1/2 -translate-y-1/2 z-50 flex items-center gap-3 rounded-full px-5 md:px-6 py-3 text-base font-semibold text-white shadow-xl transition
-        ${isDragOver ? "bg-emerald-500 scale-105 ring-4 ring-emerald-300" : "bg-emerald-700 hover:bg-emerald-600"}
+      style={{
+        backgroundColor: isDragOver ? "var(--color-font)" : "var(--color-font)",
+      }}
+      className={`fixed right-6 md:right-10 top-1/2 -translate-y-1/2 z-50 flex items-center gap-3 rounded-full px-5 md:px-6 py-3 text-base font-semibold text-bg shadow-xl transition hover:opacity-90
+        ${isDragOver ? "scale-105 ring-4 ring-font/90" : ""}
         ${isDropping ? "animate-[pulse_0.5s_ease-out]" : ""}`}
     >
       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15">
