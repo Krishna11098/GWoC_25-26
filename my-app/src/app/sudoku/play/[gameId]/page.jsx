@@ -31,7 +31,7 @@ export default function PlaySudoku() {
       }
 
       const history = await res.json();
-      const game = history.find(g => g.gameId === gameId);
+      const game = history.find((g) => g.gameId === gameId);
 
       if (!game || !game.initialGrid) {
         router.replace("/sudoku");
@@ -46,16 +46,13 @@ export default function PlaySudoku() {
   }, [gameId, router]);
 
   async function submit() {
-    const res = await userFetch(
-      "/api/user/sudoku/submit",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          gameId,
-          userGrid: grid,
-        }),
-      }
-    );
+    const res = await userFetch("/api/user/sudoku/submit", {
+      method: "POST",
+      body: JSON.stringify({
+        gameId,
+        userGrid: grid,
+      }),
+    });
 
     if (res.ok) setCompleted(true);
     else alert("Wrong solution");
@@ -65,8 +62,13 @@ export default function PlaySudoku() {
     return (
       <>
         <Navbar />
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center">
-          <p className="text-lg text-gray-600">Loading…</p>
+        <div
+          className="min-h-screen flex items-center justify-center"
+          style={{ backgroundColor: "var(--color-background)" }}
+        >
+          <p className="text-lg" style={{ color: "var(--color-font-2)" }}>
+            Loading…
+          </p>
         </div>
         <Footer />
       </>
@@ -76,36 +78,36 @@ export default function PlaySudoku() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-12 px-4 md:px-6">
+      <main
+        className="min-h-screen py-12 px-4 md:px-6 mt-24"
+        style={{ backgroundColor: "var(--color-background)" }}
+      >
         <div className="max-w-4xl mx-auto">
           {/* Back Button */}
           <button
             onClick={() => router.push("/sudoku")}
-            className="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-gray-900 font-semibold shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-95"
+            className="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-95"
           >
             ← Back to Levels
           </button>
 
           {/* Game Board Container */}
-          <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-8">
-            <SudokuGrid
-              grid={grid}
-              initial={initial}
-              setGrid={setGrid}
-            />
+          <div
+            className="rounded-2xl shadow-2xl p-6 md:p-8"
+            style={{
+              backgroundColor: "var(--color-background-2)",
+              color: "var(--color-font-2)",
+            }}
+          >
+            <SudokuGrid grid={grid} initial={initial} setGrid={setGrid} />
 
-            <SudokuActions
-              onSubmit={submit}
-              gameId={params?.gameId}
-            />
+            <SudokuActions onSubmit={submit} gameId={params?.gameId} />
           </div>
         </div>
       </main>
       <Footer />
 
-      {completed && (
-        <SudokuResultModal />
-      )}
+      {completed && <SudokuResultModal />}
     </>
   );
 }

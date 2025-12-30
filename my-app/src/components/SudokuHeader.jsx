@@ -1,10 +1,14 @@
 export default function SudokuHeader({ difficulty, coins }) {
   return (
     <div className="flex justify-between items-center mb-4">
-      <h2 className="text-xl font-bold capitalize">
-        {difficulty} Sudoku
-      </h2>
-      <span className="text-sm bg-yellow-200 px-3 py-1 rounded">
+      <h2 className="text-xl font-bold capitalize">{difficulty} Sudoku</h2>
+      <span
+        className="text-sm px-3 py-1 rounded"
+        style={{
+          backgroundColor: "var(--color-foreground)",
+          color: "var(--color-font-2)",
+        }}
+      >
         🪙 {coins} coins
       </span>
     </div>

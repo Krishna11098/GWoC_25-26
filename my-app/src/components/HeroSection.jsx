@@ -23,7 +23,7 @@ export default function HeroSection({ scrollProgress = 0 }) {
 
   return (
     <section
-      className="min-h-screen grid lg:grid-cols-2 grid-cols-1 bg-primary"
+      className="relative min-h-screen grid lg:grid-cols-2 grid-cols-1"
       style={{
         transform: `scale(${scale}) translateY(${translateY}px)`,
         opacity,
@@ -34,12 +34,12 @@ export default function HeroSection({ scrollProgress = 0 }) {
       }}
     >
       {/* Left Section - Text Content */}
-      <div className="flex flex-col justify-center items-start px-8 md:px-16 lg:px-20 py-16 lg:py-0 bg-background">
+      <div className="flex flex-col justify-center items-start px-8 md:px-16 lg:px-20 py-16 lg:py-0">
         <div className="max-w-xl">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-font mb-6 leading-tight">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
             Joy Juncture
           </h1>
-          <p className="text-xl md:text-2xl text-font/90 font-medium leading-relaxed">
+          <p className="text-xl md:text-2xl font-medium leading-relaxed">
             Play. Connect. Celebrate — Games as Experiences
           </p>
         </div>
@@ -53,7 +53,7 @@ export default function HeroSection({ scrollProgress = 0 }) {
             {[...galleryImages, ...galleryImages].map((src, index) => (
               <div
                 key={index}
-                className="w-full h-64 lg:h-80 flex-shrink-0 relative"
+                className="w-full h-64 lg:h-80 shrink-0 relative"
               >
                 <img
                   src={src}

@@ -3,11 +3,7 @@
 import { useState, useRef } from "react";
 import SudokuCell from "./SudokuCell";
 
-export default function SudokuGrid({
-  grid,
-  initial,
-  setGrid,
-}) {
+export default function SudokuGrid({ grid, initial, setGrid }) {
   const [selectedCell, setSelectedCell] = useState(null);
   const gridRefs = useRef([]);
 
@@ -59,25 +55,35 @@ export default function SudokuGrid({
   return (
     <div className="flex flex-col items-center gap-6">
       {/* Instructions */}
-      <div className="max-w-2xl rounded-lg bg-blue-50 p-4 text-sm text-gray-700 border border-blue-200">
+      <div
+        className="max-w-2xl rounded-lg p-4 text-sm border"
+        style={{
+          backgroundColor: "var(--color-background-2)",
+          color: "var(--color-font-2)",
+        }}
+      >
         <p>
           <strong>Original values:</strong>{" "}
           <span className="font-bold">Bold black</span> •
           <strong className="ml-4">Your entries:</strong>{" "}
-          <span className="text-blue-600">Blue text</span>
+          <span>Your entries</span>
         </p>
-        <p className="mt-2 text-xs text-gray-600">
-          Use arrow keys to navigate. Type 1-9 to fill cells. Press Delete/Backspace to clear.
+        <p className="mt-2 text-xs">
+          Use arrow keys to navigate. Type 1-9 to fill cells. Press
+          Delete/Backspace to clear.
         </p>
       </div>
 
       {/* Grid */}
-      <div className="inline-block border-4 border-gray-900 bg-white shadow-2xl rounded-lg overflow-hidden">
+      <div
+        className="inline-block border-4 shadow-2xl rounded-lg overflow-hidden"
+        style={{ borderColor: "var(--color-foreground)" }}
+      >
         {Array.from({ length: 9 }).map((_, rowIdx) => (
           <div
             key={rowIdx}
             className={`flex ${
-              rowIdx % 3 === 2 && rowIdx !== 8 ? "border-b-4 border-gray-900" : ""
+              rowIdx % 3 === 2 && rowIdx !== 8 ? "border-b-4" : ""
             }`}
           >
             {Array.from({ length: 9 }).map((_, colIdx) => {
@@ -121,9 +127,12 @@ export default function SudokuGrid({
       </div>
 
       {/* Footer info */}
-      <div className="text-center text-sm text-gray-600">
+      <div
+        className="text-center text-sm"
+        style={{ color: "var(--color-font-2)" }}
+      >
         Filled:{" "}
-        <span className="font-semibold text-gray-900">
+        <span className="font-semibold">
           {grid.filter((v) => v !== 0).length}
         </span>{" "}
         / 81
