@@ -239,7 +239,7 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
       <div
         className="max-w-2xl rounded-lg p-4 text-sm shadow-sm border"
         style={{
-          backgroundColor: "var(--color-background-2)",
+          backgroundColor: "var(--color-pink)",
         }}
       >
         <p style={{ color: "#85D5C8", opacity: 0.9 }}>
@@ -272,8 +272,8 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
         <div
           className="rounded-lg px-6 py-3 font-semibold text-center flex items-center justify-center gap-2"
           style={{
-            backgroundColor: "var(--color-foreground-2)",
-            color: "var(--color-font-2)",
+            backgroundColor: "var(--color-orange)",
+            color: "white",
           }}
         >
           <img
@@ -296,8 +296,8 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
         <div
           className="rounded-lg px-6 py-3 font-semibold"
           style={{
-            backgroundColor: "var(--color-foreground)",
-            color: "var(--color-font-2)",
+            backgroundColor: "var(--color-green)",
+            color: "white",
           }}
         >
           {showHintMessage}
@@ -310,8 +310,8 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
           onClick={checkProgress}
           className="rounded-lg px-6 py-3 font-semibold shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
           style={{
-            backgroundColor: "var(--color-foreground)",
-            color: "var(--color-font-2)",
+            backgroundColor: "var(--color-green)",
+            color: "white",
           }}
         >
           Check Progress
@@ -320,8 +320,8 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
           onClick={getHint}
           className="rounded-lg px-6 py-3 font-semibold shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
           style={{
-            backgroundColor: "var(--color-foreground-2)",
-            color: "var(--color-font-2)",
+            backgroundColor: "var(--color-orange)",
+            color: "white",
           }}
         >
           Get Hint
@@ -330,8 +330,8 @@ export default function SudokuBoard({ puzzle, solution, levelNo, difficulty }) {
           onClick={resetPuzzle}
           className="rounded-lg px-6 py-3 font-semibold shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
           style={{
-            backgroundColor: "var(--color-background-2)",
-            color: "var(--color-font-2)",
+            backgroundColor: "var(--color-pink)",
+            color: "var(--color-font)",
           }}
         >
           Reset

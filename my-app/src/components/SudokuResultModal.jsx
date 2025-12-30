@@ -13,8 +13,8 @@ export default function SudokuResultModal() {
       <div
         className="rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl"
         style={{
-          backgroundColor: "var(--color-background-2)",
-          color: "var(--color-font-2)",
+          backgroundColor: "var(--color-pink)",
+          color: "var(--color-font)",
         }}
       >
         <div className="text-center">
@@ -27,8 +27,8 @@ export default function SudokuResultModal() {
             onClick={() => router.push("/sudoku")}
             className="w-full px-6 py-3 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95"
             style={{
-              backgroundColor: "var(--color-foreground)",
-              color: "var(--color-font-2)",
+              backgroundColor: "var(--color-green)",
+              color: "white",
             }}
           >
             Back to Levels
