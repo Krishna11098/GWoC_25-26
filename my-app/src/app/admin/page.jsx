@@ -202,6 +202,24 @@ export default function AdminDashboard() {
             >
               👥 Manage Users
             </a>
+            <a
+              href="/admin/riddles"
+              className="block w-full text-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+            >
+              🧩 Manage Riddles
+            </a>
+            <a
+              href="/admin/blogs"
+              className="block w-full text-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              📝 Manage Blogs
+            </a>
+            <a
+              href="/admin/sudoku"
+              className="block w-full text-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            >
+              🎯 Manage Sudoku
+            </a>
           </div>
         </div>
         {/* Moderation Card */}
