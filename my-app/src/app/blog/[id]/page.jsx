@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import BlogCard from "@/components/BlogCard";
+import BlogVoting from "@/components/BlogVoting";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -156,6 +157,15 @@ export default function BlogDetailPage() {
               </div>
             );
           })}
+        </div>
+
+        {/* Voting Section */}
+        <div className="mt-8">
+          <BlogVoting 
+            blogId={params.id} 
+            initialUpvotes={blog.upvotes || 0}
+            initialDownvotes={blog.downvotes || 0}
+          />
         </div>
 
         {/* Contact CTA Section */}

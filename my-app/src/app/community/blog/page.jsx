@@ -21,11 +21,14 @@ export default function CommunityBlogPage() {
         
         // Transform data to match BlogPage expected format
         const transformedBlogs = data.map((blog) => ({
+          id: blog.id,
           title: blog.title,
           category: blog.category,
           description: blog.excerpt || "Read more about this story...",
           image: blog.coverImage || null, // Use null instead of empty string
           href: `/blog/${blog.id}`,
+          upvotes: blog.upvotes || 0,
+          downvotes: blog.downvotes || 0,
         }));
         
         setBlogPosts(transformedBlogs);
