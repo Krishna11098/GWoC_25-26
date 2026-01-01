@@ -10,7 +10,6 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
   { name: "Experiences", href: "/experiences" },
-  { name: "Play", href: "/sudoku" },
   { name: "Events", href: "/events/calendar" },
 ];
 
@@ -23,6 +22,8 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   const [communityDropdownOpen, setCommunityDropdownOpen] = useState(false);
   const [communityDropdownClicked, setCommunityDropdownClicked] = useState(false);
+  const [playDropdownOpen, setPlayDropdownOpen] = useState(false);
+  const [playDropdownClicked, setPlayDropdownClicked] = useState(false);
 
   // Detect scroll
   useEffect(() => {
@@ -42,11 +43,18 @@ const Navbar = () => {
           setCommunityDropdownClicked(false);
         }
       }
+      if (playDropdownClicked) {
+        const dropdown = document.getElementById("play-dropdown");
+        if (dropdown && !dropdown.contains(event.target)) {
+          setPlayDropdownOpen(false);
+          setPlayDropdownClicked(false);
+        }
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [communityDropdownClicked]);
+  }, [communityDropdownClicked, playDropdownClicked]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -109,6 +117,62 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
+
+            {/* Play dropdown */}
+            <div 
+              id="play-dropdown"
+              className="relative group"
+              onMouseEnter={() => {
+                if (!playDropdownClicked) setPlayDropdownOpen(true);
+              }}
+              onMouseLeave={() => {
+                if (!playDropdownClicked) setPlayDropdownOpen(false);
+              }}
+            >
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  const newClickedState = !playDropdownClicked;
+                  setPlayDropdownClicked(newClickedState);
+                  setPlayDropdownOpen(newClickedState);
+                }}
+                className={linkClasses("/play")}
+              >
+                Play
+              </button>
+              <div 
+                className={`absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200 bg-white shadow-md transition-opacity duration-200 ${
+                  playDropdownOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                }`}
+                onMouseEnter={() => setPlayDropdownOpen(true)}
+                onMouseLeave={() => {
+                  if (!playDropdownClicked) setPlayDropdownOpen(false);
+                }}
+              >
+                <div className="py-2">
+                  <Link
+                    href="/sudoku"
+                    onClick={() => {
+                      setPlayDropdownOpen(false);
+                      setPlayDropdownClicked(false);
+                    }}
+                    className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
+                  >
+                    🎯 Sudoku
+                  </Link>
+                  <Link
+                    href="/riddles"
+                    onClick={() => {
+                      setPlayDropdownOpen(false);
+                      setPlayDropdownClicked(false);
+                    }}
+                    className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
+                  >
+                    🧩 Riddles
+                  </Link>
+                </div>
+              </div>
+            </div>
 
             {/* Community dropdown */}
             <div 

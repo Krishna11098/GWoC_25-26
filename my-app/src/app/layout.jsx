@@ -3,6 +3,7 @@ import "./globals.css";
 import { SettingsProvider } from "@/context/SettingsContext";
 import MaintenanceGate from "@/components/MaintenanceGate";
 import BanCheck from "@/components/BanCheck";
+import ChatbotWidget from "@/components/ChatbotWidget";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
             <BanCheck>
               {/* Your existing app content */}
               {children}
+              <ChatbotWidget />
             </BanCheck>
           </MaintenanceGate>
         </SettingsProvider>
