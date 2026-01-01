@@ -12,8 +12,7 @@ export async function GET(req) {
   }
 
   // Verify admin role
-  const userDoc = await db.collection("users").doc(user.uid).get();
-  if (!userDoc.exists || userDoc.data().role !== "admin") {
+  if (user.role !== "admin") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -51,8 +50,7 @@ export async function POST(req) {
   }
 
   // Verify admin role
-  const userDoc = await db.collection("users").doc(user.uid).get();
-  if (!userDoc.exists || userDoc.data().role !== "admin") {
+  if (user.role !== "admin") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
