@@ -23,6 +23,7 @@
     "mathjs": "^15.1.0",
     "motion": "^12.23.26",
     "next": "16.0.10",
+    "razorpay": "^2.9.6",
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "react-firebase-hooks": "^5.1.1",
