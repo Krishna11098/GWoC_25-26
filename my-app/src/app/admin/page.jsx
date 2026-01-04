@@ -220,6 +220,12 @@ export default function AdminDashboard() {
             >
               🎯 Manage Sudoku
             </a>
+            <a
+              href="/admin/products"
+              className="block w-full text-center px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
+            >
+              🛍️ Manage Products
+            </a>
           </div>
         </div>
         {/* Moderation Card */}

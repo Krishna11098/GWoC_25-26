@@ -58,7 +58,6 @@ const PlayfulHeading = ({
   // Fun hover effect for each letter
   const letterHover = {
     scale: 1.3,
-    rotate: [0, -10, 10, -10, 0],
     y: -8,
     color: "#f7d57c", // Accent color (optional, can be removed if not needed)
     transition: {

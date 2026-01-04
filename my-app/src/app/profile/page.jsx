@@ -368,9 +368,19 @@ export default function ProfilePage() {
 
               {/* Recent Orders */}
               <div>
-                <h3 className="text-lg font-bold text-font mb-3">
-                  Recent Orders
-                </h3>
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="text-lg font-bold text-font">
+                    Recent Orders
+                  </h3>
+                  {userData?.userOrders?.length > 0 && (
+                    <button
+                      onClick={() => router.push("/my-orders")}
+                      className="text-blue-600 hover:text-blue-800 text-sm font-semibold"
+                    >
+                      View All →
+                    </button>
+                  )}
+                </div>
                 {loadingData ? (
                   <SkeletonCard />
                 ) : userData?.userOrders?.length > 0 ? (
@@ -378,12 +388,13 @@ export default function ProfilePage() {
                     {userData.userOrders.slice(0, 3).map((order, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center justify-between rounded-xl border px-4 py-3"
+                        className="flex items-center justify-between rounded-xl border px-4 py-3 cursor-pointer hover:shadow-md transition-all"
                         style={{ backgroundColor: "white", borderColor: "var(--color-green)" }}
+                        onClick={() => router.push("/my-orders")}
                       >
                         <div>
                           <p className="font-semibold text-font">
-                            Order {order.orderId}
+                            Order {order.orderId?.substring(0, 12)}...
                           </p>
                           <p className="text-xs text-font/70">
                             {new Date(order.createdAt).toLocaleDateString()}
@@ -391,18 +402,15 @@ export default function ProfilePage() {
                         </div>
                         <div className="text-right">
                           <p className="font-bold text-font">
-                            ${order.totalAmount}
+                            ₹{order.finalAmount?.toFixed(2) || "0.00"}
                           </p>
                           <span
                             className={`text-xs font-semibold capitalize`}
                             style={{
-                              color:
-                                order.paymentStatus === "paid"
-                                  ? "var(--color-green)"
-                                  : "var(--color-orange)",
+                              color: "var(--color-green)",
                             }}
                           >
-                            {order.paymentStatus}
+                            ✓ Completed
                           </span>
                         </div>
                       </div>
