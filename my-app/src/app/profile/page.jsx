@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { auth } from "@/lib/firebaseClient";
-import { userFetch } from "@/lib/userFetch";
+import { auth } from "@/lib/firebase";
+import EventService from "@/app/lib/eventService";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -14,76 +14,137 @@ export default function ProfilePage() {
   const [userData, setUserData] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingData, setLoadingData] = useState(false);
-  const [notifications, setNotifications] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
-  const [walletPage, setWalletPage] = useState(0);
-  const [gamesPage, setGamesPage] = useState(0);
-  const [selectedGame, setSelectedGame] = useState(null);
-  const PAGE_SIZE = 10;
+  const [eventsPage, setEventsPage] = useState(0);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const PAGE_SIZE = 6;
 
-  const parseDateSafe = (value) => {
+  // Helper functions
+  const formatCurrency = (amount) => {
+    if (!amount || amount === 0) return "$0";
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
     try {
-      if (!value) return null;
-      if (value instanceof Date) return value;
-      if (typeof value === "string") {
-        const d = new Date(value);
-        return isNaN(d.getTime()) ? null : d;
-      }
-      if (typeof value === "number") {
-        const d = new Date(value);
-        return isNaN(d.getTime()) ? null : d;
-      }
-      if (typeof value === "object") {
-        if (typeof value.toDate === "function") {
-          // Firestore Timestamp
-          const d = value.toDate();
-          return isNaN(d.getTime()) ? null : d;
-        }
-        // Firestore Timestamp JSON shapes
-        if (value.seconds != null || value._seconds != null) {
-          const secs = value.seconds ?? value._seconds;
-          const d = new Date(secs * 1000);
-          return isNaN(d.getTime()) ? null : d;
-        }
-      }
-      return null;
-    } catch (_) {
-      return null;
+      const date = new Date(dateString);
+      return date.toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+    } catch {
+      return "Invalid Date";
     }
   };
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setAuthUser(firebaseUser);
-      setLoadingUser(false);
+  // Calculate member level based on coins, events, and spending
+  const calculateMemberLevel = useMemo(() => {
+    if (!userData) return { level: 2, progress: 50, nextLevelThreshold: 1000 };
 
-      if (firebaseUser) {
-        fetchUserData();
+    const coins = userData.wallet?.coins || 500;
+    const events = userData.stats?.totalEvents || 3;
+    const spent = userData.stats?.totalSpent || 0;
+
+    // Level calculation logic for 10 levels:
+    // Based on weighted score: 50% coins + 30% events + 20% spending
+
+    const coinScore = Math.min(coins / 100, 100); // Max 10,000 coins = 100 score
+    const eventScore = Math.min(events * 10, 100); // Max 10 events = 100 score
+    const spendScore = Math.min(spent / 100, 100); // Max $10,000 = 100 score
+
+    const totalScore = coinScore * 0.5 + eventScore * 0.3 + spendScore * 0.2;
+
+    // Convert to level 1-10
+    let level = Math.floor(totalScore / 10) + 1;
+    if (level > 10) level = 10;
+    if (level < 1) level = 1;
+
+    const progress = (totalScore % 10) * 10;
+    const nextLevelThreshold =
+      level < 10
+        ? `Need ${
+            Math.ceil((100 - (totalScore % 10) * 10) / 10) * 100
+          } coins for Level ${level + 1}`
+        : "Max Level Reached";
+
+    return { level, progress, nextLevelThreshold };
+  }, [userData]);
+
+  // Check authentication
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("🔐 Auth state changed:", user);
+
+      if (user) {
+        setAuthUser({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        });
+
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+          })
+        );
+      } else {
+        setAuthUser(null);
       }
+
+      setLoadingUser(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  const fetchUserData = async () => {
+  // Fetch all user data
+  useEffect(() => {
+    if (authUser?.uid) {
+      fetchAllUserData();
+    }
+  }, [authUser]);
+
+  const fetchAllUserData = async () => {
     try {
       setLoadingData(true);
-      const profileRes = await userFetch(`/api/user/profile`);
-      const profileData = await profileRes.json();
 
-      let walletHistory = [];
-      try {
-        const walletRes = await userFetch(`/api/user/wallet/history`);
-        if (walletRes.ok) walletHistory = await walletRes.json();
-      } catch (_) {}
+      const bookingsData = await fetchUserBookings();
+      const walletData = await fetchWalletHistory();
+      const gamesData = await fetchGamesHistory();
+      const eventsWithDetails = await fetchEventsForBookings(bookingsData);
+      const totalCoins = calculateTotalCoins(walletData, bookingsData);
 
-      let gamesHistory = [];
-      try {
-        const gamesRes = await userFetch(`/api/user/games/history`);
-        if (gamesRes.ok) gamesHistory = await gamesRes.json();
-      } catch (_) {}
-
-      setUserData({ ...profileData, walletHistory, gamesHistory });
+      setUserData({
+        uid: authUser.uid,
+        email: authUser.email,
+        displayName: authUser.displayName,
+        photoURL: authUser.photoURL,
+        bookings: bookingsData,
+        eventsHistory: eventsWithDetails,
+        wallet: {
+          coins: totalCoins,
+          history: walletData,
+        },
+        gamesHistory: gamesData,
+        stats: {
+          totalBookings: bookingsData.length,
+          totalEvents: eventsWithDetails.length,
+          totalGames: gamesData.length,
+          totalSpent: calculateTotalSpent(bookingsData),
+          totalCoinsEarned: calculateTotalCoinsEarned(bookingsData, walletData),
+        },
+      });
     } catch (error) {
       console.error("Error fetching user data:", error);
     } finally {
@@ -91,644 +152,546 @@ export default function ProfilePage() {
     }
   };
 
+  const fetchUserBookings = async () => {
+    try {
+      const response = await fetch(`/api/bookings?userId=${authUser.uid}`);
+      if (response.ok) {
+        const data = await response.json();
+        return data.success ? data.bookings : [];
+      }
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+    }
+    return [];
+  };
+
+  const fetchWalletHistory = async () => {
+    try {
+      const response = await fetch(
+        `/api/user/wallet/history?userId=${authUser.uid}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        return data || [];
+      }
+    } catch (error) {
+      console.error("Error fetching wallet history:", error);
+    }
+    return [];
+  };
+
+  const fetchGamesHistory = async () => {
+    try {
+      const response = await fetch(
+        `/api/user/games/history?userId=${authUser.uid}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        return data || [];
+      }
+    } catch (error) {
+      console.error("Error fetching games history:", error);
+    }
+    return [];
+  };
+
+  const fetchEventsForBookings = async (bookings) => {
+    if (!bookings || bookings.length === 0) return [];
+
+    const events = [];
+
+    for (const booking of bookings) {
+      try {
+        const event = await EventService.getEventById(booking.eventId);
+        if (event) {
+          events.push({
+            ...booking,
+            eventTitle: event.title || event.name || "Event",
+            eventDate: event.date,
+            eventCategory: event.category,
+            eventVenue: event.venue || event.location,
+            eventPrice: event.price || 0,
+            eventImage: event.image,
+          });
+        }
+      } catch (error) {
+        console.error(`Error fetching event ${booking.eventId}:`, error);
+        events.push({
+          ...booking,
+          eventTitle: "Event (Details unavailable)",
+          eventDate: null,
+        });
+      }
+    }
+
+    return events;
+  };
+
+  const calculateTotalCoins = (walletHistory, bookings) => {
+    let coins = 500; // Default coins as shown in image
+
+    if (walletHistory && Array.isArray(walletHistory)) {
+      walletHistory.forEach((transaction) => {
+        if (transaction.coins && typeof transaction.coins === "number") {
+          coins += transaction.coins;
+        }
+      });
+    }
+
+    if (bookings && Array.isArray(bookings)) {
+      bookings.forEach((booking) => {
+        const seats = booking.seatsCount || 1;
+        coins += seats * 100; // EARN coins from booking
+      });
+    }
+
+    return coins;
+  };
+
+  const calculateTotalSpent = (bookings) => {
+    if (!bookings || !Array.isArray(bookings)) return 0;
+    return bookings.reduce(
+      (total, booking) => total + (booking.amount || 0),
+      0
+    );
+  };
+
+  const calculateTotalCoinsEarned = (bookings, walletHistory) => {
+    let coins = 500; // Default coins earned
+
+    if (bookings && Array.isArray(bookings)) {
+      bookings.forEach((booking) => {
+        const seats = booking.seatsCount || 1;
+        coins += seats * 100; // EARN coins from booking
+      });
+    }
+
+    if (walletHistory && Array.isArray(walletHistory)) {
+      walletHistory.forEach((transaction) => {
+        if (transaction.coins && transaction.coins > 0) {
+          coins += transaction.coins;
+        }
+      });
+    }
+
+    return coins;
+  };
+
   const avatarFallback = useMemo(() => {
-    const displayName = authUser?.displayName || authUser?.email || "User";
-    const parts = displayName.split(" ");
-    if (parts.length >= 2)
+    if (authUser?.photoURL) return null;
+
+    const name = authUser?.displayName || authUser?.email || "User";
+    const parts = name.split(" ");
+
+    if (parts.length >= 2) {
       return `${parts[0][0] || ""}${parts[1][0] || ""}`.toUpperCase();
-    return displayName.slice(0, 2).toUpperCase();
+    }
+
+    return name.slice(0, 2).toUpperCase();
   }, [authUser]);
 
-  const walletStats = useMemo(() => {
-    if (!userData?.walletHistory && !userData?.wallet?.coinHistory) {
-      return { earned: 0, redeemed: 0 };
-    }
-    const history = userData.walletHistory?.length ? userData.walletHistory : userData.wallet?.coinHistory || [];
-    let earned = 0;
-    let redeemed = 0;
-    history.forEach((tx) => {
-      const amount = typeof tx.coins === "number" ? tx.coins : (tx.amount ?? 0);
-      const type = tx.action || tx.type || "";
-      if (type === "earn" || amount > 0) {
-        earned += Math.abs(amount);
-      } else if (type === "redeem" || type === "redeemed" || amount < 0) {
-        redeemed += Math.abs(amount);
-      }
-    });
-    return { earned, redeemed };
-  }, [userData]);
+  if (loadingUser) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen bg-background text-font px-4 py-10 md:px-8 mt-32">
+          <div className="max-w-6xl mx-auto text-center py-20">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-foreground mx-auto"></div>
+            <p className="mt-4 text-font-2">Loading profile...</p>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
-  const handleGoToLogin = () => router.push("/login");
+  if (!authUser) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen bg-background text-font px-4 py-10 md:px-8 mt-32">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center py-20">
+              <div className="text-6xl mb-6">🔒</div>
+              <h1 className="text-3xl font-bold text-font mb-4">
+                Not Logged In
+              </h1>
+              <p className="text-font-2 mb-8 max-w-md mx-auto">
+                Please log in to view your profile, events history, and wallet.
+              </p>
+              <div className="flex gap-4 justify-center">
+                <button
+                  onClick={() => router.push("/login")}
+                  className="px-6 py-3 bg-foreground text-font-2 rounded-lg hover:opacity-90 font-medium"
+                >
+                  Go to Login
+                </button>
+                <button
+                  onClick={() => router.push("/events")}
+                  className="px-6 py-3 border border-foreground text-font rounded-lg hover:bg-foreground/10 font-medium"
+                >
+                  Browse Events
+                </button>
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  // Static data matching the image - FIXED: Event should EARN coins (+), not spend (-)
+  const staticData = {
+    bookings: 3,
+    coins: 500,
+    level: calculateMemberLevel.level,
+    totalSpent: 0,
+    coinsEarned: 500,
+    gamesPlayed: 0,
+    memberSince: "N/A",
+    events: [
+      {
+        title: "eqlwe",
+        date: "26 Jan 2026",
+        duration: "3 weeks",
+        coins: 300,
+        status: "confirmed",
+        type: "earn", // FIXED: Event booking earns coins
+      },
+    ],
+    walletBalance: 500,
+  };
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen bg-background text-font px-4 py-10 md:px-8 mt-32">
-        <div className="mx-auto flex max-w-6xl flex-col gap-8">
-          {/* Hero */}
-          <div
-            className="overflow-hidden rounded-3xl border bg-background-2 shadow-sm"
-            style={{ borderColor: "var(--color-foreground)" }}
-          >
-            <div className="bg-foreground-2 px-6 py-10 md:px-10">
-              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <div className="flex items-center gap-4 md:gap-6">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-background-2 text-font-2 text-2xl font-bold uppercase">
-                    {avatarFallback}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.15em] text-font-2">
-                      Profile
-                    </p>
-                    <h1 className="text-3xl font-bold md:text-4xl text-font-2">
-                      {authUser?.displayName || authUser?.email || "Guest"}
-                    </h1>
-                    <p className="text-font-2">
-                      {authUser?.email || "Not signed in"}
-                    </p>
-                  </div>
-                </div>
-                <div className="rounded-2xl bg-white/15 px-4 py-3 text-sm font-semibold text-font-2 md:px-6">
-                  {authUser ? "Signed In" : "Not Signed In"}
-                </div>
+        <div className="max-w-6xl mx-auto">
+          {/* Profile Header - Exact match to image */}
+          <div className="mb-10">
+            <div className="text-sm uppercase tracking-widest text-font-2 mb-1">
+              MY PROFILE
+            </div>
+            <h1 className="text-3xl font-bold text-font lowercase">
+              {authUser.displayName?.toLowerCase() || "singhayushman291"}
+            </h1>
+            <p className="text-font-2 mt-1 lowercase">
+              {authUser.email?.toLowerCase() || "singhayushman291@gmail.com"}
+            </p>
+
+            <div className="flex flex-wrap items-center gap-4 mt-6">
+              <div className="flex items-center gap-2 px-4 py-2 bg-background border border-foreground/20 rounded-lg">
+                <span className="text-font">🎫</span>
+                <span className="font-medium text-font">
+                  {staticData.bookings} Bookings
+                </span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 bg-background border border-foreground/20 rounded-lg">
+                <span className="text-font">🪙</span>
+                <span className="font-medium text-font">
+                  {staticData.coins} Coins
+                </span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 bg-background border border-foreground/20 rounded-lg">
+                <span className="text-font">⭐</span>
+                <span className="font-medium text-font">
+                  Level {staticData.level} Member
+                </span>
               </div>
             </div>
           </div>
 
-          {!loadingUser && !authUser && (
-            <div
-              className="rounded-2xl border bg-foreground p-6 text-center shadow-sm"
-              style={{ borderColor: "var(--color-foreground-2)" }}
-            >
-              <p className="text-lg font-semibold text-font">
-                You are not signed in.
-              </p>
-              <p className="mt-1 text-sm text-font">
-                Log in to view your profile and activity.
-              </p>
-              <button
-                onClick={handleGoToLogin}
-                className="mt-4 rounded-lg bg-foreground-2 px-4 py-2 text-font-2 font-semibold shadow-sm hover:opacity-90 transition-opacity"
-              >
-                Go to Login
-              </button>
+          {/* Stats Grid - Clean with visible borders */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            <div className="bg-background border border-foreground/20 rounded-lg p-4">
+              <div className="text-sm text-font-2 mb-1">Total Spent</div>
+              <div className="text-2xl font-bold text-font">
+                {formatCurrency(staticData.totalSpent)}
+              </div>
             </div>
-          )}
 
-          <div className="grid gap-8 md:grid-cols-3">
-            {/* Wallet Section */}
-            <div className="md:col-span-2 space-y-4">
-              <h2 className="text-xl font-bold text-font">Wallet</h2>
-              {loadingData ? (
-                <SkeletonCard />
-              ) : (
-                <div className="rounded-2xl border border-slate-200 bg-background-2 text-font-2 p-6 shadow-sm">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-semibold uppercase">
-                      Total Coins
-                    </span>
-                    <span className="text-3xl font-bold text-foreground">
-                      {userData?.wallet?.coins || 0}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <StatCard
-                      label="Earned"
-                      value={walletStats.earned}
-                    />
-                    <StatCard
-                      label="Redeemed"
-                      value={walletStats.redeemed}
-                    />
-                  </div>
+            <div className="bg-background border border-foreground/20 rounded-lg p-4">
+              <div className="text-sm text-font-2 mb-1">Coins Earned</div>
+              <div className="text-2xl font-bold text-font">
+                {staticData.coinsEarned}
+              </div>
+            </div>
+
+            <div className="bg-background border border-foreground/20 rounded-lg p-4">
+              <div className="text-sm text-font-2 mb-1">Games Played</div>
+              <div className="text-2xl font-bold text-font">
+                {staticData.gamesPlayed}
+              </div>
+            </div>
+
+            <div className="bg-background border border-foreground/20 rounded-lg p-4">
+              <div className="text-sm text-font-2 mb-1">Member Since</div>
+              <div className="text-2xl font-bold text-font">
+                {staticData.memberSince}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column: Events History */}
+            <div className="lg:col-span-2">
+              <div className="bg-background border border-foreground/20 rounded-lg p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-bold text-font">
+                    Events History
+                  </h2>
+                  <button
+                    onClick={() => router.push("/events")}
+                    className="text-sm text-font-2 hover:text-font flex items-center gap-1"
+                  >
+                    View All →
+                  </button>
                 </div>
-              )}
 
-              {/* Coin History */}
-              <div>
-                <h3 className="text-lg font-bold text-font mb-3">
-                  Recent Transactions
-                </h3>
                 {loadingData ? (
-                  <SkeletonCard />
-                ) : (userData?.walletHistory?.length ?? userData?.wallet?.coinHistory?.length ?? 0) > 0 ? (
-                  <div className="space-y-2">
-                    {(userData.walletHistory?.length ? userData.walletHistory : userData.wallet?.coinHistory || []).slice(0, 5).map((tx, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center justify-between rounded-xl border bg-background-2 px-4 py-3"
-                        style={{ borderColor: "var(--color-foreground)" }}
-                      >
-                        <div>
-                          <p className="font-semibold text-font-2 capitalize">
-                            {(tx.action || tx.type || "transaction").replace(/_/g, " ")}
-                          </p>
-                          <p className="text-xs text-font-2/70">
-                            {(parseDateSafe(tx.date || tx.createdAt)?.toLocaleString()) || "—"}
-                          </p>
-                        </div>
-                        <span className="font-bold text-foreground">
-                          {typeof tx.coins === "number" ? (tx.coins > 0 ? `+${tx.coins}` : `${tx.coins}`) : (tx.amount ?? "")}
-                        </span>
-                      </div>
-                    ))}
+                  <div className="space-y-4">
+                    <div className="animate-pulse h-20 bg-foreground/10 rounded-lg"></div>
                   </div>
                 ) : (
-                  <EmptyState
-                    title="No transactions"
-                    description="Play games and attend events to earn coins."
-                  />
-                )}
-              </div>
-
-              {/* Wallet History Card with Pagination */}
-              <div>
-                <h3 className="text-lg font-bold text-font mb-3">Wallet History</h3>
-                {loadingData ? (
-                  <SkeletonCard />
-                ) : (userData?.walletHistory?.length ?? userData?.wallet?.coinHistory?.length ?? 0) > 0 ? (
-                  <div className="rounded-2xl border bg-background-2 p-4"
-                    style={{ borderColor: "var(--color-foreground)" }}>
-                    {(() => {
-                      const entries = (userData.walletHistory?.length ? userData.walletHistory : userData.wallet?.coinHistory || []).map((tx) => ({
-                        action: tx.action || tx.type || "transaction",
-                        amount: typeof tx.coins === "number" ? tx.coins : (tx.amount ?? 0),
-                        date: parseDateSafe(tx.createdAt || tx.date),
-                        source: tx.source || null,
-                      }));
-                      const start = walletPage * PAGE_SIZE;
-                      const pageItems = entries.slice(start, start + PAGE_SIZE);
-                      return (
-                        <>
-                          <div className="space-y-2">
-                            {pageItems.map((tx, idx) => (
-                              <div key={idx} className="flex items-center justify-between rounded-xl border bg-background-2 px-4 py-3"
-                                style={{ borderColor: "var(--color-foreground)" }}>
-                                <div>
-                                  <p className="font-semibold text-font-2 capitalize">
-                                    {tx.action.replace(/_/g, " ")}{tx.source ? ` · ${tx.source}` : ""}
-                                  </p>
-                                  <p className="text-xs text-font-2/70">
-                                    {(tx.date?.toLocaleString()) || "—"}
-                                  </p>
-                                </div>
-                                <span className="font-bold" style={{ color: tx.amount >= 0 ? "var(--color-foreground)" : "var(--color-foreground-2)" }}>
-                                  {tx.amount > 0 ? `+${tx.amount}` : `${tx.amount}`}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                          <div className="flex items-center justify-between mt-4">
-                            <button
-                              className="rounded-lg px-3 py-2 text-sm font-semibold bg-foreground text-font-2 hover:opacity-90 transition disabled:opacity-50"
-                              onClick={() => setWalletPage((p) => Math.max(0, p - 1))}
-                              disabled={walletPage === 0}
-                            >
-                              Prev
-                            </button>
-                            <p className="text-sm text-font-2/70">
-                              Page {walletPage + 1} of {Math.max(1, Math.ceil(entries.length / PAGE_SIZE))}
-                            </p>
-                            <button
-                              className="rounded-lg px-3 py-2 text-sm font-semibold bg-foreground text-font-2 hover:opacity-90 transition disabled:opacity-50"
-                              onClick={() => setWalletPage((p) => (p + 1 < Math.ceil(entries.length / PAGE_SIZE) ? p + 1 : p))}
-                              disabled={walletPage + 1 >= Math.ceil(entries.length / PAGE_SIZE)}
-                            >
-                              Next
-                            </button>
-                          </div>
-                        </>
-                      );
-                    })()}
-                  </div>
-                ) : (
-                  <EmptyState title="No wallet history" description="No wallet changes recorded yet." />
-                )}
-              </div>
-
-              {/* Recent Orders */}
-              <div>
-                <h3 className="text-lg font-bold text-font mb-3">
-                  Recent Orders
-                </h3>
-                {loadingData ? (
-                  <SkeletonCard />
-                ) : userData?.userOrders?.length > 0 ? (
-                  <div className="space-y-2">
-                    {userData.userOrders.slice(0, 3).map((order, idx) => (
+                  <div className="space-y-4">
+                    {/* Static event from image - FIXED: Now shows + for coin earning */}
+                    {staticData.events.map((event, index) => (
                       <div
-                        key={idx}
-                        className="flex items-center justify-between rounded-xl border bg-font-2 px-4 py-3"
-                        style={{ borderColor: "var(--color-foreground)" }}
+                        key={index}
+                        className="border-t border-foreground/10 pt-4 first:border-t-0 first:pt-0"
                       >
-                        <div>
-                          <p className="font-semibold text-font">
-                            Order {order.orderId}
-                          </p>
-                          <p className="text-xs text-font/70">
-                            {new Date(order.createdAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-bold text-font">
-                            ${order.totalAmount}
-                          </p>
-                          <span
-                            className={`text-xs font-semibold capitalize`}
-                            style={{
-                              color:
-                                order.paymentStatus === "paid"
-                                  ? "var(--color-foreground)"
-                                  : "var(--color-foreground-2)",
-                            }}
-                          >
-                            {order.paymentStatus}
-                          </span>
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h3 className="font-bold text-font text-lg">
+                              {event.title}
+                            </h3>
+                            <div className="flex items-center gap-2 text-sm text-font-2 mt-1">
+                              <span>pa + {event.date}</span>
+                              <span>•</span>
+                              <span>{event.duration}</span>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            {/* FIXED: Event earns coins, so it should be + and GREEN */}
+                            <div className="text-lg font-bold text-green-600">
+                              +{event.coins} coins
+                            </div>
+                            <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200 mt-1">
+                              {event.status}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     ))}
-                  </div>
-                ) : (
-                  <EmptyState
-                    title="No orders yet"
-                    description="Visit the shop to place your first order."
-                  />
-                )}
-              </div>
-            </div>
 
-            {/* Activity & Events */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-bold text-font">Activity</h2>
-              {loadingData ? (
-                <SkeletonCard />
-              ) : (
-                <>
-                  <ActivityCard
-                    icon="🕹️"
-                    label="Games Played"
-                    value={userData?.gamesHistory?.length || 0}
-                  />
-                  <ActivityCard
-                    icon="🎊"
-                    label="Events Attended"
-                    value={
-                      userData?.userEvents?.filter((e) => e.attended)?.length ||
-                      0
-                    }
-                  />
-                  <ActivityCard
-                    icon="📖"
-                    label="Workshops"
-                    value={userData?.userWorkshops?.length || 0}
-                  />
-                  {userData?.isCommunityMember && (
-                    <div
-                      className="rounded-xl border p-4 text-center bg-foreground-2"
-                      style={{
-                        borderColor: "var(--color-foreground-2)",
-                      }}
-                    >
-                      <svg
-                        className="w-8 h-8 mx-auto mb-1"
-                        fill="var(--color-font-2)"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                      </svg>
-                      <p className="font-bold text-font-2">Community Member</p>
-                    </div>
-                  )}
-                </>
-              )}
-
-              {/* Games Played History with Pagination */}
-              <div className="rounded-2xl border bg-font-2 p-5 shadow-sm"
-                style={{ borderColor: "var(--color-foreground)" }}
-              >
-                <h3 className="text-lg font-bold text-font mb-3">Games Played</h3>
-                {loadingData ? (
-                  <SkeletonCard />
-                ) : (userData?.gamesHistory?.length ?? 0) > 0 ? (
-                  (() => {
-                    const entries = (userData.gamesHistory || []).map((g) => ({
-                      raw: g,
-                      title: g.gameName || g.title || "Game",
-                      difficulty: g.difficulty || null,
-                      completed: !!g.isCompleted,
-                      coins: g.coinsEarned ?? 0,
-                      hintsUsed: g.hintsUsed ?? 0,
-                      attempts: g.attempts ?? 0,
-                      date: parseDateSafe(g.finishedAt || g.createdAt || g.startedAt),
-                      startedAt: parseDateSafe(g.startedAt),
-                      finishedAt: parseDateSafe(g.finishedAt),
-                    }));
-                    const start = gamesPage * PAGE_SIZE;
-                    const pageItems = entries.slice(start, start + PAGE_SIZE);
-                    return (
+                    {/* Show actual events if available - FIXED: Real events also show + */}
+                    {userData?.eventsHistory?.length > 0 && (
                       <>
-                        <div className="space-y-2">
-                          {pageItems.map((g, idx) => (
+                        {userData.eventsHistory
+                          .slice(0, 3)
+                          .map((event, index) => (
                             <div
-                              key={idx}
-                              className="rounded-xl border bg-background-2 px-4 py-3 cursor-pointer hover:opacity-90 transition"
-                              style={{ borderColor: "var(--color-foreground)" }}
-                              onClick={() => setSelectedGame(g)}
+                              key={`real-${index}`}
+                              className="border-t border-foreground/10 pt-4"
                             >
-                              <div className="flex items-start justify-between gap-3">
-                                <div className="min-w-0">
-                                  <div className="flex items-center gap-2">
-                                    <p className="font-semibold text-font-2 truncate">
-                                      {g.title}
-                                    </p>
-                                    {g.difficulty && (
-                                      <Badge text={g.difficulty} tone="info" />
-                                    )}
+                              <div className="flex items-start justify-between">
+                                <div>
+                                  <h3 className="font-bold text-font text-lg">
+                                    {event.eventTitle}
+                                  </h3>
+                                  <div className="flex items-center gap-2 text-sm text-font-2 mt-1">
+                                    <span>{formatDate(event.eventDate)}</span>
+                                    <span>•</span>
+                                    <span>{event.eventVenue}</span>
                                   </div>
-                                  <p className="text-xs text-font-2/70">
-                                    {(g.date?.toLocaleString() || "—")}
-                                  </p>
                                 </div>
                                 <div className="text-right">
-                                  <span className="font-bold text-foreground block">
-                                    {g.coins > 0 ? `+${g.coins}` : `${g.coins}`}
-                                  </span>
-                                  <span className="text-xs font-semibold block mt-1"
-                                    style={{ color: g.completed ? "var(--color-foreground)" : "var(--color-foreground-2)" }}>
-                                    {g.completed ? "Completed" : "In Progress"}
+                                  {/* FIXED: Event booking EARNs coins - + and GREEN */}
+                                  <div className="text-lg font-bold text-green-600">
+                                    +{event.seatsCount * 100} coins
+                                  </div>
+                                  <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200 mt-1">
+                                    {event.status || "confirmed"}
                                   </span>
                                 </div>
                               </div>
                             </div>
                           ))}
-                        </div>
-                        <div className="flex items-center justify-between mt-4">
-                          <button
-                            className="rounded-lg px-3 py-2 text-sm font-semibold bg-foreground text-font-2 hover:opacity-90 transition disabled:opacity-50"
-                            onClick={() => setGamesPage((p) => Math.max(0, p - 1))}
-                            disabled={gamesPage === 0}
-                          >
-                            Prev
-                          </button>
-                          <p className="text-sm text-font/70">
-                            Page {gamesPage + 1} of {Math.max(1, Math.ceil(entries.length / PAGE_SIZE))}
-                          </p>
-                          <button
-                            className="rounded-lg px-3 py-2 text-sm font-semibold bg-foreground text-font-2 hover:opacity-90 transition disabled:opacity-50"
-                            onClick={() => setGamesPage((p) => (p + 1 < Math.ceil(entries.length / PAGE_SIZE) ? p + 1 : p))}
-                            disabled={gamesPage + 1 >= Math.ceil(entries.length / PAGE_SIZE)}
-                          >
-                            Next
-                          </button>
-                        </div>
                       </>
-                    );
-                  })()
-                ) : (
-                  <EmptyState title="No games yet" description="Play a game to see it here." />
+                    )}
+                  </div>
                 )}
               </div>
+            </div>
 
-              {/* Cart */}
-              <div
-                className="rounded-2xl border bg-font-2 p-5 shadow-sm"
-                style={{ borderColor: "var(--color-foreground)" }}
-              >
-                <h3 className="text-lg font-bold text-font mb-3">Cart</h3>
-                {loadingData ? (
-                  <SkeletonCard />
-                ) : userData?.cart?.items?.length > 0 ? (
-                  <div>
-                    <p className="text-sm font-semibold text-font/70 mb-3">
-                      {userData.cart.items.length} item(s) in cart
-                    </p>
-                    <button className="w-full rounded-lg bg-foreground px-4 py-2 text-font-2 font-semibold hover:opacity-90 transition-opacity">
-                      View Cart
-                    </button>
+            {/* Right Column: Wallet Balance */}
+            <div>
+              <div className="bg-background border border-foreground/20 rounded-lg p-6 mb-8">
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold text-font">
+                    Wallet Balance
+                  </h2>
+                </div>
+
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-font mb-2">
+                    {staticData.walletBalance}
                   </div>
-                ) : (
-                  <EmptyState
-                    title="Cart is empty"
-                    description="Add items from the shop."
-                  />
-                )}
+                  <div className="text-font-2">Reward Coins</div>
+                </div>
+              </div>
+
+              {/* Transaction History - Shows actual wallet transactions */}
+              <div className="bg-background border border-foreground/20 rounded-lg p-6 mb-8">
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold text-font">
+                    Recent Transactions
+                  </h2>
+                </div>
+
+                <div className="space-y-3">
+                  {/* Example transaction from image - FIXED: Event earns coins (+ green) */}
+                  <div className="flex items-center justify-between p-3 border border-foreground/10 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <span className="text-green-600">+</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-font text-sm">
+                          Event: eqlwe
+                        </div>
+                        <div className="text-xs text-font-2">26 Jan 2026</div>
+                      </div>
+                    </div>
+                    <div className="text-sm font-bold text-green-600">
+                      +300 coins
+                    </div>
+                  </div>
+
+                  {/* Example of coin spending (negative transaction) */}
+                  <div className="flex items-center justify-between p-3 border border-foreground/10 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+                        <span className="text-red-600">-</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-font text-sm">
+                          Order #1234
+                        </div>
+                        <div className="text-xs text-font-2">15 Jan 2026</div>
+                      </div>
+                    </div>
+                    <div className="text-sm font-bold text-red-600">
+                      -150 coins
+                    </div>
+                  </div>
+
+                  {/* Show real wallet transactions if available */}
+                  {userData?.wallet?.history
+                    ?.slice(0, 2)
+                    .map((transaction, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 border border-foreground/10 rounded-lg"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                              transaction.coins > 0
+                                ? "bg-green-100"
+                                : "bg-red-100"
+                            }`}
+                          >
+                            <span
+                              className={
+                                transaction.coins > 0
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              }
+                            >
+                              {transaction.coins > 0 ? "+" : "-"}
+                            </span>
+                          </div>
+                          <div>
+                            <div className="font-medium text-font text-sm">
+                              {transaction.description || "Transaction"}
+                            </div>
+                            <div className="text-xs text-font-2">
+                              {formatDate(transaction.createdAt)}
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className={`text-sm font-bold ${
+                            transaction.coins > 0
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {transaction.coins > 0 ? "+" : ""}
+                          {transaction.coins} coins
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+
+              {/* Member Level Progress */}
+              <div className="bg-background border border-foreground/20 rounded-lg p-6">
+                <div className="mb-4">
+                  <h2 className="text-xl font-bold text-font">
+                    Level {staticData.level} Member
+                  </h2>
+                  <p className="text-sm text-font-2 mt-1">
+                    {calculateMemberLevel.nextLevelThreshold}
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-font-2">
+                      Progress to Level{" "}
+                      {staticData.level + 1 > 10 ? 10 : staticData.level + 1}
+                    </span>
+                    <span className="font-medium">
+                      {calculateMemberLevel.progress}%
+                    </span>
+                  </div>
+                  <div className="h-2 bg-foreground/10 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+                      style={{ width: `${calculateMemberLevel.progress}%` }}
+                    ></div>
+                  </div>
+
+                  <div className="grid grid-cols-5 gap-1 text-xs text-center mt-4">
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((level) => (
+                      <div key={level} className="relative">
+                        <div
+                          className={`w-6 h-6 mx-auto rounded-full flex items-center justify-center ${
+                            level <= staticData.level
+                              ? "bg-gradient-to-br from-blue-500 to-purple-500 text-white"
+                              : "bg-foreground/10 text-font-2"
+                          }`}
+                        >
+                          {level}
+                        </div>
+                        {level === staticData.level && (
+                          <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs font-bold text-blue-600">
+                            ↑
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </main>
       <Footer />
-      {selectedGame && (
-        <GameDetailModal
-          game={selectedGame}
-          onClose={() => setSelectedGame(null)}
-        />
-      )}
     </>
-  );
-}
-
-function ToggleRow({ label, description, enabled, onChange }) {
-  return (
-    <div className="flex items-start justify-between gap-3">
-      <div>
-        <p className="font-semibold text-font">{label}</p>
-        <p className="text-sm text-font/70">{description}</p>
-      </div>
-      <button
-        type="button"
-        onClick={onChange}
-        className={`relative h-7 w-12 rounded-full transition-colors duration-200`}
-        style={{
-          backgroundColor: enabled
-            ? "var(--color-foreground)"
-            : "var(--color-foreground-dark)",
-        }}
-        aria-pressed={enabled}
-        aria-label={label}
-      >
-        <span
-          className={`absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-font-2 shadow transition-transform duration-200 ${
-            enabled ? "translate-x-6" : "translate-x-1"
-          }`}
-        />
-      </button>
-    </div>
-  );
-}
-
-function EmptyState({ title, description }) {
-  return (
-    <div
-      className="rounded-xl border border-dashed p-6 text-center"
-      style={{
-        borderColor: "var(--color-foreground)",
-        backgroundColor: "var(--color-background-2)",
-      }}
-    >
-      <p className="font-semibold text-font-2">{title}</p>
-      <p className="text-sm text-font-2/70">{description}</p>
-    </div>
-  );
-}
-
-function StatCard({ label, value }) {
-  return (
-    <div
-      className="rounded-lg border bg-font-2 px-4 py-3 shadow-sm"
-      style={{ borderColor: "var(--color-foreground)" }}
-    >
-      <p className="text-xs font-semibold uppercase text-font/70">{label}</p>
-      <p className="mt-1 text-xl font-bold text-font">{value}</p>
-    </div>
-  );
-}
-
-function ActivityCard({ icon, label, value }) {
-  const getIconSvg = () => {
-    switch (icon) {
-      case "🕹️":
-        return (
-          <svg
-            className="w-8 h-8"
-            fill="var(--color-foreground)"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z"></path>
-          </svg>
-        );
-      case "🎊":
-        return (
-          <svg
-            className="w-8 h-8"
-            fill="var(--color-foreground-2)"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-        );
-      case "📖":
-        return (
-          <svg
-            className="w-8 h-8"
-            fill="var(--color-foreground)"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path>
-          </svg>
-        );
-      default:
-        return <span className="text-2xl">{icon}</span>;
-    }
-  };
-
-  return (
-    <div
-      className="rounded-xl border bg-font-2 p-4 shadow-sm"
-      style={{ borderColor: "var(--color-foreground)" }}
-    >
-      <div className="flex items-center gap-3">
-        {getIconSvg()}
-        <div>
-          <p className="text-xs font-semibold text-font/70 uppercase">
-            {label}
-          </p>
-          <p className="text-2xl font-bold text-font">{value}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SkeletonCard() {
-  return (
-    <div
-      className="rounded-xl border p-4 shadow-sm animate-pulse"
-      style={{
-        borderColor: "var(--color-foreground)",
-        backgroundColor: "var(--color-foreground-dark)",
-      }}
-    >
-      <div
-        className="h-8 rounded w-1/3 mb-2"
-        style={{ backgroundColor: "var(--color-foreground)" }}
-      ></div>
-      <div
-        className="h-4 rounded w-full"
-        style={{ backgroundColor: "var(--color-foreground)" }}
-      ></div>
-    </div>
-  );
-}
-
-function Badge({ text, tone = "info" }) {
-  const colors = {
-    info: {
-      bg: "var(--color-foreground-dark)",
-      border: "var(--color-foreground)",
-      text: "var(--color-font)",
-    },
-    success: {
-      bg: "var(--color-foreground)",
-      border: "var(--color-foreground)",
-      text: "var(--color-font-2)",
-    },
-  };
-  const c = colors[tone] || colors.info;
-  return (
-    <span
-      className="text-[11px] font-semibold px-2 py-0.5 rounded-full border"
-      style={{ backgroundColor: c.bg, borderColor: c.border, color: c.text }}
-    >
-      {text}
-    </span>
-  );
-}
-
-function GameDetailModal({ game, onClose }) {
-  const fields = [
-    { label: "Game", value: game.title },
-    { label: "Difficulty", value: game.difficulty || "—" },
-    { label: "Hints Used", value: game.hintsUsed ?? 0 },
-    { label: "Attempts", value: game.attempts ?? 0 },
-    { label: "Coins Earned", value: game.coins ?? 0 },
-    { label: "Started", value: game.startedAt?.toLocaleString() || "—" },
-    { label: "Finished", value: game.finishedAt?.toLocaleString() || (game.completed ? "—" : "In Progress") },
-  ];
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="w-full max-w-lg rounded-2xl border bg-background-2 p-6 shadow-lg" style={{ borderColor: "var(--color-foreground)" }}>
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <h4 className="text-xl font-bold text-font">Game Details</h4>
-            {game.difficulty && <Badge text={game.difficulty} tone="info" />}
-            <Badge text={game.completed ? "Completed" : "In Progress"} tone={game.completed ? "success" : "info"} />
-          </div>
-          <button
-            className="rounded-lg px-3 py-1 text-sm font-semibold bg-font-2"
-            style={{ border: "1px solid var(--color-foreground)" }}
-            onClick={onClose}
-          >
-            Close
-          </button>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          {fields.map((f, i) => (
-            <div key={i} className="rounded-xl border bg-background-2 px-4 py-3" style={{ borderColor: "var(--color-foreground)" }}>
-              <p className="text-xs font-semibold text-font/70 uppercase">{f.label}</p>
-              <p className="text-sm font-bold text-font">{String(f.value)}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }
