@@ -11,7 +11,6 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
   { name: "Experiences", href: "/experiences" },
-  { name: "Play", href: "/sudoku" },
   { name: "Events", href: "/events/calendar" },
 ];
 
@@ -23,8 +22,9 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [communityDropdownOpen, setCommunityDropdownOpen] = useState(false);
-  const [communityDropdownClicked, setCommunityDropdownClicked] =
-    useState(false);
+  const [communityDropdownClicked, setCommunityDropdownClicked] = useState(false);
+  const [playDropdownOpen, setPlayDropdownOpen] = useState(false);
+  const [playDropdownClicked, setPlayDropdownClicked] = useState(false);
 
   // Detect scroll
   useEffect(() => {
@@ -44,11 +44,18 @@ const Navbar = () => {
           setCommunityDropdownClicked(false);
         }
       }
+      if (playDropdownClicked) {
+        const dropdown = document.getElementById("play-dropdown");
+        if (dropdown && !dropdown.contains(event.target)) {
+          setPlayDropdownOpen(false);
+          setPlayDropdownClicked(false);
+        }
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [communityDropdownClicked]);
+  }, [communityDropdownClicked, playDropdownClicked]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {

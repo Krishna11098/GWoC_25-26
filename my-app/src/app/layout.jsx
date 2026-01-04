@@ -2,6 +2,7 @@ import "./globals.css";
 import { SettingsProvider } from "@/context/SettingsContext";
 import MaintenanceGate from "@/components/MaintenanceGate";
 import BanCheck from "@/components/BanCheck";
+import ChatbotWidget from "@/components/ChatbotWidget";
 
 export const metadata = {
   title: "JoyJuncture - Premium Experiences",
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
             <BanCheck>
               {/* Your existing app content */}
               {children}
+              <ChatbotWidget />
             </BanCheck>
           </MaintenanceGate>
         </SettingsProvider>

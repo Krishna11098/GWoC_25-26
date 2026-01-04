@@ -22,20 +22,9 @@ export async function GET(req, { params }) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    console.log("🔍 Checking user role for UID:", user.uid);
-    const userDoc = await db.collection("users").doc(user.uid).get();
-    console.log("📄 User doc exists:", userDoc.exists);
-    
-    if (userDoc.exists) {
-      const userData = userDoc.data();
-      console.log("👤 User role:", userData?.role);
-      
-      if (!userData || userData.role !== "admin") {
-        console.log("❌ Access denied - User role is not admin");
-        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-      }
-    } else {
-      console.log("❌ User document not found in Firestore");
+    console.log("� User role:", user.role);
+    if (user.role !== "admin") {
+      console.log("❌ Access denied - User role is not admin");
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -78,8 +67,7 @@ export async function PUT(req, { params }) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const userDoc = await db.collection("users").doc(user.uid).get();
-  if (!userDoc.exists || userDoc.data().role !== "admin") {
+  if (user.role !== "admin") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -146,8 +134,7 @@ export async function DELETE(req, { params }) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const userDoc = await db.collection("users").doc(user.uid).get();
-  if (!userDoc.exists || userDoc.data().role !== "admin") {
+  if (user.role !== "admin") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

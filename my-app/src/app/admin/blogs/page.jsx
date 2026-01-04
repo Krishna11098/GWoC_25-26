@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { userFetch } from "@/lib/userFetch";
+import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 
 export default function AdminBlogsPage() {
   const router = useRouter();
@@ -137,6 +138,7 @@ export default function AdminBlogsPage() {
                   {blog.excerpt && (
                     <p className="text-gray-400 mb-3">{blog.excerpt}</p>
                   )}
+                  
                   <div className="flex items-center gap-4 text-sm text-gray-500">
                     <span>By {blog.author?.email || "Admin"}</span>
                     <span>•</span>
@@ -153,6 +155,21 @@ export default function AdminBlogsPage() {
                     )}
                   </div>
                 </div>
+                
+                {/* Vote Counts */}
+                <div className="flex items-center gap-3 mr-2 mt-6">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 text-emerald-400 rounded-lg">
+                    <FaThumbsUp className="text-sm" />
+                    <span className="font-semibold">{blog.upvotes || 0}</span>
+                    <span className="text-xs">upvotes</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-red-500/20 text-red-400 rounded-lg">
+                    <FaThumbsDown className="text-sm" />
+                    <span className="font-semibold">{blog.downvotes || 0}</span>
+                    <span className="text-xs">downvotes</span>
+                  </div>
+                </div>
+                
                 <div className="flex gap-2 ml-4">
                   <button
                     onClick={() => router.push(`/admin/blogs/edit/${blog.id}`)}
