@@ -39,6 +39,8 @@ export async function GET(req, { params }) {
       tags: data.tags || [],
       author: data.author || "Admin",
       isPublished: data.isPublished,
+      upvotes: data.upvotes || 0,
+      downvotes: data.downvotes || 0,
       createdAt: data.createdAt?.toDate().toISOString() || null,
       updatedAt: data.updatedAt?.toDate().toISOString() || null,
       publishedAt: data.publishedAt?.toDate().toISOString() || null,

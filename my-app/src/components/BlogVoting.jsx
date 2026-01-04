@@ -11,7 +11,7 @@ export default function BlogVoting({ blogId, initialUpvotes = 0, initialDownvote
   const [userVote, setUserVote] = useState(null); // 'upvote', 'downvote', or null
   const [loading, setLoading] = useState(false);
 
-  // Listen for auth state changes
+  // Listen for auth state changes and fetch vote data
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
@@ -20,6 +20,23 @@ export default function BlogVoting({ blogId, initialUpvotes = 0, initialDownvote
       }
     });
     return () => unsubscribe();
+  }, [blogId]);
+
+  // Fetch vote counts from the blog data
+  useEffect(() => {
+    async function fetchVoteCounts() {
+      try {
+        const res = await fetch(`/api/blogs/${blogId}`);
+        if (res.ok) {
+          const blog = await res.json();
+          setUpvotes(blog.upvotes || 0);
+          setDownvotes(blog.downvotes || 0);
+        }
+      } catch (error) {
+        console.error('Error fetching vote counts:', error);
+      }
+    }
+    fetchVoteCounts();
   }, [blogId]);
 
   async function fetchUserVote(currentUser) {

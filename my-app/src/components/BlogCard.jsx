@@ -40,6 +40,25 @@ export default function BlogCard({ post, index }) {
     return () => unsubscribe();
   }, [post.id]);
 
+  // Fetch vote counts from the blog data
+  useEffect(() => {
+    if (!post.id) return;
+    async function fetchVoteCounts() {
+      try {
+        const res = await fetch(`/api/blogs/${post.id}`);
+        if (res.ok) {
+          const blog = await res.json();
+          console.log('BlogCard: Fetched blog data:', { id: post.id, upvotes: blog.upvotes, downvotes: blog.downvotes });
+          setUpvotes(blog.upvotes || 0);
+          setDownvotes(blog.downvotes || 0);
+        }
+      } catch (error) {
+        console.error('Error fetching vote counts:', error);
+      }
+    }
+    fetchVoteCounts();
+  }, [post.id]);
+
   async function fetchUserVote(currentUser) {
     try {
       const token = await currentUser.getIdToken();
@@ -77,11 +96,13 @@ export default function BlogCard({ post, index }) {
 
       if (res.ok) {
         const data = await res.json();
+        console.log('BlogCard: Vote successful:', { upvotes: data.upvotes, downvotes: data.downvotes });
         setUpvotes(data.upvotes);
         setDownvotes(data.downvotes);
         setUserVote(data.userVote);
       } else {
         const error = await res.json();
+        console.error('BlogCard: Vote failed:', error);
         alert(error.error || 'Failed to vote');
       }
     } catch (error) {
