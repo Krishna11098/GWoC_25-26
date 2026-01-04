@@ -1,21 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Winky+Rough:wght@300..900&display=swap");
 @import "tailwindcss";
 
 :root {
-  --background: #2F8F8B;
-  --background-2: #0F0F0F;
-  --foreground: #85D5C8;
+  --background: #2f8f8b;
+  --background-2: #0f0f0f;
+  --foreground: #85d5c8;
   --foreground-dark: #75c1b5;
-  --foreground-2: #C392EC;
+  --foreground-2: #c392ec;
   --fontcolor: #000;
-  --fontcolor-2: #F5F3F8;
-  --font-sans: Inter-5603bc14e377c2cf, "Inter-5603bc14e377c2cf fallback: Arial",
-    sans-serif;
+  --fontcolor-2: #f5f3f8;
+  /* --font-sans: Inter-5603bc14e377c2cf, "Inter-5603bc14e377c2cf fallback: Arial",
+    sans-serif; */
 
   --bg: #f9f7eb;
   --orange: #f7d57c;
   --green: #cbd8ac;
   --pink: #f5cfc2;
-  --font: #526355;
+  --font: #647167;
 }
 
 @theme inline {
@@ -38,12 +39,14 @@
 
 body {
   background: var(--color-background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Winky Rough", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
 }
-
 /* Smooth parallax container */
 .parallax-container {
   background-attachment: fixed;
@@ -132,9 +135,18 @@ html {
   animation: pulse-soft 2.5s ease-in-out infinite;
 }
 
-/* Global utility to create a hexagon-shaped badge */
-.clip-path-hexagon {
-  clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
+.font-winky-rough {
+  font-family: "Winky Rough", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.font-winky-rough-soft {
+  font-family: "Winky Rough", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
 }
 
 /* Global utility to create a hexagon-shaped badge */
@@ -142,6 +154,10 @@ html {
   clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
 }
 
+/* Global utility to create a hexagon-shaped badge */
+.clip-path-hexagon {
+  clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
+}
 
 /* Feature card glass style */
 .feature-card {
