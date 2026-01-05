@@ -18,11 +18,20 @@ const EventCard = ({ event, view = "grid" }) => {
   const [isSaved, setIsSaved] = useState(false);
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = { weekday: "short", month: "short", day: "numeric" };
-    return date.toLocaleDateString("en-US", options);
+    if (!dateString) return "N/A";
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+    } catch {
+      return "Invalid Date";
+    }
   };
 
+  
   const formatTime = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
