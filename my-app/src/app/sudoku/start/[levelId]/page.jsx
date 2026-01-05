@@ -40,12 +40,12 @@ export default function StartSudoku() {
       <Navbar />
       <div
         className="min-h-screen flex items-center justify-center mt-32"
-        style={{ backgroundColor: "var(--color-background)" }}
+        style={{ backgroundColor: "var(--color-bg)" }}
       >
         <div className="text-center">
           <div
             className="inline-block animate-spin rounded-full h-16 w-16 border-b-4 mb-4"
-            style={{ borderBottomColor: "var(--color-foreground)" }}
+            style={{ borderBottomColor: "var(--color-green)" }}
           ></div>
           <p
             className="text-lg font-semibold"

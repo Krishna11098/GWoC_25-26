@@ -83,7 +83,7 @@ export default function FAQ() {
                   className={`w-full flex items-start justify-between gap-4 px-7 md:px-8 py-6 text-left transition-all duration-300
                     ${
                       open
-                        ? "bg-[rgba(245,235,220,0.75)] text-darkblue"
+                        ? "bg-pink/50 text-font font-bold underline"
                         : "hover:bg-black/5"
                     }
                   `}
@@ -94,7 +94,7 @@ export default function FAQ() {
 
                   <span
                     className={`text-xl transition-transform duration-300 ${
-                      open ? "rotate-180 text-black" : "text-black/60"
+                      open ? "rotate-180 text-font" : "text-black/60"
                     }`}
                   >
                     ⌄
@@ -110,7 +110,7 @@ export default function FAQ() {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed text-black bg-[rgba(245,235,220,0.45)]">
+                    <div className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed text-font font-bold bg-pink/50">
                       {item.answer}
                     </div>
                   </div>

@@ -30,8 +30,8 @@ export default function SudokuActions({ onSubmit, gameId }) {
         <div
           className="rounded-lg px-6 py-3 font-semibold shadow-md"
           style={{
-            backgroundColor: "var(--color-background-2)",
-            color: "var(--color-font-2)",
+            backgroundColor: "var(--color-pink)",
+            color: "var(--color-font)",
           }}
         >
           {hintMessage}
@@ -44,8 +44,7 @@ export default function SudokuActions({ onSubmit, gameId }) {
           onClick={hint}
           className="rounded-lg px-6 py-3 font-semibold shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
           style={{
-            backgroundColor: "var(--color-foreground-2)",
-            color: "var(--color-font-2)",
+            backgroundColor: "var(--color-orange)",
           }}
         >
           Get Hint
@@ -54,8 +53,7 @@ export default function SudokuActions({ onSubmit, gameId }) {
           onClick={onSubmit}
           className="rounded-lg px-6 py-3 font-semibold shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
           style={{
-            backgroundColor: "var(--color-foreground)",
-            color: "var(--color-font-2)",
+            backgroundColor: "var(--color-green)",
           }}
         >
           Submit Solution

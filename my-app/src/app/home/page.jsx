@@ -8,17 +8,23 @@ import FAQ from "@/components/FAQ";
 import Walletsystem from "@/components/Walletsystem";
 import ParallaxSection from "@/components/ParallaxSection";
 import FadeInSection from "@/components/FadeInSection";
+import CTASection from "@/components/CTASection";
+import ScrollProgress from "@/components/ScrollProgress";
+import BackToTop from "@/components/BackToTop";
 
 export default function HomePage() {
   return (
     <>
+      <ScrollProgress />
       <Navbar />
       <HeroSection />
       <Subheading />
       <ScrollAnimation />
       <ProofOfJoy />
+      <CTASection />
       <FAQ />
       <Footer />
+      <BackToTop />
 
       {/* <FadeInSection yOffset={80}>
         <HeroSection />

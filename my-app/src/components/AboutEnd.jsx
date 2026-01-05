@@ -22,15 +22,14 @@ const item = {
 
 export default function AboutEnd() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-background text-font px-6 overflow-hidden">
-      
+    <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
       {/* Animated background wash */}
       <motion.div
         initial={{ opacity: 0, scale: 1.1 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ amount: 0.4 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="absolute inset-0 bg-background"
+        className="absolute inset-0"
       />
 
       {/* Content */}
@@ -42,18 +41,12 @@ export default function AboutEnd() {
         className="relative z-10 text-center max-w-4xl"
       >
         {/* Eyebrow */}
-        <motion.p
-          variants={item}
-          className="text-lg font-medium mb-6"
-        >
+        <motion.p variants={item} className="text-lg font-medium mb-6">
           Why Joy Juncture?
         </motion.p>
 
         {/* Subheading */}
-        <motion.p
-          variants={item}
-          className="text-xl mb-10"
-        >
+        <motion.p variants={item} className="text-xl mb-10">
           Because life is too short for boring evenings.
         </motion.p>
 
@@ -66,7 +59,7 @@ export default function AboutEnd() {
             duration: 0.7,
             ease: [0.16, 1, 0.3, 1], // soft overshoot
           }}
-          className="text-5xl md:text-7xl font-extrabold leading-tight mb-10"
+          className="text-5xl md:text-7xl font-extrabold leading-tight mb-10 text-font"
         >
           Less Small Talk.
           <br />
@@ -74,10 +67,7 @@ export default function AboutEnd() {
         </motion.h2>
 
         {/* Supporting line */}
-        <motion.p
-          variants={item}
-          className="text-lg md:text-xl"
-        >
+        <motion.p variants={item} className="text-lg md:text-xl">
           Joy Juncture exists because boredom is the real enemy.
         </motion.p>
       </motion.div>

@@ -120,28 +120,28 @@ export default function ScrollAnimation() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full text-font">
             <div className="w-full ">
-              <div className="w-full px-8 py-12 text-center bg-font rounded-2xl flex items-center justify-center min-h-[200px]">
+              <div className="w-full px-8 py-12 text-center bg-font text-bg rounded-2xl flex items-center justify-center min-h-[200px]">
                 <h3 className="text-xl md:text-2xl font-semibold">
                   Play at Home
                 </h3>
               </div>
             </div>
             <div className="w-full">
-              <div className="w-full px-8 py-12 text-center bg-font rounded-2xl flex items-center justify-center min-h-[200px]">
+              <div className="w-full px-8 py-12 text-center bg-font text-bg rounded-2xl flex items-center justify-center min-h-[200px]">
                 <h3 className="text-xl md:text-2xl font-semibold">
                   Play Together (Live)
                 </h3>
               </div>
             </div>
             <div className="w-full">
-              <div className="w-full px-8 py-12 text-center bg-font rounded-2xl flex items-center justify-center min-h-[200px]">
+              <div className="w-full px-8 py-12 text-center bg-font text-bg rounded-2xl flex items-center justify-center min-h-[200px]">
                 <h3 className="text-xl md:text-2xl font-semibold">
                   Play for Occasions
                 </h3>
               </div>
             </div>
             <div className="w-full">
-              <div className="w-full px-8 py-12 text-center bg-font rounded-2xl flex items-center justify-center min-h-[200px]">
+              <div className="w-full px-8 py-12 text-center bg-font text-bg rounded-2xl flex items-center justify-center min-h-[200px]">
                 <h3 className="text-xl md:text-2xl font-semibold">
                   Play and Earn Points
                 </h3>

@@ -15,10 +15,10 @@ export default function StoryCardDeck({ cards }) {
       const scrollTop = window.scrollY;
       const containerTop = container.offsetTop;
       const windowHeight = window.innerHeight;
-      const cardHeight = windowHeight * 0.8;
+      const cardHeight = windowHeight;
       
       // Calculate which card should be active based on scroll position
-      const relativeScroll = scrollTop - containerTop + windowHeight / 2;
+      const relativeScroll = Math.max(0, scrollTop - containerTop);
       const cardIndex = Math.floor(relativeScroll / cardHeight);
       const clampedIndex = Math.max(0, Math.min(cardIndex, cards.length - 1));
       
@@ -38,10 +38,14 @@ export default function StoryCardDeck({ cards }) {
   return (
     <div 
       ref={containerRef}
-      className="relative pt-40"
-      style={{ height: `${cards.length * 100}vh` }}
+      className="relative pt-40 parallax-container"
+      style={{ 
+        // Add an extra viewport of height so the last card can finish animating without bouncing back up
+        height: `${(cards.length + 1) * 100}vh`,
+        willChange: 'transform'
+      }}
     >
-      <div className="sticky top-20 h-[70vh] flex items-center justify-center perspective-1000">
+      <div className="sticky top-1/2 -translate-y-1/2 h-[70vh] flex items-center justify-center perspective-1000" style={{ willChange: 'transform' }}>
         <div className="relative w-full max-w-6xl h-full">
           {cards.map((card, index) => {
             const isActive = index === activeCardIndex;
@@ -80,6 +84,7 @@ export default function StoryCardDeck({ cards }) {
                   transform: `translateY(${translateY}px) scale(${scale}) rotateX(${rotateX}deg)`,
                   opacity,
                   transformStyle: "preserve-3d",
+                  willChange: 'transform, opacity',
                 }}
               >
                 <div className="w-full h-full bg-white rounded-3xl shadow-2xl overflow-auto p-8 md:p-12 border border-slate-200">

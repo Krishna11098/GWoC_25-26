@@ -48,7 +48,8 @@ export default function AddToCartButton({ gameId, className = "" }) {
     <button
       onClick={addToCart}
       disabled={loading}
-      className={`inline-flex items-center gap-2 rounded-full ${added ? "bg-emerald-700" : "bg-emerald-600"} px-6 py-3 text-base font-semibold text-white hover:bg-emerald-500 transition disabled:opacity-60 ${className}`}
+      style={{ backgroundColor: "var(--color-font)" }}
+      className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold text-white hover:opacity-90 transition disabled:opacity-60 ${className}`}
     >
       {added ? (
         <Check className="h-5 w-5" />

@@ -12,8 +12,7 @@ export async function GET(req) {
   }
 
   // Verify admin role
-  const userDoc = await db.collection("users").doc(user.uid).get();
-  if (!userDoc.exists || userDoc.data().role !== "admin") {
+  if (user.role !== "admin") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -51,29 +50,42 @@ export async function POST(req) {
   }
 
   // Verify admin role
-  const userDoc = await db.collection("users").doc(user.uid).get();
-  if (!userDoc.exists || userDoc.data().role !== "admin") {
+  if (user.role !== "admin") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   try {
     const body = await req.json();
-    const { title, content, excerpt, category, tags, coverImage, isPublished } = body;
+    const { title, excerpt, category, tags, coverImage, isPublished, sections } = body;
 
-    if (!title || !content) {
+    if (!title) {
       return NextResponse.json(
-        { error: "Title and content are required" },
+        { error: "Title is required" },
+        { status: 400 }
+      );
+    }
+
+    if (!coverImage) {
+      return NextResponse.json(
+        { error: "Cover image is mandatory" },
+        { status: 400 }
+      );
+    }
+
+    if (!sections || sections.length === 0) {
+      return NextResponse.json(
+        { error: "At least one section is required" },
         { status: 400 }
       );
     }
 
     const blogData = {
       title,
-      content,
       excerpt: excerpt || "",
-      category: category || "general",
+      category: category || "Game Strategy",
       tags: tags || [],
-      coverImage: coverImage || "",
+      coverImage,
+      sections: sections || [],
       author: {
         uid: user.uid,
         email: user.email,

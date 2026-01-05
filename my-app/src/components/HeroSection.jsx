@@ -1,5 +1,7 @@
 "use client";
 
+import PlayfulHeading from "./PlayfulHeading";
+
 /**
  * HeroSection - Animates out smoothly as next section enters viewport
  * @param {number} scrollProgress - Progress value (0-1) from parent/page
@@ -36,12 +38,17 @@ export default function HeroSection({ scrollProgress = 0 }) {
       {/* Left Section - Text Content */}
       <div className="flex flex-col justify-center items-start px-8 md:px-16 lg:px-20 py-16 lg:py-0">
         <div className="max-w-xl">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            Joy Juncture
-          </h1>
-          <p className="text-xl md:text-2xl font-medium leading-relaxed">
-            Play. Connect. Celebrate — Games as Experiences
-          </p>
+          <PlayfulHeading
+            text="JOY JUNCTURE"
+            className="font-winky-rough text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+            staggerDelay={0.05}
+          />
+          <PlayfulHeading
+            text="Play. Connect. Celebrate "
+            as="p"
+            className="font-winky-rough-soft text-xl md:text-2xl font-medium leading-relaxed"
+            staggerDelay={0.02}
+          />
         </div>
       </div>
 
