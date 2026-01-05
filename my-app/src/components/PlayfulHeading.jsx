@@ -21,7 +21,7 @@ const PlayfulHeading = ({
   drawStroke = false,
 }) => {
   const ref = useRef(null);
-  
+
   // Split text into individual letters
   const letters = Array.from(text);
 

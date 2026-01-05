@@ -86,23 +86,23 @@ export default function AdminLogin() {
 
   if (!authChecked) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center font-winky-rough bg-bg">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Checking authentication...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-background border-t-transparent mx-auto"></div>
+          <p className="mt-4 text-font font-medium">Checking authentication...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center p-4 font-winky-rough">
+      <div className=" backdrop-blur-md rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-foreground/20">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-8 text-center text-white">
-          <h1 className="text-3xl font-bold">🎉 JoyJuncture</h1>
-          <p className="mt-2 opacity-90">Admin Portal</p>
-          <div className="mt-4 inline-flex items-center bg-white/20 px-3 py-1 rounded-full text-sm">
+        <div className="p-8 text-center">
+          <h1 className="text-4xl font-bold drop-shadow-sm">🎉 JoyJuncture</h1>
+          <p className="mt-2 font-medium">Admin Portal</p>
+          <div className="mt-4 inline-flex items-center px-4 py-1.5 rounded-full text-sm font-bold backdrop-blur-sm border border-white/30">
             <span className="mr-2">🔒</span>
             Secure Firebase Authentication
           </div>
@@ -110,20 +110,20 @@ export default function AdminLogin() {
 
         {/* Login Form */}
         <div className="p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Admin Login</h2>
-          <p className="text-gray-600 mb-6">Sign in with your credentials</p>
+          <h2 className="text-2xl font-bold text-background-2 mb-2">Admin Login</h2>
+          <p className="text-font mb-8">Sign in with your credentials</p>
 
           <form onSubmit={handleLogin} className="space-y-6">
             {/* Email */}
             <div>
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-font font-bold mb-2 ml-1">
                 Email Address
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                className="w-full p-4 border-2 border-foreground/20 rounded-xl focus:ring-2 focus:ring-orange focus:border-orange outline-none transition-all bg-bg/50 font-medium"
                 placeholder="admin@example.com"
                 required
                 disabled={loading}
@@ -132,14 +132,14 @@ export default function AdminLogin() {
 
             {/* Password */}
             <div>
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-font font-bold mb-2 ml-1">
                 Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                className="w-full p-4 border-2 border-foreground/20 rounded-xl focus:ring-2 focus:ring-orange focus:border-orange outline-none transition-all bg-bg/50 font-medium"
                 placeholder="Enter your password"
                 required
                 disabled={loading}
@@ -148,9 +148,9 @@ export default function AdminLogin() {
 
             {/* Error Message */}
             {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-700 text-sm flex items-center">
-                  <span className="mr-2">⚠️</span>
+              <div className="p-4 bg-pink/20 border-2 border-pink/50 rounded-xl animate-pulse-soft">
+                <p className="text-red-800 text-sm font-bold flex items-center">
+                  <span className="mr-2 text-xl">⚠️</span>
                   {error}
                 </p>
               </div>
@@ -160,11 +160,11 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-lg hover:from-blue-700 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+              className="w-full py-4 bg-background text-lg font-bold rounded-xl hover:bg-orange hover:text-background-2 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               {loading ? (
                 <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                  <div className="animate-spin rounded-full h-6 w-6 border-4 border-white border-t-transparent mr-3"></div>
                   Authenticating...
                 </div>
               ) : (
@@ -174,45 +174,45 @@ export default function AdminLogin() {
           </form>
 
           {/* Test Credentials */}
-          <div className="mt-6 pt-6 border-t">
-            <p className="text-sm text-gray-600 mb-3">For testing purposes:</p>
+          <div className="mt-8 pt-6 border-t border-foreground/10">
+            <p className="text-sm text-font/60 mb-3 font-medium text-center">For testing purposes:</p>
             <button
               type="button"
               onClick={useTestCredentials}
-              className="w-full py-2 bg-yellow-100 text-yellow-800 rounded-lg border border-yellow-200 hover:bg-yellow-200 transition"
+              className="w-full py-3 bg-green/20 text-background-2 font-bold rounded-xl border-2 border-green/30 hover:bg-green hover:border-green transition-all duration-300"
             >
               🧪 Use Test Credentials
             </button>
-            <p className="text-xs text-gray-500 mt-2 text-center">
+            <p className="text-xs text-font/40 mt-3 text-center font-bold">
               Note: Create this user in Firebase Console first
             </p>
           </div>
 
           {/* Firebase Status */}
-          <div className="mt-8 p-4 bg-gray-50 rounded-lg border">
-            <p className="font-medium text-gray-700 mb-2 flex items-center">
+          <div className="mt-8 p-5 bg-bg/50 rounded-xl border border-foreground/10">
+            <p className="font-bold text-background-2 mb-3 flex items-center">
               <span className="mr-2">🔥</span>
               Firebase Authentication
             </p>
-            <div className="space-y-1">
-              <p className="text-sm text-green-600 flex items-center">
-                <span className="mr-1">✓</span>
+            <div className="space-y-2">
+              <p className="text-sm text-green font-bold flex items-center">
+                <span className="mr-2 text-lg">✓</span>
                 Secure email/password auth
               </p>
-              <p className="text-sm text-green-600 flex items-center">
-                <span className="mr-1">✓</span>
+              <p className="text-sm text-green font-bold flex items-center">
+                <span className="mr-2 text-lg">✓</span>
                 Real-time session management
               </p>
             </div>
           </div>
 
           {/* Back to Home */}
-          <div className="mt-6 text-center">
+          <div className="mt-8 text-center">
             <Link
               href="/"
-              className="text-blue-600 hover:text-blue-800 text-sm"
+              className="text-background hover:text-orange font-bold text-sm transition-colors duration-300 flex items-center justify-center gap-2 group"
             >
-              ← Back to Homepage
+              <span className="group-hover:-translate-x-1 transition-transform">←</span> Back to Homepage
             </Link>
           </div>
         </div>

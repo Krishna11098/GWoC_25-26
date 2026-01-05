@@ -79,24 +79,24 @@ export default function AdminSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8 font-winky-rough">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        <div className="mb-8 p-6 bg-white/60 backdrop-blur-md rounded-2xl border border-foreground/20 shadow-sm">
+          <h1 className="text-3xl font-bold text-background drop-shadow-sm mb-2">
             Admin Settings
           </h1>
-          <p className="text-gray-600">
+          <p className="text-font font-medium">
             Configure platform settings and preferences
           </p>
         </div>
 
         {saveMessage && (
           <div
-            className={`mb-6 p-4 rounded-lg ${
+            className={`mb-6 p-4 rounded-xl border-2 font-bold animate-pulse-soft ${
               saveMessage.includes("Error")
-                ? "bg-red-100 text-red-700"
-                : "bg-green-100 text-green-700"
+                ? "bg-pink/20 text-red-800 border-pink/50"
+                : "bg-green/20 text-background-2 border-green/50"
             }`}
           >
             {saveMessage}
@@ -106,24 +106,24 @@ export default function AdminSettingsPage() {
         {/* Settings Sections */}
         <div className="space-y-6">
           {/* Maintenance Mode */}
-          <div className="bg-white rounded-xl shadow p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-yellow-100 rounded-lg">
-                <FaCog className="text-yellow-600 text-xl" />
+          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm p-8 border border-foreground/10">
+            <div className="flex items-center gap-4 mb-8 border-b border-foreground/10 pb-4">
+              <div className="p-3 bg-orange/20 rounded-xl">
+                <FaCog className="text-background-2 text-2xl" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-2xl font-bold text-background-2">
                   Maintenance Mode
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-font/70 font-medium">
                   Temporarily disable public access to the site
                 </p>
               </div>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div>
-                <label className="flex items-center gap-3 cursor-pointer">
+                <label className="flex items-center gap-4 cursor-pointer group">
                   <div className="relative">
                     <input
                       type="checkbox"
@@ -134,14 +134,14 @@ export default function AdminSettingsPage() {
                       className="sr-only"
                     />
                     <div
-                      className={`block w-14 h-7 rounded-full ${
+                      className={`block w-16 h-9 rounded-full transition-colors duration-300 ${
                         settings.maintenanceMode
-                          ? "bg-yellow-600"
-                          : "bg-gray-300"
+                          ? "bg-orange"
+                          : "bg-foreground/20"
                       }`}
                     ></div>
                     <div
-                      className={`absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition-transform ${
+                      className={`absolute left-1 top-1 bg-white w-7 h-7 rounded-full transition-transform duration-300 shadow-md ${
                         settings.maintenanceMode
                           ? "transform translate-x-7"
                           : ""
@@ -149,10 +149,10 @@ export default function AdminSettingsPage() {
                     ></div>
                   </div>
                   <div>
-                    <span className="font-medium text-gray-700">
+                    <span className="font-bold text-lg text-background-2 group-hover:text-background transition-colors">
                       Enable Maintenance Mode
                     </span>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm font-medium mt-1">
                       {settings.maintenanceMode
                         ? "🔴 Site is currently in maintenance mode"
                         : "🟢 Site is live and accessible"}
@@ -162,8 +162,8 @@ export default function AdminSettingsPage() {
               </div>
 
               {settings.maintenanceMode && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="animate-fade-in-up">
+                  <label className="block text-sm font-bold text-background-2 mb-2 ml-1">
                     Maintenance Message
                   </label>
                   <textarea
@@ -171,11 +171,11 @@ export default function AdminSettingsPage() {
                     onChange={(e) =>
                       handleChange("maintenanceMessage", e.target.value)
                     }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-4 py-3 border-2 border-foreground/20 rounded-xl focus:ring-2 focus:ring-orange focus:border-orange bg-bg/50 font-medium transition-all"
                     rows="3"
                     placeholder="Enter maintenance message..."
                   />
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-xs text-font/60 mt-2 font-bold ml-1">
                     This message will be shown to users
                   </p>
                 </div>
@@ -184,24 +184,24 @@ export default function AdminSettingsPage() {
           </div>
 
           {/* Security Settings */}
-          <div className="bg-white rounded-xl shadow p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-red-100 rounded-lg">
-                <FaShieldAlt className="text-red-600 text-xl" />
+          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm p-8 border border-foreground/10">
+            <div className="flex items-center gap-4 mb-8 border-b border-foreground/10 pb-4">
+              <div className="p-3 bg-pink/20 rounded-xl">
+                <FaShieldAlt className="text-red-800 text-2xl" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-2xl font-bold text-background-2">
                   Security Settings
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-font/70 font-medium">
                   Content moderation and user management
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-bold text-background-2 mb-2 ml-1">
                   Auto-ban Threshold
                 </label>
                 <input
@@ -215,16 +215,16 @@ export default function AdminSettingsPage() {
                       parseInt(e.target.value)
                     )
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 border-2 border-foreground/20 rounded-xl focus:ring-2 focus:ring-orange focus:border-orange bg-bg/50 font-medium transition-all"
                 />
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-xs text-font/60 mt-2 font-bold ml-1">
                   Users with {settings.autoBanReportThreshold} or more reports
                   will be auto-banned
                 </p>
               </div>
 
-              <div>
-                <label className="flex items-center gap-3 cursor-pointer">
+              <div className="flex items-center">
+                <label className="flex items-center gap-4 cursor-pointer group">
                   <div className="relative">
                     <input
                       type="checkbox"
@@ -238,14 +238,14 @@ export default function AdminSettingsPage() {
                       className="sr-only"
                     />
                     <div
-                      className={`block w-14 h-7 rounded-full ${
+                      className={`block w-16 h-9 rounded-full transition-colors duration-300 ${
                         settings.autoHideReportedContent
-                          ? "bg-purple-600"
-                          : "bg-gray-300"
+                          ? "bg-pink"
+                          : "bg-foreground/20"
                       }`}
                     ></div>
                     <div
-                      className={`absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition-transform ${
+                      className={`absolute left-1 top-1 bg-white w-7 h-7 rounded-full transition-transform duration-300 shadow-md ${
                         settings.autoHideReportedContent
                           ? "transform translate-x-7"
                           : ""
@@ -253,10 +253,10 @@ export default function AdminSettingsPage() {
                     ></div>
                   </div>
                   <div>
-                    <span className="font-medium text-gray-700">
+                    <span className="font-bold text-lg text-background-2 group-hover:text-background transition-colors">
                       Auto-hide Reported Content
                     </span>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm font-medium text-font/60 mt-1">
                       Hide content that reaches report threshold
                     </p>
                   </div>
@@ -266,24 +266,24 @@ export default function AdminSettingsPage() {
           </div>
 
           {/* Performance Settings */}
-          <div className="bg-white rounded-xl shadow p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <FaDatabase className="text-blue-600 text-xl" />
+          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm p-8 border border-foreground/10">
+            <div className="flex items-center gap-4 mb-8 border-b border-foreground/10 pb-4">
+              <div className="p-3 bg-green/20 rounded-xl">
+                <FaDatabase className="text-background-2 text-2xl" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-2xl font-bold text-background-2">
                   Performance Settings
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-font/70 font-medium">
                   Performance optimization and caching
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-bold text-background-2 mb-2 ml-1">
                   Cache Duration (seconds)
                 </label>
                 <input
@@ -294,9 +294,9 @@ export default function AdminSettingsPage() {
                   onChange={(e) =>
                     handleChange("cacheDuration", parseInt(e.target.value))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 border-2 border-foreground/20 rounded-xl focus:ring-2 focus:ring-orange focus:border-orange bg-bg/50 font-medium transition-all"
                 />
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-xs text-font/60 mt-2 font-bold ml-1">
                   {settings.cacheDuration === 0
                     ? "Caching disabled"
                     : `Data cached for ${settings.cacheDuration} seconds`}
@@ -304,7 +304,7 @@ export default function AdminSettingsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-bold text-background-2 mb-2 ml-1">
                   Max Upload Size (MB)
                 </label>
                 <input
@@ -315,9 +315,9 @@ export default function AdminSettingsPage() {
                   onChange={(e) =>
                     handleChange("maxUploadSize", parseInt(e.target.value))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-3 border-2 border-foreground/20 rounded-xl focus:ring-2 focus:ring-orange focus:border-orange bg-bg/50 font-medium transition-all"
                 />
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-xs text-font/60 mt-2 font-bold ml-1">
                   Maximum file size for uploads
                 </p>
               </div>
@@ -330,16 +330,16 @@ export default function AdminSettingsPage() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center gap-2 disabled:opacity-50"
+            className="px-8 py-4 bg-font text-white text-lg font-bold rounded-xl hover:bg-orange hover:text-background-2 flex items-center gap-3 disabled:opacity-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
           >
             {saving ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <div className="animate-spin rounded-full h-5 w-5 border-4 border-white border-t-transparent"></div>
                 Saving...
               </>
             ) : (
               <>
-                <FaSave /> Save All Settings
+                <FaSave className="text-xl" /> Save All Settings
               </>
             )}
           </button>
