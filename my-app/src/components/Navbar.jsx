@@ -184,6 +184,74 @@ const Navbar = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Play dropdown */}
+              <div
+                id="play-dropdown"
+                className="relative group"
+                onMouseEnter={() => {
+                  if (!playDropdownClicked) setPlayDropdownOpen(true);
+                }}
+                onMouseLeave={() => {
+                  if (!playDropdownClicked) setPlayDropdownOpen(false);
+                }}
+              >
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const newClickedState = !playDropdownClicked;
+                    setPlayDropdownClicked(newClickedState);
+                    setPlayDropdownOpen(newClickedState);
+                  }}
+                  className={linkClasses("/play")}
+                >
+                  Play
+                </button>
+                <div
+                  className={`absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200 bg-white shadow-md transition-opacity duration-200 ${
+                    playDropdownOpen
+                      ? "opacity-100 pointer-events-auto"
+                      : "opacity-0 pointer-events-none"
+                  }`}
+                  onMouseEnter={() => setPlayDropdownOpen(true)}
+                  onMouseLeave={() => {
+                    if (!playDropdownClicked) setPlayDropdownOpen(false);
+                  }}
+                >
+                  <div className="py-2">
+                    <Link
+                      href="/play"
+                      onClick={() => {
+                        setPlayDropdownOpen(false);
+                        setPlayDropdownClicked(false);
+                      }}
+                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
+                    >
+                      Play Hub
+                    </Link>
+                    <Link
+                      href="/games"
+                      onClick={() => {
+                        setPlayDropdownOpen(false);
+                        setPlayDropdownClicked(false);
+                      }}
+                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
+                    >
+                      Games
+                    </Link>
+                    <Link
+                      href="/sudoku"
+                      onClick={() => {
+                        setPlayDropdownOpen(false);
+                        setPlayDropdownClicked(false);
+                      }}
+                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
+                    >
+                      Sudoku
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </nav>
 
             {/* AUTH ACTIONS */}

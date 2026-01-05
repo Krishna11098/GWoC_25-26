@@ -66,7 +66,7 @@ export default function SudokuPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-12 px-4 md:px-6">
+      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 pt-40 pb-12 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
           {!selectedPuzzle ? (
             <div>
