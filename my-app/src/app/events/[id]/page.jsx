@@ -256,8 +256,16 @@ export default function EventDetailPage() {
   const handleBookNow = () => {
     console.log("🎫 Book now clicked, user status:", {
       userId,
+      userEmail,
+      userName,
       isAuthenticated: userId !== "guest",
       authLoading,
+    });
+    
+    console.log("🔍 Will pass to PaymentModal:", {
+      userId: userId,
+      userEmail: userEmail,
+      userName: userName,
     });
 
     // Check authentication

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import GoogleCalendarConnect from "@/components/GoogleCalendarConnect";
 import { auth } from "@/lib/firebase";
 import EventService from "@/app/lib/eventService";
 
@@ -541,6 +542,13 @@ export default function ProfilePage() {
                   <div className="text-font-2">Reward Coins</div>
                 </div>
               </div>
+
+              {/* Google Calendar Integration */}
+              {authUser && (
+                <div className="mb-8">
+                  <GoogleCalendarConnect userId={authUser.uid} />
+                </div>
+              )}
 
               {/* Transaction History - Shows actual wallet transactions */}
               <div className="bg-background border border-foreground/20 rounded-lg p-6 mb-8">

@@ -71,10 +71,6 @@ export async function POST(request) {
           seatIds: seatIds?.join(",") || "",
           userId,
         },
-        // Important callback URLs
-        callback_url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payments/verify`,
-        callback_method: "get",
-        redirect: true,
       });
 
       console.log("✅ Razorpay order created successfully:", {
