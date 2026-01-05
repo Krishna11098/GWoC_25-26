@@ -28,13 +28,23 @@ export async function GET(req) {
   // 🔐 DO NOT expose sensitive fields blindly
   const data = userSnap.data();
 
+  // Convert Firestore Timestamps to ISO strings for proper serialization
+  const serializeOrders = (orders) => {
+    return orders.map(order => ({
+      ...order,
+      createdAt: order.createdAt?.toDate ? order.createdAt.toDate().toISOString() : 
+                 order.createdAt instanceof Date ? order.createdAt.toISOString() :
+                 order.createdAt || new Date().toISOString()
+    }));
+  };
+
   return NextResponse.json({
     uid: user.uid,
     username: data.username ?? null,
     role: data.role,
     wallet: data.wallet,
     onlineGamesPlayed: data.onlineGamesPlayed ?? 0,
-    userOrders: data.userOrders ?? [],
+    userOrders: serializeOrders(data.userOrders ?? []),
     userEvents: data.userEvents ?? [],
     userWorkshops: data.userWorkshops ?? [],
     cart: data.cart ?? { items: [] },

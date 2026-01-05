@@ -5,7 +5,10 @@ export default function AboutTeam() {
   return (
     <section className="py-32 px-6">
       <div className="max-w-5xl mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-20">
+        <h2
+          className="text-4xl font-bold mb-20"
+          style={{ color: "var(--color-font)" }}
+        >
           Meet the Minds Behind the Madness
         </h2>
 
@@ -28,11 +31,24 @@ export default function AboutTeam() {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ amount: 0.4 }}
               transition={{ delay: i * 0.2, ease: "easeOut" }}
-              className="bg-background-2 p-10 rounded-2xl border border-white/10"
+              className="p-10 rounded-2xl shadow-lg"
+              style={{
+                backgroundColor: "white",
+                border: "1px solid var(--color-font)",
+              }}
             >
-              <h3 className="text-2xl font-semibold">{person.name}</h3>
-              <p className="text-foreground mt-2">{person.role}</p>
-              <p className="text-gray-300 mt-6">{person.desc}</p>
+              <h3
+                className="text-2xl font-semibold"
+                style={{ color: "var(--color-font)" }}
+              >
+                {person.name}
+              </h3>
+              <p className="mt-2" style={{ color: "var(--color-orange)" }}>
+                {person.role}
+              </p>
+              <p className="mt-6" style={{ color: "var(--color-font)" }}>
+                {person.desc}
+              </p>
             </motion.div>
           ))}
         </div>

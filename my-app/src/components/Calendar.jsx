@@ -26,7 +26,10 @@ function getFirstDayOfMonth(year, month) {
   return new Date(year, month, 1).getDay();
 }
 
-export default function Calendar({ initialDate = new Date(), events: externalEvents = [] }) {
+export default function Calendar({
+  initialDate = new Date(),
+  events: externalEvents = [],
+}) {
   const [viewYear, setViewYear] = useState(initialDate.getFullYear());
   const [viewMonth, setViewMonth] = useState(initialDate.getMonth());
   const [isHydrated, setIsHydrated] = useState(false);
@@ -50,13 +53,19 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
           const eventDate = event.date ? new Date(event.date) : null;
           if (!eventDate || isNaN(eventDate.getTime())) return null;
 
-          const [startHours, startMinutes] = (event.eventStartTime || "09:00").split(":").map(Number);
+          const [startHours, startMinutes] = (event.eventStartTime || "09:00")
+            .split(":")
+            .map(Number);
           const duration = event.duration || 60;
           const endHours = startHours + Math.floor(duration / 60);
           const endMinutes = startMinutes + (duration % 60);
 
-          const formatTime = (h, m) => `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
-          const timeString = `${formatTime(startHours, startMinutes)} - ${formatTime(endHours, endMinutes)}`;
+          const formatTime = (h, m) =>
+            `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
+          const timeString = `${formatTime(
+            startHours,
+            startMinutes
+          )} - ${formatTime(endHours, endMinutes)}`;
 
           return {
             date: eventDate,
@@ -202,27 +211,33 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
       />
       <div className="relative z-10">
         {/* Header background */}
-        <div className="rounded-t-3xl px-6 md:px-10 py-6 md:py-8 shadow-lg relative overflow-hidden bg-background-2 text-font-2">
+        <div
+          className="rounded-t-3xl px-6 md:px-10 py-6 md:py-8 shadow-lg relative overflow-hidden text-white"
+          style={{ backgroundColor: "var(--color-font)" }}
+        >
           <div className="relative flex items-center justify-between">
             {/* Navigation buttons */}
             <div className="flex items-center gap-3">
               <button
                 onClick={prevMonth}
-                className="rounded-lg px-3 py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border border-font-2 text-font-2 hover:bg-font-2/10"
+                className="rounded-lg px-3 py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border text-white hover:bg-white/20"
+                style={{ borderColor: "white" }}
                 aria-label="Previous month"
               >
                 ‹
               </button>
               <button
                 onClick={nextMonth}
-                className="rounded-lg px-3 py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border border-font-2 text-font-2 hover:bg-font-2/10"
+                className="rounded-lg px-3 py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border text-white hover:bg-white/20"
+                style={{ borderColor: "white" }}
                 aria-label="Next month"
               >
                 ›
               </button>
               <button
                 onClick={goToToday}
-                className="rounded-lg px-4 py-2 transition-all duration-300 text-sm font-semibold border border-font-2 text-font-2 hover:bg-font-2/10"
+                className="rounded-lg px-4 py-2 transition-all duration-300 text-sm font-semibold border text-white hover:bg-white/20"
+                style={{ borderColor: "white" }}
               >
                 today
               </button>
@@ -243,8 +258,8 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
                 onClick={() => setViewMode("month")}
                 className={`rounded-lg px-4 py-2 transition-all duration-300 text-sm font-semibold border ${
                   viewMode === "month"
-                    ? "bg-font-2 text-font border-font-2"
-                    : "bg-font-2/10 text-font-2 border-font-2 hover:bg-font-2/20"
+                    ? "bg-white text-font border-white"
+                    : "bg-white/20 text-white border-white hover:bg-white/30"
                 }`}
               >
                 month
@@ -253,8 +268,8 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
                 onClick={() => setViewMode("week")}
                 className={`rounded-lg px-4 py-2 transition-all duration-300 text-sm font-semibold border ${
                   viewMode === "week"
-                    ? "bg-font-2 text-font border-font-2"
-                    : "bg-font-2/10 text-font-2 border-font-2 hover:bg-font-2/20"
+                    ? "bg-white text-font border-white"
+                    : "bg-white/20 text-white border-white hover:bg-white/30"
                 }`}
               >
                 week
@@ -263,8 +278,8 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
                 onClick={() => setViewMode("list")}
                 className={`rounded-lg px-4 py-2 transition-all duration-300 text-sm font-semibold border ${
                   viewMode === "list"
-                    ? "bg-font-2 text-font border-font-2"
-                    : "bg-font-2/10 text-font-2 border-font-2 hover:bg-font-2/20"
+                    ? "bg-white text-font border-white"
+                    : "bg-white/20 text-white border-white hover:bg-white/30"
                 }`}
               >
                 list
@@ -275,13 +290,20 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
 
         {/* Calendar Grid - Only show month view for now */}
         {viewMode === "month" && (
-          <div className="rounded-b-3xl px-4 md:px-10 py-8 shadow-xl backdrop-blur-sm bg-font-2">
+          <div
+            className="rounded-b-3xl px-4 md:px-10 py-8 shadow-xl backdrop-blur-sm"
+            style={{ backgroundColor: "white" }}
+          >
             {/* Weekday headers */}
-            <div className="grid grid-cols-7 gap-px mb-0 p-px bg-foreground/25">
+            <div
+              className="grid grid-cols-7 gap-px mb-0 p-px"
+              style={{ backgroundColor: "var(--color-font)" }}
+            >
               {WEEKDAYS.map((wd) => (
                 <div
                   key={wd}
-                  className="text-center text-sm font-semibold uppercase tracking-widest py-3 bg-background text-foreground"
+                  className="text-center text-sm font-semibold uppercase tracking-widest py-3 text-white"
+                  style={{ backgroundColor: "var(--color-font)" }}
                 >
                   {wd}
                 </div>
@@ -306,7 +328,8 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
                 return (
                   <div
                     key={idx}
-                    className="aspect-square border border-foreground/20 bg-foreground"
+                    className="aspect-square border"
+                    style={{ borderColor: "var(--color-font)", opacity: 1 }}
                   >
                     {actualDate ? (
                       <button
@@ -315,13 +338,20 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
                         disabled={isNextMonth}
                         className={`w-full h-full rounded-none font-semibold text-sm transition-all duration-300 flex flex-col items-start justify-start p-2 ${
                           isToday
-                            ? "bg-foreground text-font-2 shadow-sm"
+                            ? "text-white shadow-sm"
                             : isNextMonth
-                            ? "opacity-40 blur-[0.2px] cursor-default text-foreground/50"
+                            ? "opacity-40 blur-[0.2px] cursor-default"
                             : isHovered
-                            ? "bg-foreground/20 text-font"
-                            : "text-font hover:bg-foreground/10"
+                            ? "text-font"
+                            : "text-font hover:bg-gray-100"
                         }`}
+                        style={{
+                          backgroundColor: isToday
+                            ? "var(--color-font)"
+                            : isHovered
+                            ? "var(--color-pink)"
+                            : "white",
+                        }}
                       >
                         <span className="text-lg font-bold mb-1">
                           {actualDate.getDate()}
@@ -334,7 +364,11 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
                         {eventsForDate.length > 0 && (
                           <div className="w-full mt-auto">
                             <div
-                              className="text-[11px] leading-snug font-bold px-2.5 py-2.5 rounded-lg shadow-lg border border-font-2/30 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-101 flex items-center gap-1.5 bg-foreground-2 text-font-2"
+                              className="text-[11px] leading-snug font-bold px-2.5 py-2.5 rounded-lg shadow-lg border cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-101 flex items-center gap-1.5 text-white"
+                              style={{
+                                backgroundColor: "var(--color-orange)",
+                                borderColor: "var(--color-orange)",
+                              }}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedEvent(eventsForDate[0]);
@@ -362,10 +396,16 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
                 );
               })}
             </div>
-            <div className="rounded-b-3xl px-4 md:px-6 py-6 shadow-xl bg-background">
+            <div
+              className="rounded-b-3xl px-4 md:px-6 py-6 shadow-xl"
+              style={{ backgroundColor: "white" }}
+            >
               {/* Footer note */}
               <div className="overflow-x-auto rounded-lg">
-                <p className="text-sm px-4 py-3 flex items-center gap-2 text-font-2">
+                <p
+                  className="text-sm px-4 py-3 flex items-center gap-2"
+                  style={{ color: "var(--color-font)" }}
+                >
                   <svg
                     className="w-4 h-4 flex-shrink-0"
                     viewBox="0 0 24 24"
@@ -382,23 +422,38 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
 
         {/* Week View */}
         {viewMode === "week" && (
-          <div className="rounded-b-3xl px-4 md:px-10 py-8 shadow-xl bg-foreground">
+          <div
+            className="rounded-b-3xl px-4 md:px-10 py-8 shadow-xl"
+            style={{ backgroundColor: "white" }}
+          >
             {/* Week Grid */}
-            <div className="overflow-x-auto border border-foreground/20 rounded-lg">
+            <div
+              className="overflow-x-auto rounded-lg"
+              style={{ borderColor: "var(--color-font)", borderWidth: "1px" }}
+            >
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-background/80">
-                    <th className="border border-foreground/20 px-4 py-3 text-left text-sm font-bold w-20 text-foreground">
+                  <tr style={{ backgroundColor: "var(--color-font)" }}>
+                    <th
+                      className="px-4 py-3 text-left text-sm font-bold w-20 text-white"
+                      style={{
+                        borderColor: "var(--color-font)",
+                        borderWidth: "1px",
+                      }}
+                    >
                       Time
                     </th>
                     {getWeekDates.map((date, idx) => (
                       <th
                         key={idx}
-                        className={`border border-foreground/20 px-4 py-3 text-center font-semibold ${
-                          isSameDay(date, today)
-                            ? "bg-foreground/30 text-font"
-                            : "bg-background/80 text-foreground"
-                        }`}
+                        className="px-4 py-3 text-center font-semibold text-white"
+                        style={{
+                          borderColor: "var(--color-font)",
+                          borderWidth: "1px",
+                          backgroundColor: isSameDay(date, today)
+                            ? "var(--color-green)"
+                            : "var(--color-font)",
+                        }}
                       >
                         <div className="text-xs uppercase tracking-wider">
                           {
@@ -419,9 +474,16 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
                   {timeSlots.map((slot, slotIdx) => (
                     <tr
                       key={slotIdx}
-                      className="transition-colors hover:bg-foreground/10"
+                      className="transition-colors hover:bg-gray-50"
                     >
-                      <td className="border border-foreground/20 px-4 py-3 text-xs font-bold w-20 bg-background text-foreground">
+                      <td
+                        className="px-4 py-3 text-xs font-bold w-20 text-font"
+                        style={{
+                          borderColor: "var(--color-font)",
+                          borderWidth: "1px",
+                          backgroundColor: "white",
+                        }}
+                      >
                         {slot}
                       </td>
                       {getWeekDates.map((date, dateIdx) => {
@@ -429,11 +491,15 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
                         return (
                           <td
                             key={dateIdx}
-                            className={`border border-foreground/15 px-4 py-6 text-center ${
-                              isSameDay(date, today)
-                                ? "bg-foreground/15"
-                                : "bg-background/75"
-                            }`}
+                            className="px-4 py-6 text-center"
+                            style={{
+                              borderColor: "var(--color-font)",
+                              borderWidth: "1px",
+                              backgroundColor: isSameDay(date, today)
+                                ? "var(--color-green)"
+                                : "white",
+                              opacity: isSameDay(date, today) ? "0.1" : "1",
+                            }}
                           >
                             {events
                               .filter((e) => {
@@ -482,9 +548,15 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
 
         {/* List View */}
         {viewMode === "list" && (
-          <div className="rounded-b-3xl px-4 md:px-10 py-12 shadow-xl bg-foreground">
+          <div
+            className="rounded-b-3xl px-4 md:px-10 py-12 shadow-xl"
+            style={{ backgroundColor: "white" }}
+          >
             <div className="text-center py-12">
-              <p className="text-2xl font-serif">
+              <p
+                className="text-2xl font-serif"
+                style={{ color: "var(--color-font)" }}
+              >
                 No events to display
               </p>
             </div>
@@ -501,64 +573,99 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
               onClick={closeModal}
             />
             <div
-              className={`relative max-w-3xl w-full rounded-[30px] border border-foreground/30 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.45)] overflow-hidden modal-card bg-font-2 text-font ${
+              className={`relative max-w-3xl w-full rounded-[30px] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.45)] overflow-hidden modal-card ${
                 isModalVisible ? "modal-enter" : "modal-exit"
               }`}
+              style={{
+                backgroundColor: "white",
+                color: "var(--color-font)",
+                borderColor: "var(--color-font)",
+                borderWidth: "2px",
+              }}
             >
               <div className="flex justify-between items-start gap-4 p-6 md:p-8">
                 <div className="space-y-5 w-full">
                   <div className="flex items-center gap-3">
-                    <div className="inline-flex items-center px-4 py-2 rounded-full shadow-lg text-sm font-semibold drop-shadow-md bg-foreground text-font-2">
+                    <div
+                      className="inline-flex items-center px-4 py-2 rounded-full shadow-lg text-sm font-semibold drop-shadow-md text-white"
+                      style={{ backgroundColor: "var(--color-green)" }}
+                    >
                       By: {selectedEvent.host || "Unknown"}
                     </div>
                   </div>
-                  <h3 className="text-3xl md:text-4xl font-serif leading-tight text-font">
+                  <h3
+                    className="text-3xl md:text-4xl font-serif leading-tight"
+                    style={{ color: "var(--color-font)" }}
+                  >
                     {selectedEvent.title}
                   </h3>
-                  <hr className="border-foreground/20" />
+                  <hr
+                    style={{ borderColor: "var(--color-font)", opacity: "0.2" }}
+                  />
 
                   <div className="space-y-3">
-                    <div className="flex items-baseline gap-3 text-lg font-semibold text-foreground">
+                    <div
+                      className="flex items-baseline gap-3 text-lg font-semibold"
+                      style={{ color: "var(--color-green)" }}
+                    >
                       <svg
-                        className="w-5 h-5 flex-shrink-0"
+                        className="w-5 h-5 shrink-0"
                         viewBox="0 0 24 24"
                         fill="currentColor"
                       >
                         <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z" />
                       </svg>
                       <span>Date:</span>
-                      <span className="font-medium text-font">
+                      <span
+                        className="font-medium"
+                        style={{ color: "var(--color-font)" }}
+                      >
                         {formatLongDate(selectedEvent.date)}
                       </span>
                     </div>
-                    <div className="flex items-baseline gap-3 text-lg font-semibold text-foreground">
+                    <div
+                      className="flex items-baseline gap-3 text-lg font-semibold"
+                      style={{ color: "var(--color-orange)" }}
+                    >
                       <svg
-                        className="w-5 h-5 flex-shrink-0"
+                        className="w-5 h-5 shrink-0"
                         viewBox="0 0 24 24"
                         fill="currentColor"
                       >
                         <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
                       </svg>
                       <span>Time:</span>
-                      <span className="font-medium text-font">
+                      <span
+                        className="font-medium"
+                        style={{ color: "var(--color-font)" }}
+                      >
                         {selectedEvent.time}
                       </span>
                     </div>
-                    <div className="flex items-baseline gap-3 text-lg font-semibold text-foreground">
+                    <div
+                      className="flex items-baseline gap-3 text-lg font-semibold"
+                      style={{ color: "var(--color-pink)" }}
+                    >
                       <svg
-                        className="w-5 h-5 flex-shrink-0"
+                        className="w-5 h-5 shrink-0"
                         viewBox="0 0 24 24"
                         fill="currentColor"
                       >
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                       </svg>
                       <span>Location:</span>
-                      <span className="font-medium text-font">
+                      <span
+                        className="font-medium"
+                        style={{ color: "var(--color-font)" }}
+                      >
                         {selectedEvent.location}
                       </span>
                     </div>
                     {selectedEvent.price && (
-                      <div className="flex items-baseline gap-3 text-lg font-semibold text-foreground">
+                      <div
+                        className="flex items-baseline gap-3 text-lg font-semibold"
+                        style={{ color: "var(--color-orange)" }}
+                      >
                         <svg
                           className="w-5 h-5 flex-shrink-0"
                           viewBox="0 0 24 24"
@@ -567,13 +674,19 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
                           <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" />
                         </svg>
                         <span>Price:</span>
-                        <span className="font-medium text-font">
+                        <span
+                          className="font-medium"
+                          style={{ color: "var(--color-font)" }}
+                        >
                           {selectedEvent.price}
                         </span>
                       </div>
                     )}
                     {selectedEvent.category && (
-                      <div className="flex items-baseline gap-3 text-lg font-semibold text-foreground">
+                      <div
+                        className="flex items-baseline gap-3 text-lg font-semibold"
+                        style={{ color: "var(--color-green)" }}
+                      >
                         <svg
                           className="w-5 h-5 flex-shrink-0"
                           viewBox="0 0 24 24"
@@ -582,7 +695,10 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
                           <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z" />
                         </svg>
                         <span>Category:</span>
-                        <span className="font-medium text-font">
+                        <span
+                          className="font-medium"
+                          style={{ color: "var(--color-font)" }}
+                        >
                           {selectedEvent.category}
                         </span>
                       </div>
@@ -591,11 +707,25 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
 
                   {selectedEvent.description && (
                     <div className="mt-6">
-                      <div className="rounded-2xl p-5 shadow-inner bg-background/30 border border-foreground/20">
-                        <p className="text-lg font-semibold mb-2 text-foreground">
+                      <div
+                        className="rounded-2xl p-5 shadow-inner"
+                        style={{
+                          backgroundColor: "var(--color-pink)",
+                          opacity: "0.4",
+                          borderColor: "var(--color-font)",
+                          borderWidth: "1px",
+                        }}
+                      >
+                        <p
+                          className="text-lg font-semibold mb-2"
+                          style={{ color: "var(--color-font)" }}
+                        >
                           Description
                         </p>
-                        <p className="text-base leading-relaxed text-font">
+                        <p
+                          className="text-base leading-relaxed"
+                          style={{ color: "var(--color-font)" }}
+                        >
                           {selectedEvent.description}
                         </p>
                       </div>
@@ -605,7 +735,18 @@ export default function Calendar({ initialDate = new Date(), events: externalEve
 
                 <button
                   onClick={closeModal}
-                  className="h-10 w-10 flex items-center justify-center rounded-full text-xl font-bold border border-foreground/30 transition-all hover:bg-background/20 text-foreground"
+                  className="h-10 w-10 flex items-center justify-center rounded-full text-xl font-bold border transition-all text-font"
+                  style={{
+                    borderColor: "var(--color-font)",
+                    backgroundColor: "white",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.backgroundColor =
+                      "var(--color-orange)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.backgroundColor = "white")
+                  }
                   aria-label="Close event details"
                 >
                   ×

@@ -5,22 +5,30 @@ const items = [
   {
     title: "Connection over Competition",
     desc: "Our games are designed to bring people closer, no matter the outcome.",
+    bgColor: "var(--color-pink)",
   },
   {
     title: "Quality & Creativity",
     desc: "Every illustration, card, and mechanic is crafted with care.",
+    bgColor: "var(--color-orange)",
   },
   {
     title: "Fun for All",
     desc: "Whether you're 10 or 100, there's a Joy Juncture game for you.",
+    bgColor: "var(--color-green)",
   },
 ];
 
 export default function AboutPhilosophy() {
   return (
-    <section className="py-32 px-6 bg-[#141414]">
+    <section className="py-32 px-6">
       <div className="max-w-6xl mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-20">Our Philosophy</h2>
+        <h2
+          className="text-4xl font-bold mb-20"
+          style={{ color: "var(--color-font)" }}
+        >
+          Our Philosophy
+        </h2>
 
         <div className="space-y-24">
           {items.map((item, i) => (
@@ -31,12 +39,21 @@ export default function AboutPhilosophy() {
               viewport={{ amount: 0.3 }}
               transition={{ delay: i * 0.2, ease: "easeOut", duration: 0.5 }}
               whileHover={{ rotate: 2, scale: 1.05 }}
-              className="bg-[#1a1a1a] p-8 rounded-2xl border border-white/10 mx-auto"
+              className="p-8 rounded-2xl mx-auto shadow-lg"
+              style={{
+                backgroundColor: item.bgColor,
+                border: "1px solid var(--color-font)",
+              }}
             >
-              <h3 className="text-2xl font-semibold text-foreground mb-4">
+              <h3
+                className="text-2xl font-semibold mb-4"
+                style={{ color: "var(--color-font)" }}
+              >
                 {item.title}
               </h3>
-              <p className="text-gray-300 text-lg">{item.desc}</p>
+              <p className="text-lg" style={{ color: "var(--color-font)" }}>
+                {item.desc}
+              </p>
             </motion.div>
           ))}
         </div>

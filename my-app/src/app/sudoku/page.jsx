@@ -45,10 +45,7 @@ export default function SudokuPage() {
   return (
     <>
       <Navbar />
-      <main
-        className="min-h-screen py-12 px-4 md:px-6 mt-32"
-        style={{ backgroundColor: "var(--color-background)" }}
-      >
+      <main className="min-h-screen py-12 px-4 md:px-6 mt-32">
         <div className="max-w-7xl mx-auto">
           {authLoading ? (
             <div className="text-center">
@@ -56,27 +53,18 @@ export default function SudokuPage() {
             </div>
           ) : !user ? (
             <div className="text-center">
-              <h1
-                className="text-5xl md:text-6xl font-bold mb-4"
-                style={{
-                  color: "#F5F3F8",
-                  textShadow: "0 4px 20px rgba(0,0,0,0.25)",
-                }}
-              >
+              <h1 className="text-5xl md:text-6xl font-bold mb-4">
                 Sudoku Challenge
               </h1>
-              <p
-                className="text-lg mb-6"
-                style={{ color: "var(--color-font-2)", opacity: 0.9 }}
-              >
+              <p className="text-lg mb-6">
                 Please log in to play Sudoku and track your progress!
               </p>
               <Link
                 href="/login"
                 className="inline-block px-6 py-3 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
                 style={{
-                  backgroundColor: "var(--color-foreground)",
-                  color: "var(--color-font-2)",
+                  backgroundColor: "var(--color-green)",
+                  color: "white",
                 }}
               >
                 Go to Login
@@ -89,7 +77,6 @@ export default function SudokuPage() {
                 <h1
                   className="text-5xl md:text-6xl font-bold mb-4"
                   style={{
-                    color: "#F5F3F8",
                     textShadow: "0 4px 20px rgba(0,0,0,0.25)",
                   }}
                 >
@@ -97,7 +84,7 @@ export default function SudokuPage() {
                 </h1>
                 <p
                   className="text-lg max-w-2xl mx-auto"
-                  style={{ color: "var(--color-font-2)", opacity: 0.9 }}
+                  style={{ opacity: 0.9 }}
                 >
                   Test your logic and problem-solving skills. Choose a
                   difficulty level and start playing!
@@ -106,30 +93,39 @@ export default function SudokuPage() {
 
               {/* Difficulty Tabs */}
               <div className="flex justify-center gap-4 mb-8">
-                {difficulties.map((lvl) => (
-                  <button
-                    key={lvl}
-                    onClick={() => setDifficulty(lvl)}
-                    className={`px-6 py-3 rounded-lg capitalize font-semibold transition-all duration-300 ${
-                      difficulty === lvl
-                        ? "shadow-lg transform scale-105"
-                        : "shadow-md hover:shadow-lg hover:scale-105"
-                    }`}
-                    style={
-                      difficulty === lvl
-                        ? {
-                            backgroundColor: "var(--color-foreground)",
-                            color: "var(--color-font)",
-                          }
-                        : {
-                            backgroundColor: "transparent",
-                            color: "var(--color-font-2)",
-                          }
-                    }
-                  >
-                    {lvl}
-                  </button>
-                ))}
+                {difficulties.map((lvl) => {
+                  const getActiveColor = () => {
+                    if (lvl === "easy") return "var(--color-pink)";
+                    if (lvl === "medium") return "var(--color-orange)";
+                    if (lvl === "hard") return "var(--color-green)";
+                    return "var(--color-font)";
+                  };
+
+                  return (
+                    <button
+                      key={lvl}
+                      onClick={() => setDifficulty(lvl)}
+                      className={`px-6 py-3 rounded-lg capitalize font-semibold transition-all duration-300 ${
+                        difficulty === lvl
+                          ? "shadow-lg transform scale-105"
+                          : "shadow-md hover:shadow-lg hover:scale-105"
+                      }`}
+                      style={
+                        difficulty === lvl
+                          ? {
+                              backgroundColor: getActiveColor(),
+                              color: "var(--color-font)",
+                            }
+                          : {
+                              backgroundColor: "var(--color-font)",
+                              color: "white",
+                            }
+                      }
+                    >
+                      {lvl}
+                    </button>
+                  );
+                })}
               </div>
 
               {loading ? (
@@ -140,135 +136,143 @@ export default function SudokuPage() {
                 <>
                   {/* Level Selection */}
                   <div className="grid md:grid-cols-3 gap-6">
-                    {levels.map((level) => (
-                      <Link
-                        key={level.levelId}
-                        href={`/sudoku/start/${level.levelId}`}
-                        className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105"
-                        style={{
-                          backgroundColor: "var(--color-background-2)",
-                          color: "var(--color-font-2)",
-                          borderColor: "var(--color-foreground)",
-                        }}
-                      >
-                        {/* Hover overlay uses accent foreground */}
-                        <div
-                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                          style={{ backgroundColor: "var(--color-foreground)",
+                    {levels.map((level) => {
+                      const getLevelColor = () => {
+                        if (level.difficulty === "easy")
+                          return "var(--color-pink)";
+                        if (level.difficulty === "medium")
+                          return "var(--color-orange)";
+                        if (level.difficulty === "hard")
+                          return "var(--color-green)";
+                        return "var(--color-pink)";
+                      };
+
+                      return (
+                        <Link
+                          key={level.levelId}
+                          href={`/sudoku/start/${level.levelId}`}
+                          className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105"
+                          style={{
+                            backgroundColor: getLevelColor(),
                             color: "var(--color-font)",
-                           }}
-                        />
+                            borderColor: "var(--color-green)",
+                          }}
+                        >
+                          {/* Content */}
+                          <div className="relative z-10 p-8 h-full flex flex-col justify-between transition-colors duration-300">
+                            <div>
+                              <h2 className="text-3xl font-bold mb-2 capitalize">
+                                {level.difficulty}
+                              </h2>
+                              <p
+                                className="transition-colors"
+                                style={{
+                                  color: "var(--color-font)",
+                                  opacity: 0.9,
+                                }}
+                              >
+                                Level {level.levelNo || level.levelId}
+                              </p>
+                              <p
+                                className="text-lg font-semibold mt-2"
+                                style={{
+                                  color: "var(--color-font)",
+                                  opacity: 0.9,
+                                }}
+                              >
+                                {level.coins} coins
+                              </p>
+                            </div>
 
-                        {/* Content */}
-                        <div className="relative z-10 p-8 h-full flex flex-col justify-between transition-colors duration-300">
-                          <div>
-                            <h2
-                              className="text-3xl font-bold mb-2 capitalize"
-                            >
-                              {level.difficulty}
-                            </h2>
-                            <p
-                              className="transition-colors"
-                              style={{
-                                color: "var(--color-foreground)",
-                                opacity: 0.9,
-                              }}
-                            >
-                              Level {level.levelNo || level.levelId}
-                            </p>
-                            <p
-                              className="text-lg font-semibold mt-2"
-                              style={{
-                                color: "var(--color-foreground)",
-                                opacity: 0.9,
-                              }}
-                            >
-                              {level.coins} coins
-                            </p>
+                            <div className="flex items-center gap-2 text-sm font-semibold">
+                              <span>Play Now</span>
+                              <span className="group-hover:translate-x-2 transition-transform">
+                                →
+                              </span>
+                            </div>
                           </div>
 
-                          <div className="flex items-center gap-2 text-sm font-semibold">
-                            <span>Play Now</span>
-                            <span className="group-hover:translate-x-2 transition-transform">
-                              →
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Border animation */}
-                        <div className="absolute inset-0 rounded-2xl border-2 transition-all duration-300" />
-                      </Link>
-                    ))}
+                          {/* Border animation */}
+                          <div className="absolute inset-0 rounded-2xl border-2 transition-all duration-300" />
+                        </Link>
+                      );
+                    })}
                   </div>
 
                   {/* Features Section */}
                   <div className="mt-16 grid md:grid-cols-3 gap-8">
-                    <div className="rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow feature-card">
+                    <div
+                      className="rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow opacity-80"
+                      style={{ backgroundColor: "var(--color-font)" }}
+                    >
                       <img
                         src="/icons/keyboard.svg"
                         alt="keyboard"
                         className="h-8 w-8 mb-3 inline-block icon-current-color"
-                        style={{ color: "var(--color-foreground-2)" }}
+                        style={{ color: "white" }}
                       />
                       <h3
                         className="text-lg font-bold mb-2"
-                        style={{ color: "var(--color-font-2)" }}
+                        style={{ color: "white" }}
                       >
                         Keyboard Navigation
                       </h3>
                       <p
                         className="text-sm"
                         style={{
-                          color: "var(--color-font)",
-                          opacity: 0.9,
+                          color: "white",
                         }}
                       >
                         Use arrow keys to navigate the grid for a smooth playing
                         experience.
                       </p>
                     </div>
-                    <div className="rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow feature-card">
+                    <div
+                      className="rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow opacity-80"
+                      style={{ backgroundColor: "var(--color-font)" }}
+                    >
                       <img
                         src="/icons/bulb.svg"
                         alt="tip"
                         className="h-8 w-8 mb-3 inline-block icon-current-color"
-                        style={{ color: "var(--color-foreground-2)" }}
+                        style={{ color: "white" }}
                       />
                       <h3
                         className="text-lg font-bold mb-2"
-                        style={{ color: "var(--color-font)" }}
+                        style={{ color: "white" }}
                       >
                         Earn Coins
                       </h3>
                       <p
                         className="text-sm"
                         style={{
-                          color: "var(--color-font-2)",
-                          opacity: 0.9,
+                          color: "white",
                         }}
                       >
                         Complete puzzles to earn coins and unlock more
                         challenging levels.
                       </p>
                     </div>
-                    <div className="rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow feature-card">
+                    <div
+                      className="rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow opacity-80"
+                      style={{ backgroundColor: "var(--color-font)" }}
+                    >
                       <img
                         src="/icons/check.svg"
                         alt="track"
                         className="h-8 w-8 mb-3 inline-block icon-current-color"
-                        style={{ color: "var(--color-foreground-2)" }}
+                        style={{ color: "white" }}
                       />
                       <h3
                         className="text-lg font-bold mb-2"
-                        style={{ color: "var(--color-font)" }}
+                        style={{ color: "white" }}
                       >
                         Track Progress
                       </h3>
                       <p
                         className="text-sm"
                         style={{
-                          color: "var(--color-font-2)",
-                          opacity: 0.9,
+                          color: "white",
                         }}
                       >
                         Check your progress anytime and get immediate feedback

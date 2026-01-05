@@ -12,12 +12,18 @@ export default function AboutHero() {
         transition={{ duration: 1, ease: "easeOut" }}
         className="max-w-4xl"
       >
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 text-font-2">
-          Our <span className="text-foreground">Accidentally Awesome</span>{" "}
+        <h1
+          className="text-5xl md:text-7xl font-bold mb-6"
+        >
+          Our{" "}
+          <span style={{color: "var(--color-font)"}}>
+            Accidentally Awesome
+          </span>{" "}
           Story
         </h1>
-        <p className="text-xl text-font2">
-          No legacies. No rulebooks. <span className="text-foreground">Just fun</span>.
+        <p className="text-xl">
+          No legacies. No rulebooks.{" "}
+          <span style={{ color: "var(--color-font" }}>Just fun</span>.
         </p>
       </motion.div>
     </section>

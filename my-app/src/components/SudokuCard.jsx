@@ -39,8 +39,8 @@ export default function SudokuCard({ level, refresh }) {
             onClick={() => setEditing(true)}
             className="px-3 py-1 rounded"
             style={{
-              backgroundColor: "var(--color-foreground)",
-              color: "var(--color-font-2)",
+              backgroundColor: "var(--color-green)",
+              color: "white",
             }}
           >
             Edit
@@ -49,8 +49,8 @@ export default function SudokuCard({ level, refresh }) {
             onClick={removeSudoku}
             className="px-3 py-1 rounded"
             style={{
-              backgroundColor: "var(--color-foreground-2)",
-              color: "var(--color-font-2)",
+              backgroundColor: "var(--color-orange)",
+              color: "white",
             }}
           >
             Remove

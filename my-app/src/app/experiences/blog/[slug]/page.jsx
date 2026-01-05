@@ -73,7 +73,7 @@ export default async function BlogDetailPage({ params }) {
         <Navbar />
         <main className="mx-auto max-w-6xl xl:max-w-7xl px-4 md:px-10 py-10 mt-20">
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Story coming soon</h1>
-          <p className="mt-2 text-slate-700">We're crafting this experience. Check back shortly.</p>
+          <p className="mt-2 text-slate-700">We&apos;re crafting this experience. Check back shortly.</p>
           <div className="mt-6">
             <Link href="/experiences/blog" className="text-emerald-600 hover:text-emerald-700 font-medium">Back to blog</Link>
           </div>
@@ -126,7 +126,7 @@ export default async function BlogDetailPage({ params }) {
       content: (
         <div className="space-y-4">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900">{data.whyLoveTitle}</h2>
-          <p className="text-slate-700 text-lg">This wasn't your usual "team-building activity." Employees found themselves:</p>
+          <p className="text-slate-700 text-lg">This wasn&apos;t your usual &quot;team-building activity.&quot; Employees found themselves:</p>
           <ul className="space-y-3 text-slate-700 text-lg">
             {data.whyLovePoints.map((item, i) => (
               <li key={i} className="flex items-start">
@@ -196,13 +196,36 @@ export default async function BlogDetailPage({ params }) {
               {data.email}
             </a>
           </div>
-          <div className="mt-8 text-center">
+        </div>
+      ),
+    },
+    // Card 7: Back to blog
+    {
+      content: (
+        <div className="h-full flex flex-col items-center justify-center text-center space-y-8">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+              Ready to Experience Joy?
+            </h2>
+            <p className="text-slate-700 text-xl max-w-2xl">
+              Explore more stories and discover what makes Joy Juncture the go-to creators of unforgettable experiences.
+            </p>
+          </div>
+          <div className="space-y-4">
             <Link 
-              href="/experiences/blog" 
-              className="inline-block px-6 py-3 bg-slate-900 text-white rounded-full hover:bg-slate-800 font-medium"
+              href="/community/blog" 
+              className="inline-block px-8 py-4 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 font-medium text-lg transition-colors"
             >
-              ← Back to blog
+              ← Back to Blogs
             </Link>
+            <div>
+              <Link 
+                href="/" 
+                className="inline-block px-8 py-4 bg-slate-900 text-white rounded-full hover:bg-slate-800 font-medium text-lg transition-colors"
+              >
+                Home
+              </Link>
+            </div>
           </div>
         </div>
       ),
