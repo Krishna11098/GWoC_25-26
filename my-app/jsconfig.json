@@ -2,6 +2,13 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "checkJs": false,
+    "jsx": "react",
+    "types": []
+  },
+  "exclude": ["node_modules"],
+  "typeAcquisition": {
+    "enable": false
   }
 }
