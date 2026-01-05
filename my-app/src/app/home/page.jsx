@@ -21,6 +21,7 @@ export default function HomePage() {
       <Subheading />
       <ScrollAnimation />
       <ProofOfJoy />
+      <Walletsystem />
       <CTASection />
       <FAQ />
       <Footer />

@@ -1,4 +1,3 @@
-
 export default function Footer() {
   const links = [
     { label: "Home", href: "/" },
@@ -14,12 +13,12 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-10 md:flex-row md:items-start md:justify-between md:py-12">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-linear-to-br from-lime-400 to-emerald-500 text-sm font-semibold shadow-sm">
-              JJ
-            </span>
-            <span className="text-lg font-semibold tracking-tight">
-              JoyJuncture
-            </span>
+            <img
+              src="/logo3.png"
+              alt="Joy Juncture logo"
+              className="h-10 w-10 rounded-full object-contain shadow-sm"
+            />
+            <span className="sr-only">JoyJuncture</span>
           </div>
           <p className="max-w-sm text-sm text-gray-300">
             Crafted experiences, joyful connections, and premium play for
