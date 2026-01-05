@@ -80,8 +80,8 @@ export default function AdminLayout({ children }) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Checking permissions...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto"></div>
+          <p className="mt-4">Checking permissions...</p>
         </div>
       </div>
     );
@@ -89,25 +89,23 @@ export default function AdminLayout({ children }) {
 
   if (user && !isAdmin && pathname !== "/admin/login") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="max-w-md w-full mx-auto p-8 bg-white rounded-xl shadow-lg text-center">
-          <div className="text-6xl mb-4 text-red-500">🚫</div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Access Denied
-          </h1>
-          <p className="text-gray-600 mb-6">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="max-w-md w-full mx-auto p-8 rounded-xl shadow-lg text-center">
+          <div className="text-6xl mb-4">🚫</div>
+          <h1 className="text-3xl font-bold mb-2">Access Denied</h1>
+          <p className="mb-6">
             You don't have permission to access the admin panel.
           </p>
           <div className="space-y-3">
             <button
               onClick={() => router.push("/")}
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="w-full px-4 py-2 rounded-lg"
             >
               Go to Homepage
             </button>
             <button
               onClick={handleLogout}
-              className="w-full px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+              className="w-full px-4 py-2 rounded-lg"
             >
               Switch Account
             </button>
@@ -128,30 +126,30 @@ export default function AdminLayout({ children }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen">
       <AdminSidebar user={user} onLogout={handleLogout} />
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 text-font ml-64">
         {/* Admin Status Badge */}
         {isAdmin && (
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+              <span className="px-3 py-1 rounded-full text-sm font-bold bg-orange text-fontcolor">
                 ✅ Admin Mode
               </span>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-font/70">
                 Logged in as: {user?.email}
               </span>
             </div>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+              className="px-4 py-2 text-sm rounded-lg bg-green text-fontcolor hover:opacity-90 transition"
             >
               Logout
             </button>
           </div>
         )}
 
-        <div className="bg-white rounded-lg shadow p-6 min-h-[calc(100vh-3rem)]">
+        <div className="rounded-lg shadow p-6 min-h-[calc(100vh-3rem) backdrop-blur">
           {children}
         </div>
       </main>

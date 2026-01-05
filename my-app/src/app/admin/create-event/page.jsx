@@ -473,7 +473,7 @@ export default function CreateEventPage() {
             <button
               type="submit"
               disabled={loading}
-              className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed font-bold flex items-center gap-2"
+              className="px-8 py-3 bg-font text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed font-bold flex items-center gap-2"
             >
               {loading ? (
                 <>

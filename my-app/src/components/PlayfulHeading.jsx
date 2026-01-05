@@ -19,7 +19,7 @@ const PlayfulHeading = ({
   staggerDelay = 0.03,
 }) => {
   const ref = useRef(null);
-  
+
   // Split text into individual letters
   const letters = Array.from(text);
 
@@ -55,18 +55,6 @@ const PlayfulHeading = ({
     },
   };
 
-  // Fun hover effect for each letter
-  const letterHover = {
-    scale: 1.3,
-    y: -8,
-    color: "#f7d57c", // Accent color (optional, can be removed if not needed)
-    transition: {
-      type: "spring",
-      stiffness: 400,
-      damping: 10,
-    },
-  };
-
   const MotionComponent = motion[as];
 
   return (
@@ -82,7 +70,6 @@ const PlayfulHeading = ({
         <motion.span
           key={`${letter}-${idx}`}
           variants={letterVariants}
-          whileHover={letterHover}
           className="inline-block cursor-grab active:cursor-grabbing"
           style={{ willChange: "transform" }}
         >
