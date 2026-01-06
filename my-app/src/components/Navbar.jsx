@@ -8,10 +8,10 @@ import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
 const navLinks = [
-  { name: "Home", href: "/" },
+  { name: "Home", href: "/home" },
   { name: "Shop", href: "/shop" },
   { name: "Experiences", href: "/experiences" },
-  { name: "Events", href: "/events/calendar" },
+  { name: "Events", href: "/events" },
 ];
 
 const Navbar = () => {
