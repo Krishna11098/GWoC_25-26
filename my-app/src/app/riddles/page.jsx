@@ -110,18 +110,18 @@ export default function RiddlesPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 py-12 px-4 mt-24">
+      <div className="min-h-screen py-12 px-4 mt-24" style={{ color: "var(--color-font)" }}>
         <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-5xl font-bold mb-4" style={{ color: "var(--color-font)" }}>
             🧩 Riddle Challenge
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl" style={{ color: "var(--color-font)" }}>
             Test your wit and earn coins!
           </p>
           {user && (
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm mt-2" style={{ color: "var(--color-font)" }}>
               Logged in as: {user.email}
             </p>
           )}
@@ -154,18 +154,18 @@ export default function RiddlesPage() {
                   key={riddle.id}
                   className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-purple-100 hover:border-purple-300 transition-all duration-300"
                 >
-                  <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-6">
+                  <div className="p-6" style={{ background: "var(--color-green)" }}>
                     <div className="flex justify-between items-start">
                       <div>
-                        <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-white text-sm font-semibold mb-3">
+                        <span className="inline-block px-3 py-1 rounded-full text-sm font-semibold mb-3" style={{ background: 'rgba(255,255,255,0.2)', color: 'var(--color-font)' }}>
                           Riddle #{riddle.riddleNo || index + 1}
                         </span>
-                        <h3 className="text-2xl font-bold text-white">
+                        <h3 className="text-2xl font-bold" style={{ color: 'var(--color-font)' }}>
                           {riddle.question}
                         </h3>
                       </div>
                       <div className="text-right">
-                        <div className="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full font-bold text-lg">
+                        <div className="px-4 py-2 rounded-full font-bold text-lg" style={{ backgroundColor: "var(--color-orange)", color: "var(--color-font)" }}>
                           🪙 {riddle.coins}
                         </div>
                       </div>
@@ -222,11 +222,12 @@ export default function RiddlesPage() {
                         <button
                           onClick={() => handleSubmit(riddle.id)}
                           disabled={isSubmitting}
-                          className={`w-full py-3 rounded-xl font-bold text-lg transition-all duration-300 ${
-                            isSubmitting
-                              ? "bg-gray-400 cursor-not-allowed"
-                              : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                          }`}
+                          className="w-full py-3 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                          style={{
+                            backgroundColor: isSubmitting ? '#9ca3af' : 'var(--color-pink)',
+                            color: 'var(--color-font)',
+                            cursor: isSubmitting ? 'not-allowed' : 'pointer'
+                          }}
                         >
                           {isSubmitting ? (
                             <span className="flex items-center justify-center">
