@@ -2,7 +2,7 @@ import { db } from "@/lib/firebaseAdmin";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingCartButton from "@/components/FloatingCartButton";
-import GameGrid from "@/components/GameGrid";
+import ShopWithFilters from "@/components/ShopWithFilters";
 
 export const dynamic = "force-dynamic"; // ensure fresh data in dev
 
@@ -130,7 +130,7 @@ export default async function GamesPage() {
             <FloatingCartButton />
           </div>
 
-          <GameGrid
+          <ShopWithFilters
             items={items}
             imageById={imageById}
             fallbackImages={images}

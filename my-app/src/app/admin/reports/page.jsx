@@ -47,42 +47,45 @@ export default function ReportsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">
-        Reported Experiences
-      </h1>
+    <div className="min-h-screen p-8 font-winky-rough">
+      <div className="mb-8 p-6 bg-white/60 backdrop-blur-md rounded-2xl border border-foreground/20 shadow-sm">
+        <h1 className="text-3xl font-bold text-background drop-shadow-sm mb-2">
+          Reported Experiences
+        </h1>
+        <p className="text-font font-medium">Manage and review user reports</p>
+      </div>
 
-      <div className="bg-white rounded-xl shadow overflow-hidden">
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm overflow-hidden border border-foreground/10">
         <table className="w-full">
-          <thead className="bg-gray-100">
+          <thead className="bg-foreground/5 text-font">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                 Report ID
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                 Experience
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                 Reporter
               </th>
-              <th className="px6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                 Date
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-foreground/10">
             {reports.map((report) => (
-              <tr key={report.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 text-sm font-medium text-gray-900">
+              <tr key={report.id} className="hover:bg-foreground/5 transition-colors group">
+                <td className="px-6 py-4 text-sm font-bold text-background-2 font-mono">
                   {report.id.slice(0, 8)}...
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-700">
+                <td className="px-6 py-4 text-sm text-font">
                   <button
                     onClick={() =>
                       window.open(
@@ -90,28 +93,28 @@ export default function ReportsPage() {
                         "_blank"
                       )
                     }
-                    className="text-purple-600 hover:text-purple-700 flex items-center gap-2"
+                    className="text-background hover:text-orange font-bold flex items-center gap-2 transition-colors"
                   >
                     <FaEye /> View Experience
                   </button>
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-700">
+                <td className="px-6 py-4 text-sm text-font font-medium">
                   {report.reporterId?.slice(0, 8)}...
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-700">
+                <td className="px-6 py-4 text-sm text-font opacity-80">
                   {report.reportedAt?.toDate().toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    className={`px-3 py-1 rounded-lg text-xs font-bold border ${
                       report.status === "pending"
-                        ? "bg-yellow-100 text-yellow-800"
+                        ? "bg-orange/20 text-background-2 border-orange/30"
                         : report.status === "approved"
-                        ? "bg-red-100 text-red-800"
-                        : "bg-green-100 text-green-800"
+                        ? "bg-pink/20 text-red-800 border-pink/30"
+                        : "bg-green/20 text-background-2 border-green/30"
                     }`}
                   >
-                    {report.status}
+                    {report.status.toUpperCase()}
                   </span>
                 </td>
                 <td className="px-6 py-4">
@@ -120,13 +123,13 @@ export default function ReportsPage() {
                       <>
                         <button
                           onClick={() => handleResolve(report.id, "approved")}
-                          className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 flex items-center gap-2"
+                          className="px-3 py-1.5 bg-pink/20 text-red-800 rounded-lg hover:bg-pink border border-pink/30 flex items-center gap-2 font-bold transition-colors text-xs"
                         >
                           <FaCheck /> Remove
                         </button>
                         <button
                           onClick={() => handleResolve(report.id, "rejected")}
-                          className="px-3 py-1 bg-gray-600 text-white rounded hover:bg-gray-700 flex items-center gap-2"
+                          className="px-3 py-1.5 bg-foreground/10 text-font rounded-lg hover:bg-foreground/20 border border-foreground/20 flex items-center gap-2 font-bold transition-colors text-xs"
                         >
                           <FaTimes /> Reject
                         </button>
@@ -140,8 +143,9 @@ export default function ReportsPage() {
         </table>
 
         {reports.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No reports yet</p>
+          <div className="text-center py-20">
+            <div className="text-5xl mb-4 opacity-50">📝</div>
+            <p className="text-font/60 font-medium">No reports yet</p>
           </div>
         )}
       </div>

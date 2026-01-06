@@ -75,34 +75,34 @@ export default function AdminBlogsPage() {
     <div className="p-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white">Blogs</h1>
-          <p className="text-gray-400 mt-1">Manage blog posts</p>
+          <h1 className="text-3xl font-bold text-[var(--font)]">Blogs</h1>
+          <p className="text-[var(--font)] mt-1">Manage blog posts</p>
         </div>
         <button
           onClick={() => router.push("/admin/blogs/create")}
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold"
+          className="px-6 py-3 bg-[var(--orange)] text-[var(--font)] rounded-lg font-semibold"
         >
           + Create Blog
         </button>
       </div>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500 text-red-400 px-4 py-3 rounded mb-6">
+        <div className="bg-[var(--pink)]/20 border border-[var(--pink)] text-[var(--font)] px-4 py-3 rounded mb-6">
           {error}
         </div>
       )}
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-          <p className="text-gray-400 mt-4">Loading blogs...</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--orange)]"></div>
+          <p className="text-[var(--font)] mt-4">Loading blogs...</p>
         </div>
       ) : blogs.length === 0 ? (
-        <div className="text-center py-12 bg-gray-800 rounded-lg">
-          <p className="text-gray-400 text-lg">No blogs yet</p>
+        <div className="text-center py-12 bg-[var(--green)]/30 rounded-lg">
+          <p className="text-[var(--font)] text-lg">No blogs yet</p>
           <button
             onClick={() => router.push("/admin/blogs/create")}
-            className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            className="mt-4 px-6 py-2 bg-[var(--orange)] text-[var(--font)] rounded-lg"
           >
             Create First Blog
           </button>
@@ -112,31 +112,31 @@ export default function AdminBlogsPage() {
           {blogs.map((blog) => (
             <div
               key={blog.id}
-              className="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition"
+              className="bg-[var(--bg)] rounded-lg p-6 border-2 border-[var(--green)]"
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-xl font-bold text-white">
+                    <h3 className="text-xl font-bold text-[var(--font)]">
                       {blog.title}
                     </h3>
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${
                         blog.isPublished
-                          ? "bg-green-500/20 text-green-400"
-                          : "bg-gray-600 text-gray-300"
+                          ? "bg-[var(--green)]/40 text-[var(--font)]"
+                          : "bg-[var(--pink)]/30 text-[var(--font)]"
                       }`}
                     >
                       {blog.isPublished ? "Published" : "Draft"}
                     </span>
                     {blog.category && (
-                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-400">
+                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[var(--orange)]/30 text-[var(--font)]">
                         {blog.category}
                       </span>
                     )}
                   </div>
                   {blog.excerpt && (
-                    <p className="text-gray-400 mb-3">{blog.excerpt}</p>
+                    <p className="text-[var(--font)]/70 mb-3">{blog.excerpt}</p>
                   )}
                   
                   <div className="flex items-center gap-4 text-sm text-gray-500">
@@ -173,23 +173,23 @@ export default function AdminBlogsPage() {
                 <div className="flex gap-2 ml-4">
                   <button
                     onClick={() => router.push(`/admin/blogs/edit/${blog.id}`)}
-                    className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition"
+                    className="px-4 py-2 bg-[var(--green)] text-[var(--font)] rounded"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleTogglePublish(blog)}
-                    className={`px-4 py-2 rounded transition ${
+                    className={`px-4 py-2 rounded ${
                       blog.isPublished
-                        ? "bg-yellow-600 hover:bg-yellow-700 text-white"
-                        : "bg-green-600 hover:bg-green-700 text-white"
+                        ? "bg-[var(--orange)] text-[var(--font)]"
+                        : "bg-[var(--green)] text-[var(--font)]"
                     }`}
                   >
                     {blog.isPublished ? "Unpublish" : "Publish"}
                   </button>
                   <button
                     onClick={() => handleDelete(blog.id)}
-                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+                    className="px-4 py-2 bg-[var(--pink)] text-[var(--font)] rounded"
                   >
                     Delete
                   </button>
