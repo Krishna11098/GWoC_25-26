@@ -40,12 +40,10 @@ const PlayfulHeading = ({
     hidden: {
       opacity: 0,
       y: 60, // Start from below
-      scale: 0.5,
     },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
         type: "spring",
         damping: 10, // Low damping = high bounce
