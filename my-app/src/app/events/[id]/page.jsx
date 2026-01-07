@@ -205,17 +205,24 @@ export default function EventDetailPage() {
 
   const handleBookingComplete = async (bookingId, seatsCount) => {
     console.log(`✅ Booking confirmed! ID: ${bookingId}, Seats: ${seatsCount}`);
+    console.log(`📊 Event data:`, event);
+    console.log(`🪙 coinsPerSeat:`, event?.coinsPerSeat, event?.coinsReward);
+    
     setShowPayment(false);
+
+    // Calculate coins earned using the actual coinsPerSeat value
+    // Ensure both values are numbers
+    const coinsPerSeat = Number(event?.coinsPerSeat || event?.coinsReward || 0);
+    const seatsCountNum = Number(seatsCount) || selectedSeatsCount || 1;
+    const coinsEarned = coinsPerSeat * seatsCountNum;
+
+    console.log(`💰 Coins calculation: ${coinsPerSeat} * ${seatsCountNum} = ${coinsEarned}`);
 
     // Show success message
     const message =
       totalAmount === 0
-        ? `✅ Free Booking Successful!\nBooking ID: ${bookingId}\nSeats: ${seatsCount}\nCoins earned: ${
-            seatsCount * 100
-          }`
-        : `✅ Payment Successful!\nBooking ID: ${bookingId}\nSeats: ${seatsCount}\nAmount: ₹${totalAmount}\nCoins earned: ${
-            seatsCount * 100
-          }`;
+        ? `✅ Free Booking Successful!\nBooking ID: ${bookingId}\nSeats: ${seatsCountNum}\nCoins earned: ${coinsEarned}`
+        : `✅ Payment Successful!\nBooking ID: ${bookingId}\nSeats: ${seatsCountNum}\nAmount: ₹${totalAmount}\nCoins earned: ${coinsEarned}`;
 
     alert(message);
 
@@ -772,7 +779,7 @@ export default function EventDetailPage() {
                       Earn Reward Coins
                     </div>
                     <div className="text-sm text-amber-700">
-                      Get {selectedSeatsCount * 100} coins for attending
+                      Get {selectedSeatsCount * (event?.coinsPerSeat || event?.coinsReward || 0)} coins for attending
                     </div>
                   </div>
                 </div>

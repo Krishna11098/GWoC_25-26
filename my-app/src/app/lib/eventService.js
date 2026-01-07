@@ -113,7 +113,14 @@ class EventService {
         // Ensure all required fields have defaults
         totalSeats: parseInt(eventData.totalSeats) || 50,
         maxSeatsPerUser: parseInt(eventData.maxSeatsPerUser) || 4,
-        price: parseFloat(eventData.price) || 0,
+        price:
+          eventData.price !== undefined
+            ? parseFloat(eventData.price)
+            : parseFloat(eventData.pricePerSeat) || 0,
+        pricePerSeat:
+          eventData.pricePerSeat !== undefined
+            ? parseFloat(eventData.pricePerSeat)
+            : parseFloat(eventData.price) || 0,
         coinsPerSeat: parseInt(eventData.coinsPerSeat) || 100,
         active: true,
       };
@@ -152,6 +159,19 @@ class EventService {
         ...eventData,
         updatedAt: serverTimestamp(),
       };
+
+      // Sync price and pricePerSeat if one is updated but not the other
+      if (
+        updateData.pricePerSeat !== undefined &&
+        updateData.price === undefined
+      ) {
+        updateData.price = updateData.pricePerSeat;
+      } else if (
+        updateData.price !== undefined &&
+        updateData.pricePerSeat === undefined
+      ) {
+        updateData.pricePerSeat = updateData.price;
+      }
 
       // Convert date if present
       if (updateData.date) {
