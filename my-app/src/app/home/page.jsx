@@ -11,6 +11,7 @@ import FadeInSection from "@/components/FadeInSection";
 import CTASection from "@/components/CTASection";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
+import ThreePillars from "@/components/ThreePillars";
 
 export default function HomePage() {
   return (
@@ -18,8 +19,9 @@ export default function HomePage() {
       <ScrollProgress />
       <Navbar />
       <HeroSection />
-      <Subheading />
-      <ScrollAnimation />
+       <Subheading />
+      {/*<ScrollAnimation /> */}
+      <ThreePillars />
       <ProofOfJoy />
       <Walletsystem />
       <CTASection />
