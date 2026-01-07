@@ -28,6 +28,7 @@ export async function GET(req) {
         difficulty: data.difficulty,
         coins: data.coins,
         movieNo: data.movieNo,
+        hints: Array.isArray(data.hints) ? data.hints : [],
         // Do not send answer to client
       };
     });
