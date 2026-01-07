@@ -17,6 +17,7 @@ export default function MoviesPage() {
   const [answers, setAnswers] = useState({});
   const [submitting, setSubmitting] = useState({});
   const [results, setResults] = useState({});
+  const [hintCounts, setHintCounts] = useState({});
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -38,6 +39,10 @@ export default function MoviesPage() {
       if (res.ok) {
         const data = await res.json();
         setMovies(data);
+        // initialize hint counts for each movie
+        const initialHints = {};
+        data.forEach((m) => (initialHints[m.id] = 0));
+        setHintCounts(initialHints);
       } else {
         setError("Failed to fetch movies");
       }
@@ -83,6 +88,14 @@ export default function MoviesPage() {
     } finally {
       setSubmitting((prev) => ({ ...prev, [movieId]: false }));
     }
+  };
+
+  const revealNextHint = (movieId, totalHints) => {
+    setHintCounts((prev) => {
+      const current = prev[movieId] || 0;
+      const next = Math.min(current + 1, totalHints);
+      return { ...prev, [movieId]: next };
+    });
   };
 
   if (loading) {
@@ -143,6 +156,28 @@ export default function MoviesPage() {
                         Clue ({movie.clueType}): {movie.clueData}
                       </p>
                       <p className="text-sm">Coins: {movie.coins}</p>
+                      {Array.isArray(movie.hints) && movie.hints.length > 0 && (
+                        <div className="mt-3">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-sm font-medium">Hints</span>
+                            <button
+                              type="button"
+                              onClick={() => revealNextHint(movie.id, movie.hints.length)}
+                              disabled={(hintCounts[movie.id] || 0) >= movie.hints.length}
+                              className="px-3 py-1 rounded bg-[var(--orange)] disabled:opacity-50 text-sm"
+                            >
+                              { (hintCounts[movie.id] || 0) >= movie.hints.length ? "No more hints" : "Show Hint" }
+                            </button>
+                          </div>
+                          {(hintCounts[movie.id] || 0) > 0 && (
+                            <ul className="list-disc ml-5 text-sm opacity-90">
+                              {movie.hints.slice(0, hintCounts[movie.id]).map((h, i) => (
+                                <li key={i}>{h}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
 
