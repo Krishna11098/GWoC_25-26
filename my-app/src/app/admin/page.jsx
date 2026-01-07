@@ -198,6 +198,12 @@ export default function AdminDashboard() {
               🧩 Manage Riddles
             </a>
             <a
+              href="/admin/movies"
+              className="block w-full text-center px-4 py-2 bg-font text-white rounded-lg hover:bg-font/80 hover:text-black"
+            >
+              🎬 Manage Movies
+            </a>
+            <a
               href="/admin/blogs"
               className="block w-full text-center px-4 py-2 bg-font text-white rounded-lg hover:bg-font/80 hover:text-black"
             >
