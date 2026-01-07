@@ -10,6 +10,7 @@ import {
   serverTimestamp,
   getDoc,
   arrayUnion,
+  Timestamp,
 } from "firebase/firestore";
 
 export async function POST(request) {
@@ -49,7 +50,7 @@ export async function POST(request) {
 
     console.log("✅ Payment signature verified");
 
-    // Get event document to fetch fixed coins reward
+    // Get event document to fetch coins per seat
     const eventRef = doc(db, "events", eventId);
     const eventDoc = await getDoc(eventRef);
     
@@ -57,8 +58,9 @@ export async function POST(request) {
     let eventData = {};
     if (eventDoc.exists()) {
       eventData = eventDoc.data();
-      coinsEarned = eventData.coinsReward || 0;
-      console.log(`Event ${eventId} offers ${coinsEarned} fixed coins`);
+      const coinsPerSeat = eventData.coinsPerSeat || eventData.coinsReward || 0;
+      coinsEarned = coinsPerSeat * seatsCount;
+      console.log(`Event ${eventId} offers ${coinsPerSeat} coins per seat, total: ${coinsEarned} coins for ${seatsCount} seats`);
     } else {
       console.warn(`Event ${eventId} not found, no coins will be earned`);
     }
@@ -99,15 +101,27 @@ export async function POST(request) {
     const bookingsRef = collection(db, "bookings");
     const bookingDoc = await addDoc(bookingsRef, bookingData);
 
-    // Update event booked seats count (reuse eventRef from above)
+    // Get user details for bookedUsers entry
+    const userRef = doc(db, "users", userId);
+    const userDoc = await getDoc(userRef);
+    const userData = userDoc.exists() ? userDoc.data() : { name: "Unknown" };
+    const username = userData.name || userData.displayName || userName || "Unknown User";
+
+    // Update event booked seats count AND add to bookedUsers array
     await updateDoc(eventRef, {
       bookedSeats: increment(seatsCount),
+      bookedUsers: arrayUnion({
+        userId,
+        username,
+        seatsBooked: seatsCount,
+        paymentDate: Timestamp.now(),
+        amount: amount / 100,
+        bookingId,
+      }),
       updatedAt: serverTimestamp(),
     });
 
-    // Update user's userEvents and wallet
-    const userRef = doc(db, "users", userId);
-    const userDoc = await getDoc(userRef);
+    // Update user's userEvents and wallet (userRef already defined above)
     
     // Create user event entry
     const userEventEntry = {

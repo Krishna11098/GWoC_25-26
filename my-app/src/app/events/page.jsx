@@ -750,26 +750,40 @@ export default function EventsCalendarPage() {
                   </div>
                 )}
 
-                {selectedEvent.dateValue >= new Date() && (
-                  <div className="mt-6 flex gap-4">
-                    {selectedEvent.availableSeats > 0 ? (
-                      <a
-                        href={`/events/${selectedEvent.id}`}
-                        onClick={closeModal}
-                        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
-                      >
-                        Book Now
-                      </a>
-                    ) : (
-                      <button
-                        disabled
-                        className="px-6 py-3 bg-gray-400 text-white rounded-lg font-medium cursor-not-allowed"
-                      >
-                        Sold Out
-                      </button>
-                    )}
-                  </div>
-                )}
+                <div className="mt-6 flex gap-4 flex-wrap">
+                  {/* Get Directions Button */}
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      selectedEvent.location || selectedEvent.venue || ""
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium flex items-center gap-2"
+                  >
+                    📍 Get Directions
+                  </a>
+
+                  {selectedEvent.dateValue >= new Date() && (
+                    <>
+                      {selectedEvent.availableSeats > 0 ? (
+                        <a
+                          href={`/events/${selectedEvent.id}`}
+                          onClick={closeModal}
+                          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+                        >
+                          Book Now
+                        </a>
+                      ) : (
+                        <button
+                          disabled
+                          className="px-6 py-3 bg-gray-400 text-white rounded-lg font-medium cursor-not-allowed"
+                        >
+                          Sold Out
+                        </button>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>

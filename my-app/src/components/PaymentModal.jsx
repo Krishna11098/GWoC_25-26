@@ -176,7 +176,7 @@ export default function PaymentModal({
           syncToGoogleCalendar(data.bookingId, data.eventData);
         }
         
-        onBookingComplete(data.bookingId, seatIds);
+        onBookingComplete(data.bookingId, seatsCount);
         onClose();
       } else {
         throw new Error(data.error || "Booking failed");
@@ -215,7 +215,7 @@ export default function PaymentModal({
       }
 
       if (data.success) {
-        onBookingComplete(data.bookingId, seatIds);
+        onBookingComplete(data.bookingId, seatsCount);
         onClose();
       } else {
         throw new Error(data.error || "Booking failed");
@@ -297,7 +297,7 @@ export default function PaymentModal({
               syncToGoogleCalendar(verifyData.bookingId, verifyData.eventData);
             }
 
-            onBookingComplete(verifyData.bookingId, seatIds);
+            onBookingComplete(verifyData.bookingId, seatsCount);
             onClose();
           } catch (error) {
             console.error("Payment verification error:", error);

@@ -419,7 +419,7 @@ export default function AllEventsPage() {
                             ₹{event.price} per seat
                           </div>
                           <div className="text-yellow-600">
-                            {event.coinsReward} coins reward
+                            {event.coinsPerSeat || event.coinsReward || 0} coins per seat
                           </div>
                           <div className="text-xs text-gray-500">
                             Max: {event.maxSeatsPerUser} per user
@@ -463,13 +463,19 @@ export default function AllEventsPage() {
 
                       {/* Actions */}
                       <td className="px-6 py-4">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5 flex-wrap">
                           <Link
                             href={`/events/${event.id}`}
                             target="_blank"
                             className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
                           >
                             View
+                          </Link>
+                          <Link
+                            href={`/admin/events/${event.id}/bookings`}
+                            className="px-3 py-1 text-sm bg-green-50 text-green-700 rounded hover:bg-green-100"
+                          >
+                            Bookings
                           </Link>
                           <Link
                             href={`/admin/events/edit/${event.id}`}
