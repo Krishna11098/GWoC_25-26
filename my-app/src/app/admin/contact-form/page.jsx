@@ -316,10 +316,10 @@ export default function AdminExperiencesPage() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <h1 className="text-3xl font-bold text-font">
-                  Experience Requests
+                  Contact Form Requests
                 </h1>
                 <p className="text-font-2 mt-2">
-                  Manage experience requests submitted by users
+                  Manage contact form requests submitted by users
                 </p>
               </div>
               <button
