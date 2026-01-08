@@ -83,7 +83,11 @@ export default function ProfilePage() {
         if (gamesRes.ok) gamesHistory = await gamesRes.json();
       } catch (_) {}
 
-      setUserData({ ...profileData, walletHistory, gamesHistory });
+      setUserData({
+        ...profileData,
+        walletHistory,
+        gamesHistory,
+      });
     } catch (error) {
       console.error("Error fetching user data:", error);
     } finally {
@@ -130,19 +134,37 @@ export default function ProfilePage() {
           {/* Hero */}
           <div
             className="overflow-hidden rounded-3xl border shadow-sm"
-            style={{ backgroundColor: "white", borderColor: "var(--color-green)" }}
+            style={{
+              backgroundColor: "white",
+              borderColor: "var(--color-green)",
+            }}
           >
-            <div className="px-6 py-10 md:px-10" style={{ backgroundColor: "var(--color-font)" }}>
+            <div
+              className="px-6 py-10 md:px-10"
+              style={{ backgroundColor: "var(--color-font)" }}
+            >
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div className="flex items-center gap-4 md:gap-6">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl text-2xl font-bold uppercase" style={{ backgroundColor: "var(--color-orange)", color: "var(--color-font)" }}>
+                  <div
+                    className="flex h-16 w-16 items-center justify-center rounded-2xl text-2xl font-bold uppercase"
+                    style={{
+                      backgroundColor: "var(--color-orange)",
+                      color: "var(--color-font)",
+                    }}
+                  >
                     {avatarFallback}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: "white" }}>
+                    <p
+                      className="text-sm font-semibold uppercase tracking-[0.15em]"
+                      style={{ color: "white" }}
+                    >
                       Profile
                     </p>
-                    <h1 className="text-3xl font-bold md:text-4xl" style={{ color: "white" }}>
+                    <h1
+                      className="text-3xl font-bold md:text-4xl"
+                      style={{ color: "white" }}
+                    >
                       {authUser?.displayName || authUser?.email || "Guest"}
                     </h1>
                     <p style={{ color: "rgba(255, 255, 255, 0.7)" }}>
@@ -150,7 +172,10 @@ export default function ProfilePage() {
                     </p>
                   </div>
                 </div>
-                <div className="rounded-2xl bg-white/15 px-4 py-3 text-sm font-semibold md:px-6" style={{ color: "white" }}>
+                <div
+                  className="rounded-2xl bg-white/15 px-4 py-3 text-sm font-semibold md:px-6"
+                  style={{ color: "white" }}
+                >
                   {authUser ? "Signed In" : "Not Signed In"}
                 </div>
               </div>
@@ -160,7 +185,10 @@ export default function ProfilePage() {
           {!loadingUser && !authUser && (
             <div
               className="rounded-2xl border p-6 text-center shadow-sm"
-              style={{ backgroundColor: "var(--color-pink)", borderColor: "var(--color-orange)" }}
+              style={{
+                backgroundColor: "var(--color-pink)",
+                borderColor: "var(--color-orange)",
+              }}
             >
               <p className="text-lg font-semibold text-font">
                 You are not signed in.
@@ -185,12 +213,24 @@ export default function ProfilePage() {
               {loadingData ? (
                 <SkeletonCard />
               ) : (
-                <div className="rounded-2xl border p-6 shadow-sm" style={{ backgroundColor: "white", borderColor: "var(--color-green)" }}>
+                <div
+                  className="rounded-2xl border p-6 shadow-sm"
+                  style={{
+                    backgroundColor: "white",
+                    borderColor: "var(--color-green)",
+                  }}
+                >
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-semibold uppercase" style={{ color: "var(--color-font)" }}>
+                    <span
+                      className="text-sm font-semibold uppercase"
+                      style={{ color: "var(--color-font)" }}
+                    >
                       Total Coins
                     </span>
-                    <span className="text-3xl font-bold" style={{ color: "var(--color-font)" }}>
+                    <span
+                      className="text-3xl font-bold"
+                      style={{ color: "var(--color-font)" }}
+                    >
                       {userData?.wallet?.coins || 0}
                     </span>
                   </div>
@@ -221,22 +261,34 @@ export default function ProfilePage() {
                         <div
                           key={idx}
                           className="flex items-center justify-between rounded-xl border px-4 py-3"
-                          style={{ backgroundColor: "white", borderColor: "var(--color-green)" }}
+                          style={{
+                            backgroundColor: "white",
+                            borderColor: "var(--color-green)",
+                          }}
                         >
                           <div>
-                            <p className="font-semibold capitalize" style={{ color: "var(--color-font)" }}>
+                            <p
+                              className="font-semibold capitalize"
+                              style={{ color: "var(--color-font)" }}
+                            >
                               {(tx.action || tx.type || "transaction").replace(
                                 /_/g,
                                 " "
                               )}
                             </p>
-                            <p className="text-xs" style={{ color: "rgba(82, 99, 85, 0.7)" }}>
+                            <p
+                              className="text-xs"
+                              style={{ color: "rgba(82, 99, 85, 0.7)" }}
+                            >
                               {parseDateSafe(
                                 tx.date || tx.createdAt
                               )?.toLocaleString() || "—"}
                             </p>
                           </div>
-                          <span className="font-bold" style={{ color: "var(--color-font)" }}>
+                          <span
+                            className="font-bold"
+                            style={{ color: "var(--color-font)" }}
+                          >
                             {typeof tx.coins === "number"
                               ? tx.coins > 0
                                 ? `+${tx.coins}`
@@ -266,7 +318,10 @@ export default function ProfilePage() {
                     0) > 0 ? (
                   <div
                     className="rounded-2xl border p-4"
-                    style={{ backgroundColor: "white", borderColor: "var(--color-green)" }}
+                    style={{
+                      backgroundColor: "white",
+                      borderColor: "var(--color-green)",
+                    }}
                   >
                     {(() => {
                       const entries = (
@@ -291,14 +346,23 @@ export default function ProfilePage() {
                               <div
                                 key={idx}
                                 className="flex items-center justify-between rounded-xl border px-4 py-3"
-                                style={{ backgroundColor: "white", borderColor: "var(--color-green)" }}
+                                style={{
+                                  backgroundColor: "white",
+                                  borderColor: "var(--color-green)",
+                                }}
                               >
                                 <div>
-                                  <p className="font-semibold capitalize" style={{ color: "var(--color-font)" }}>
+                                  <p
+                                    className="font-semibold capitalize"
+                                    style={{ color: "var(--color-font)" }}
+                                  >
                                     {tx.action.replace(/_/g, " ")}
                                     {tx.source ? ` · ${tx.source}` : ""}
                                   </p>
-                                  <p className="text-xs" style={{ color: "rgba(82, 99, 85, 0.7)" }}>
+                                  <p
+                                    className="text-xs"
+                                    style={{ color: "rgba(82, 99, 85, 0.7)" }}
+                                  >
                                     {tx.date?.toLocaleString() || "—"}
                                   </p>
                                 </div>
@@ -321,7 +385,10 @@ export default function ProfilePage() {
                           <div className="flex items-center justify-between mt-4">
                             <button
                               className="rounded-lg px-3 py-2 text-sm font-semibold hover:opacity-90 transition disabled:opacity-50"
-                              style={{ backgroundColor: "var(--color-font)", color: "white" }}
+                              style={{
+                                backgroundColor: "var(--color-font)",
+                                color: "white",
+                              }}
                               onClick={() =>
                                 setWalletPage((p) => Math.max(0, p - 1))
                               }
@@ -329,7 +396,10 @@ export default function ProfilePage() {
                             >
                               Prev
                             </button>
-                            <p className="text-sm" style={{ color: "rgba(82, 99, 85, 0.7)" }}>
+                            <p
+                              className="text-sm"
+                              style={{ color: "rgba(82, 99, 85, 0.7)" }}
+                            >
                               Page {walletPage + 1} of{" "}
                               {Math.max(
                                 1,
@@ -338,7 +408,10 @@ export default function ProfilePage() {
                             </p>
                             <button
                               className="rounded-lg px-3 py-2 text-sm font-semibold hover:opacity-90 transition disabled:opacity-50"
-                              style={{ backgroundColor: "var(--color-font)", color: "white" }}
+                              style={{
+                                backgroundColor: "var(--color-font)",
+                                color: "white",
+                              }}
                               onClick={() =>
                                 setWalletPage((p) =>
                                   p + 1 < Math.ceil(entries.length / PAGE_SIZE)
@@ -369,9 +442,7 @@ export default function ProfilePage() {
               {/* Recent Orders */}
               <div>
                 <div className="flex justify-between items-center mb-3">
-                  <h3 className="text-lg font-bold text-font">
-                    Recent Orders
-                  </h3>
+                  <h3 className="text-lg font-bold text-font">Recent Orders</h3>
                   {userData?.userOrders?.length > 0 && (
                     <button
                       onClick={() => router.push("/my-orders")}
@@ -389,7 +460,10 @@ export default function ProfilePage() {
                       <div
                         key={idx}
                         className="flex items-center justify-between rounded-xl border px-4 py-3 cursor-pointer hover:shadow-md transition-all"
-                        style={{ backgroundColor: "white", borderColor: "var(--color-green)" }}
+                        style={{
+                          backgroundColor: "white",
+                          borderColor: "var(--color-green)",
+                        }}
                         onClick={() => router.push("/my-orders")}
                       >
                         <div>
@@ -420,6 +494,71 @@ export default function ProfilePage() {
                   <EmptyState
                     title="No orders yet"
                     description="Visit the shop to place your first order."
+                  />
+                )}
+              </div>
+
+              {/* Recent Events */}
+              <div>
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="text-lg font-bold text-font">Recent Events</h3>
+                  {userData?.userEvents?.length > 0 && (
+                    <button
+                      onClick={() => router.push("/my-events")}
+                      className="text-blue-600 hover:text-blue-800 text-sm font-semibold"
+                    >
+                      View All →
+                    </button>
+                  )}
+                </div>
+                {loadingData ? (
+                  <SkeletonCard />
+                ) : userData?.userEvents?.length > 0 ? (
+                  <div className="space-y-2">
+                    {userData.userEvents.slice(0, 3).map((event, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between rounded-xl border px-4 py-3 cursor-pointer hover:shadow-md transition-all"
+                        style={{
+                          backgroundColor: "white",
+                          borderColor: "var(--color-green)",
+                        }}
+                        onClick={() => router.push("/my-events")}
+                      >
+                        <div>
+                          <p className="font-semibold text-font">
+                            {event.eventName || event.name || "Event"}
+                          </p>
+                          <p className="text-xs text-font/70">
+                            {event.eventDate
+                              ? new Date(event.eventDate).toLocaleDateString()
+                              : "—"}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-font">
+                            {event.price > 0
+                              ? `₹${event.price?.toFixed(2) || "0.00"}`
+                              : "Free"}
+                          </p>
+                          <span
+                            className={`text-xs font-semibold capitalize`}
+                            style={{
+                              color: event.attended
+                                ? "var(--color-green)"
+                                : "var(--color-orange)",
+                            }}
+                          >
+                            {event.attended ? "✓ Attended" : "Registered"}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <EmptyState
+                    title="No events yet"
+                    description="Browse and register for events to attend."
                   />
                 )}
               </div>
@@ -469,7 +608,9 @@ export default function ProfilePage() {
                       >
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                       </svg>
-                      <p className="font-bold" style={{ color: "white" }}>Community Member</p>
+                      <p className="font-bold" style={{ color: "white" }}>
+                        Community Member
+                      </p>
                     </div>
                   )}
                 </>
@@ -478,7 +619,10 @@ export default function ProfilePage() {
               {/* Games Played History with Pagination */}
               <div
                 className="rounded-2xl border p-5 shadow-sm"
-                style={{ backgroundColor: "white", borderColor: "var(--color-green)" }}
+                style={{
+                  backgroundColor: "white",
+                  borderColor: "var(--color-green)",
+                }}
               >
                 <h3 className="text-lg font-bold text-font mb-3">
                   Games Played
@@ -510,25 +654,37 @@ export default function ProfilePage() {
                             <div
                               key={idx}
                               className="rounded-xl border px-4 py-3 cursor-pointer hover:opacity-90 transition"
-                              style={{ backgroundColor: "white", borderColor: "var(--color-green)" }}
+                              style={{
+                                backgroundColor: "white",
+                                borderColor: "var(--color-green)",
+                              }}
                               onClick={() => setSelectedGame(g)}
                             >
                               <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0">
                                   <div className="flex items-center gap-2">
-                                    <p className="font-semibold truncate" style={{ color: "var(--color-font)" }}>
+                                    <p
+                                      className="font-semibold truncate"
+                                      style={{ color: "var(--color-font)" }}
+                                    >
                                       {g.title}
                                     </p>
                                     {g.difficulty && (
                                       <Badge text={g.difficulty} tone="info" />
                                     )}
                                   </div>
-                                  <p className="text-xs" style={{ color: "rgba(82, 99, 85, 0.7)" }}>
+                                  <p
+                                    className="text-xs"
+                                    style={{ color: "rgba(82, 99, 85, 0.7)" }}
+                                  >
                                     {g.date?.toLocaleString() || "—"}
                                   </p>
                                 </div>
                                 <div className="text-right">
-                                  <span className="font-bold block" style={{ color: "var(--color-font)" }}>
+                                  <span
+                                    className="font-bold block"
+                                    style={{ color: "var(--color-font)" }}
+                                  >
                                     {g.coins > 0 ? `+${g.coins}` : `${g.coins}`}
                                   </span>
                                   <span
@@ -549,7 +705,10 @@ export default function ProfilePage() {
                         <div className="flex items-center justify-between mt-4">
                           <button
                             className="rounded-lg px-3 py-2 text-sm font-semibold hover:opacity-90 transition disabled:opacity-50"
-                            style={{ backgroundColor: "var(--color-font)", color: "white" }}
+                            style={{
+                              backgroundColor: "var(--color-font)",
+                              color: "white",
+                            }}
                             onClick={() =>
                               setGamesPage((p) => Math.max(0, p - 1))
                             }
@@ -563,7 +722,10 @@ export default function ProfilePage() {
                           </p>
                           <button
                             className="rounded-lg px-3 py-2 text-sm font-semibold hover:opacity-90 transition disabled:opacity-50"
-                            style={{ backgroundColor: "var(--color-font)", color: "white" }}
+                            style={{
+                              backgroundColor: "var(--color-font)",
+                              color: "white",
+                            }}
                             onClick={() =>
                               setGamesPage((p) =>
                                 p + 1 < Math.ceil(entries.length / PAGE_SIZE)
@@ -593,7 +755,10 @@ export default function ProfilePage() {
               {/* Cart */}
               <div
                 className="rounded-2xl border p-5 shadow-sm"
-                style={{ backgroundColor: "white", borderColor: "var(--color-green)" }}
+                style={{
+                  backgroundColor: "white",
+                  borderColor: "var(--color-green)",
+                }}
               >
                 <h3 className="text-lg font-bold text-font mb-3">Cart</h3>
                 {loadingData ? (
@@ -603,7 +768,13 @@ export default function ProfilePage() {
                     <p className="text-sm font-semibold text-font/70 mb-3">
                       {userData.cart.items.length} item(s) in cart
                     </p>
-                    <button className="w-full rounded-lg px-4 py-2 font-semibold hover:opacity-90 transition-opacity" style={{ backgroundColor: "var(--color-font)", color: "white" }}>
+                    <button
+                      className="w-full rounded-lg px-4 py-2 font-semibold hover:opacity-90 transition-opacity"
+                      style={{
+                        backgroundColor: "var(--color-font)",
+                        color: "white",
+                      }}
+                    >
                       View Cart
                     </button>
                   </div>
@@ -649,7 +820,9 @@ function ToggleRow({ label, description, enabled, onChange }) {
         <span
           className={`absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full shadow transition-transform duration-200 ${
             enabled ? "translate-x-6" : "translate-x-1"
-          }`}          style={{ backgroundColor: "white" }}        />
+          }`}
+          style={{ backgroundColor: "white" }}
+        />
       </button>
     </div>
   );
@@ -664,8 +837,12 @@ function EmptyState({ title, description }) {
         backgroundColor: "var(--color-pink)",
       }}
     >
-      <p className="font-semibold" style={{ color: "var(--color-font)" }}>{title}</p>
-      <p className="text-sm" style={{ color: "rgba(82, 99, 85, 0.7)" }}>{description}</p>
+      <p className="font-semibold" style={{ color: "var(--color-font)" }}>
+        {title}
+      </p>
+      <p className="text-sm" style={{ color: "rgba(82, 99, 85, 0.7)" }}>
+        {description}
+      </p>
     </div>
   );
 }
@@ -822,7 +999,11 @@ function GameDetailModal({ game, onClose }) {
           </div>
           <button
             className="rounded-lg px-3 py-1 text-sm font-semibold"
-            style={{ backgroundColor: "white", border: "1px solid var(--color-green)", color: "var(--color-font)" }}
+            style={{
+              backgroundColor: "white",
+              border: "1px solid var(--color-green)",
+              color: "var(--color-font)",
+            }}
             onClick={onClose}
           >
             Close
@@ -833,7 +1014,10 @@ function GameDetailModal({ game, onClose }) {
             <div
               key={i}
               className="rounded-xl border px-4 py-3"
-              style={{ backgroundColor: "white", borderColor: "var(--color-green)" }}
+              style={{
+                backgroundColor: "white",
+                borderColor: "var(--color-green)",
+              }}
             >
               <p className="text-xs font-semibold text-font/70 uppercase">
                 {f.label}
