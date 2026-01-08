@@ -1,9 +1,7 @@
 "use client";
-import React, { useLayoutEffect, useRef, useEffect } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-
 
 const cardsData = [
   {
@@ -11,24 +9,28 @@ const cardsData = [
     title: "Play at Home",
     color: "bg-[#cbd8ac]",
     bgPos: "0% 50%",
+    image: "/pillars/home.png",
   },
   {
     id: 2,
     title: "Play Together",
     color: "bg-[#f7d57c]",
     bgPos: "33.3% 50%",
+    image: "/pillars/together.png",
   },
   {
     id: 3,
     title: "Play for Occasions",
     color: "bg-[#f5cfc2]",
     bgPos: "66.6% 50%",
+    image: "/pillars/occasions.png",
   },
   {
     id: 4,
     title: "Play and Earn Points",
     color: "bg-[#d1d1d1]",
     bgPos: "100% 50%",
+    image: "/pillars/earn.png",
   },
 ];
 
@@ -39,81 +41,112 @@ export default function ThreePillars() {
   const containerRef = useRef(null);
   const cardsRef = useRef([]);
 
+  const desktopGridPositions = [
+    { x: -180, y: -140 },
+    { x: 180, y: -140 },
+    { x: -180, y: 140 },
+    { x: 180, y: 140 },
+  ];
+
+  const mobileGridPositions = [
+    { x: -120, y: -80 },
+    { x: 120, y: -80 },
+    { x: -120, y: 120 },
+    { x: 120, y: 120 },
+  ];
+
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    const mm = gsap.matchMedia();
 
-    const ctx = gsap.context(() => {
-      // Background alignment logic
-      const updateBgPosition = () => {
-        if (!containerRef.current) return;
-        const offsetTop = containerRef.current.offsetTop;
-        gsap.set(containerRef.current, {
-          backgroundPositionY: -offsetTop,
-          backgroundPositionX: "center",
+    mm.add(
+      {
+        isDesktop: "(min-width: 768px)",
+        isMobile: "(max-width: 767px)",
+      },
+      (context) => {
+        const { isDesktop, isMobile } = context.conditions;
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: isDesktop ? "+=1500" : "+=900",
+            pin: true,
+            scrub: 1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
         });
-      };
 
-      updateBgPosition();
-      window.addEventListener("resize", updateBgPosition);
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "+=1500", // Slightly shorter for better feel
-          pin: true,
-          scrub: 1,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // 1. Initial Horizontal Spread
-      tl.to(cardsRef.current, {
-        x: (i) => (i - 1.5) * 340,
-        duration: 1,
-        ease: "power2.inOut",
-      });
-
-      // 2. The 3D Flip
-      tl.to(
-        cardsRef.current,
-        {
-          rotationY: 180,
+        // 1. Initial Spread into 2x2 grid
+        tl.to(cardsRef.current, {
+          x: (i) =>
+            isDesktop
+              ? desktopGridPositions[i]?.x ?? 0
+              : mobileGridPositions[i]?.x ?? 0,
+          y: (i) =>
+            isDesktop
+              ? desktopGridPositions[i]?.y ?? 0
+              : mobileGridPositions[i]?.y ?? 0,
+          scale: isDesktop ? 1 : 0.92,
           duration: 1,
-          stagger: 0.1,
-          ease: "back.out(1.2)", // More "premium" feel
-        },
-        "-=0.5"
-      );
+          ease: "power2.inOut",
+        });
 
-      // Refresh to capture initial layout
-      ScrollTrigger.refresh();
+        // 2. The 3D Flip
+        tl.to(
+          cardsRef.current,
+          {
+            rotationY: isDesktop ? 180 : 140,
+            duration: 1,
+            stagger: 0.1,
+            ease: "back.out(1.1)",
+          },
+          "-=0.5"
+        );
 
-      return () => {
-        window.removeEventListener("resize", updateBgPosition);
-      };
-    }, containerRef);
+        return () => {
+          // Cleanup handled by mm.revert()
+        };
+      }
+    );
 
-    return () => ctx.revert();
+    // Background alignment logic (remains independent of matchMedia for simplicity)
+    const updateBgPosition = () => {
+      if (!containerRef.current) return;
+      const offsetTop = containerRef.current.offsetTop;
+      gsap.set(containerRef.current, {
+        backgroundPositionY: -offsetTop,
+        backgroundPositionX: "center",
+      });
+    };
+
+    updateBgPosition();
+    window.addEventListener("resize", updateBgPosition);
+
+    return () => {
+      mm.revert();
+      window.removeEventListener("resize", updateBgPosition);
+    };
   }, []);
 
   return (
     <div
       ref={containerRef}
       className="h-screen w-full flex flex-col items-center justify-center overflow-hidden relative bg-sticky"
-    //   style={{
-    //     backgroundImage: stickyBg,
-    //     backgroundRepeat: "repeat-y",
-    //     backgroundSize: "100% auto",
-    //     backgroundColor: "var(--bg)",
-    //   }}
+      //   style={{
+      //     backgroundImage: stickyBg,
+      //     backgroundRepeat: "repeat-y",
+      //     backgroundSize: "100% auto",
+      //     backgroundColor: "var(--bg)",
+      //   }}
     >
       <h2 className="text-font text-4xl md:text-5xl font-winky-rough mb-20 z-10 text-center px-4 max-w-2xl">
         Choose your playstyle
       </h2>
 
-      <div className="relative w-[300px] h-[450px] perspective-1000">
+      <div className="relative w-full max-w-4xl h-[520px] md:h-[560px] perspective-1000 px-4">
         {cardsData.map((card, i) => (
           <div
             key={card.id}
@@ -132,14 +165,24 @@ export default function ThreePillars() {
 
             {/* BACK */}
             <div
-              className={`absolute inset-0 backface-hidden rotate-y-180 rounded-3xl flex flex-col justify-end p-8 ${card.color} border border-font/20 shadow-2xl`}
+              className={`absolute inset-0 backface-hidden rotate-y-180 rounded-3xl flex flex-col border-4 border-white shadow-2xl ${card.color} overflow-hidden`}
             >
-              <span className="text-font/50 text-sm mb-2 font-mono">
-                (0{card.id})
-              </span>
-              <h3 className="text-font text-2xl font-winky-rough leading-tight">
-                {card.title}
-              </h3>
+              {/* Image occupies rest of space */}
+              <div className="flex-1 overflow-hidden">
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Text at bottom */}
+              <div className="p-4 md:p-6 text-center relative bg-inherit">
+                <h3 className="text-font text-lg md:text-xl font-winky-rough leading-tight drop-shadow-sm">
+                  {card.title}
+                </h3>
+                <div className="mt-2 h-1 w-12 bg-font/20 mx-auto rounded-full" />
+              </div>
             </div>
           </div>
         ))}

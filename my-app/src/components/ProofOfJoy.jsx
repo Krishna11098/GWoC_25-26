@@ -27,9 +27,9 @@ export default function ProofOfJoy() {
         </div>
 
         {/* ---------- IMAGE GRID ---------- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-200">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[600px] md:h-[800px]">
           {/* Left: Single large image */}
-          <div className="relative overflow-hidden rounded-3xl shadow-2xl">
+          <div className="relative h-[400px] md:h-full overflow-hidden rounded-3xl shadow-2xl">
             <Image
               src="/gallery/image1.png"
               alt="Gallery Image 1"
@@ -44,9 +44,9 @@ export default function ProofOfJoy() {
           </div>
 
           {/* Right: Top and bottom sections */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 h-[800px] md:h-full">
             {/* Top: Single image */}
-            <div className="relative overflow-hidden rounded-3xl shadow-2xl h-1/2">
+            <div className="relative h-1/2 overflow-hidden rounded-3xl shadow-2xl">
               <Image
                 src="/gallery/image2.png"
                 alt="Gallery Image 2"
