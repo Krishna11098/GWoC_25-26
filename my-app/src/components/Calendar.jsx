@@ -26,12 +26,10 @@ function getFirstDayOfMonth(year, month) {
   return new Date(year, month, 1).getDay();
 }
 
-export default function Calendar({
-  initialDate = new Date(),
-  events: externalEvents = [],
-}) {
-  const [viewYear, setViewYear] = useState(initialDate.getFullYear());
-  const [viewMonth, setViewMonth] = useState(initialDate.getMonth());
+export default function Calendar({ initialDate, events: externalEvents = [] }) {
+  const _initial = initialDate ?? new Date();
+  const [viewYear, setViewYear] = useState(_initial.getFullYear());
+  const [viewMonth, setViewMonth] = useState(_initial.getMonth());
   const [isHydrated, setIsHydrated] = useState(false);
   const [hoveredDate, setHoveredDate] = useState(null);
   const [viewMode, setViewMode] = useState("month"); // "month", "week", "list"
@@ -39,10 +37,13 @@ export default function Calendar({
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
-    const date = initialDate || new Date();
+    // Only initialize from a provided `initialDate` prop, otherwise
+    // initialize once to the current date and avoid resetting on every render.
+    const date = initialDate ?? new Date();
     setViewYear(date.getFullYear());
     setViewMonth(date.getMonth());
     setIsHydrated(true);
+    // run when a real initialDate prop changes; if undefined, effect won't re-run
   }, [initialDate]);
 
   // Transform external events to calendar format
@@ -129,23 +130,24 @@ export default function Calendar({
   };
 
   const prevMonth = () => {
-    setViewMonth((m) => {
-      if (m === 0) {
-        setViewYear((y) => y - 1);
-        return 11;
-      }
-      return m - 1;
-    });
+    // compute based on current state to avoid closure/stale issues
+    const m = viewMonth - 1;
+    if (m < 0) {
+      setViewMonth(11);
+      setViewYear(viewYear - 1);
+    } else {
+      setViewMonth(m);
+    }
   };
 
   const nextMonth = () => {
-    setViewMonth((m) => {
-      if (m === 11) {
-        setViewYear((y) => y + 1);
-        return 0;
-      }
-      return m + 1;
-    });
+    const m = viewMonth + 1;
+    if (m > 11) {
+      setViewMonth(0);
+      setViewYear(viewYear + 1);
+    } else {
+      setViewMonth(m);
+    }
   };
 
   const goToToday = () => {
@@ -219,27 +221,20 @@ export default function Calendar({
             {/* Navigation buttons */}
             <div className="flex items-center gap-3">
               <button
+                type="button"
                 onClick={prevMonth}
-                className="rounded-lg px-3 py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border text-white hover:bg-white/20"
-                style={{ borderColor: "white" }}
+                className="bg-white/15 hover:bg-white/25 rounded-lg px-3 py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border border-white/50"
                 aria-label="Previous month"
               >
                 ‹
               </button>
               <button
+                type="button"
                 onClick={nextMonth}
-                className="rounded-lg px-3 py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border text-white hover:bg-white/20"
-                style={{ borderColor: "white" }}
+                className="bg-white/15 hover:bg-white/25 rounded-lg px-3 py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border border-white/50"
                 aria-label="Next month"
               >
                 ›
-              </button>
-              <button
-                onClick={goToToday}
-                className="rounded-lg px-4 py-2 transition-all duration-300 text-sm font-semibold border text-white hover:bg-white/20"
-                style={{ borderColor: "white" }}
-              >
-                today
               </button>
             </div>
 

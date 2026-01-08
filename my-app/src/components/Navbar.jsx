@@ -8,10 +8,10 @@ import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
 const navLinks = [
-  { name: "Home", href: "/" },
+  { name: "Home", href: "/home" },
   { name: "Shop", href: "/shop" },
   { name: "Experiences", href: "/experiences" },
-  { name: "Events", href: "/events/calendar" },
+  { name: "Events", href: "/events" },
 ];
 
 const Navbar = () => {
@@ -248,6 +248,26 @@ const Navbar = () => {
                       className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
                     >
                       Sudoku
+                    </Link>
+                    <Link
+                      href="/riddles"
+                      onClick={() => {
+                        setPlayDropdownOpen(false);
+                        setPlayDropdownClicked(false);
+                      }}
+                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
+                    >
+                      Riddles
+                    </Link>
+                    <Link
+                      href="/movies"
+                      onClick={() => {
+                        setPlayDropdownOpen(false);
+                        setPlayDropdownClicked(false);
+                      }}
+                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
+                    >
+                      Movies
                     </Link>
                   </div>
                 </div>

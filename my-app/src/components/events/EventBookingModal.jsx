@@ -11,6 +11,7 @@ export default function EventBookingModal({ event, onClose, onSuccess }) {
   const maxSeatsPerUser = event.maxSeatsPerUser || 4;
   const availableSeats = event.totalSeats - event.bookedSeats;
   const isFreeEvent = event.price === 0;
+  const coinsPerSeat = event.coinsPerSeat || event.coinsReward || 0;
 
   const calculateTotal = () => {
     return numberOfSeats * event.price;
@@ -38,7 +39,7 @@ export default function EventBookingModal({ event, onClose, onSuccess }) {
         eventId: event.id,
         seats: numberOfSeats,
         totalAmount: calculateTotal(),
-        coinsToEarn: event.coinsReward * numberOfSeats,
+        coinsToEarn: coinsPerSeat * numberOfSeats,
       };
 
       const response = await userFetch("/api/events/book", {
@@ -54,7 +55,7 @@ export default function EventBookingModal({ event, onClose, onSuccess }) {
       if (response.ok) {
         alert(
           `✅ Booking Successful!\nSeats: ${numberOfSeats}\nCoins Earned: ${
-            event.coinsReward * numberOfSeats
+            coinsPerSeat * numberOfSeats
           }`
         );
         onSuccess();
@@ -104,7 +105,7 @@ export default function EventBookingModal({ event, onClose, onSuccess }) {
               <div className="flex justify-between">
                 <span className="text-gray-600">Coins per seat:</span>
                 <span className="font-bold text-yellow-600">
-                  +{event.coinsReward}
+                  +{coinsPerSeat}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -194,7 +195,7 @@ export default function EventBookingModal({ event, onClose, onSuccess }) {
                 <div className="flex justify-between">
                   <span>Coins to earn</span>
                   <span className="text-yellow-600 font-bold">
-                    +{event.coinsReward * numberOfSeats}
+                    +{coinsPerSeat * numberOfSeats}
                   </span>
                 </div>
                 <div className="border-t pt-2">

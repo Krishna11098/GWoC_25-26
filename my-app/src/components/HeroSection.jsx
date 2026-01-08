@@ -25,51 +25,52 @@ export default function HeroSection({ scrollProgress = 0 }) {
 
   return (
     <section
-      className="relative min-h-screen grid lg:grid-cols-2 grid-cols-1"
+      className="relative min-h-screen flex flex-col items-center pt-20 md:pt-32 mt-10"
       style={{
         transform: `scale(${scale}) translateY(${translateY}px)`,
         opacity,
-        filter: `blur(${blur}px)`,
         transformOrigin: "center center",
         transition: "filter 0.1s ease-out",
         willChange: "transform, opacity, filter",
       }}
     >
-      {/* Left Section - Text Content */}
-      <div className="flex flex-col justify-center items-start px-8 md:px-16 lg:px-20 py-16 lg:py-0">
-        <div className="max-w-xl">
+      {/* Mesh Background (Optional, if you want it here instead of global)
+      <div className="absolute inset-0 pointer-events-none opacity-50 mesh-gradient -z-10" /> */}
+
+      {/* Top Section - Centered Text Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-8 md:px-16 container mx-auto mt-auto">
+        <div className="max-w-4xl">
           <PlayfulHeading
             text="JOY JUNCTURE"
-            className="font-winky-rough text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-            staggerDelay={0.05}
+            className="font-winky-rough text-6xl md:text-8xl lg:text-9xl font-bold mb-6 italic text-font drop-shadow-sm"
+            staggerDelay={0.06}
           />
           <PlayfulHeading
-            text="Play. Connect. Celebrate "
+            text="Play. Connect. Celebrate."
             as="p"
-            className="font-winky-rough-soft text-xl md:text-2xl font-medium leading-relaxed"
-            staggerDelay={0.02}
+            className="font-winky-rough-soft text-2xl md:text-3xl font-medium leading-relaxed text-font/80 mb-12"
+            staggerDelay={0.03}
           />
         </div>
       </div>
 
-      {/* Right Section - Scrolling Gallery */}
-      <div className="relative h-[60vh] lg:h-screen overflow-hidden">
-        <div className="scroll-container h-full flex flex-col">
-          {/* Duplicate images for seamless infinite scroll */}
-          <div className="scroll-content animate-scroll hover:pause-scroll">
-            {[...galleryImages, ...galleryImages].map((src, index) => (
-              <div
-                key={index}
-                className="w-full h-64 lg:h-80 shrink-0 relative"
-              >
+      {/* Bottom Section - Horizontal Scrolling Gallery */}
+      <div className="m-auto w-full relative overflow-hidden pb-12 pt-12">
+        <div className="flex animate-marquee whitespace-nowrap hover:pause-scroll">
+          {[...galleryImages, ...galleryImages, ...galleryImages].map((src, index) => (
+            <div
+              key={index}
+              className="inline-block px-4 w-[300px] md:w-[450px] shrink-0"
+            >
+              <div className="bg-green/10 backdrop-blur-sm p-3 rounded-[2.5rem] shadow-2xl border-2 border-green transform hover:scale-105 transition-transform duration-500">
                 <img
                   src={src}
                   alt={`Gallery ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-48 md:h-72 object-cover rounded-[2rem]"
                 />
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

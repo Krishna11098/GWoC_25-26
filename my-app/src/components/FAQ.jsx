@@ -41,19 +41,15 @@ export default function FAQ() {
     <section className="px-6 py-24 md:px-10 flex justify-center">
       {/* ENTRY ANIMATION */}
       <div className="w-full max-w-4xl space-y-16 animate-fade-in">
-
         {/* ================= HEADER ================= */}
         <div className="relative mx-auto max-w-3xl text-center space-y-6">
-          
           <p className="relative text-[11px] uppercase tracking-[0.4em]">
             Uh huh we know you have questions!!
           </p>
 
           <h2 className="relative text-3xl md:text-4xl font-extrabold tracking-tight">
             MOST ASKED…
-            <span className="block">
-              or shall we say.. MOST DOUBTED
-            </span>
+            <span className="block">or shall we say.. MOST DOUBTED</span>
           </h2>
 
           {/* OFF-CENTER ACCENT */}
@@ -83,12 +79,12 @@ export default function FAQ() {
                   className={`w-full flex items-start justify-between gap-4 px-7 md:px-8 py-6 text-left transition-all duration-300
                     ${
                       open
-                        ? "bg-pink/50 text-font font-bold underline"
+                        ? "bg-green/80 font-bold underline"
                         : "hover:bg-black/5"
                     }
                   `}
                 >
-                  <span className="text-base md:text-lg font-semibold text-darkgreen">
+                  <span className="text-base md:text-lg font-semibold">
                     {item.question}
                   </span>
 
@@ -110,7 +106,7 @@ export default function FAQ() {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed text-font font-bold bg-pink/50">
+                    <div className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed font-bold bg-green/80">
                       {item.answer}
                     </div>
                   </div>
@@ -119,7 +115,6 @@ export default function FAQ() {
             );
           })}
         </div>
-
       </div>
     </section>
   );

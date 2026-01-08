@@ -24,7 +24,7 @@ const IntroSequence = () => {
   }, [router]);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-white font-sans">
+    <div className="font-winky-rough relative h-screen w-full overflow-hidden bg-white">
       {/* BLACK SLIDING PANEL */}
       <AnimatePresence>
         {stage < 4 && (
