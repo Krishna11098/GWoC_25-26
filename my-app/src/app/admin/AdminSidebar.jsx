@@ -6,7 +6,7 @@ import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-export default function AdminSidebar({ user }) {
+export default function AdminSidebar({ user, isAdmin }) {
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -100,6 +100,16 @@ export default function AdminSidebar({ user }) {
           <span className="mr-3">📝</span>
           Blogs
         </Link>
+
+        {isAdmin && (
+          <Link
+            href="/admin/experiences"
+            className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
+          >
+            <span className="mr-3">🎟️</span>
+            Experience
+          </Link>
+        )}
 
         <Link
           href="/admin/users"

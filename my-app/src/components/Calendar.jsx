@@ -31,6 +31,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
   const [viewYear, setViewYear] = useState(_initial.getFullYear());
   const [viewMonth, setViewMonth] = useState(_initial.getMonth());
   const [isHydrated, setIsHydrated] = useState(false);
+  const [focusDate, setFocusDate] = useState(initialDate ?? new Date());
   const [hoveredDate, setHoveredDate] = useState(null);
   const [viewMode, setViewMode] = useState("month"); // "month", "week", "list"
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -42,6 +43,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
     const date = initialDate ?? new Date();
     setViewYear(date.getFullYear());
     setViewMonth(date.getMonth());
+    setFocusDate(date);
     setIsHydrated(true);
     // run when a real initialDate prop changes; if undefined, effect won't re-run
   }, [initialDate]);
@@ -130,23 +132,51 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
   };
 
   const prevMonth = () => {
-    // compute based on current state to avoid closure/stale issues
+    // If in week view, step back by one week instead of one month
+    if (viewMode === "week") {
+      const newFocus = new Date(focusDate);
+      newFocus.setDate(newFocus.getDate() - 7);
+      setFocusDate(newFocus);
+      setViewYear(newFocus.getFullYear());
+      setViewMonth(newFocus.getMonth());
+      return;
+    }
+
+    // Month navigation (default)
     const m = viewMonth - 1;
     if (m < 0) {
-      setViewMonth(11);
-      setViewYear(viewYear - 1);
+      const newYear = viewYear - 1;
+      const newMonth = 11;
+      setViewMonth(newMonth);
+      setViewYear(newYear);
+      setFocusDate(new Date(newYear, newMonth, Math.min(focusDate.getDate(), getDaysInMonth(newYear, newMonth))));
     } else {
       setViewMonth(m);
+      setFocusDate(new Date(viewYear, m, Math.min(focusDate.getDate(), getDaysInMonth(viewYear, m))));
     }
   };
 
   const nextMonth = () => {
+    // If in week view, step forward by one week instead of one month
+    if (viewMode === "week") {
+      const newFocus = new Date(focusDate);
+      newFocus.setDate(newFocus.getDate() + 7);
+      setFocusDate(newFocus);
+      setViewYear(newFocus.getFullYear());
+      setViewMonth(newFocus.getMonth());
+      return;
+    }
+
     const m = viewMonth + 1;
     if (m > 11) {
-      setViewMonth(0);
-      setViewYear(viewYear + 1);
+      const newYear = viewYear + 1;
+      const newMonth = 0;
+      setViewMonth(newMonth);
+      setViewYear(newYear);
+      setFocusDate(new Date(newYear, newMonth, Math.min(focusDate.getDate(), getDaysInMonth(newYear, newMonth))));
     } else {
       setViewMonth(m);
+      setFocusDate(new Date(viewYear, m, Math.min(focusDate.getDate(), getDaysInMonth(viewYear, m))));
     }
   };
 
@@ -154,11 +184,18 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
     const now = new Date();
     setViewYear(now.getFullYear());
     setViewMonth(now.getMonth());
+    setFocusDate(now);
   };
 
   // Get current week dates
   const getWeekDates = useMemo(() => {
-    const now = new Date(viewYear, viewMonth, 1);
+    // Anchor the week to the current focus date so switching to week view
+    // shows the week containing that day (instead of the week that contains the 1st).
+    const now = new Date(focusDate.getFullYear(), focusDate.getMonth(), focusDate.getDate());
+    // If focusDate month/year differs from viewMonth/viewYear, use viewMonth/viewYear
+    if (viewMonth !== now.getMonth() || viewYear !== now.getFullYear()) {
+      now.setFullYear(viewYear, viewMonth, Math.min(now.getDate(), getDaysInMonth(viewYear, viewMonth)));
+    }
     const weekStart = new Date(now);
     weekStart.setDate(now.getDate() - now.getDay()); // Start from Sunday
 
@@ -169,7 +206,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
       weekDates.push(date);
     }
     return weekDates;
-  }, [viewYear, viewMonth]);
+  }, [viewYear, viewMonth, focusDate]);
 
   // Get time slots for week view
   const timeSlots = useMemo(() => {
@@ -347,6 +384,10 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                             ? "var(--color-pink)"
                             : "white",
                         }}
+                        onClick={() => {
+                          // set focus to this date so week view will show its week
+                          if (!isNextMonth && actualDate) setFocusDate(actualDate);
+                        }}
                       >
                         <span className="text-lg font-bold mb-1">
                           {actualDate.getDate()}
@@ -506,29 +547,35 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                                 );
                               })
                               .map((evt, i) => (
-                                <div
-                                  key={i}
-                                  className="text-xs font-bold px-4 py-3 inline-block rounded-lg shadow-lg border border-font-2/30 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-105 bg-foreground-2 text-font-2"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedEvent(evt);
-                                    setIsModalVisible(true);
-                                  }}
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <svg
-                                      className="w-4 h-4 flex-shrink-0"
-                                      viewBox="0 0 24 24"
-                                      fill="currentColor"
-                                    >
-                                      <path d="M7.5 6.5C7.5 8.981 5.481 11 3 11V13C5.481 13 7.5 15.019 7.5 17.5H9.5C9.5 15.019 11.519 13 14 13V11C11.519 11 9.5 8.981 9.5 6.5H7.5ZM18 2C15.347 2 12.918 3 11 4.647C10.052 3.633 8.85 2.863 7.5 2.431V4.617C8.647 5.046 9.639 5.815 10.354 6.854C9.355 8.478 8 9.731 6.5 10.469V12.531C8 13.269 9.355 14.522 10.354 16.146C9.639 17.185 8.647 17.954 7.5 18.383V20.569C8.85 20.137 10.052 19.367 11 18.353C12.918 20 15.347 21 18 21C21.314 21 24 18.314 24 15S21.314 9 18 9C15.347 9 12.918 10 11 11.647C11 11.433 11 11.217 11 11V11C11 7.686 13.686 5 17 5C17.552 5 18 4.552 18 4C18 3.448 17.552 3 17 3C12.582 3 9 6.582 9 11C9 11.217 9 11.433 9 11.647C7.082 10 4.653 9 2 9V11C4.653 11 7.082 12 9 13.647C9 13.783 9 13.917 9 14.05C9 18.392 12.582 22 17 22C17.552 22 18 21.552 18 21C18 20.448 17.552 20 17 20C13.686 20 11 17.314 11 14.05C11 13.917 11 13.783 11 13.647C12.918 15 15.347 16 18 16C21.314 16 24 13.314 24 10S21.314 4 18 4V2Z" />
-                                    </svg>
-                                    <span>{evt.title}</span>
+                                  <div
+                                    key={i}
+                                    className="inline-block rounded-lg shadow-xl cursor-pointer transition-all duration-300 transform hover:-translate-y-1 px-3 py-2"
+                                    style={{
+                                      background: "linear-gradient(135deg, var(--color-foreground-2), var(--color-foreground))",
+                                      minHeight: "50px",
+                                      color: "white",
+                                      border: "1px solid rgba(255,255,255,0.12)",
+                                    }}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setSelectedEvent(evt);
+                                      setIsModalVisible(true);
+                                    }}
+                                  >
+                                    <div className="flex items-center gap-3">
+                                      <svg
+                                        className="w-4 h-4 flex-shrink-0"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                      >
+                                        <path d="M7.5 6.5C7.5 8.981 5.481 11 3 11V13C5.481 13 7.5 15.019 7.5 17.5H9.5C9.5 15.019 11.519 13 14 13V11C11.519 11 9.5 8.981 9.5 6.5H7.5ZM18 2C15.347 2 12.918 3 11 4.647C10.052 3.633 8.85 2.863 7.5 2.431V4.617C8.647 5.046 9.639 5.815 10.354 6.854C9.355 8.478 8 9.731 6.5 10.469V12.531C8 13.269 9.355 14.522 10.354 16.146C9.639 17.185 8.647 17.954 7.5 18.383V20.569C8.85 20.137 10.052 19.367 11 18.353C12.918 20 15.347 21 18 21C21.314 21 24 18.314 24 15S21.314 9 18 9C15.347 9 12.918 10 11 11.647C11 11.433 11 11.217 11 11V11C11 7.686 13.686 5 17 5C17.552 5 18 4.552 18 4C18 3.448 17.552 3 17 3C12.582 3 9 6.582 9 11C9 11.217 9 11.433 9 11.647C7.082 10 4.653 9 2 9V11C4.653 11 7.082 12 9 13.647C9 13.783 9 13.917 9 14.05C9 18.392 12.582 22 17 22C17.552 22 18 21.552 18 21C18 20.448 17.552 20 17 20C13.686 20 11 17.314 11 14.05C11 13.917 11 13.783 11 13.647C12.918 15 15.347 16 18 16C21.314 16 24 13.314 24 10S21.314 4 18 4V2Z" />
+                                      </svg>
+                                      <div className="text-sm font-bold">🎲 {evt.time} {evt.title}</div>
+                                    </div>
+                                    <div className="text-[11px] font-medium mt-1 text-white/95">
+                                      {evt.location}
+                                    </div>
                                   </div>
-                                  <div className="text-[11px] font-medium mt-1">
-                                    {evt.location}
-                                  </div>
-                                </div>
                               ))}
                           </td>
                         );

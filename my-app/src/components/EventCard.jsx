@@ -1,4 +1,3 @@
-// components/EventCard.jsx
 "use client";
 
 import {

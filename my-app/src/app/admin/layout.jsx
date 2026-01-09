@@ -127,7 +127,7 @@ export default function AdminLayout({ children }) {
 
   return (
     <div className="flex min-h-screen">
-      <AdminSidebar user={user} onLogout={handleLogout} />
+      <AdminSidebar user={user} onLogout={handleLogout} isAdmin={isAdmin} />
       <main className="flex-1 p-6 text-font ml-64">
         {/* Admin Status Badge */}
         {isAdmin && (

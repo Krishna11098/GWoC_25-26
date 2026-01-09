@@ -1,7 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import StoryCardDeck from "@/components/StoryCardDeck";
 
 const DETAILS_BY_SLUG = {
   "murder-mystery-primarc-pecan-ho-mumbai": {
@@ -235,8 +234,14 @@ export default async function BlogDetailPage({ params }) {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen">
-        <StoryCardDeck cards={cards} />
+      <main className="mx-auto max-w-6xl xl:max-w-7xl px-4 md:px-10 py-10 mt-20">
+        {cards.map((card, i) => (
+          <section key={i} className="mb-10">
+            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden p-8 md:p-12 border border-slate-200">
+              {card.content}
+            </div>
+          </section>
+        ))}
       </main>
       <Footer />
     </>
