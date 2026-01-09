@@ -292,7 +292,7 @@ export default function EventsCalendarPage() {
               <button
                 onClick={loadEvents}
                 disabled={isLoading}
-                className="px-5 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 flex items-center gap-3 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+                className="px-5 py-3 bg-[#7FAF9B] text-white rounded-xl hover:bg-[#6A9C87] disabled:opacity-50 flex items-center gap-3 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
               >
                 {isLoading ? (
                   <>
@@ -386,9 +386,9 @@ export default function EventsCalendarPage() {
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-8 border border-gray-200/50">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
-                  <span className="p-2 bg-blue-100 rounded-lg">
+                  <span className="p-2 bg-[#E6F1EC] rounded-lg">
                     <svg
-                      className="w-6 h-6 text-blue-600"
+                      className="w-6 h-6 text-[#3E6F5C]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -551,7 +551,7 @@ export default function EventsCalendarPage() {
                               {event.startTime || event.eventStartTime || "TBD"}
                             </div>
                             {event.price > 0 && (
-                              <div className="mt-2 px-3 py-1 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 rounded-full text-xs font-semibold shadow-sm">
+                              <div className="mt-2 px-3 py-1 bg-[#E6F1EC] text-[#3E6F5C] rounded-full text-xs font-semibold shadow-sm">
                                 ₹{event.price}
                               </div>
                             )}
@@ -673,7 +673,7 @@ export default function EventsCalendarPage() {
 
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-100 rounded-lg">
+                  <div className="p-2 bg-[#E6F1EC] rounded-lg">
                     <span className="text-xl">
                       {selectedEvent.category === "workshop"
                         ? "🔧"
@@ -769,7 +769,7 @@ export default function EventsCalendarPage() {
                         <a
                           href={`/events/${selectedEvent.id}`}
                           onClick={closeModal}
-                          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+                          className="px-6 py-3 bg-[#7FAF9B] text-white rounded-lg hover:bg-[#6A9C87] font-medium"
                         >
                           Book Now
                         </a>
