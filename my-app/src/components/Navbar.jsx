@@ -20,6 +20,8 @@ const Navbar = () => {
 
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileCommunityOpen, setMobileCommunityOpen] = useState(false);
+  const [mobilePlayOpen, setMobilePlayOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [communityDropdownOpen, setCommunityDropdownOpen] = useState(false);
   const [communityDropdownClicked, setCommunityDropdownClicked] = useState(false);
@@ -311,12 +313,105 @@ const Navbar = () => {
 
             {/* Mobile Toggle */}
             <button
-              className="md:hidden ml-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white"
+              className="md:hidden ml-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white z-50"
               onClick={() => setMobileOpen((o) => !o)}
             >
-              ☰
+              {mobileOpen ? "✕" : "☰"}
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 bg-font text-bg z-40 transition-transform duration-500 flex flex-col items-center justify-center overflow-y-auto ${
+          mobileOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex flex-col items-center gap-6 py-20 w-full px-8 text-center">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className="text-2xl font-light"
+              onClick={() => setMobileOpen(false)}
+            >
+              {link.name}
+            </Link>
+          ))}
+
+          {/* Community Section Mobile */}
+          <div className="w-full">
+            <button 
+              onClick={() => setMobileCommunityOpen(!mobileCommunityOpen)}
+              className="flex items-center justify-center gap-2 w-full text-2xl font-light py-2"
+            >
+              <span>Community</span>
+              <span className={`text-xs transition-transform duration-300 ${mobileCommunityOpen ? 'rotate-180' : ''}`}>▼</span>
+            </button>
+            <div className={`overflow-hidden transition-all duration-300 flex flex-col gap-4 px-4 ${mobileCommunityOpen ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+              <Link href="/about-us" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>About Us</Link>
+              <Link href="/community/blog" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>Blogs</Link>
+            </div>
+          </div>
+
+          {/* Play Section Mobile */}
+          <div className="w-full">
+            <button 
+              onClick={() => setMobilePlayOpen(!mobilePlayOpen)}
+              className="flex items-center justify-center gap-2 w-full text-2xl font-light py-2"
+            >
+              <span>Play</span>
+              <span className={`text-xs transition-transform duration-300 ${mobilePlayOpen ? 'rotate-180' : ''}`}>▼</span>
+            </button>
+            <div className={`overflow-hidden transition-all duration-300 flex flex-col gap-4 px-4 ${mobilePlayOpen ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+              <Link href="/play" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>Play Hub</Link>
+              <Link href="/games" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>Games</Link>
+              <Link href="/sudoku" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>Sudoku</Link>
+              <Link href="/riddles" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>Riddles</Link>
+              <Link href="/movies" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>Movies</Link>
+            </div>
+          </div>
+          
+          <div className="w-20 h-[1px] bg-bg/20 my-4" />
+          
+          {!user ? (
+            <div className="flex flex-col items-center gap-6">
+              <Link
+                href="/login"
+                className="text-xl"
+                onClick={() => setMobileOpen(false)}
+              >
+                Login
+              </Link>
+              <Link
+                href="/signup"
+                className="rounded-full bg-bg px-10 py-3 text-lg font-medium text-font"
+                onClick={() => setMobileOpen(false)}
+              >
+                Sign up
+              </Link>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-6">
+              <Link
+                href="/profile"
+                className="text-xl"
+                onClick={() => setMobileOpen(false)}
+              >
+                Profile ({user.name})
+              </Link>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setMobileOpen(false);
+                }}
+                className="rounded-full bg-bg px-10 py-3 text-lg font-medium text-font"
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>

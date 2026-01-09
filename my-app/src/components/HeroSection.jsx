@@ -3,6 +3,7 @@
 import { Poppins, Baloo_2 } from "next/font/google";
 
 import PlayfulHeading from "./PlayfulHeading";
+import ShinyText from "./ShinyText";
 
 const baloo = Baloo_2({
   subsets: ["latin"],
@@ -53,42 +54,49 @@ export default function HeroSection({ scrollProgress = 0 }) {
       <div className="absolute inset-0 pointer-events-none opacity-50 mesh-gradient -z-10" /> */}
 
       {/* Top Section - Centered Text Content */}
-     <div className="relative z-10 flex flex-col items-center justify-center text-center px-8 md:px-16 container mx-auto mt-auto">
-  <div className="max-w-4xl">
-    <PlayfulHeading
-      text="JOY JUNCTURE"
-      className="dancing-script-headline text-6xl md:text-8xl lg:text-9xl tracking-wide"
-      as="h1"
-    />
-
-    <p
-      className={`${poppins.className} text-2xl md:text-3xl font-medium leading-relaxed text-font/80 mb-12`}
-    >
-      Play. Connect. Celebrate.
-    </p>
-  </div>
-</div>
-
-
-
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-8 md:px-16 container mx-auto mt-auto">
+        <div className="max-w-4xl">
+          <PlayfulHeading
+            text="JOY JUNCTURE"
+            className="londrina-sketch-regular text-6xl md:text-8xl lg:text-9xl font-bold mb-6 italic text-font drop-shadow-sm"
+            staggerDelay={0.06}
+          />
+          <div className="mb-12">
+            <ShinyText
+              text="Play. Connect. Celebrate."
+              className="patrick-hand-sc-regular text-2xl md:text-3xl font-medium leading-snug md:leading-relaxed"
+              speed={2}
+              delay={0}
+              color="#647167"
+              shineColor="#ffffff"
+              spread={120}
+              direction="left"
+              yoyo={false}
+              pauseOnHover={false}
+            />
+          </div>
+        </div>
+      </div>
 
       {/* Bottom Section - Horizontal Scrolling Gallery */}
       <div className="m-auto w-full relative overflow-hidden pb-12 pt-12">
         <div className="flex animate-marquee whitespace-nowrap hover:pause-scroll">
-          {[...galleryImages, ...galleryImages, ...galleryImages].map((src, index) => (
-            <div
-              key={index}
-              className="inline-block px-4 w-[300px] md:w-[450px] shrink-0"
-            >
-              <div className="bg-green/10 backdrop-blur-sm p-3 rounded-[2.5rem] shadow-2xl border-2 border-green transform hover:scale-105 transition-transform duration-500">
-                <img
-                  src={src}
-                  alt={`Gallery ${index + 1}`}
-                  className="w-full h-48 md:h-72 object-cover rounded-[2rem]"
-                />
+          {[...galleryImages, ...galleryImages, ...galleryImages].map(
+            (src, index) => (
+              <div
+                key={index}
+                className="inline-block px-3 md:px-4 w-[240px] md:w-[450px] shrink-0"
+              >
+                <div className="bg-green/10 backdrop-blur-sm p-2 md:p-3 rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl border-2 border-green transform hover:scale-105 transition-transform duration-500">
+                  <img
+                    src={src}
+                    alt={`Gallery ${index + 1}`}
+                    className="w-full h-40 md:h-72 object-cover rounded-[1.2rem] md:rounded-[2rem]"
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
         </div>
       </div>
     </section>
