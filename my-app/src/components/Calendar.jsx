@@ -31,7 +31,6 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
   const [viewYear, setViewYear] = useState(_initial.getFullYear());
   const [viewMonth, setViewMonth] = useState(_initial.getMonth());
   const [isHydrated, setIsHydrated] = useState(false);
-  const [focusDate, setFocusDate] = useState(initialDate ?? new Date());
   const [hoveredDate, setHoveredDate] = useState(null);
   const [viewMode, setViewMode] = useState("month"); // "month", "week", "list"
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -43,7 +42,6 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
     const date = initialDate ?? new Date();
     setViewYear(date.getFullYear());
     setViewMonth(date.getMonth());
-    setFocusDate(date);
     setIsHydrated(true);
     // run when a real initialDate prop changes; if undefined, effect won't re-run
   }, [initialDate]);
@@ -132,51 +130,23 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
   };
 
   const prevMonth = () => {
-    // If in week view, step back by one week instead of one month
-    if (viewMode === "week") {
-      const newFocus = new Date(focusDate);
-      newFocus.setDate(newFocus.getDate() - 7);
-      setFocusDate(newFocus);
-      setViewYear(newFocus.getFullYear());
-      setViewMonth(newFocus.getMonth());
-      return;
-    }
-
-    // Month navigation (default)
+    // compute based on current state to avoid closure/stale issues
     const m = viewMonth - 1;
     if (m < 0) {
-      const newYear = viewYear - 1;
-      const newMonth = 11;
-      setViewMonth(newMonth);
-      setViewYear(newYear);
-      setFocusDate(new Date(newYear, newMonth, Math.min(focusDate.getDate(), getDaysInMonth(newYear, newMonth))));
+      setViewMonth(11);
+      setViewYear(viewYear - 1);
     } else {
       setViewMonth(m);
-      setFocusDate(new Date(viewYear, m, Math.min(focusDate.getDate(), getDaysInMonth(viewYear, m))));
     }
   };
 
   const nextMonth = () => {
-    // If in week view, step forward by one week instead of one month
-    if (viewMode === "week") {
-      const newFocus = new Date(focusDate);
-      newFocus.setDate(newFocus.getDate() + 7);
-      setFocusDate(newFocus);
-      setViewYear(newFocus.getFullYear());
-      setViewMonth(newFocus.getMonth());
-      return;
-    }
-
     const m = viewMonth + 1;
     if (m > 11) {
-      const newYear = viewYear + 1;
-      const newMonth = 0;
-      setViewMonth(newMonth);
-      setViewYear(newYear);
-      setFocusDate(new Date(newYear, newMonth, Math.min(focusDate.getDate(), getDaysInMonth(newYear, newMonth))));
+      setViewMonth(0);
+      setViewYear(viewYear + 1);
     } else {
       setViewMonth(m);
-      setFocusDate(new Date(viewYear, m, Math.min(focusDate.getDate(), getDaysInMonth(viewYear, m))));
     }
   };
 
@@ -184,18 +154,11 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
     const now = new Date();
     setViewYear(now.getFullYear());
     setViewMonth(now.getMonth());
-    setFocusDate(now);
   };
 
   // Get current week dates
   const getWeekDates = useMemo(() => {
-    // Anchor the week to the current focus date so switching to week view
-    // shows the week containing that day (instead of the week that contains the 1st).
-    const now = new Date(focusDate.getFullYear(), focusDate.getMonth(), focusDate.getDate());
-    // If focusDate month/year differs from viewMonth/viewYear, use viewMonth/viewYear
-    if (viewMonth !== now.getMonth() || viewYear !== now.getFullYear()) {
-      now.setFullYear(viewYear, viewMonth, Math.min(now.getDate(), getDaysInMonth(viewYear, viewMonth)));
-    }
+    const now = new Date(viewYear, viewMonth, 1);
     const weekStart = new Date(now);
     weekStart.setDate(now.getDate() - now.getDay()); // Start from Sunday
 
@@ -206,7 +169,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
       weekDates.push(date);
     }
     return weekDates;
-  }, [viewYear, viewMonth, focusDate]);
+  }, [viewYear, viewMonth]);
 
   // Get time slots for week view
   const timeSlots = useMemo(() => {
@@ -251,16 +214,16 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
       <div className="relative z-10">
         {/* Header background */}
         <div
-          className="rounded-t-3xl px-6 md:px-10 py-6 md:py-8 shadow-lg relative overflow-hidden text-white"
+          className="rounded-t-3xl px-4 sm:px-6 md:px-10 py-4 sm:py-6 md:py-8 shadow-lg relative overflow-hidden text-white"
           style={{ backgroundColor: "var(--color-font)" }}
         >
-          <div className="relative flex items-center justify-between">
+          <div className="relative flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Navigation buttons */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={prevMonth}
-                className="bg-white/15 hover:bg-white/25 rounded-lg px-3 py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border border-white/50"
+                className="bg-white/15 hover:bg-white/25 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border border-white/50 text-sm sm:text-base"
                 aria-label="Previous month"
               >
                 ‹
@@ -268,7 +231,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
               <button
                 type="button"
                 onClick={nextMonth}
-                className="bg-white/15 hover:bg-white/25 rounded-lg px-3 py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border border-white/50"
+                className="bg-white/15 hover:bg-white/25 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border border-white/50 text-sm sm:text-base"
                 aria-label="Next month"
               >
                 ›
@@ -276,19 +239,17 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
             </div>
 
             {/* Month/Year Title */}
-            <h2 className="text-2xl md:text-3xl font-bold">
+            <h2 className="text-lg sm:text-2xl md:text-3xl font-bold text-center">
               {viewMode === "week"
-                ? `${
-                    MONTHS[getWeekDates[0].getMonth()]
-                  } ${getWeekDates[0].getDate()} – ${getWeekDates[6].getDate()}, ${getWeekDates[6].getFullYear()}`
+                ? `${MONTHS[getWeekDates[0].getMonth()]} ${getWeekDates[0].getDate()} – ${getWeekDates[6].getDate()}, ${getWeekDates[6].getFullYear()}`
                 : `${MONTHS[viewMonth]} ${viewYear}`}
             </h2>
 
             {/* View mode toggle buttons */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <button
                 onClick={() => setViewMode("month")}
-                className={`rounded-lg px-4 py-2 transition-all duration-300 text-sm font-semibold border ${
+                className={`rounded-lg px-2 sm:px-4 py-1.5 sm:py-2 transition-all duration-300 text-xs sm:text-sm font-semibold border ${
                   viewMode === "month"
                     ? "bg-white text-font border-white"
                     : "bg-white/20 text-white border-white hover:bg-white/30"
@@ -298,7 +259,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
               </button>
               <button
                 onClick={() => setViewMode("week")}
-                className={`rounded-lg px-4 py-2 transition-all duration-300 text-sm font-semibold border ${
+                className={`rounded-lg px-2 sm:px-4 py-1.5 sm:py-2 transition-all duration-300 text-xs sm:text-sm font-semibold border ${
                   viewMode === "week"
                     ? "bg-white text-font border-white"
                     : "bg-white/20 text-white border-white hover:bg-white/30"
@@ -308,7 +269,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
               </button>
               <button
                 onClick={() => setViewMode("list")}
-                className={`rounded-lg px-4 py-2 transition-all duration-300 text-sm font-semibold border ${
+                className={`rounded-lg px-2 sm:px-4 py-1.5 sm:py-2 transition-all duration-300 text-xs sm:text-sm font-semibold border ${
                   viewMode === "list"
                     ? "bg-white text-font border-white"
                     : "bg-white/20 text-white border-white hover:bg-white/30"
@@ -323,7 +284,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
         {/* Calendar Grid - Only show month view for now */}
         {viewMode === "month" && (
           <div
-            className="rounded-b-3xl px-4 md:px-10 py-8 shadow-xl backdrop-blur-sm"
+            className="rounded-b-3xl px-3 sm:px-4 md:px-10 py-4 sm:py-6 md:py-8 shadow-xl backdrop-blur-sm"
             style={{ backgroundColor: "white" }}
           >
             {/* Weekday headers */}
@@ -334,7 +295,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
               {WEEKDAYS.map((wd) => (
                 <div
                   key={wd}
-                  className="text-center text-sm font-semibold uppercase tracking-widest py-3 text-white"
+                  className="text-center text-xs sm:text-sm font-semibold uppercase tracking-widest py-2 sm:py-3 text-white"
                   style={{ backgroundColor: "var(--color-font)" }}
                 >
                   {wd}
@@ -360,15 +321,21 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                 return (
                   <div
                     key={idx}
-                    className="aspect-square border"
+                    className="aspect-square border text-xs sm:text-sm"
                     style={{ borderColor: "var(--color-font)", opacity: 1 }}
                   >
                     {actualDate ? (
                       <button
                         onMouseEnter={() => setHoveredDate(actualDate)}
                         onMouseLeave={() => setHoveredDate(null)}
-                        disabled={isNextMonth}
-                        className={`w-full h-full rounded-none font-semibold text-sm transition-all duration-300 flex flex-col items-start justify-start p-2 ${
+                        onClick={() => {
+                          if (eventsForDate.length > 0 && !isNextMonth) {
+                            setSelectedEvent(eventsForDate[0]);
+                            setIsModalVisible(true);
+                          }
+                        }}
+                        disabled={isNextMonth || eventsForDate.length === 0}
+                        className={`w-full h-full rounded-none font-semibold text-xs sm:text-sm transition-all duration-300 flex flex-col items-start justify-start p-1 sm:p-2 ${
                           isToday
                             ? "text-white shadow-sm"
                             : isNextMonth
@@ -384,23 +351,19 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                             ? "var(--color-pink)"
                             : "white",
                         }}
-                        onClick={() => {
-                          // set focus to this date so week view will show its week
-                          if (!isNextMonth && actualDate) setFocusDate(actualDate);
-                        }}
                       >
-                        <span className="text-lg font-bold mb-1">
+                        <span className="text-base sm:text-lg font-bold mb-0.5 sm:mb-1">
                           {actualDate.getDate()}
                         </span>
                         {isToday && (
-                          <div className="text-[10px] font-light mb-1 text-font-2/90">
+                          <div className="text-[9px] sm:text-[10px] font-light mb-0.5 sm:mb-1 text-font-2/90">
                             Today
                           </div>
                         )}
                         {eventsForDate.length > 0 && (
-                          <div className="w-full mt-auto">
+                          <div className="w-full mt-auto hidden sm:block">
                             <div
-                              className="text-[11px] leading-snug font-bold px-2.5 py-2.5 rounded-lg shadow-lg border cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-101 flex items-center gap-1.5 text-white"
+                              className="text-[10px] sm:text-[11px] leading-snug font-bold px-2 sm:px-2.5 py-1.5 sm:py-2.5 rounded-lg shadow-lg border cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-101 flex items-center gap-1 text-white"
                               style={{
                                 backgroundColor: "var(--color-orange)",
                                 borderColor: "var(--color-orange)",
@@ -412,17 +375,20 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                               }}
                             >
                               <svg
-                                className="w-3.5 h-3.5 shrink-0"
+                                className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 shrink-0"
                                 viewBox="0 0 24 24"
                                 fill="currentColor"
                               >
                                 <path d="M7.5 6.5C7.5 8.981 5.481 11 3 11V13C5.481 13 7.5 15.019 7.5 17.5H9.5C9.5 15.019 11.519 13 14 13V11C11.519 11 9.5 8.981 9.5 6.5H7.5ZM18 2C15.347 2 12.918 3 11 4.647C10.052 3.633 8.85 2.863 7.5 2.431V4.617C8.647 5.046 9.639 5.815 10.354 6.854C9.355 8.478 8 9.731 6.5 10.469V12.531C8 13.269 9.355 14.522 10.354 16.146C9.639 17.185 8.647 17.954 7.5 18.383V20.569C8.85 20.137 10.052 19.367 11 18.353C12.918 20 15.347 21 18 21C21.314 21 24 18.314 24 15S21.314 9 18 9C15.347 9 12.918 10 11 11.647C11 11.433 11 11.217 11 11V11C11 7.686 13.686 5 17 5C17.552 5 18 4.552 18 4C18 3.448 17.552 3 17 3C12.582 3 9 6.582 9 11C9 11.217 9 11.433 9 11.647C7.082 10 4.653 9 2 9V11C4.653 11 7.082 12 9 13.647C9 13.783 9 13.917 9 14.05C9 18.392 12.582 22 17 22C17.552 22 18 21.552 18 21C18 20.448 17.552 20 17 20C13.686 20 11 17.314 11 14.05C11 13.917 11 13.783 11 13.647C12.918 15 15.347 16 18 16C21.314 16 24 13.314 24 10S21.314 4 18 4V2Z" />
                               </svg>
-                              <span>
+                              <span className="hidden md:inline">
                                 {eventsForDate[0].time} {eventsForDate[0].title}
                               </span>
                             </div>
                           </div>
+                        )}
+                        {eventsForDate.length > 0 && (
+                          <div className="w-full h-1 sm:h-1.5 bg-[var(--color-orange)] rounded-full sm:hidden mt-auto"></div>
                         )}
                       </button>
                     ) : (
@@ -433,17 +399,17 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
               })}
             </div>
             <div
-              className="rounded-b-3xl px-4 md:px-6 py-6 shadow-xl"
+              className="rounded-b-3xl px-3 sm:px-4 md:px-6 py-4 sm:py-6 shadow-xl"
               style={{ backgroundColor: "white" }}
             >
               {/* Footer note */}
               <div className="overflow-x-auto rounded-lg">
                 <p
-                  className="text-sm px-4 py-3 flex items-center gap-2"
+                  className="text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-3 flex items-center gap-2"
                   style={{ color: "var(--color-font)" }}
                 >
                   <svg
-                    className="w-4 h-4 flex-shrink-0"
+                    className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                   >
@@ -547,35 +513,29 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                                 );
                               })
                               .map((evt, i) => (
-                                  <div
-                                    key={i}
-                                    className="inline-block rounded-lg shadow-xl cursor-pointer transition-all duration-300 transform hover:-translate-y-1 px-3 py-2"
-                                    style={{
-                                      background: "linear-gradient(135deg, var(--color-foreground-2), var(--color-foreground))",
-                                      minHeight: "50px",
-                                      color: "white",
-                                      border: "1px solid rgba(255,255,255,0.12)",
-                                    }}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setSelectedEvent(evt);
-                                      setIsModalVisible(true);
-                                    }}
-                                  >
-                                    <div className="flex items-center gap-3">
-                                      <svg
-                                        className="w-4 h-4 flex-shrink-0"
-                                        viewBox="0 0 24 24"
-                                        fill="currentColor"
-                                      >
-                                        <path d="M7.5 6.5C7.5 8.981 5.481 11 3 11V13C5.481 13 7.5 15.019 7.5 17.5H9.5C9.5 15.019 11.519 13 14 13V11C11.519 11 9.5 8.981 9.5 6.5H7.5ZM18 2C15.347 2 12.918 3 11 4.647C10.052 3.633 8.85 2.863 7.5 2.431V4.617C8.647 5.046 9.639 5.815 10.354 6.854C9.355 8.478 8 9.731 6.5 10.469V12.531C8 13.269 9.355 14.522 10.354 16.146C9.639 17.185 8.647 17.954 7.5 18.383V20.569C8.85 20.137 10.052 19.367 11 18.353C12.918 20 15.347 21 18 21C21.314 21 24 18.314 24 15S21.314 9 18 9C15.347 9 12.918 10 11 11.647C11 11.433 11 11.217 11 11V11C11 7.686 13.686 5 17 5C17.552 5 18 4.552 18 4C18 3.448 17.552 3 17 3C12.582 3 9 6.582 9 11C9 11.217 9 11.433 9 11.647C7.082 10 4.653 9 2 9V11C4.653 11 7.082 12 9 13.647C9 13.783 9 13.917 9 14.05C9 18.392 12.582 22 17 22C17.552 22 18 21.552 18 21C18 20.448 17.552 20 17 20C13.686 20 11 17.314 11 14.05C11 13.917 11 13.783 11 13.647C12.918 15 15.347 16 18 16C21.314 16 24 13.314 24 10S21.314 4 18 4V2Z" />
-                                      </svg>
-                                      <div className="text-sm font-bold">🎲 {evt.time} {evt.title}</div>
-                                    </div>
-                                    <div className="text-[11px] font-medium mt-1 text-white/95">
-                                      {evt.location}
-                                    </div>
+                                <div
+                                  key={i}
+                                  className="text-xs font-bold px-4 py-3 inline-block rounded-lg shadow-lg border border-font-2/30 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-105 bg-foreground-2 text-font-2"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedEvent(evt);
+                                    setIsModalVisible(true);
+                                  }}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <svg
+                                      className="w-4 h-4 flex-shrink-0"
+                                      viewBox="0 0 24 24"
+                                      fill="currentColor"
+                                    >
+                                      <path d="M7.5 6.5C7.5 8.981 5.481 11 3 11V13C5.481 13 7.5 15.019 7.5 17.5H9.5C9.5 15.019 11.519 13 14 13V11C11.519 11 9.5 8.981 9.5 6.5H7.5ZM18 2C15.347 2 12.918 3 11 4.647C10.052 3.633 8.85 2.863 7.5 2.431V4.617C8.647 5.046 9.639 5.815 10.354 6.854C9.355 8.478 8 9.731 6.5 10.469V12.531C8 13.269 9.355 14.522 10.354 16.146C9.639 17.185 8.647 17.954 7.5 18.383V20.569C8.85 20.137 10.052 19.367 11 18.353C12.918 20 15.347 21 18 21C21.314 21 24 18.314 24 15S21.314 9 18 9C15.347 9 12.918 10 11 11.647C11 11.433 11 11.217 11 11V11C11 7.686 13.686 5 17 5C17.552 5 18 4.552 18 4C18 3.448 17.552 3 17 3C12.582 3 9 6.582 9 11C9 11.217 9 11.433 9 11.647C7.082 10 4.653 9 2 9V11C4.653 11 7.082 12 9 13.647C9 13.783 9 13.917 9 14.05C9 18.392 12.582 22 17 22C17.552 22 18 21.552 18 21C18 20.448 17.552 20 17 20C13.686 20 11 17.314 11 14.05C11 13.917 11 13.783 11 13.647C12.918 15 15.347 16 18 16C21.314 16 24 13.314 24 10S21.314 4 18 4V2Z" />
+                                    </svg>
+                                    <span>{evt.title}</span>
                                   </div>
+                                  <div className="text-[11px] font-medium mt-1">
+                                    {evt.location}
+                                  </div>
+                                </div>
                               ))}
                           </td>
                         );
@@ -799,6 +759,74 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
         )}
         {/* End event modal */}
       </div>
+      <style>{`
+        @keyframes overlayEnter {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes overlayExit {
+          from {
+            opacity: 1;
+          }
+          to {
+            opacity: 0;
+          }
+        }
+
+        @keyframes modalEnter {
+          from {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+
+        @keyframes modalExit {
+          from {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+          to {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+          }
+        }
+
+        .modal-overlay.overlay-enter {
+          animation: overlayEnter 0.3s ease-out forwards;
+        }
+
+        .modal-overlay.overlay-exit {
+          animation: overlayExit 0.3s ease-out forwards;
+          pointer-events: none;
+        }
+
+        .modal-card.modal-enter {
+          animation: modalEnter 0.3s ease-out forwards;
+        }
+
+        .modal-card.modal-exit {
+          animation: modalExit 0.3s ease-out forwards;
+          pointer-events: none;
+        }
+
+        .modal-shell {
+          pointer-events: none;
+        }
+
+        .modal-shell .modal-overlay,
+        .modal-shell .modal-card {
+          pointer-events: auto;
+        }
+      `}</style>
     </section>
   );
 }

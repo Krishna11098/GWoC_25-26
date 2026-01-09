@@ -70,6 +70,14 @@ export default function AdminSidebar({ user, isAdmin }) {
         </Link>
 
         <Link
+          href="/admin/orders"
+          className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
+        >
+          <span className="mr-3">🛒</span>
+          Orders
+        </Link>
+
+        <Link
           href="/admin/sudoku"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
@@ -110,6 +118,22 @@ export default function AdminSidebar({ user, isAdmin }) {
             Experience
           </Link>
         )}
+
+        <Link
+          href="/admin/contact-form"
+          className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
+        >
+          <span className="mr-3">📩</span>
+          Contact Form
+        </Link>
+
+        <Link
+          href="/admin/queries"
+          className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
+        >
+          <span className="mr-3">💬</span>
+          Queries
+        </Link>
 
         <Link
           href="/admin/users"

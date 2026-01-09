@@ -3,6 +3,9 @@ import { db } from "@/lib/firebaseAdmin";
 import { getUserFromRequest } from "@/lib/authMiddleware";
 import admin from "firebase-admin";
 
+/**
+ * PATCH /api/admin/queries/[id] - Update query status and admin notes
+ */
 export async function PATCH(req, { params }) {
   try {
     const { id } = params;
@@ -14,11 +17,11 @@ export async function PATCH(req, { params }) {
     if (user.role !== "admin")
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
-    if (!["pending", "accepted", "rejected", "contacted"].includes(status)) {
+    if (!["pending", "responded", "closed"].includes(status)) {
       return NextResponse.json({ error: "Invalid status" }, { status: 400 });
     }
 
-    const docRef = db.collection("experiences").doc(id);
+    const docRef = db.collection("queries").doc(id);
 
     await docRef.update({
       status,

@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
-import { auth } from '@/lib/firebaseClient';
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { auth } from "@/lib/firebaseClient";
 
 export default function BlogCard({ post, index, hero = false }) {
   const ref = useRef(null);
@@ -48,12 +48,16 @@ export default function BlogCard({ post, index, hero = false }) {
         const res = await fetch(`/api/blogs/${post.id}`);
         if (res.ok) {
           const blog = await res.json();
-          console.log('BlogCard: Fetched blog data:', { id: post.id, upvotes: blog.upvotes, downvotes: blog.downvotes });
+          console.log("BlogCard: Fetched blog data:", {
+            id: post.id,
+            upvotes: blog.upvotes,
+            downvotes: blog.downvotes,
+          });
           setUpvotes(blog.upvotes || 0);
           setDownvotes(blog.downvotes || 0);
         }
       } catch (error) {
-        console.error('Error fetching vote counts:', error);
+        console.error("Error fetching vote counts:", error);
       }
     }
     fetchVoteCounts();
@@ -70,13 +74,13 @@ export default function BlogCard({ post, index, hero = false }) {
       const data = await res.json();
       setUserVote(data.userVote);
     } catch (error) {
-      console.error('Error fetching vote:', error);
+      console.error("Error fetching vote:", error);
     }
   }
 
   async function handleVote(voteType) {
     if (!user) {
-      alert('Please log in to vote');
+      alert("Please log in to vote");
       return;
     }
 
@@ -86,9 +90,9 @@ export default function BlogCard({ post, index, hero = false }) {
     try {
       const token = await user.getIdToken();
       const res = await fetch(`/api/blogs/${post.id}/vote`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ voteType }),
@@ -96,18 +100,21 @@ export default function BlogCard({ post, index, hero = false }) {
 
       if (res.ok) {
         const data = await res.json();
-        console.log('BlogCard: Vote successful:', { upvotes: data.upvotes, downvotes: data.downvotes });
+        console.log("BlogCard: Vote successful:", {
+          upvotes: data.upvotes,
+          downvotes: data.downvotes,
+        });
         setUpvotes(data.upvotes);
         setDownvotes(data.downvotes);
         setUserVote(data.userVote);
       } else {
         const error = await res.json();
-        console.error('BlogCard: Vote failed:', error);
-        alert(error.error || 'Failed to vote');
+        console.error("BlogCard: Vote failed:", error);
+        alert(error.error || "Failed to vote");
       }
     } catch (error) {
-      console.error('Error voting:', error);
-      alert('Failed to vote');
+      console.error("Error voting:", error);
+      alert("Failed to vote");
     } finally {
       setLoading(false);
     }
@@ -118,46 +125,93 @@ export default function BlogCard({ post, index, hero = false }) {
   return (
     <article
       ref={ref}
-      className={`relative rounded-3xl bg-white/90 border border-slate-200 shadow-sm transition-all duration-700 ${
+      className={`relative rounded-3xl shadow-sm transition-all duration-700 ${
         inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      } ${hero ? 'p-0 pb-6 md:pb-8 overflow-hidden' : 'p-4 md:p-6'}`}
+      } ${hero ? "p-0 pb-6 md:pb-8 overflow-hidden" : "p-4 md:p-6"}`}
+      style={{
+        backgroundColor: "rgba(255,255,255,0.9)",
+        border: "1px solid var(--color-green)",
+        color: "var(--color-font)",
+      }}
     >
       {hero ? (
         <>
           <div className="w-full">
-            <div className="w-full h-64 md:h-80 overflow-hidden bg-slate-100">
+            <div
+              className="w-full h-64 md:h-80 overflow-hidden"
+              style={{ backgroundColor: "var(--bg)" }}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={post.image} alt={post.title || 'Image'} className="w-full h-full object-cover" loading="lazy" />
+              <img
+                src={post.image}
+                alt={post.title || "Image"}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
             </div>
             <div className="p-4 md:p-5">
-              {post.title && <h3 className="text-xl md:text-2xl font-bold text-slate-900">{post.title}</h3>}
-              {post.description && <p className="mt-2 text-slate-700 text-sm">{post.description}</p>}
+              {post.title && (
+                <h3
+                  className="text-xl md:text-2xl font-bold"
+                  style={{ color: "var(--color-font)" }}
+                >
+                  {post.title}
+                </h3>
+              )}
+              {post.description && (
+                <p
+                  className="mt-2 text-sm"
+                  style={{ color: "var(--color-font)" }}
+                >
+                  {post.description}
+                </p>
+              )}
             </div>
 
             {/* Votes positioned bottom-right */}
             {post.id && (
               <div className="absolute right-4 bottom-4 flex items-center gap-3">
                 <button
-                  onClick={() => handleVote('upvote')}
+                  onClick={() => handleVote("upvote")}
                   disabled={loading}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
-                    userVote === 'upvote'
-                      ? 'bg-emerald-100 text-emerald-700 border border-emerald-500'
-                      : 'bg-white/90 text-slate-700 hover:bg-emerald-50 border border-transparent'
-                  } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                    loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                  }`}
+                  style={
+                    userVote === "upvote"
+                      ? {
+                          backgroundColor: "var(--color-green)",
+                          color: "var(--color-font)",
+                          border: "1px solid var(--color-green)",
+                        }
+                      : {
+                          backgroundColor: "rgba(255,255,255,0.9)",
+                          color: "var(--color-font)",
+                        }
+                  }
                 >
                   <FaThumbsUp className="text-sm" />
                   <span className="font-semibold text-sm">{upvotes}</span>
                 </button>
 
                 <button
-                  onClick={() => handleVote('downvote')}
+                  onClick={() => handleVote("downvote")}
                   disabled={loading}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
-                    userVote === 'downvote'
-                      ? 'bg-red-100 text-red-700 border border-red-500'
-                      : 'bg-white/90 text-slate-700 hover:bg-red-50 border border-transparent'
-                  } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                    loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                  }`}
+                  style={
+                    userVote === "downvote"
+                      ? {
+                          backgroundColor: "var(--color-pink)",
+                          color: "var(--color-font)",
+                          border: "1px solid var(--color-pink)",
+                        }
+                      : {
+                          backgroundColor: "rgba(255,255,255,0.9)",
+                          color: "var(--color-font)",
+                        }
+                  }
                 >
                   <FaThumbsDown className="text-sm" />
                   <span className="font-semibold text-sm">{downvotes}</span>
@@ -168,58 +222,105 @@ export default function BlogCard({ post, index, hero = false }) {
         </>
       ) : (
         <div
-          className={`flex flex-col ${post.image ? 'md:flex-row items-start md:items-center gap-6 md:gap-10' : ''} ${
-            post.image && isEven ? 'md:flex-row-reverse' : ''
-          }`}
+          className={`flex flex-col ${
+            post.image
+              ? "md:flex-row items-start md:items-center gap-6 md:gap-10"
+              : ""
+          } ${post.image && isEven ? "md:flex-row-reverse" : ""}`}
         >
           {/* Image - only show if exists */}
           {post.image && (
             <div className="w-full md:w-1/2">
-              <div className="aspect-video rounded-3xl overflow-hidden bg-slate-100">
+              <div
+                className="aspect-video rounded-3xl overflow-hidden"
+                style={{ backgroundColor: "var(--bg)" }}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={post.image} alt={post.title || 'Blog image'} className="h-full w-full object-cover" loading="lazy" />
+                <img
+                  src={post.image}
+                  alt={post.title || "Blog image"}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
               </div>
             </div>
           )}
 
           {/* Content */}
-          <div className={post.image ? 'w-full md:w-1/2' : 'w-full'}>
+          <div className={post.image ? "w-full md:w-1/2" : "w-full"}>
             {post.category && (
-              <span className="inline-block rounded-full border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+              <span
+                className="inline-block rounded-full px-3 py-1 text-xs font-semibold"
+                style={{
+                  border: "1px solid var(--color-green)",
+                  backgroundColor: "var(--color-green)",
+                  color: "var(--color-font)",
+                }}
+              >
                 {post.category}
               </span>
             )}
             {post.title && (
-              <h3 className={`text-2xl md:text-3xl font-bold text-slate-900 ${post.category ? 'mt-3' : ''}`}>
+              <h3
+                className={`text-2xl md:text-3xl font-bold ${
+                  post.category ? "mt-3" : ""
+                }`}
+                style={{ color: "var(--color-font)" }}
+              >
                 {post.title}
               </h3>
             )}
-            <p className={`text-slate-700 ${post.title ? 'mt-2' : ''}`}>{post.description}</p>
+            <p
+              className={`${post.title ? "mt-2" : ""}`}
+              style={{ color: "var(--color-font)" }}
+            >
+              {post.description}
+            </p>
 
             {/* Vote Buttons */}
             {post.id && (
               <div className="flex items-center gap-3 mt-4">
                 <button
-                  onClick={() => handleVote('upvote')}
+                  onClick={() => handleVote("upvote")}
                   disabled={loading}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
-                    userVote === 'upvote'
-                      ? 'bg-emerald-100 text-emerald-700 border border-emerald-500'
-                      : 'bg-slate-100 text-slate-700 hover:bg-emerald-50 border border-transparent'
-                  } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                    loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                  }`}
+                  style={
+                    userVote === "upvote"
+                      ? {
+                          backgroundColor: "var(--color-green)",
+                          color: "var(--color-font)",
+                          border: "1px solid var(--color-green)",
+                        }
+                      : {
+                          backgroundColor: "var(--bg)",
+                          color: "var(--color-font)",
+                        }
+                  }
                 >
                   <FaThumbsUp className="text-sm" />
                   <span className="font-semibold text-sm">{upvotes}</span>
                 </button>
 
                 <button
-                  onClick={() => handleVote('downvote')}
+                  onClick={() => handleVote("downvote")}
                   disabled={loading}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
-                    userVote === 'downvote'
-                      ? 'bg-red-100 text-red-700 border border-red-500'
-                      : 'bg-slate-100 text-slate-700 hover:bg-red-50 border border-transparent'
-                  } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                    loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                  }`}
+                  style={
+                    userVote === "downvote"
+                      ? {
+                          backgroundColor: "var(--color-pink)",
+                          color: "var(--color-font)",
+                          border: "1px solid var(--color-pink)",
+                        }
+                      : {
+                          backgroundColor: "var(--bg)",
+                          color: "var(--color-font)",
+                        }
+                  }
                 >
                   <FaThumbsDown className="text-sm" />
                   <span className="font-semibold text-sm">{downvotes}</span>
@@ -227,8 +328,12 @@ export default function BlogCard({ post, index, hero = false }) {
               </div>
             )}
 
-            {post.href && post.href !== '#' && (
-              <Link href={post.href} className="mt-3 inline-block text-emerald-600 hover:text-emerald-700 font-medium">
+            {post.href && post.href !== "#" && (
+              <Link
+                href={post.href}
+                className="mt-3 inline-block font-medium"
+                style={{ color: "var(--color-green)" }}
+              >
                 Read the full story
               </Link>
             )}
