@@ -16,7 +16,7 @@ export default function AboutPage() {
       <main className="overflow-x-hidden">
         <StorySection>
           <StoryHero />
-          <div className="space-y-10">
+          <div>
             <StoryBlock
               title="No Grand Origin Story"
               bgColor="var(--color-pink)"
