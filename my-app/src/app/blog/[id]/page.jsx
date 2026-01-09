@@ -68,13 +68,14 @@ export default function BlogDetailPage() {
   }
 
   // Convert sections to BlogCard format for rendering
-  const sectionCards = blog.sections?.map((section, idx) => ({
-    title: "", // Remove section titles
-    category: "", // Remove category from sections
-    description: section.text,
-    image: section.image || null,
-    href: "#",
-  })) || [];
+  const sectionCards =
+    blog.sections?.map((section, idx) => ({
+      title: "", // Remove section titles
+      category: "", // Remove category from sections
+      description: section.text,
+      image: section.image || null,
+      href: "#",
+    })) || [];
 
   // Combine section cards
   const allCards = [
@@ -93,14 +94,29 @@ export default function BlogDetailPage() {
       <Navbar />
       <main className="mx-auto max-w-6xl xl:max-w-7xl px-4 md:px-10 py-10 mt-20 pt-16">
         {/* Header */}
-        <header className="mb-8 md:mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-900">{blog.title}</h1>
-          <div className="mt-4 flex items-center gap-4 text-sm text-slate-600">
-            <span className="inline-block rounded-full border border-emerald-300 bg-emerald-100 px-3 py-1 font-semibold text-emerald-700">
+        {/* <header className="mb-8 md:mb-10">
+          <h1
+            className="text-3xl md:text-4xl font-bold"
+            style={{ color: "var(--color-font)" }}
+          >
+            {blog.title}
+          </h1>
+          <div
+            className="mt-4 flex items-center gap-4 text-sm"
+            style={{ color: "var(--color-font)" }}
+          >
+            <span
+              className="inline-block rounded-full px-3 py-1 font-semibold"
+              style={{
+                border: "1px solid var(--color-green)",
+                backgroundColor: "var(--color-green)",
+                color: "var(--color-font)",
+              }}
+            >
               {blog.category}
             </span>
             {blog.publishedAt && (
-              <time>
+              <time style={{ color: "var(--color-font)" }}>
                 {new Date(blog.publishedAt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
@@ -109,18 +125,27 @@ export default function BlogDetailPage() {
               </time>
             )}
           </div>
-        </header>
+        </header> */}
 
         {/* Blog Content - Merged Cards as One Section */}
-        <div className="rounded-3xl bg-white/90 border border-slate-200 shadow-sm p-6 md:p-8">
+        <div
+          className="rounded-3xl shadow-sm p-6 md:p-8"
+          style={{
+            backgroundColor: "rgba(255,255,255,0.9)",
+            border: "1px solid var(--color-green)",
+            color: "var(--color-font)",
+          }}
+        >
           {allCards.map((card, idx) => {
             const isEven = idx % 2 === 1;
             return (
               <div key={idx} className={idx > 0 ? "mt-8 md:mt-12" : ""}>
                 <div
-                  className={`flex flex-col ${card.image ? 'md:flex-row items-start md:items-center gap-6 md:gap-10' : ''} ${
-                    card.image && isEven ? "md:flex-row-reverse" : ""
-                  }`}
+                  className={`flex flex-col ${
+                    card.image
+                      ? "md:flex-row items-start md:items-center gap-6 md:gap-10"
+                      : ""
+                  } ${card.image && isEven ? "md:flex-row-reverse" : ""}`}
                 >
                   {/* Image */}
                   {card.image && (
@@ -140,16 +165,37 @@ export default function BlogDetailPage() {
                   {/* Content */}
                   <div className={card.image ? "w-full md:w-1/2" : "w-full"}>
                     {card.category && (
-                      <span className="inline-block rounded-full border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                      <span
+                        className="inline-block rounded-full px-3 py-1 text-xs font-semibold"
+                        style={{
+                          border: "1px solid var(--color-green)",
+                          backgroundColor: "var(--color-green)",
+                          color: "var(--color-font)",
+                        }}
+                      >
                         {card.category}
                       </span>
                     )}
                     {card.title && (
-                      <h3 className={`text-2xl md:text-3xl font-bold text-slate-900 ${card.category ? 'mt-3' : ''}`}>
+                      <h3
+                        className={`text-2xl md:text-3xl font-bold ${
+                          card.category ? "mt-3" : ""
+                        }`}
+                        style={{ color: "var(--color-font)" }}
+                      >
                         {card.title}
                       </h3>
                     )}
-                    <p className={`text-slate-700 leading-relaxed text-base md:text-lg ${card.title ? 'mt-2' : ''} ${!card.image ? 'text-justify' : ''}`}>
+                    <p
+                      className={`${card.title ? "mt-2" : ""} ${
+                        !card.image ? "text-justify" : ""
+                      }`}
+                      style={{
+                        color: "var(--color-font)",
+                        lineHeight: 1.7,
+                        fontSize: "1rem",
+                      }}
+                    >
                       {card.description}
                     </p>
                   </div>
@@ -161,23 +207,47 @@ export default function BlogDetailPage() {
 
         {/* Voting Section */}
         <div className="mt-8">
-          <BlogVoting 
-            blogId={params.id} 
-            initialUpvotes={blog.upvotes || 0}
-            initialDownvotes={blog.downvotes || 0}
-          />
+          <div
+            style={{
+              backgroundColor: "var(--bg)",
+              border: "1px solid var(--color-green)",
+              borderRadius: 12,
+              padding: 12,
+            }}
+          >
+            <BlogVoting
+              blogId={params.id}
+              initialUpvotes={blog.upvotes || 0}
+              initialDownvotes={blog.downvotes || 0}
+            />
+          </div>
         </div>
 
         {/* Contact CTA Section */}
         <section className="mt-12 rounded-3xl bg-white border border-slate-200 p-8 md:p-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">Looking to host a corporate Game Night?</h2>
-          
-          <p className="text-slate-700 text-lg mb-4">If your company is searching for:</p>
-          
+          <h2
+            className="text-2xl md:text-3xl font-bold mb-6"
+            style={{ color: "var(--color-font)" }}
+          >
+            Looking to host a corporate Game Night?
+          </h2>
+
+          <p className="text-lg mb-4" style={{ color: "var(--color-font)" }}>
+            If your company is searching for:
+          </p>
+
           <ul className="space-y-3 mb-8">
-            <li className="flex items-start gap-3 text-slate-700">
-              <span className="text-pink-500 text-xl">📍</span>
-              <span>Employee engagement activities in Mumbai, Pune, Delhi, or anywhere in India & abroad</span>
+            <li
+              className="flex items-start gap-3"
+              style={{ color: "var(--color-font)" }}
+            >
+              <span style={{ color: "var(--color-pink)", fontSize: "1.25rem" }}>
+                📍
+              </span>
+              <span>
+                Employee engagement activities in Mumbai, Pune, Delhi, or
+                anywhere in India & abroad
+              </span>
             </li>
             <li className="flex items-start gap-3 text-slate-700">
               <span className="text-pink-500 text-xl">📍</span>
@@ -197,14 +267,29 @@ export default function BlogDetailPage() {
             </li>
           </ul>
 
-          <div className="rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 p-6">
-            <p className="text-slate-700 mb-3 flex items-start gap-2">
-              <span className="text-pink-500 text-xl">📌</span>
-              <span>To book a Murder Mystery Game Night or any custom corporate activity, contact Joy Juncture</span>
+          <div
+            className="rounded-2xl p-6"
+            style={{
+              background: `linear-gradient(90deg, var(--color-green)20%, rgba(0,0,0,0) 100%)`,
+              border: "1px solid var(--color-green)",
+            }}
+          >
+            <p
+              className="mb-3 flex items-start gap-2"
+              style={{ color: "var(--color-font)" }}
+            >
+              <span style={{ color: "var(--color-pink)", fontSize: "1.25rem" }}>
+                📌
+              </span>
+              <span>
+                To book a Murder Mystery Game Night or any custom corporate
+                activity, contact Joy Juncture
+              </span>
             </p>
-            <a 
-              href="mailto:joyjuncture@gmail.com" 
-              className="text-2xl font-bold text-emerald-600 hover:text-emerald-700 transition"
+            <a
+              href="mailto:joyjuncture@gmail.com"
+              className="text-2xl font-bold transition"
+              style={{ color: "var(--color-green)" }}
             >
               joyjuncture@gmail.com
             </a>
@@ -215,14 +300,16 @@ export default function BlogDetailPage() {
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
           <Link
             href="/community/blog"
-            className="rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 p-6 text-white hover:from-emerald-600 hover:to-teal-600 transition text-center"
+            className="rounded-2xl p-6 text-white transition text-center"
+            style={{ backgroundColor: "var(--color-green)" }}
           >
             <div className="text-3xl mb-2">←</div>
             <div className="font-bold text-lg">Back to Blog</div>
           </Link>
           <Link
             href="/"
-            className="rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-500 p-6 text-white hover:from-blue-600 hover:to-indigo-600 transition text-center"
+            className="rounded-2xl p-6 text-white transition text-center"
+            style={{ backgroundColor: "var(--color-pink)" }}
           >
             <div className="text-3xl mb-2">🏠</div>
             <div className="font-bold text-lg">Back to Home</div>

@@ -115,10 +115,12 @@ export default function MoviesPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-[var(--bg)] p-8 pt-32">
+      <div className="min-h-screen p-8 pt-32">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold">🎬 Guess the Movie</h1>
+            <h1 className="text-4xl md:text-5xl font-bold py-2">
+              🎬 Guess the Movie
+            </h1>
           </div>
 
           {error && (
@@ -127,108 +129,140 @@ export default function MoviesPage() {
             </div>
           )}
 
-        {movies.length === 0 ? (
-          <div className="text-center py-12">
-            <h2 className="text-xl font-semibold">No Movies Available</h2>
-            <p className="text-sm opacity-70">Check back later for new challenges!</p>
-          </div>
-        ) : (
-          <div className="grid gap-6">
-            {movies.map((movie, index) => {
-              const result = results[movie.id];
-              const isSubmitting = submitting[movie.id];
+          {movies.length === 0 ? (
+            <div className="text-center py-12">
+              <h2 className="text-2xl md:text-3xl font-semibold">
+                No Movies Available
+              </h2>
+              <p className="text-base md:text-lg opacity-80">
+                Check back later for new challenges!
+              </p>
+            </div>
+          ) : (
+            <div className="grid gap-6">
+              {movies.map((movie, index) => {
+                const result = results[movie.id];
+                const isSubmitting = submitting[movie.id];
 
-              return (
-                <div
-                  key={movie.id}
-                  className="bg-[var(--bg)] p-6 rounded-lg shadow-sm border-2 border-[var(--green)]"
-                >
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 text-sm opacity-80 mb-2">
-                        <span>{movie.category || "General"}</span>
-                        <span>•</span>
-                        <span className="capitalize">{movie.difficulty || "medium"}</span>
-                        <span>•</span>
-                        <span>Movie #{movie.movieNo || index + 1}</span>
-                      </div>
-                      <p className="text-lg font-medium mb-2">
-                        Clue ({movie.clueType}): {movie.clueData}
-                      </p>
-                      <p className="text-sm">Coins: {movie.coins}</p>
-                      {Array.isArray(movie.hints) && movie.hints.length > 0 && (
-                        <div className="mt-3">
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="text-sm font-medium">Hints</span>
-                            <button
-                              type="button"
-                              onClick={() => revealNextHint(movie.id, movie.hints.length)}
-                              disabled={(hintCounts[movie.id] || 0) >= movie.hints.length}
-                              className="px-3 py-1 rounded bg-[var(--orange)] disabled:opacity-50 text-sm"
-                            >
-                              { (hintCounts[movie.id] || 0) >= movie.hints.length ? "No more hints" : "Show Hint" }
-                            </button>
-                          </div>
-                          {(hintCounts[movie.id] || 0) > 0 && (
-                            <ul className="list-disc ml-5 text-sm opacity-90">
-                              {movie.hints.slice(0, hintCounts[movie.id]).map((h, i) => (
-                                <li key={i}>{h}</li>
-                              ))}
-                            </ul>
-                          )}
+                return (
+                  <div
+                    key={movie.id}
+                    className="bg-[var(--bg)] p-6 rounded-lg shadow-sm border-2 border-[var(--green)]"
+                  >
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 text-sm opacity-80 mb-2">
+                          <span>{movie.category || "General"}</span>
+                          <span>•</span>
+                          <span className="capitalize">
+                            {movie.difficulty || "medium"}
+                          </span>
+                          <span>•</span>
+                          <span>Movie #{movie.movieNo || index + 1}</span>
                         </div>
-                      )}
+                        <p className="text-lg font-medium mb-2">
+                          Clue ({movie.clueType}): {movie.clueData}
+                        </p>
+                        <p className="text-base">Coins: {movie.coins}</p>
+                        {Array.isArray(movie.hints) &&
+                          movie.hints.length > 0 && (
+                            <div className="mt-3">
+                              <div className="flex items-center gap-2 mb-2">
+                                <span className="text-base font-medium">
+                                  Hints
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    revealNextHint(movie.id, movie.hints.length)
+                                  }
+                                  disabled={
+                                    (hintCounts[movie.id] || 0) >=
+                                    movie.hints.length
+                                  }
+                                  className="px-3 py-1 rounded bg-[var(--orange)] disabled:opacity-50 text-sm"
+                                >
+                                  {(hintCounts[movie.id] || 0) >=
+                                  movie.hints.length
+                                    ? "No more hints"
+                                    : "Show Hint"}
+                                </button>
+                              </div>
+                              {(hintCounts[movie.id] || 0) > 0 && (
+                                <ul className="list-disc ml-5 text-sm opacity-90">
+                                  {movie.hints
+                                    .slice(0, hintCounts[movie.id])
+                                    .map((h, i) => (
+                                      <li key={i}>{h}</li>
+                                    ))}
+                                </ul>
+                              )}
+                            </div>
+                          )}
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium mb-2">Your Answer</label>
-                    <input
-                      type="text"
-                      value={answers[movie.id] || ""}
-                      onChange={(e) => handleAnswerChange(movie.id, e.target.value)}
-                      className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                      placeholder="Type the movie name"
-                    />
-                    <div className="mt-3 flex gap-2">
-                      <button
-                        onClick={() => handleSubmit(movie.id)}
-                        disabled={isSubmitting}
-                        className="px-4 py-2 rounded-lg bg-[var(--green)] disabled:opacity-60"
-                      >
-                        {isSubmitting ? "Checking..." : "Submit"}
-                      </button>
-                      <button
-                        onClick={() => {
-                          setResults((prev) => ({ ...prev, [movie.id]: null }));
-                          setAnswers((prev) => ({ ...prev, [movie.id]: "" }));
-                        }}
-                        className="px-4 py-2 rounded-lg bg-[var(--pink)]"
-                      >
-                        Clear
-                      </button>
+                    <div className="mt-4">
+                      <label className="block text-sm font-medium mb-2">
+                        Your Answer
+                      </label>
+                      <input
+                        type="text"
+                        value={answers[movie.id] || ""}
+                        onChange={(e) =>
+                          handleAnswerChange(movie.id, e.target.value)
+                        }
+                        className="w-full px-3 py-3 border border-[var(--green)] rounded-lg bg-[var(--bg)] text-base"
+                        placeholder="Type the movie name"
+                      />
+                      <div className="mt-3 flex gap-2">
+                        <button
+                          onClick={() => handleSubmit(movie.id)}
+                          disabled={isSubmitting}
+                          className="px-4 py-2 rounded-lg bg-[var(--green)] disabled:opacity-60 text-base"
+                        >
+                          {isSubmitting ? "Checking..." : "Submit"}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setResults((prev) => ({
+                              ...prev,
+                              [movie.id]: null,
+                            }));
+                            setAnswers((prev) => ({ ...prev, [movie.id]: "" }));
+                          }}
+                          className="px-4 py-2 rounded-lg bg-[var(--pink)]"
+                          className="px-4 py-2 rounded-lg bg-[var(--pink)] text-base"
+                        >
+                          Clear
+                        </button>
+                      </div>
                     </div>
-                  </div>
 
-                  {result && (
-                    <div
-                      className={`mt-4 p-3 rounded-lg border ${
-                        result.correct ? "border-[var(--green)]" : "border-[var(--pink)]"
-                      }`}
-                    >
-                      <p className="font-medium">
-                        {result.correct ? "Correct!" : "Incorrect."} {result.message}
-                      </p>
-                      {result.correct && result.coins > 0 && (
-                        <p className="text-sm mt-1">You earned {result.coins} coins 🎉</p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
+                    {result && (
+                      <div
+                        className={`mt-4 p-3 rounded-lg border ${
+                          result.correct
+                            ? "border-[var(--green)]"
+                            : "border-[var(--pink)]"
+                        }`}
+                      >
+                        <p className="font-medium">
+                          {result.correct ? "Correct!" : "Incorrect."}{" "}
+                          {result.message}
+                        </p>
+                        {result.correct && result.coins > 0 && (
+                          <p className="text-base mt-1">
+                            You earned {result.coins} coins 🎉
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
       <Footer />
