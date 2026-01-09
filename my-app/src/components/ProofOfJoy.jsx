@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
 import "./ProofOfJoy.css";
 
 export default function ProofOfJoy() {
@@ -16,14 +18,54 @@ export default function ProofOfJoy() {
   return (
     <section className="relative py-20 md:py-28 bg-darkblue">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
-        {/* ---------- HEADER ---------- */}
-        <div className="mb-12">
-          <div className="flex items-center gap-3">
-            <span className="h-9 w-2 rounded-full bg-font" />
-            <p className="text-sm font-bold uppercase tracking-[0.25em]">
-              Proof of Joy
-            </p>
-          </div>
+        <div className="mb-20 text-center relative">
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ 
+              duration: 0.8, 
+              ease: "easeOut",
+              type: "spring",
+              stiffness: 100,
+              damping: 15
+            }}
+            className="inline-flex flex-col items-center gap-2"
+          >
+            <h2 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
+              <span className="text-black/80">Proof of</span>{" "}
+              <span className="relative inline-block text-font drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                Joy
+                <motion.span
+                  animate={{ 
+                    scale: [1, 1.2, 1],
+                    rotate: [0, 10, -10, 0],
+                    opacity: [0.8, 1, 0.8]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -top-4 -right-8 text-font"
+                >
+                  <Sparkles size={32} fill="currentColor" />
+                </motion.span>
+                <motion.span
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    opacity: [0.5, 0.8, 0.5]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  className="absolute -bottom-2 -left-6 text-font/60 scale-75 blur-[1px]"
+                >
+                  <Sparkles size={20} fill="currentColor" />
+                </motion.span>
+              </span>
+            </h2>
+            <motion.div 
+              initial={{ width: 0 }}
+              whileInView={{ width: "60px" }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="h-1.5 bg-font rounded-full mt-4 shadow-sm"
+            />
+          </motion.div>
         </div>
 
         {/* ---------- IMAGE GRID ---------- */}

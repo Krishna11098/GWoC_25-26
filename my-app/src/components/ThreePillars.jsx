@@ -148,8 +148,8 @@ export default function ThreePillars() {
       //     backgroundColor: "var(--bg)",
       //   }}
     >
-      <h2 className="text-font text-4xl md:text-5xl font-winky-rough mb-20 z-10 text-center px-4 max-w-2xl">
-        Choose your playstyle
+      <h2 className="text-font text-4xl md:text-5xl font-winky-rough mb-2 z-10 text-center px-1 max-w-2xl">
+        <span className="text-black">Choose your</span> playstyle
       </h2>
 
       <div

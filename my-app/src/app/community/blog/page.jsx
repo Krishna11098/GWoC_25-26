@@ -18,7 +18,7 @@ export default function CommunityBlogPage() {
           throw new Error("Failed to fetch blogs");
         }
         const data = await res.json();
-        
+
         // Transform data to match BlogPage expected format
         const transformedBlogs = data.map((blog) => ({
           id: blog.id,
@@ -30,7 +30,7 @@ export default function CommunityBlogPage() {
           upvotes: blog.upvotes || 0,
           downvotes: blog.downvotes || 0,
         }));
-        
+
         setBlogPosts(transformedBlogs);
       } catch (err) {
         console.error("Error fetching blogs:", err);
@@ -49,8 +49,13 @@ export default function CommunityBlogPage() {
         <Navbar />
         <div className="min-h-screen flex items-center justify-center mt-20">
           <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
-            <p className="text-slate-600 mt-4">Loading blogs...</p>
+            <div
+              className="inline-block animate-spin rounded-full h-12 w-12 border-2 border-transparent"
+              style={{ borderBottomColor: "var(--color-green)" }}
+            />
+            <p style={{ color: "var(--color-font)", marginTop: "1rem" }}>
+              Loading blogs...
+            </p>
           </div>
         </div>
         <Footer />
