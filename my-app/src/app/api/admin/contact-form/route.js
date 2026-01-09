@@ -1,17 +1,21 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/firebaseAdmin";
-import { getUserFromRequest } from "@/lib/authMiddleware";
+import { db, auth } from "@/lib/firebaseAdmin";
 
 /**
  * GET /api/admin/contact-form - List all contact form submissions
  */
 export async function GET(req) {
   try {
-    const user = await getUserFromRequest(req);
-    if (!user)
+    const authHeader = req.headers.get("authorization") || "";
+    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+    if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    if (user.role !== "admin")
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+    try {
+      await auth.verifyIdToken(token);
+    } catch (e) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     // Get URL params for filtering and sorting
     const { searchParams } = new URL(req.url);
@@ -20,28 +24,32 @@ export async function GET(req) {
     const sort = searchParams.get("sort") || "newest";
 
     let query = db.collection("contact_submissions");
+    let hasFilters = false;
 
     // Apply status filter
     if (status && status !== "all") {
       query = query.where("status", "==", status);
+      hasFilters = true;
     }
 
     // Apply category filter
     if (category && category !== "all") {
       query = query.where("category", "==", category);
+      hasFilters = true;
     }
 
-    // Apply sorting
-    if (sort === "newest") {
-      query = query.orderBy("submittedAt", "desc");
-    } else if (sort === "oldest") {
-      query = query.orderBy("submittedAt", "asc");
-    } else if (sort === "date_asc") {
-      query = query.orderBy("eventDate", "asc");
-    } else if (sort === "date_desc") {
-      query = query.orderBy("eventDate", "desc");
+    // Apply sorting - only order by if we have filters or if field exists
+    if (sort === "date_asc" || sort === "date_desc") {
+      query = query.orderBy("eventDate", sort === "date_asc" ? "asc" : "desc");
     } else {
-      query = query.orderBy("submittedAt", "desc");
+      // For newest/oldest, use createdAt (works with or without filters)
+      const direction = sort === "oldest" ? "asc" : "desc";
+      if (hasFilters) {
+        query = query.orderBy("createdAt", direction);
+      } else {
+        // Without orderBy constraint, just fetch all
+        query = query.limit(1000); // safety limit
+      }
     }
 
     const snapshot = await query.get();
@@ -52,7 +60,7 @@ export async function GET(req) {
         id: doc.id,
         ...data,
         submittedAt:
-          data.submittedAt?.toDate?.().toISOString?.() || data.submittedAt,
+          data.submittedAt?.toDate?.().toISOString?.() || data.createdAt?.toDate?.().toISOString?.() || data.submittedAt,
         createdAt: data.createdAt?.toDate?.().toISOString?.() || data.createdAt,
         updatedAt: data.updatedAt?.toDate?.().toISOString?.() || data.updatedAt,
       };
@@ -65,8 +73,9 @@ export async function GET(req) {
     });
   } catch (error) {
     console.error("Error listing submissions:", error);
+    console.error("Error details:", { code: error.code, message: error.message });
     return NextResponse.json(
-      { success: false, error: "Failed to list submissions" },
+      { success: false, error: error.message || "Failed to list submissions" },
       { status: 500 }
     );
   }

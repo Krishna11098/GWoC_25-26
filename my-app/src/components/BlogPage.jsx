@@ -2,8 +2,8 @@
 
 import BlogCard from "@/components/BlogCard";
 
-export default function BlogPage({ blogPosts }) {
-  const posts = blogPosts && blogPosts.length ? blogPosts : [];
+export default function BlogPage({ blogPosts = [], loading = false, showVotes = true }) {
+  const posts = loading ? [] : blogPosts;
 
   if (posts.length === 0) {
     return (
@@ -39,7 +39,7 @@ export default function BlogPage({ blogPosts }) {
       {/* Alternating List */}
       <div className="grid grid-cols-1 gap-6 md:gap-8">
         {posts.map((post, i) => (
-          <BlogCard key={post.title + i} post={post} index={i} />
+          <BlogCard key={(post.id || post.title || "post") + i} post={post} index={i} showVotes={showVotes} />
         ))}
       </div>
     </main>

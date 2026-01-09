@@ -17,6 +17,32 @@ export default function RootLayout({ children }) {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lemon&family=Lumanosimo&display=swap');
+        </style>
+        <style>
+          {`
+            .lemon-regular {
+              font-family: "Lemon", serif;
+              font-weight: 400;
+              font-style: normal;
+            }
+
+            .lumanosimo-regular {
+              font-family: "Lumanosimo", cursive;
+              font-weight: 400;
+              font-style: normal;
+            }
+
+            /* Variable style example with a unique class name */
+            .dancing-script-headline {
+              font-family: "Dancing Script", cursive;
+              font-optical-sizing: auto;
+              font-weight: 700;
+              font-style: normal;
+            }
+          `}
+        </style>
       </head>
       <body className="bg-white text-gray-900">
         <SettingsProvider>

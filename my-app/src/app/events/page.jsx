@@ -642,6 +642,53 @@ export default function EventsCalendarPage() {
           </aside>
         </div>
       </main>
+
+      {/* Contact Section for Custom Experiences */}
+      <section className="py-16 px-4 md:px-10 bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-50">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-emerald-200/50">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-2xl">
+                ✨
+              </div>
+              <div>
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
+                  Want Beautiful Custom Experiences?
+                </h3>
+                <p className="text-gray-600 mt-2 text-lg">
+                  Create personalized, pleasing experiences tailored to your needs with JoyJuncture.
+                </p>
+              </div>
+            </div>
+            
+            <p className="text-gray-700 mb-6 leading-relaxed">
+              Whether it's a private celebration, corporate team-building, or a unique gathering, our expert team designs unforgettable moments. Contact us to bring your vision to life with our curated experiences, games, and entertainment.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="mailto:contact@joyjuncture.com"
+                className="px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+              >
+                📧 Email Us
+              </a>
+              <a
+                href="tel:+91-XXXXXXXXXX"
+                className="px-6 py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+              >
+                📞 Call Us
+              </a>
+              <a
+                href="/contact"
+                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+              >
+                💬 Get In Touch
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
 
       {/* Event Details Modal */}

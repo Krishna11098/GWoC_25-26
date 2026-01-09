@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogPage from "@/components/BlogPage";
-import { CATEGORY_MAPPING } from "@/config/categories";
 
 export default function EventsPage() {
   const searchParams = useSearchParams();
@@ -13,30 +12,31 @@ export default function EventsPage() {
   const [experiences, setExperiences] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetch published experiences from public backend endpoint
   useEffect(() => {
     const fetchExperiences = async () => {
       try {
-        const res = await fetch("/api/experiences");
-        if (res.ok) {
-          const data = await res.json();
-          setExperiences(data);
-        }
+        const res = await fetch("/api/experiences" + (categoryParam ? `?category=${encodeURIComponent(categoryParam)}` : ""));
+        if (!res.ok) throw new Error("Failed to load experiences");
+        const data = await res.json();
+        const expsArray = data?.experiences || data || [];
+        const published = Array.isArray(expsArray)
+          ? expsArray.filter((exp) => exp.isPublished)
+          : [];
+        setExperiences(published);
       } catch (err) {
-        console.error("Error fetching experiences:", err);
+        console.error("Failed to fetch experiences:", err);
+        setExperiences([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchExperiences();
-  }, []);
+  }, [categoryParam]);
 
-  // Map selected category param to event data category
-  const selectedLabel = categoryParam ? CATEGORY_MAPPING[categoryParam] : null;
-
-  // Filter experiences by selected category
-  const filtered = selectedLabel
-    ? experiences.filter((e) => e.category.toLowerCase().includes(selectedLabel.toLowerCase()))
+  const filtered = categoryParam
+    ? experiences.filter((e) => (e.category || "").toLowerCase() === categoryParam.toLowerCase())
     : experiences;
 
   // Map experiences to blog post shape expected by BlogPage
@@ -44,11 +44,9 @@ export default function EventsPage() {
     id: e.id,
     title: e.title,
     category: e.category,
-    description: e.description || e.excerpt || "",
-    image: e.coverImage || "",
-    href: e.href || `/experiences/events/${e.id}`,
-    upvotes: e.upvotes || 0,
-    downvotes: e.downvotes || 0,
+    description: e.excerpt || e.description || "",
+    image: e.coverImage || e.image || "",
+    href: `/experiences/events/${e.id}`,
   }));
 
   if (loading) {
@@ -65,7 +63,7 @@ export default function EventsPage() {
     <>
       <Navbar />
       <div className="mt-20 pt-8">
-        <BlogPage blogPosts={blogPosts} />
+        <BlogPage blogPosts={blogPosts} loading={loading} showVotes={false} />
       </div>
       <Footer />
     </>

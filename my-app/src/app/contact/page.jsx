@@ -147,7 +147,7 @@ export default function ExperienceFormPage() {
       console.log("Submitting experience request:", submissionData);
 
       // Submit to API
-      const response = await fetch("/api/contact", {
+      const response = await fetch("/api/contact-submissions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submissionData),
@@ -161,7 +161,7 @@ export default function ExperienceFormPage() {
 
       if (data.success) {
         setSuccess(
-          "🎉 Your experience request has been submitted successfully! We'll contact you soon."
+          "🎉 Your details have been submitted successfully! We'll contact you soon."
         );
         setFormData({
           fullName: "",

@@ -1,7 +1,19 @@
 "use client";
 
+import { Poppins, Baloo_2 } from "next/font/google";
+
 import PlayfulHeading from "./PlayfulHeading";
 import ShinyText from "./ShinyText";
+
+const baloo = Baloo_2({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
 
 /**
  * HeroSection - Animates out smoothly as next section enters viewport
@@ -17,6 +29,9 @@ export default function HeroSection({ scrollProgress = 0 }) {
     "/gallery/image5.png",
     "/gallery/image6.png",
   ];
+
+
+  
 
   // Calculate transform values based on scroll progress
   const scale = 1 - scrollProgress * 0.1; // Scale from 1 to 0.9

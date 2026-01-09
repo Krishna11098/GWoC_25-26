@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import BlogCard from "@/components/BlogCard";
 
+// Fixed categories from admin/create form
 const CATEGORIES = [
   {
     id: "private_birthdays",
@@ -27,65 +27,12 @@ const CATEGORIES = [
   },
   { id: "carnivals", label: "Carnivals", icon: "🎡", colorVar: "--color-pink" },
   { id: "weddings", label: "Weddings", icon: "💍", colorVar: "--color-green" },
+  { id: "workshops", label: "Workshops", icon: "🎓", colorVar: "--color-blue" },
 ];
 
 export default function ExperiencesLanding() {
   const sliderRef = useRef(null);
-  const [current, setCurrent] = useState(0);
-  const [heroEvents, setHeroEvents] = useState([]);
-
-  useEffect(() => {
-    const fetchExperiences = async () => {
-      try {
-        const res = await fetch("/api/experiences");
-        if (res.ok) {
-          const data = await res.json();
-          if (data.length > 0) {
-            const copy = [...data];
-            for (let i = copy.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [copy[i], copy[j]] = [copy[j], copy[i]];
-            }
-            const mapped = copy.slice(0, 3).map((e) => ({
-              id: e.id,
-              title: e.title,
-              category: e.category,
-              description: e.description || e.excerpt || "",
-              image: e.coverImage || "",
-              href: `/experiences/events/${e.id}`,
-            }));
-            setHeroEvents(mapped);
-          }
-        }
-      } catch (err) {
-        console.error("Error fetching experiences:", err);
-      }
-    };
-
-    fetchExperiences();
-  }, []);
-
-  useEffect(() => {
-    const slider = sliderRef.current;
-    if (!slider || heroEvents.length === 0) return;
-
-    let idx = 0;
-    const total = heroEvents.length;
-    const interval = setInterval(() => {
-      idx = (idx + 1) % total;
-      setCurrent(idx);
-      const card = slider.children[idx];
-      if (card) {
-        card.scrollIntoView({
-          behavior: "smooth",
-          inline: "center",
-          block: "nearest",
-        });
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [heroEvents]);
+  const [heroEvents] = useState([]);
 
   return (
     <>
@@ -130,8 +77,8 @@ export default function ExperiencesLanding() {
         </section>
 
         {/* Themes */}
-        <section className="py-12">
-          <div className="max-w-6xl mx-auto px-4">
+        <section className="py-12 px-4 md:px-10">
+          <div className="mx-auto max-w-7xl">
             <div className="flex items-center justify-between mb-4">
               <h2
                 className="text-2xl font-bold"
@@ -180,6 +127,53 @@ export default function ExperiencesLanding() {
             </div>
           </div>
         </section>
+
+        {/* Contact Section for Custom Experiences */}
+        <section className="py-16 px-4 md:px-10">
+          <div className="mx-auto max-w-7xl">
+            <div className="bg-gradient-to-br from-slate-100 to-slate-50 rounded-3xl border border-slate-200 shadow-lg p-8 md:p-12">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="flex-shrink-0 w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-3xl shadow-sm">
+                  ✨
+                </div>
+                <div>
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900">
+                    Want to Create Custom Experiences?
+                  </h2>
+                  <p className="text-slate-700 mt-2 text-lg">
+                    Personalized, beautiful moments tailored to your vision with JoyJuncture.
+                  </p>
+                </div>
+              </div>
+              
+              <p className="text-slate-700 mb-8 leading-relaxed text-base">
+                Whether it's a private celebration, corporate team-building, wedding, or a unique gathering, our expert team designs unforgettable moments. Contact us to bring your vision to life with our curated experiences, games, and entertainment.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="mailto:contact@joyjuncture.com"
+                  className="px-7 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                >
+                  📧 Email Us
+                </a>
+                <a
+                  href="tel:+91-XXXXXXXXXX"
+                  className="px-7 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                >
+                  📞 Call Us
+                </a>
+                <a
+                  href="/contact"
+                  className="px-7 py-3 bg-red-500 text-white rounded-full hover:bg-red-600 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                >
+                  💬 Get In Touch
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
       <Footer />
     </>

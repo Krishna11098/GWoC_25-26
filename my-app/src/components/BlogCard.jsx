@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { auth } from "@/lib/firebaseClient";
 
-export default function BlogCard({ post, index, hero = false }) {
+export default function BlogCard({ post, index, hero = false, showVotes = true }) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
   const [user, setUser] = useState(null);
@@ -29,20 +29,21 @@ export default function BlogCard({ post, index, hero = false }) {
     return () => observer.disconnect();
   }, []);
 
-  // Listen for auth state changes
+  // Listen for auth state changes (only when votes are shown)
   useEffect(() => {
+    if (!showVotes) return undefined;
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
       if (currentUser && post.id) {
         fetchUserVote(currentUser);
       }
     });
-    return () => unsubscribe();
-  }, [post.id]);
+    return () => unsubscribe && unsubscribe();
+  }, [post.id, showVotes]);
 
-  // Fetch vote counts from the blog data
+  // Fetch vote counts from the blog data (only when votes are shown)
   useEffect(() => {
-    if (!post.id) return;
+    if (!showVotes || !post.id) return;
     async function fetchVoteCounts() {
       try {
         const res = await fetch(`/api/blogs/${post.id}`);
@@ -61,7 +62,7 @@ export default function BlogCard({ post, index, hero = false }) {
       }
     }
     fetchVoteCounts();
-  }, [post.id]);
+  }, [post.id, showVotes]);
 
   async function fetchUserVote(currentUser) {
     try {
@@ -79,6 +80,7 @@ export default function BlogCard({ post, index, hero = false }) {
   }
 
   async function handleVote(voteType) {
+    if (!showVotes) return;
     if (!user) {
       alert("Please log in to vote");
       return;
@@ -169,7 +171,7 @@ export default function BlogCard({ post, index, hero = false }) {
             </div>
 
             {/* Votes positioned bottom-right */}
-            {post.id && (
+            {showVotes && post.id && (
               <div className="absolute right-4 bottom-4 flex items-center gap-3">
                 <button
                   onClick={() => handleVote("upvote")}
@@ -278,7 +280,7 @@ export default function BlogCard({ post, index, hero = false }) {
             </p>
 
             {/* Vote Buttons */}
-            {post.id && (
+            {showVotes && post.id && (
               <div className="flex items-center gap-3 mt-4">
                 <button
                   onClick={() => handleVote("upvote")}

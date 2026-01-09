@@ -221,26 +221,7 @@ const Navbar = () => {
                   }}
                 >
                   <div className="py-2">
-                    <Link
-                      href="/play"
-                      onClick={() => {
-                        setPlayDropdownOpen(false);
-                        setPlayDropdownClicked(false);
-                      }}
-                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
-                    >
-                      Play Hub
-                    </Link>
-                    <Link
-                      href="/games"
-                      onClick={() => {
-                        setPlayDropdownOpen(false);
-                        setPlayDropdownClicked(false);
-                      }}
-                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
-                    >
-                      Games
-                    </Link>
+                    
                     <Link
                       href="/sudoku"
                       onClick={() => {

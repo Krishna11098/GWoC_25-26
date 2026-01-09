@@ -1,31 +1,30 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/firebaseAdmin";
-import admin from "firebase-admin";
+import { db, admin } from "@/lib/firebaseAdmin";
 
-export async function POST(req) {
+// POST /api/queries - store a general query/contact message
+export async function POST(request) {
   try {
-    const body = await req.json();
-    const { name, email, phone, category, subject, message } = body;
+    const body = await request.json();
+    const { name, email, phone = "", category = "general", subject, message } = body || {};
 
     // Validate required fields
     if (!name || !email || !subject || !message || !category) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { success: false, error: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    // Validate email format
+    // Basic email format check
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: "Invalid email format" },
+        { success: false, error: "Invalid email format" },
         { status: 400 }
       );
     }
 
-    // Create query document
-    const queryRef = await db.collection("queries").add({
+    const payload = {
       name,
       email,
       phone: phone || null,
@@ -34,29 +33,18 @@ export async function POST(req) {
       message,
       status: "pending",
       isRead: false,
-      adminNotes: null,
       submittedAt: admin.firestore.FieldValue.serverTimestamp(),
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
+    };
 
-    console.log("✅ Query submitted:", {
-      id: queryRef.id,
-      name,
-      email,
-      category,
-      subject,
-    });
+    const ref = await db.collection("queries").add(payload);
 
-    return NextResponse.json({
-      success: true,
-      id: queryRef.id,
-      message: "Query submitted successfully",
-    });
+    return NextResponse.json({ success: true, id: ref.id, message: "Query submitted successfully" });
   } catch (error) {
-    console.error("Error submitting query:", error);
+    console.error("Error saving query:", error);
     return NextResponse.json(
-      { error: "Failed to submit query" },
+      { success: false, error: error?.message || "Failed to save query" },
       { status: 500 }
     );
   }

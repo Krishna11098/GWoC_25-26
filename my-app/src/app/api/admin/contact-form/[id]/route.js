@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/firebaseAdmin";
-import { getUserFromRequest } from "@/lib/authMiddleware";
-import admin from "firebase-admin";
+import { db, auth, admin } from "@/lib/firebaseAdmin";
 
 /**
  * PATCH /api/admin/contact-form/[id] - Update submission status and admin notes
@@ -21,11 +19,16 @@ export async function PATCH(req, { params }) {
 
     const { status, adminNotes } = await req.json();
 
-    const user = await getUserFromRequest(req);
-    if (!user)
+    const authHeader = req.headers.get("authorization") || "";
+    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+    if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    if (user.role !== "admin")
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+    try {
+      await auth.verifyIdToken(token);
+    } catch (e) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     if (!["unseen", "contacted", "accepted", "rejected"].includes(status)) {
       return NextResponse.json({ error: "Invalid status" }, { status: 400 });
