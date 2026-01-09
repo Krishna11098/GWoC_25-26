@@ -13,6 +13,8 @@ export async function POST(request) {
       );
     }
 
+    // Generate the Google OAuth2 authorization URL
+
     const authUrl = getAuthorizationUrl(userId);
 
     return NextResponse.json({

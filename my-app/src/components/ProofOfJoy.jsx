@@ -11,6 +11,8 @@ export default function ProofOfJoy() {
     { image: 4, text: "Workshops" },
   ];
 
+  // Function to get label text based on image number
+
   const getLabel = (imageNum) => labels.find((l) => l.image === imageNum)?.text || "";
 
   return (
