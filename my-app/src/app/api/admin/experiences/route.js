@@ -24,7 +24,7 @@ export async function GET(req) {
       };
     });
 
-    return NextResponse.json({ experiences });
+    return NextResponse.json(experiences);
   } catch (error) {
     console.error("Error listing experiences:", error);
     return NextResponse.json({ error: "Failed to list experiences" }, { status: 500 });

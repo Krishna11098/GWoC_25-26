@@ -5,6 +5,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { userFetch } from "@/lib/userFetch";
 import BlogCard from "@/components/BlogCard";
+import { EXPERIENCE_CATEGORIES } from "@/config/categories";
 
 export default function CreateExperiencePage() {
   const router = useRouter();
@@ -12,10 +13,11 @@ export default function CreateExperiencePage() {
   const [error, setError] = useState("");
   const [uploading, setUploading] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
   const [formData, setFormData] = useState({
     title: "",
     excerpt: "",
-    category: "Meetup",
+    category: EXPERIENCE_CATEGORIES[0], // Default to first category
     tags: "",
     coverImage: "",
     isPublished: false,
@@ -199,7 +201,7 @@ export default function CreateExperiencePage() {
       if (res.ok) {
         const successMsg = publish ? "Experience published successfully!" : "Experience saved as draft!";
         alert(successMsg);
-        router.push("/admin/events");
+        router.push("/admin/experiences");
       } else {
         const errorData = await res.json();
         setError(errorData.error || "Failed to create experience");
@@ -294,18 +296,18 @@ export default function CreateExperiencePage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">Category</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Category *</label>
                   <select
                     name="category"
                     value={formData.category}
                     onChange={handleHeaderChange}
                     className="w-full px-4 py-3 rounded-2xl bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-emerald-400"
                   >
-                    <option>Meetup</option>
-                    <option>Workshop</option>
-                    <option>Tournament</option>
-                    <option>Social</option>
-                    <option>Other</option>
+                    {EXPERIENCE_CATEGORIES.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -450,7 +452,7 @@ export default function CreateExperiencePage() {
                 </button>
 
                 <button
-                  onClick={() => router.push("/admin/events")}
+                  onClick={() => router.push("/admin/experiences")}
                   disabled={loading}
                   className="w-full px-6 py-4 rounded-2xl bg-slate-200 border border-slate-300 text-slate-900 font-semibold hover:bg-slate-300 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >

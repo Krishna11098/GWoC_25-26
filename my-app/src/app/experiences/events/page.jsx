@@ -1,43 +1,65 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogPage from "@/components/BlogPage";
-import EVENTS from "@/data/events";
+import { CATEGORY_MAPPING } from "@/config/categories";
 
 export default function EventsPage() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams ? searchParams.get("category") : null;
+  const [experiences, setExperiences] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // map category ids (from chips) to human labels used on events
-  const CATEGORY_LABELS = {
-    private_birthdays: "Private Birthdays",
-    corporate_events: "Corporate Events",
-    monthly_kits: "Monthly Kits",
-    carnivals: "Carnivals",
-    weddings: "Weddings",
-  };
+  useEffect(() => {
+    const fetchExperiences = async () => {
+      try {
+        const res = await fetch("/api/experiences");
+        if (res.ok) {
+          const data = await res.json();
+          setExperiences(data);
+        }
+      } catch (err) {
+        console.error("Error fetching experiences:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const selectedLabel = categoryParam ? CATEGORY_LABELS[categoryParam] : null;
+    fetchExperiences();
+  }, []);
 
-  const source = EVENTS;
+  // Map selected category param to event data category
+  const selectedLabel = categoryParam ? CATEGORY_MAPPING[categoryParam] : null;
+
+  // Filter experiences by selected category
   const filtered = selectedLabel
-    ? source.filter((e) => e.category.toLowerCase().includes(selectedLabel.toLowerCase()))
-    : source;
+    ? experiences.filter((e) => e.category.toLowerCase().includes(selectedLabel.toLowerCase()))
+    : experiences;
 
-  // Map events to blog post shape expected by BlogPage
+  // Map experiences to blog post shape expected by BlogPage
   const blogPosts = filtered.map((e) => ({
     id: e.id,
     title: e.title,
     category: e.category,
-    description: e.description,
-    image: e.image,
-    href: e.href,
-    upvotes: e.upvotes,
-    downvotes: e.downvotes,
+    description: e.description || e.excerpt || "",
+    image: e.coverImage || "",
+    href: e.href || `/experiences/events/${e.id}`,
+    upvotes: e.upvotes || 0,
+    downvotes: e.downvotes || 0,
   }));
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="mt-20 pt-8 text-center">Loading experiences...</div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
