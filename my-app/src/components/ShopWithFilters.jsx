@@ -13,7 +13,11 @@ function normalizePlayers(value) {
   return { low, high };
 }
 
-export default function ShopWithFilters({ items = [], imageById = {}, fallbackImages = [] }) {
+export default function ShopWithFilters({
+  items = [],
+  imageById = {},
+  fallbackImages = [],
+}) {
   const [occasion, setOccasion] = useState([]);
   const [players, setPlayers] = useState("");
   const [mood, setMood] = useState([]);
@@ -76,13 +80,21 @@ export default function ShopWithFilters({ items = [], imageById = {}, fallbackIm
     return items.filter((it) => {
       // occasion
       if (occasion.length > 0) {
-        const its = it.occasion ? (Array.isArray(it.occasion) ? it.occasion : [it.occasion]) : [];
+        const its = it.occasion
+          ? Array.isArray(it.occasion)
+            ? it.occasion
+            : [it.occasion]
+          : [];
         if (!occasion.some((o) => its.includes(o))) return false;
       }
 
       // mood
       if (mood.length > 0) {
-        const its = it.mood ? (Array.isArray(it.mood) ? it.mood : [it.mood]) : [];
+        const its = it.mood
+          ? Array.isArray(it.mood)
+            ? it.mood
+            : [it.mood]
+          : [];
         if (!mood.some((m) => its.includes(m))) return false;
       }
 
@@ -110,15 +122,35 @@ export default function ShopWithFilters({ items = [], imageById = {}, fallbackIm
 
   return (
     <div className="mt-8 relative">
-      {/* Filter toggle positioned near the top center of the content */}
+      {/* Filter toggle positioned under the navbar on small screens */}
       <button
         aria-label="Open filters"
+        aria-expanded={panelOpen}
+        aria-controls="filters-panel"
         onClick={() => setPanelOpen(true)}
-        className="absolute -top-24 left-[calc(78%+180px)] z-50 -translate-x-1/2 flex items-center gap-2 rounded-full bg-gray-900 px-5 py-3 text-white shadow-lg hover:bg-gray-800 border-2 border-white"
-        style={{ boxShadow: '0 8px 26px rgba(0,0,0,0.22)' }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") setPanelOpen(true);
+        }}
+        className="fixed top-32 right-6 z-50 flex items-center gap-2 rounded-full px-4 py-2 text-white shadow-lg focus:outline-none focus:ring-4 focus:ring-offset-2"
+        style={{
+          boxShadow: "0 8px 26px rgba(0,0,0,0.22)",
+          backgroundColor: "var(--color-font)",
+          border: "2px solid rgba(255,255,255,0.06)",
+        }}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L15 12.414V19a1 1 0 01-.553.894l-4 2A1 1 0 019 21v-8.586L3.293 6.707A1 1 0 013 6V4z" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L15 12.414V19a1 1 0 01-.553.894l-4 2A1 1 0 019 21v-8.586L3.293 6.707A1 1 0 013 6V4z"
+          />
         </svg>
         <span className="hidden sm:inline">Filters</span>
       </button>
@@ -133,14 +165,23 @@ export default function ShopWithFilters({ items = [], imageById = {}, fallbackIm
 
       {/* Sliding panel */}
       <aside
+        id="filters-panel"
         role="dialog"
         aria-modal="true"
-        className={`fixed top-0 left-0 z-50 h-full w-80 transform bg-white shadow-xl transition-transform duration-300 ${panelOpen ? "translate-x-0" : "-translate-x-full"}`}
+        aria-hidden={!panelOpen}
+        className={`fixed top-0 left-0 z-50 h-full w-full md:w-80 transform bg-white shadow-xl transition-transform duration-300 ${
+          panelOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
         <div className="p-6 h-full overflow-y-auto">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold">Filters</h3>
-            <button onClick={() => setPanelOpen(false)} className="text-sm text-gray-600">Close</button>
+            <button
+              onClick={() => setPanelOpen(false)}
+              className="text-sm text-gray-600"
+            >
+              Close
+            </button>
           </div>
 
           {/* All filters kept inside panel */}
@@ -154,7 +195,11 @@ export default function ShopWithFilters({ items = [], imageById = {}, fallbackIm
                     <button
                       key={o}
                       onClick={() => toggleMulti(setOccasion, occasion, o)}
-                      className={`px-3 py-1 rounded-full border text-sm ${occasion.includes(o) ? "bg-gray-900 text-white" : "bg-white text-gray-800"}`}
+                      className={`px-3 py-1 rounded-full border text-sm ${
+                        occasion.includes(o)
+                          ? "bg-gray-900 text-white"
+                          : "bg-white text-gray-800"
+                      }`}
                     >
                       {o}
                     </button>
@@ -165,11 +210,19 @@ export default function ShopWithFilters({ items = [], imageById = {}, fallbackIm
 
             {/* Players */}
             <div>
-              <div className="text-sm font-semibold mb-2">By number of players</div>
-              <select value={players} onChange={(e) => setPlayers(e.target.value)} className="rounded border px-3 py-2 text-sm w-full">
+              <div className="text-sm font-semibold mb-2">
+                By number of players
+              </div>
+              <select
+                value={players}
+                onChange={(e) => setPlayers(e.target.value)}
+                className="rounded border px-3 py-2 text-sm w-full"
+              >
                 <option value="">All</option>
                 {options.playerBuckets.map((b) => (
-                  <option key={b} value={b}>{b}</option>
+                  <option key={b} value={b}>
+                    {b}
+                  </option>
                 ))}
               </select>
             </div>
@@ -183,7 +236,11 @@ export default function ShopWithFilters({ items = [], imageById = {}, fallbackIm
                     <button
                       key={m}
                       onClick={() => toggleMulti(setMood, mood, m)}
-                      className={`px-3 py-1 rounded-full border text-sm ${mood.includes(m) ? "bg-gray-900 text-white" : "bg-white text-gray-800"}`}
+                      className={`px-3 py-1 rounded-full border text-sm ${
+                        mood.includes(m)
+                          ? "bg-gray-900 text-white"
+                          : "bg-white text-gray-800"
+                      }`}
                     >
                       {m}
                     </button>
@@ -201,7 +258,11 @@ export default function ShopWithFilters({ items = [], imageById = {}, fallbackIm
                     <button
                       key={t}
                       onClick={() => toggleMulti(setGameType, gameType, t)}
-                      className={`px-3 py-1 rounded-full border text-sm ${gameType.includes(t) ? "bg-gray-900 text-white" : "bg-white text-gray-800"}`}
+                      className={`px-3 py-1 rounded-full border text-sm ${
+                        gameType.includes(t)
+                          ? "bg-gray-900 text-white"
+                          : "bg-white text-gray-800"
+                      }`}
                     >
                       {t}
                     </button>
@@ -212,7 +273,12 @@ export default function ShopWithFilters({ items = [], imageById = {}, fallbackIm
 
             <div className="flex items-center gap-3">
               <button
-                onClick={() => { setOccasion([]); setPlayers(""); setMood([]); setGameType([]); }}
+                onClick={() => {
+                  setOccasion([]);
+                  setPlayers("");
+                  setMood([]);
+                  setGameType([]);
+                }}
                 className="rounded border px-4 py-2 text-sm"
               >
                 Clear
@@ -229,7 +295,11 @@ export default function ShopWithFilters({ items = [], imageById = {}, fallbackIm
       </aside>
 
       <div className="pl-0 md:pl-0">
-        <GameGrid items={filtered} imageById={imageById} fallbackImages={fallbackImages} />
+        <GameGrid
+          items={filtered}
+          imageById={imageById}
+          fallbackImages={fallbackImages}
+        />
       </div>
     </div>
   );

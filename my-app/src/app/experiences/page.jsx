@@ -6,12 +6,26 @@ import Footer from "@/components/Footer";
 
 // Fixed categories from admin/create form
 const CATEGORIES = [
-  { id: "private_birthdays", label: "Private Birthdays", icon: "🎂", bg: "from-pink-50 to-pink-100", accent: "bg-pink-100", text: "text-pink-800" },
-  { id: "corporate_events", label: "Corporate Events", icon: "🏢", bg: "from-blue-50 to-blue-100", accent: "bg-blue-100", text: "text-blue-800" },
-  { id: "monthly_kits", label: "Monthly Kits", icon: "📦", bg: "from-indigo-50 to-indigo-100", accent: "bg-indigo-100", text: "text-indigo-800" },
-  { id: "carnivals", label: "Carnivals", icon: "🎡", bg: "from-amber-50 to-amber-100", accent: "bg-amber-100", text: "text-amber-800" },
-  { id: "weddings", label: "Weddings", icon: "💍", bg: "from-rose-50 to-rose-100", accent: "bg-rose-100", text: "text-rose-800" },
-  { id: "workshops", label: "Workshops", icon: "🎓", bg: "from-teal-50 to-teal-100", accent: "bg-teal-100", text: "text-teal-800" },
+  {
+    id: "private_birthdays",
+    label: "Private Birthdays",
+    icon: "🎂",
+    colorVar: "--color-pink",
+  },
+  {
+    id: "corporate_events",
+    label: "Corporate Events",
+    icon: "🏢",
+    colorVar: "--color-green",
+  },
+  {
+    id: "monthly_kits",
+    label: "Monthly Kits",
+    icon: "📦",
+    colorVar: "--color-orange",
+  },
+  { id: "carnivals", label: "Carnivals", icon: "🎡", colorVar: "--color-pink" },
+  { id: "weddings", label: "Weddings", icon: "💍", colorVar: "--color-green" },
 ];
 
 export default function ExperiencesLanding() {
@@ -22,6 +36,44 @@ export default function ExperiencesLanding() {
     <>
       <Navbar />
       <main className="mt-20">
+        {/* Hero */}
+        <section className="py-12 md:py-16">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h1
+                  className="text-3xl sm:text-4xl md:text-5xl font-extrabold"
+                  style={{ color: "var(--color-font)" }}
+                >
+                  Experiences
+                </h1>
+                <p
+                  className="mt-2 text-sm sm:text-base"
+                  style={{ color: "var(--color-font)" }}
+                >
+                  Curated live experiences, games and engagement formats.
+                </p>
+              </div>
+              {/* right-side CTA removed; See All Events moved to Themes section */}
+            </div>
+            <div className="overflow-x-auto no-scrollbar py-6">
+              <div
+                ref={sliderRef}
+                className="flex gap-6 items-stretch snap-x snap-mandatory px-2"
+              >
+                {heroEvents.map((ev, i) => (
+                  <div
+                    key={ev.id}
+                    className="snap-center flex-shrink-0 w-[86%] sm:min-w-[320px] sm:max-w-[380px]"
+                  >
+                    <BlogCard post={{ ...ev }} index={i} hero />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Themes */}
         <section className="py-12 px-4 md:px-10">
           <div className="mx-auto max-w-7xl">
@@ -37,12 +89,12 @@ export default function ExperiencesLanding() {
               </Link>
             </div>
 
-            <div className="flex flex-wrap gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {CATEGORIES.map((c) => (
                 <Link
                   key={c.id}
                   href={`/experiences/events?category=${c.id}`}
-                  className={`w-56 md:w-72 p-5 rounded-3xl border shadow-sm hover:shadow-lg transform hover:-translate-y-1 transition duration-200 flex items-start gap-4`}
+                  className={`w-full p-5 rounded-3xl border shadow-sm hover:shadow-lg transform hover:-translate-y-1 transition duration-200 flex items-start gap-4`}
                   style={{
                     backgroundColor: "var(--bg)",
                     borderColor: "rgba(0,0,0,0.06)",

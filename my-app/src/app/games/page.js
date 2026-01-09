@@ -120,10 +120,10 @@ export default async function GamesPage() {
         <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-3xl font-semibold text-gray-900">
+              <h1 className="text-3xl md:text-4xl font-semibold text-gray-900">
                 Game Marketplace
               </h1>
-              <p className="mt-2 text-sm text-gray-600">
+              <p className="mt-2 text-sm md:text-base text-gray-600">
                 Browse and add games to your cart.
               </p>
             </div>
