@@ -1,6 +1,18 @@
 "use client";
 
+import { Poppins, Baloo_2 } from "next/font/google";
+
 import PlayfulHeading from "./PlayfulHeading";
+
+const baloo = Baloo_2({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
 
 /**
  * HeroSection - Animates out smoothly as next section enters viewport
@@ -16,6 +28,9 @@ export default function HeroSection({ scrollProgress = 0 }) {
     "/gallery/image5.png",
     "/gallery/image6.png",
   ];
+
+
+  
 
   // Calculate transform values based on scroll progress
   const scale = 1 - scrollProgress * 0.1; // Scale from 1 to 0.9
@@ -38,21 +53,24 @@ export default function HeroSection({ scrollProgress = 0 }) {
       <div className="absolute inset-0 pointer-events-none opacity-50 mesh-gradient -z-10" /> */}
 
       {/* Top Section - Centered Text Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-8 md:px-16 container mx-auto mt-auto">
-        <div className="max-w-4xl">
-          <PlayfulHeading
-            text="JOY JUNCTURE"
-            className="font-winky-rough text-6xl md:text-8xl lg:text-9xl font-bold mb-6 italic text-font drop-shadow-sm"
-            staggerDelay={0.06}
-          />
-          <PlayfulHeading
-            text="Play. Connect. Celebrate."
-            as="p"
-            className="font-winky-rough-soft text-2xl md:text-3xl font-medium leading-relaxed text-font/80 mb-12"
-            staggerDelay={0.03}
-          />
-        </div>
-      </div>
+     <div className="relative z-10 flex flex-col items-center justify-center text-center px-8 md:px-16 container mx-auto mt-auto">
+  <div className="max-w-4xl">
+    <PlayfulHeading
+      text="JOY JUNCTURE"
+      className="dancing-script-headline text-6xl md:text-8xl lg:text-9xl tracking-wide"
+      as="h1"
+    />
+
+    <p
+      className={`${poppins.className} text-2xl md:text-3xl font-medium leading-relaxed text-font/80 mb-12`}
+    >
+      Play. Connect. Celebrate.
+    </p>
+  </div>
+</div>
+
+
+
 
       {/* Bottom Section - Horizontal Scrolling Gallery */}
       <div className="m-auto w-full relative overflow-hidden pb-12 pt-12">

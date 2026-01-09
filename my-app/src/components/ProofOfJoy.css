@@ -3,11 +3,13 @@
 }
 
 .image-hover {
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.320, 1) !important;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), filter 0.5s ease !important;
+  transform-origin: center;
 }
 
 .image-hover-wrapper:hover .image-hover {
-  transform: scale(1.08) rotateX(2deg) rotateY(-3deg) rotateZ(1deg);
+  transform: translate(-6px, -6px) scale(1.08) rotateZ(1deg);
+  filter: saturate(1.08) brightness(1.02);
 }
 
 .image-label {
