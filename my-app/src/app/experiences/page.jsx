@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -26,11 +27,12 @@ const CATEGORIES = [
   },
   { id: "carnivals", label: "Carnivals", icon: "🎡", colorVar: "--color-pink" },
   { id: "weddings", label: "Weddings", icon: "💍", colorVar: "--color-green" },
+  { id: "workshops", label: "Workshops", icon: "🎓", colorVar: "--color-blue" },
 ];
 
 export default function ExperiencesLanding() {
-
-
+  const sliderRef = useRef(null);
+  const [heroEvents] = useState([]);
 
   return (
     <>
