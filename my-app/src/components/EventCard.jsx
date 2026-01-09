@@ -154,7 +154,7 @@ const EventCard = ({ event, view = "grid" }) => {
                 className={`px-3 py-1 rounded-full text-sm font-bold ${
                   event.price === 0
                     ? "bg-green-100 text-green-800"
-                    : "bg-blue-100 text-blue-800"
+                    : "bg-[#E6F1EC] text-[#3E6F5C]"
                 }`}
               >
                 {event.price === 0 ? "Free" : `$${event.price}`}
@@ -288,7 +288,7 @@ const EventCard = ({ event, view = "grid" }) => {
               {/* Footer */}
               <div className="flex justify-between items-center pt-6 border-t border-gray-100">
                 <div className="flex items-center gap-4">
-                  <button className="px-6 py-2 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg">
+                  <button className="px-6 py-2 bg-[#7FAF9B] text-white rounded-full font-medium hover:bg-[#6A9C87] transition-colors shadow-md hover:shadow-lg">
                     Register Now
                   </button>
                   <button className="px-6 py-2 bg-white border-2 border-gray-200 text-gray-700 rounded-full font-medium hover:bg-gray-50 transition-colors">
@@ -401,7 +401,7 @@ const EventCard = ({ event, view = "grid" }) => {
                   </div>
                   <p
                     className={`text-lg font-bold ${
-                      event.price === 0 ? "text-green-600" : "text-purple-600"
+                      event.price === 0 ? "text-green-600" : "text-[#3E6F5C]"
                     }`}
                   >
                     {event.price === 0 ? "Complimentary" : `$${event.price}`}
@@ -411,7 +411,7 @@ const EventCard = ({ event, view = "grid" }) => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="flex-1 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-lg hover:shadow-xl transition-shadow">
+                <button className="flex-1 px-8 py-4 bg-[#7FAF9B] text-white rounded-xl font-bold text-lg hover:bg-[#6A9C87] hover:shadow-xl transition-all">
                   Secure Your Spot Now
                 </button>
                 <button className="px-8 py-4 bg-white border-2 border-gray-200 text-gray-700 rounded-xl font-bold text-lg hover:bg-gray-50 transition-colors">

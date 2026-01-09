@@ -5,10 +5,10 @@ import "./ProofOfJoy.css";
 
 export default function ProofOfJoy() {
   const labels = [
-    { image: 1, text: "Community Events" },
-    { image: 2, text: "Player Insights" },
-    { image: 3, text: "Middle East" },
-    { image: 4, text: "Customer Insights" },
+    { image: 1, text: "Games" },
+    { image: 2, text: "Events" },
+    { image: 3, text: "Corporate Experiences" },
+    { image: 4, text: "Workshops" },
   ];
 
   const getLabel = (imageNum) => labels.find((l) => l.image === imageNum)?.text || "";
@@ -16,7 +16,7 @@ export default function ProofOfJoy() {
   return (
     <section className="relative py-20 md:py-28 bg-darkblue">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
-        {/* ---------- HEADER ---------- */}
+        
         <div className="mb-12">
           <div className="flex items-center gap-3">
             <span className="h-9 w-2 rounded-full bg-font" />
@@ -27,9 +27,9 @@ export default function ProofOfJoy() {
         </div>
 
         {/* ---------- IMAGE GRID ---------- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-200">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[600px] md:h-[800px]">
           {/* Left: Single large image */}
-          <div className="relative overflow-hidden rounded-3xl shadow-2xl">
+          <div className="relative h-[400px] md:h-full overflow-hidden rounded-3xl shadow-2xl image-hover-wrapper">
             <Image
               src="/gallery/image1.png"
               alt="Gallery Image 1"
@@ -44,9 +44,9 @@ export default function ProofOfJoy() {
           </div>
 
           {/* Right: Top and bottom sections */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 h-[800px] md:h-full">
             {/* Top: Single image */}
-            <div className="relative overflow-hidden rounded-3xl shadow-2xl h-1/2">
+            <div className="relative h-1/2 overflow-hidden rounded-3xl shadow-2xl image-hover-wrapper">
               <Image
                 src="/gallery/image2.png"
                 alt="Gallery Image 2"
@@ -61,7 +61,7 @@ export default function ProofOfJoy() {
 
             {/* Bottom: Two images side by side */}
             <div className="grid grid-cols-2 gap-6 h-1/2">
-              <div className="relative overflow-hidden rounded-3xl shadow-2xl">
+              <div className="relative overflow-hidden rounded-3xl shadow-2xl image-hover-wrapper">
                 <Image
                   src="/gallery/image3.png"
                   alt="Gallery Image 3"
@@ -73,7 +73,7 @@ export default function ProofOfJoy() {
                   <span>{getLabel(3)}</span>
                 </div>
               </div>
-              <div className="relative overflow-hidden rounded-3xl shadow-2xl">
+              <div className="relative overflow-hidden rounded-3xl shadow-2xl image-hover-wrapper">
                 <Image
                   src="/gallery/image4.png"
                   alt="Gallery Image 4"

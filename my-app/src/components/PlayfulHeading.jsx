@@ -116,6 +116,9 @@ const PlayfulHeading = ({
     );
   }
 
+  // Split text into words
+  const words = text.split(" ");
+
   // Default letter-by-letter animation
   return (
     <MotionComponent
@@ -126,15 +129,23 @@ const PlayfulHeading = ({
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
     >
-      {letters.map((letter, idx) => (
-        <motion.span
-          key={`${letter}-${idx}`}
-          variants={letterVariants}
-          className="inline-block cursor-grab active:cursor-grabbing"
-          style={{ willChange: "transform" }}
-        >
-          {letter === " " ? "\u00A0" : letter}
-        </motion.span>
+      {words.map((word, wordIdx) => (
+        <span key={wordIdx} className="inline-block whitespace-nowrap">
+          {Array.from(word).map((letter, letterIdx) => (
+            <motion.span
+              key={`${wordIdx}-${letterIdx}`}
+              variants={letterVariants}
+              className="inline-block cursor-grab active:cursor-grabbing"
+              style={{ willChange: "transform" }}
+            >
+              {letter}
+            </motion.span>
+          ))}
+          {/* Add space after word if not the last word */}
+          {wordIdx < words.length - 1 && (
+            <span className="inline-block">&nbsp;</span>
+          )}
+        </span>
       ))}
     </MotionComponent>
   );

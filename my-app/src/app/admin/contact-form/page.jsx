@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
+import { auth } from "@/lib/firebaseClient";
 
 const categories = [
   {
@@ -46,9 +47,14 @@ const categories = [
 const statuses = [
   { value: "all", label: "All Status", color: "bg-gray-100 text-gray-800" },
   {
-    value: "pending",
-    label: "Pending",
+    value: "unseen",
+    label: "Unseen",
     color: "bg-yellow-100 text-yellow-800 border-yellow-200",
+  },
+  {
+    value: "contacted",
+    label: "Contacted",
+    color: "bg-blue-100 text-blue-800 border-blue-200",
   },
   {
     value: "accepted",
@@ -59,11 +65,6 @@ const statuses = [
     value: "rejected",
     label: "Rejected",
     color: "bg-red-100 text-red-800 border-red-200",
-  },
-  {
-    value: "contacted",
-    label: "Contacted",
-    color: "bg-blue-100 text-blue-800 border-blue-200",
   },
 ];
 
@@ -99,6 +100,12 @@ const eventTypes = {
   virtual: "Virtual/Online",
 };
 
+async function getAuthToken() {
+  const user = auth.currentUser;
+  if (!user) return null;
+  return await user.getIdToken();
+}
+
 export default function AdminExperiencesPage() {
   const router = useRouter();
   const [experiences, setExperiences] = useState([]);
@@ -119,7 +126,7 @@ export default function AdminExperiencesPage() {
   // Stats
   const [stats, setStats] = useState({
     total: 0,
-    pending: 0,
+    unseen: 0,
     accepted: 0,
     rejected: 0,
     contacted: 0,
@@ -146,8 +153,20 @@ export default function AdminExperiencesPage() {
   const fetchExperiences = async () => {
     try {
       setLoading(true);
+      const token = await getAuthToken();
+      if (!token) {
+        router.push("/login");
+        return;
+      }
+
       const response = await fetch(
-        `/api/admin/experiences?status=${selectedStatus}&category=${selectedCategory}&sort=${sortBy}`
+        `/api/admin/contact-form?status=${selectedStatus}&category=${selectedCategory}&sort=${sortBy}`,
+        {
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (!response.ok) {
@@ -156,7 +175,7 @@ export default function AdminExperiencesPage() {
 
       const data = await response.json();
 
-      if (data.success) {
+      if (data.experiences) {
         setExperiences(data.experiences || []);
         setFilteredExperiences(data.experiences || []);
       } else {
@@ -203,7 +222,7 @@ export default function AdminExperiencesPage() {
   const calculateStats = () => {
     const newStats = {
       total: experiences.length,
-      pending: experiences.filter((exp) => exp.status === "pending").length,
+      unseen: experiences.filter((exp) => exp.status === "unseen").length,
       accepted: experiences.filter((exp) => exp.status === "accepted").length,
       rejected: experiences.filter((exp) => exp.status === "rejected").length,
       contacted: experiences.filter((exp) => exp.status === "contacted").length,
@@ -222,9 +241,19 @@ export default function AdminExperiencesPage() {
 
       setUpdating(experienceId);
 
-      const response = await fetch(`/api/admin/experiences/${experienceId}`, {
+      const token = await getAuthToken();
+      if (!token) {
+        router.push("/login");
+        return;
+      }
+
+      const response = await fetch(`/api/admin/contact-form/${experienceId}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           status: newStatus,
           adminNotes: adminNotes || undefined,
@@ -234,6 +263,10 @@ export default function AdminExperiencesPage() {
       const data = await response.json();
 
       if (!response.ok || !data.success) {
+        console.error("Update error response:", {
+          status: response.status,
+          data,
+        });
         throw new Error(data.error || "Failed to update status");
       }
 
@@ -341,9 +374,9 @@ export default function AdminExperiencesPage() {
               </div>
               <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
                 <div className="text-2xl font-bold text-yellow-700">
-                  {stats.pending}
+                  {stats.unseen}
                 </div>
-                <div className="text-sm text-yellow-600">Pending</div>
+                <div className="text-sm text-yellow-600">Unseen</div>
               </div>
               <div className="bg-green-50 border border-green-200 rounded-xl p-4">
                 <div className="text-2xl font-bold text-green-700">
