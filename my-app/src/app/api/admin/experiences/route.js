@@ -1,118 +1,71 @@
-// /app/api/admin/experiences/route.js
 import { NextResponse } from "next/server";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "@/lib/firebase"; // Adjust this import based on your firebase setup
+import { db } from "@/lib/firebaseAdmin";
+import { getUserFromRequest } from "@/lib/authMiddleware";
 
-export async function GET(request) {
+/**
+ * GET /api/admin/experiences - List experiences
+ * POST /api/admin/experiences - Create experience
+ */
+export async function GET(req) {
   try {
-    const { searchParams } = new URL(request.url);
-    const status = searchParams.get("status") || "all";
-    const category = searchParams.get("category") || "all";
-    const sort = searchParams.get("sort") || "newest";
+    const user = await getUserFromRequest(req);
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (user.role !== "admin") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
-    console.log("Fetching experiences with params:", {
-      status,
-      category,
-      sort,
-    });
-
-    // Build Firestore query
-    const experiencesRef = collection(db, "experiences");
-    const constraints = [];
-
-    // Add status filter
-    if (status && status !== "all") {
-      constraints.push(where("status", "==", status));
-    }
-
-    // Add category filter
-    if (category && category !== "all") {
-      constraints.push(where("category", "==", category));
-    }
-
-    // Create base query with just filters (no orderBy to avoid composite index requirement)
-    let q;
-    if (constraints.length > 0) {
-      q = query(experiencesRef, ...constraints);
-    } else {
-      q = experiencesRef;
-    }
-
-    // Execute query
-    const querySnapshot = await getDocs(q);
-    const experiences = [];
-
-    querySnapshot.forEach((doc) => {
-      experiences.push({
+    const snapshot = await db.collection("experiences").orderBy("createdAt", "desc").get();
+    const experiences = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
         id: doc.id,
-        ...doc.data(),
-      });
+        ...data,
+        createdAt: data.createdAt?.toDate().toISOString() || null,
+        updatedAt: data.updatedAt?.toDate().toISOString() || null,
+        publishedAt: data.publishedAt?.toDate().toISOString() || null,
+      };
     });
 
-    // Apply sorting on client side to avoid Firestore composite index requirement
-    const sortedExperiences = sortExperiences(experiences, sort);
-
-    console.log(`Found ${experiences.length} experiences`);
-
-    return NextResponse.json({
-      success: true,
-      experiences: sortedExperiences,
-    });
+    return NextResponse.json({ experiences });
   } catch (error) {
-    console.error("Error fetching experiences from Firebase:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: error.message,
-        experiences: [], // Return empty array to prevent frontend crash
+    console.error("Error listing experiences:", error);
+    return NextResponse.json({ error: "Failed to list experiences" }, { status: 500 });
+  }
+}
+
+export async function POST(req) {
+  try {
+    const user = await getUserFromRequest(req);
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (user.role !== "admin") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+    const body = await req.json();
+    const { title, excerpt, category, tags, coverImage, isPublished, sections } = body;
+
+    if (!title || !coverImage) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+
+    const now = new Date();
+    const docRef = await db.collection("experiences").add({
+      title,
+      excerpt: excerpt || "",
+      category: category || "",
+      tags: tags || [],
+      coverImage,
+      isPublished: !!isPublished,
+      sections: sections || [],
+      author: {
+        uid: user.uid,
+        email: user.email || null,
       },
-      { status: 500 }
-    );
+      createdAt: now,
+      updatedAt: now,
+      publishedAt: isPublished ? now : null,
+    });
+
+    return NextResponse.json({ success: true, id: docRef.id });
+  } catch (error) {
+    console.error("Error creating experience:", error);
+    return NextResponse.json({ error: "Failed to create experience" }, { status: 500 });
   }
 }
 
-// Helper function to sort experiences
-function sortExperiences(experiences, sortType) {
-  const copy = [...experiences];
-
-  switch (sortType) {
-    case "newest":
-      return copy.sort((a, b) => {
-        const dateA =
-          a.submittedAt?.toDate?.() || new Date(a.submittedAt) || new Date(0);
-        const dateB =
-          b.submittedAt?.toDate?.() || new Date(b.submittedAt) || new Date(0);
-        return dateB - dateA;
-      });
-    case "oldest":
-      return copy.sort((a, b) => {
-        const dateA =
-          a.submittedAt?.toDate?.() || new Date(a.submittedAt) || new Date(0);
-        const dateB =
-          b.submittedAt?.toDate?.() || new Date(b.submittedAt) || new Date(0);
-        return dateA - dateB;
-      });
-    case "date_asc":
-      return copy.sort((a, b) => {
-        const dateA = new Date(a.eventDate) || new Date(0);
-        const dateB = new Date(b.eventDate) || new Date(0);
-        return dateA - dateB;
-      });
-    case "date_desc":
-      return copy.sort((a, b) => {
-        const dateA = new Date(a.eventDate) || new Date(0);
-        const dateB = new Date(b.eventDate) || new Date(0);
-        return dateB - dateA;
-      });
-    case "name_asc":
-      return copy.sort((a, b) =>
-        (a.fullName || "").localeCompare(b.fullName || "")
-      );
-    case "name_desc":
-      return copy.sort((a, b) =>
-        (b.fullName || "").localeCompare(a.fullName || "")
-      );
-    default:
-      return copy;
-  }
-}
