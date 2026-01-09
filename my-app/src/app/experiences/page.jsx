@@ -5,7 +5,6 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogCard from "@/components/BlogCard";
-import EVENTS from "@/data/events";
 
 const CATEGORIES = [
   { id: "private_birthdays", label: "Private Birthdays", icon: "🎂" },
@@ -19,6 +18,37 @@ export default function ExperiencesLanding() {
   const sliderRef = useRef(null);
   const [current, setCurrent] = useState(0);
   const [heroEvents, setHeroEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchExperiences = async () => {
+      try {
+        const res = await fetch("/api/experiences");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.length > 0) {
+            const copy = [...data];
+            for (let i = copy.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            const mapped = copy.slice(0, 3).map((e) => ({
+              id: e.id,
+              title: e.title,
+              category: e.category,
+              description: e.description || e.excerpt || "",
+              image: e.coverImage || "",
+              href: `/experiences/events/${e.id}`,
+            }));
+            setHeroEvents(mapped);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching experiences:", err);
+      }
+    };
+
+    fetchExperiences();
+  }, []);
 
   useEffect(() => {
     const slider = sliderRef.current;
@@ -41,19 +71,6 @@ export default function ExperiencesLanding() {
 
     return () => clearInterval(interval);
   }, [heroEvents]);
-
-  // pick random hero cards on each mount (refresh)
-  useEffect(() => {
-    const pick = () => {
-      const copy = [...EVENTS];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      setHeroEvents(copy.slice(0, 3));
-    };
-    pick();
-  }, []);
 
   return (
     <>
