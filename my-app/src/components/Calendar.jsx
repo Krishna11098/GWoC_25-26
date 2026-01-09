@@ -366,7 +366,8 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                               className="text-[10px] sm:text-[11px] leading-snug font-bold px-2 sm:px-2.5 py-1.5 sm:py-2.5 rounded-lg shadow-lg border cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-101 flex items-center gap-1 text-white"
                               style={{
                                 backgroundColor: "var(--color-orange)",
-                                borderColor: "var(--color-orange)",
+                                borderColor: "var(--color-orange/80)",
+                                color: "black",
                               }}
                               onClick={(e) => {
                                 e.stopPropagation();
