@@ -27,7 +27,7 @@ export default function ChatbotWidget() {
           boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
         }}
       >
-        JoyHelper
+        Ask your queries!
       </button>
 
       {/* Chat window */}
@@ -37,7 +37,7 @@ export default function ChatbotWidget() {
           style={{ width: "360px", height: "60vh", maxHeight: "520px" }}
         >
           <div className="flex items-center justify-between px-4 py-3 bg-gray-900 text-white">
-            <div className="font-semibold tracking-tight">JoyHelper</div>
+            <div className="font-semibold tracking-tight">Ask your queries!</div>
             <button
               type="button"
               aria-label="Close JoyHelper chatbot"
