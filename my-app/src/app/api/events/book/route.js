@@ -82,7 +82,7 @@ export async function POST(request) {
       );
     }
 
-    // Get event document to fetch fixed coins reward
+    // Get event document to fetch coins per seat
     const eventDocRef = doc(db, "events", eventId);
     const eventDoc = await getDoc(eventDocRef);
     
@@ -90,8 +90,9 @@ export async function POST(request) {
     let eventData = {};
     if (eventDoc.exists()) {
       eventData = eventDoc.data();
-      coinsEarned = eventData.coinsReward || 0;
-      console.log(`Event ${eventId} offers ${coinsEarned} fixed coins`);
+      const coinsPerSeat = eventData.coinsPerSeat || eventData.coinsReward || 0;
+      coinsEarned = coinsPerSeat * seatsCount;
+      console.log(`Event ${eventId} offers ${coinsPerSeat} coins per seat, total: ${coinsEarned} coins for ${seatsCount} seats`);
     } else {
       console.warn(`Event ${eventId} not found, no coins will be earned`);
     }
@@ -168,9 +169,25 @@ export async function POST(request) {
 
     await updateDoc(userRef, userUpdateData);
 
-    // Update event document (increment booked seats)
+    // Create booking entry to store in event
+    const bookingEntry = {
+      bookingId,
+      userId,
+      userEmail: userEmail || userData.email || "",
+      userName: userName || userData.displayName || "",
+      seatsBooked: seatsCount,
+      amountPaid: amount,
+      coinsUsed,
+      bookedAt: new Date().toISOString(),
+      timestamp: Date.now(),
+      paymentId: paymentId || null,
+      orderId: orderId || null,
+    };
+
+    // Update event document (increment booked seats and add booking)
     await updateDoc(eventDocRef, {
       bookedSeats: increment(seatsCount),
+      bookings: arrayUnion(bookingEntry),
       updatedAt: serverTimestamp(),
     });
 

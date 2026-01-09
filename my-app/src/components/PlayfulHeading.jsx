@@ -41,13 +41,11 @@ const PlayfulHeading = ({
   const letterVariants = {
     hidden: {
       opacity: 0,
-      y: 60,
-      scale: 0.5,
+      y: 60, // Start from below
     },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
         type: "spring",
         damping: 10,

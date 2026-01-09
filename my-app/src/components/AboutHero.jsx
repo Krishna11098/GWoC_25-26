@@ -5,8 +5,8 @@ export default function AboutHero() {
   return (
     <section className="min-h-screen flex items-center justify-center text-center px-6">
       <motion.div
-        initial={{ opacity: 0, y: 60, scale: 0.96 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ amount: 0.4 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: "easeOut" }}

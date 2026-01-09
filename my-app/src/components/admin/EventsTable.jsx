@@ -208,7 +208,7 @@ export default function EventsTable({
                         ${event.price} per seat
                       </div>
                       <div className="text-yellow-600">
-                        {event.coinsReward} coins reward
+                        {event.coinsPerSeat || event.coinsReward || 0} coins per seat
                       </div>
                     </div>
                   </td>

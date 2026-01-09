@@ -86,6 +86,14 @@ export default function AdminSidebar({ user, isAdmin }) {
         </Link>
 
         <Link
+          href="/admin/movies"
+          className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
+        >
+          <span className="mr-3">🎬</span>
+          Movies
+        </Link>
+
+        <Link
           href="/admin/blogs"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >

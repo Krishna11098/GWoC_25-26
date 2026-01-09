@@ -224,6 +224,19 @@ export function createOrder({
    EVENT
 ========================================================= */
 
+/**
+ * Creates an event object with booking tracking
+ * 
+ * bookedUsers field structure:
+ * {
+ *   userId: string,
+ *   username: string,
+ *   seatsBooked: number,
+ *   paymentDate: Timestamp,
+ *   amount: number (in rupees),
+ *   bookingId: string
+ * }
+ */
 export function createEvent(data) {
   return {
     eventId: data.eventId,
@@ -240,6 +253,8 @@ export function createEvent(data) {
     hostedBy: data.hostedBy || "",
     coinsReward: data.coinsReward || 0,
     status: EVENT_STATUS.UPCOMING,
+    bookedSeats: 0,
+    bookedUsers: [], // Array of {userId, username, seatsBooked, paymentDate, amount, bookingId}
     createdAt: new Date(),
   };
 }

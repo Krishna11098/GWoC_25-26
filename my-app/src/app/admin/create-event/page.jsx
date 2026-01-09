@@ -74,7 +74,7 @@ export default function CreateEventPage() {
 
       console.log("Submitting event data:", apiData);
 
-      const response = await fetch("/api/events/create", {
+      const response = await fetch("/api/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(apiData),
@@ -286,40 +286,41 @@ export default function CreateEventPage() {
             Venue & Contact
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Venue *
-              </label>
-              <input
-                type="text"
-                name="venue"
-                value={formData.venue}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Event venue address"
-              />
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Venue Address *
+            </label>
+            <input
+              type="text"
+              name="venue"
+              value={formData.venue}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Enter venue address or location name"
+            />
+            <p className="text-xs text-gray-500 mt-2">
+              💡 Example: India Gate New Delhi, or complete address with coordinates
+            </p>
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Event Type *
-              </label>
-              <select
-                name="eventType"
-                value={formData.eventType}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-              >
-                {eventTypes.map((type) => (
-                  <option key={type.value} value={type.value}>
-                    {type.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Event Type *
+            </label>
+            <select
+              name="eventType"
+              value={formData.eventType}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+            >
+              {eventTypes.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
