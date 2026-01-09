@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import BlogCard from "@/components/BlogCard";
 
 // Fixed categories from admin/create form
 const CATEGORIES = [
@@ -17,95 +15,26 @@ const CATEGORIES = [
 ];
 
 export default function ExperiencesLanding() {
-  const sliderRef = useRef(null);
-  const [current, setCurrent] = useState(0);
-  const [heroEvents, setHeroEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // Fetch experiences from API
-  useEffect(() => {
-    const fetchExperiences = async () => {
-      try {
-        const res = await fetch("/api/experiences");
-        if (res.ok) {
-          const data = await res.json();
-          // API returns { experiences: [...] } so extract the array
-          const expsArray = data.experiences || data || [];
-          // Filter only published experiences
-          const published = Array.isArray(expsArray) ? expsArray.filter((e) => e.isPublished) : [];
-          // Shuffle and pick 3 random ones
-          const shuffled = [...published];
-          for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-          }
-          setHeroEvents(shuffled.slice(0, 3));
-        }
-      } catch (err) {
-        console.error("Failed to fetch experiences:", err);
-        setHeroEvents([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchExperiences();
-  }, []);
 
-  useEffect(() => {
-    const slider = sliderRef.current;
-    if (!slider || heroEvents.length === 0) return;
-
-    let idx = 0;
-    const total = heroEvents.length;
-    const interval = setInterval(() => {
-      idx = (idx + 1) % total;
-      setCurrent(idx);
-      const card = slider.children[idx];
-      if (card) {
-        setTimeout(() => {
-          if (card) {
-            card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-          }
-        }, 50);
-      }
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, [heroEvents]);
 
   return (
     <>
       <Navbar />
       <main className="mt-20">
-        {/* Hero */}
-        <section className="py-16 px-4 md:px-10">
-          <div className="mx-auto max-w-7xl">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h1 className="text-4xl font-extrabold text-slate-900">Experiences</h1>
-                <p className="mt-2 text-slate-700">Curated live experiences, games and engagement formats.</p>
-              </div>
-              {/* right-side CTA removed; See All Events moved to Themes section */}
-            </div>
-
-            <div className="overflow-x-auto no-scrollbar py-6">
-              <div ref={sliderRef} className="flex gap-6 items-stretch snap-x snap-mandatory">
-                {heroEvents.map((ev, i) => (
-                  <div key={ev.id} className="snap-center min-w-[320px] max-w-[380px]">
-                    <BlogCard post={{ ...ev }} index={i} hero showVotes={false} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Themes */}
         <section className="py-12 px-4 md:px-10">
           <div className="mx-auto max-w-7xl">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold">Explore by Theme</h2>
-              <Link href="/experiences/events" className="text-emerald-600 font-medium">see all event &gt;</Link>
+              <h2
+                className="text-2xl font-bold"
+                style={{ color: "var(--color-font)" }}
+              >
+                Explore by Theme
+              </h2>
+              <Link href="/experiences/events" className="font-medium">
+                see all event &gt;
+              </Link>
             </div>
 
             <div className="flex flex-wrap gap-6">
@@ -113,12 +42,31 @@ export default function ExperiencesLanding() {
                 <Link
                   key={c.id}
                   href={`/experiences/events?category=${c.id}`}
-                  className={`w-56 md:w-72 p-5 rounded-3xl border border-slate-200 shadow-sm hover:shadow-lg transform hover:-translate-y-1 transition duration-200 flex items-start gap-4 bg-gradient-to-br ${c.bg}`}
+                  className={`w-56 md:w-72 p-5 rounded-3xl border shadow-sm hover:shadow-lg transform hover:-translate-y-1 transition duration-200 flex items-start gap-4`}
+                  style={{
+                    backgroundColor: "var(--bg)",
+                    borderColor: "rgba(0,0,0,0.06)",
+                  }}
                 >
-                  <div className={`flex-shrink-0 w-14 h-14 rounded-xl ${c.accent} flex items-center justify-center text-2xl shadow-sm`}>{c.icon}</div>
+                  <div
+                    style={{ backgroundColor: `var(${c.colorVar})` }}
+                    className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center text-2xl shadow-sm`}
+                  >
+                    {c.icon}
+                  </div>
                   <div className="flex flex-col">
-                    <span className={`font-semibold ${c.text} text-lg`}>{c.label}</span>
-                    <span className="text-sm text-slate-600 mt-1">Explore {c.label.toLowerCase()}</span>
+                    <span
+                      className={`font-semibold text-lg`}
+                      style={{ color: `var(${c.colorVar})` }}
+                    >
+                      {c.label}
+                    </span>
+                    <span
+                      className="text-sm mt-1"
+                      style={{ color: "var(--color-font)" }}
+                    >
+                      Explore {c.label.toLowerCase()}
+                    </span>
                   </div>
                 </Link>
               ))}
@@ -177,4 +125,3 @@ export default function ExperiencesLanding() {
     </>
   );
 }
-

@@ -4,8 +4,10 @@ export default function Footer() {
     { label: "Shop", href: "/shop" },
     { label: "Experiences", href: "/experiences" },
     { label: "Play", href: "/play" },
-    { label: "Events", href: "/events" },
+    { label: "Events", href: "/experiences/events" },
     { label: "Community", href: "/community" },
+    { label: "Contact Us", href: "/contact" },
+    { label: "Send a Query", href: "/query" },
   ];
 
   return (

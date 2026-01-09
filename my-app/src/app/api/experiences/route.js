@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/firebaseAdmin";
 
-// Public endpoint: returns published experiences (optionally filtered by category)
+/**
+ * GET /api/experiences - List all published experiences (optionally filtered by category)
+ */
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
@@ -13,6 +15,7 @@ export async function GET(req) {
     }
 
     const snapshot = await query.orderBy("createdAt", "desc").get();
+
     const experiences = snapshot.docs.map((doc) => {
       const data = doc.data();
       return {
@@ -26,7 +29,7 @@ export async function GET(req) {
 
     return NextResponse.json({ experiences });
   } catch (error) {
-    console.error("Error listing public experiences:", error);
+    console.error("Error listing experiences:", error);
     return NextResponse.json({ error: "Failed to list experiences" }, { status: 500 });
   }
 }

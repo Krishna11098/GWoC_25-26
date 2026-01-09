@@ -39,7 +39,7 @@ export default function EventsPage() {
     ? experiences.filter((e) => (e.category || "").toLowerCase() === categoryParam.toLowerCase())
     : experiences;
 
-  // Map events to blog post shape expected by BlogPage
+  // Map experiences to blog post shape expected by BlogPage
   const blogPosts = filtered.map((e) => ({
     id: e.id,
     title: e.title,
@@ -48,6 +48,16 @@ export default function EventsPage() {
     image: e.coverImage || e.image || "",
     href: `/experiences/events/${e.id}`,
   }));
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="mt-20 pt-8 text-center">Loading experiences...</div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>

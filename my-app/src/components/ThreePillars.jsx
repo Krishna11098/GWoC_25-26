@@ -41,18 +41,19 @@ export default function ThreePillars() {
   const containerRef = useRef(null);
   const cardsRef = useRef([]);
 
+  // Horizontal target positions (row of 4) — increased spacing to avoid overlap
   const desktopGridPositions = [
-    { x: -180, y: -140 },
-    { x: 180, y: -140 },
-    { x: -180, y: 140 },
-    { x: 180, y: 140 },
+    { x: -510, y: 0 },
+    { x: -170, y: 0 },
+    { x: 170, y: 0 },
+    { x: 510, y: 0 },
   ];
 
   const mobileGridPositions = [
-    { x: -120, y: -80 },
-    { x: 120, y: -80 },
-    { x: -120, y: 120 },
-    { x: 120, y: 120 },
+    { x: -165, y: 0 },
+    { x: -55, y: 0 },
+    { x: 55, y: 0 },
+    { x: 165, y: 0 },
   ];
 
   useLayoutEffect(() => {
@@ -71,7 +72,7 @@ export default function ThreePillars() {
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top top",
-            end: isDesktop ? "+=1500" : "+=900",
+            end: isDesktop ? "+=1200" : "+=800",
             pin: true,
             scrub: 1,
             anticipatePin: 1,
@@ -79,32 +80,37 @@ export default function ThreePillars() {
           },
         });
 
-        // 1. Initial Spread into 2x2 grid
-        tl.to(cardsRef.current, {
-          x: (i) =>
-            isDesktop
-              ? desktopGridPositions[i]?.x ?? 0
-              : mobileGridPositions[i]?.x ?? 0,
-          y: (i) =>
-            isDesktop
-              ? desktopGridPositions[i]?.y ?? 0
-              : mobileGridPositions[i]?.y ?? 0,
-          scale: isDesktop ? 1 : 0.92,
-          duration: 1,
-          ease: "power2.inOut",
+        // Initial stacked state: slight offsets + z-index stacking so they look overlapped
+        gsap.set(cardsRef.current, {
+          x: 0,
+          y: (i) => i * 12, // slightly more offset for better visibility
+          scale: isDesktop ? 0.9 : 0.85,
+          rotationY: 0,
+          zIndex: (i) => cardsData.length - i,
         });
 
-        // 2. The 3D Flip
-        tl.to(
-          cardsRef.current,
-          {
-            rotationY: isDesktop ? 180 : 140,
-            duration: 1,
-            stagger: 0.1,
-            ease: "back.out(1.1)",
-          },
-          "-=0.5"
-        );
+        // Animate cards from stacked to horizontal row and grow them slightly
+        tl.to(cardsRef.current, {
+          x: (i) =>
+            isDesktop ? desktopGridPositions[i].x : mobileGridPositions[i].x,
+          y: (i) =>
+            isDesktop ? desktopGridPositions[i].y : mobileGridPositions[i].y,
+          scale: isDesktop ? 1 : 0.95,
+          duration: 1.2,
+          ease: "power2.out",
+          stagger: 0.06,
+        })
+          // Flip cards once they reach their positions
+          .to(
+            cardsRef.current,
+            {
+              rotationY: isDesktop ? 180 : 140,
+              duration: 0.9,
+              stagger: 0.09,
+              ease: "back.out(1.1)",
+            },
+            ">-0.1"
+          );
 
         return () => {
           // Cleanup handled by mm.revert()
@@ -142,30 +148,44 @@ export default function ThreePillars() {
       //     backgroundColor: "var(--bg)",
       //   }}
     >
-      <h2 className="text-font text-4xl md:text-5xl font-winky-rough mb-20 z-10 text-center px-4 max-w-2xl">
-        Choose your playstyle
+      <h2 className="text-font text-4xl md:text-5xl font-winky-rough mb-2 z-10 text-center px-1 max-w-2xl">
+        <span className="text-black">Choose your</span> playstyle
       </h2>
 
-      <div className="relative w-full max-w-4xl h-[520px] md:h-[560px] perspective-1000 px-4">
+      <div
+        className="relative w-full max-w-4xl h-[520px] md:h-[560px] px-4"
+        style={{ perspective: "1000px" }}
+      >
         {cardsData.map((card, i) => (
           <div
             key={card.id}
             ref={(el) => (cardsRef.current[i] = el)}
-            className="absolute inset-0 w-full h-full preserve-3d"
+            className="absolute inset-0 w-full h-full"
+            style={{
+              transformStyle: "preserve-3d",
+              WebkitTransformStyle: "preserve-3d",
+            }}
           >
             {/* FRONT */}
             <div
-              className="absolute inset-0 backface-hidden rounded-3xl border border-font/10 shadow-xl overflow-hidden"
+              className="absolute left-1/2 top-1/2 w-[180px] md:w-[320px] h-[260px] md:h-[420px] -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-font/10 shadow-xl overflow-hidden bg-[length:800px_300px] md:bg-[length:1300px_480px]"
               style={{
                 backgroundImage: `url('/gallery/image1.png')`,
-                backgroundSize: "1200px 450px",
                 backgroundPosition: card.bgPos,
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "rotateY(0deg)",
               }}
             />
 
             {/* BACK */}
             <div
-              className={`absolute inset-0 backface-hidden rotate-y-180 rounded-3xl flex flex-col border-4 border-white shadow-2xl ${card.color} overflow-hidden`}
+              className={`absolute left-1/2 top-1/2 w-[180px] md:w-[320px] h-[260px] md:h-[420px] -translate-x-1/2 -translate-y-1/2 rounded-3xl flex flex-col border-4 border-white shadow-2xl ${card.color} overflow-hidden`}
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "rotateY(180deg)",
+              }}
             >
               {/* Image occupies rest of space */}
               <div className="flex-1 overflow-hidden">

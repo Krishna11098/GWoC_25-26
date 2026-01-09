@@ -5,13 +5,13 @@ import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { userFetch } from "@/lib/userFetch";
 import BlogCard from "@/components/BlogCard";
-
 const EXPERIENCE_CATEGORIES = [
   { id: "private_birthdays", label: "Private Birthdays" },
   { id: "corporate_events", label: "Corporate Events" },
   { id: "monthly_kits", label: "Monthly Kits" },
   { id: "carnivals", label: "Carnivals" },
   { id: "weddings", label: "Weddings" },
+  { id: "workshops", label: "Workshops" },
 ];
 
 export default function CreateExperiencePage() {
@@ -20,6 +20,7 @@ export default function CreateExperiencePage() {
   const [error, setError] = useState("");
   const [uploading, setUploading] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
   const [formData, setFormData] = useState({
     title: "",
     excerpt: "",
@@ -305,7 +306,7 @@ export default function CreateExperiencePage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">Category</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Category *</label>
                   <select
                     name="category"
                     value={formData.category}
@@ -461,7 +462,7 @@ export default function CreateExperiencePage() {
                 </button>
 
                 <button
-                  onClick={() => router.push("/admin/events")}
+                  onClick={() => router.push("/admin/experiences")}
                   disabled={loading}
                   className="w-full px-6 py-4 rounded-2xl bg-slate-200 border border-slate-300 text-slate-900 font-semibold hover:bg-slate-300 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >

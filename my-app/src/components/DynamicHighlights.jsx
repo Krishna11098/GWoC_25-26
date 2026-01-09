@@ -6,6 +6,7 @@ import EventService from "@/app/lib/eventService";
 import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged } from "firebase/auth";
 import { userFetch } from "@/lib/userFetch";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function DynamicHighlights() {
   const [events, setEvents] = useState([]);
@@ -23,6 +24,28 @@ export default function DynamicHighlights() {
 
   const eventRef = useRef(null);
   const gameRef = useRef(null);
+
+  const handleEventPrev = () => {
+    if (events.length <= 1) return;
+    clearInterval(eventRef.current);
+    setEventIndex((p) => (p - 1 + events.length) % events.length);
+  };
+
+  const handleEventNext = () => {
+    if (events.length <= 1) return;
+    clearInterval(eventRef.current);
+    setEventIndex((p) => (p + 1) % events.length);
+  };
+
+  const handleGamePrev = () => {
+    clearInterval(gameRef.current);
+    setGameIndex((p) => (p - 1 + 3) % 3);
+  };
+
+  const handleGameNext = () => {
+    clearInterval(gameRef.current);
+    setGameIndex((p) => (p + 1) % 3);
+  };
 
   const themeColors = ["#87a878", "#e6b94d", "#e6a1a1"];
 
@@ -133,48 +156,59 @@ export default function DynamicHighlights() {
           Don’t miss what’s happening next
         </p>
 
-        <div className="mt-8 md:mt-10 overflow-hidden">
-          <div
-            className="flex transition-transform duration-700"
-            style={{ transform: `translateX(-${eventIndex * 100}%)` }}
+        <div className="relative mt-8 md:mt-10">
+          {/* Navigation Arrows */}
+          <button 
+            onClick={handleEventPrev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-14 z-20 bg-white p-3 rounded-full text-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all border border-zinc-200"
           >
-            {loadingEvents
-              ? null
-              : events.map((e) => (
-                  <Link
-                    key={e.id}
-                    href={`/events/${e.id}`}
-                    className="min-w-full px-1 md:px-2"
-                  >
-                    <div 
-                      className="rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-8 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-[6px] border-white/40 relative overflow-hidden group/card hover:border-white/80"
-                      style={{ backgroundColor: themeColors[events.indexOf(e) % themeColors.length] }}
+            <ChevronLeft size={28} />
+          </button>
+          <button 
+            onClick={handleEventNext}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-14 z-20 bg-white p-3 rounded-full text-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all border border-zinc-200"
+          >
+            <ChevronRight size={28} />
+          </button>
+
+          <div className="overflow-hidden">
+            <div
+              className="flex transition-transform duration-700"
+              style={{ transform: `translateX(-${eventIndex * 100}%)` }}
+            >
+              {loadingEvents
+                ? null
+                : events.map((e) => (
+                    <Link
+                      key={e.id}
+                      href={`/events/${e.id}`}
+                      className="min-w-full px-1 md:px-2"
                     >
-                      {/* Inner Shine Effect */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 shadow-inner" />
-                      
-                      <h3 className="text-xl md:text-2xl font-black text-white relative z-10 drop-shadow-md">
-                        {e.title || e.name}
-                      </h3>
-                      <p className="mt-2 text-sm md:text-base text-white relative z-10 font-medium">
-                        {e.location || "TBA"}
-                      </p>
-                      <p className="mt-3 text-xs md:text-sm text-white/80 relative z-10 font-bold uppercase tracking-wider">
-                        {new Date(e.date).toLocaleDateString()}
-                      </p>
-                      <div className="mt-6 flex items-center justify-between relative z-10">
-                        {e.price && (
-                          <p className="text-sm md:text-base font-black text-white">
-                            ₹{e.price}
-                          </p>
-                        )}
-                        <span className="bg-white px-5 py-2 rounded-full text-xs md:text-sm font-black text-slate-800 shadow-lg group-hover/card:scale-110 transition-transform duration-300">
-                          View Details
-                        </span>
+                      <div 
+                        className="rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-8 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-[6px] border-white/40 relative overflow-hidden group/card hover:border-white/80"
+                        style={{ backgroundColor: themeColors[events.indexOf(e) % themeColors.length] }}
+                      >
+                        {/* Inner Shine Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 shadow-inner" />
+                        
+                        <h3 className="text-xl md:text-2xl font-black text-white relative z-10 drop-shadow-md">
+                          {e.title || e.name}
+                        </h3>
+                        <p className="mt-2 text-sm md:text-base text-white relative z-10 font-medium">
+                          {e.location || "TBA"}
+                        </p>
+                        <p className="mt-3 text-xs md:text-sm text-white/80 relative z-10 font-bold uppercase tracking-wider">
+                          {new Date(e.date).toLocaleDateString()}
+                        </p>
+                        <div className="mt-6 flex items-center justify-center relative z-10">
+                          <span className="bg-white px-8 py-2.5 rounded-full text-xs md:text-sm font-black text-slate-800 shadow-lg group-hover/card:scale-110 transition-transform duration-300">
+                            View Details
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  ))}
+            </div>
           </div>
         </div>
 
@@ -208,37 +242,53 @@ export default function DynamicHighlights() {
           Pick up where the fun begins
         </p>
 
-        <div className="mt-8 md:mt-12 overflow-hidden">
-          <div
-            className="flex transition-transform duration-700"
-            style={{ transform: `translateX(-${gameIndex * 100}%)` }}
+        <div className="relative mt-8 md:mt-12">
+          {/* Navigation Arrows */}
+          <button 
+            onClick={handleGamePrev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-14 z-20 bg-white p-3 rounded-full text-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all border border-zinc-200"
           >
-            {games.map((g, i) => (
-              <Link key={i} href={g.href} className="min-w-full px-2 md:px-4">
-                <div 
-                  className="rounded-[2.5rem] md:rounded-[3.5rem] p-10 md:p-14 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-[6px] border-white/40 relative overflow-hidden group/game hover:border-white/80"
-                  style={{ backgroundColor: themeColors[i % themeColors.length] }}
-                >
-                  <div className="relative z-10">
-                    <div className="text-7xl md:text-8xl animate-float drop-shadow-2xl">{g.emoji}</div>
-                    <h3 className="mt-8 text-2xl md:text-4xl font-black text-white drop-shadow-md">
-                      {g.title}
-                    </h3>
-                    <p className="mt-4 text-sm md:text-xl text-white font-medium max-w-md mx-auto leading-relaxed">
-                      {g.desc}
-                    </p>
-                    <div className="mt-10">
-                      <span className="inline-block bg-white text-slate-800 px-12 py-4 rounded-full font-black text-lg shadow-2xl transform group-hover/game:scale-110 active:scale-95 transition-all duration-300">
-                        Play now →
-                      </span>
+            <ChevronLeft size={28} />
+          </button>
+          <button 
+            onClick={handleGameNext}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-14 z-20 bg-white p-3 rounded-full text-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all border border-zinc-200"
+          >
+            <ChevronRight size={28} />
+          </button>
+
+          <div className="overflow-hidden">
+            <div
+              className="flex transition-transform duration-700"
+              style={{ transform: `translateX(-${gameIndex * 100}%)` }}
+            >
+              {games.map((g, i) => (
+                <Link key={i} href={g.href} className="min-w-full px-2 md:px-4">
+                  <div 
+                    className="rounded-[2.5rem] md:rounded-[3.5rem] p-10 md:p-14 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-[6px] border-white/40 relative overflow-hidden group/game hover:border-white/80"
+                    style={{ backgroundColor: themeColors[i % themeColors.length] }}
+                  >
+                    <div className="relative z-10">
+                      <div className="text-7xl md:text-8xl animate-float drop-shadow-2xl">{g.emoji}</div>
+                      <h3 className="mt-8 text-2xl md:text-4xl font-black text-white drop-shadow-md">
+                        {g.title}
+                      </h3>
+                      <p className="mt-4 text-sm md:text-xl text-white font-medium max-w-md mx-auto leading-relaxed">
+                        {g.desc}
+                      </p>
+                      <div className="mt-10">
+                        <span className="inline-block bg-white text-slate-800 px-12 py-4 rounded-full font-black text-lg shadow-2xl transform group-hover/game:scale-110 active:scale-95 transition-all duration-300">
+                          Play now →
+                        </span>
+                      </div>
                     </div>
+                    {/* Subtle Background Glows */}
+                    <div className="absolute -top-10 -left-10 w-48 h-48 bg-white/5 rounded-full blur-3xl" />
+                    <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl group-hover/game:bg-white/30 transition-colors" />
                   </div>
-                  {/* Subtle Background Glows */}
-                  <div className="absolute -top-10 -left-10 w-48 h-48 bg-white/5 rounded-full blur-3xl" />
-                  <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl group-hover/game:bg-white/30 transition-colors" />
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -256,12 +306,12 @@ export default function DynamicHighlights() {
               />
             ))}
           </div>
-          <Link 
+          {/* <Link 
             href="/play" 
             className="inline-block bg-[var(--font)] text-bg px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all"
           >
             Explore More Games
-          </Link>
+          </Link> */}
         </div>
       </div>
     </section>
