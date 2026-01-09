@@ -93,9 +93,10 @@ export default function FloatingCartButton() {
       style={{
         backgroundColor: isDragOver ? "var(--color-font)" : "var(--color-font)",
       }}
-      className={`fixed right-6 md:right-10 top-1/2 -translate-y-1/2 z-50 flex items-center gap-3 rounded-full px-5 md:px-6 py-3 text-base font-semibold text-bg shadow-xl transition hover:opacity-90
+      className={`fixed left-6 bottom-6 z-50 flex items-center gap-3 rounded-full px-5 md:px-6 py-3 text-base font-semibold text-bg shadow-xl transition hover:opacity-90
         ${isDragOver ? "scale-105 ring-4 ring-font/90" : ""}
-        ${isDropping ? "animate-[pulse_0.5s_ease-out]" : ""}`}
+        ${isDropping ? "animate-[pulse_0.5s_ease-out]" : ""}
+        md:right-10 md:top-1/2 md:bottom-auto md:left-auto md:-translate-y-1/2`}
     >
       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15">
         <ShoppingCart className="h-6 w-6" />
