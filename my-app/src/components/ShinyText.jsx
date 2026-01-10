@@ -6,7 +6,7 @@ import {
   useMotionValue,
   useAnimationFrame,
   useTransform,
-} from "motion/react";
+} from "framer-motion";
 
 const ShinyText = ({
   text,

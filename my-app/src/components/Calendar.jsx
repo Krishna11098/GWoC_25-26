@@ -32,14 +32,16 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
   const [viewMonth, setViewMonth] = useState(_initial.getMonth());
   const [isHydrated, setIsHydrated] = useState(false);
   const [hoveredDate, setHoveredDate] = useState(null);
-  const [viewMode, setViewMode] = useState("month"); // "month", "week", "list"
+  const [viewMode, setViewMode] = useState("month"); // "month", "week"
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [weekOffset, setWeekOffset] = useState(0);
 
   useEffect(() => {
     // Only initialize from a provided `initialDate` prop, otherwise
     // initialize once to the current date and avoid resetting on every render.
     const date = initialDate ?? new Date();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setViewYear(date.getFullYear());
     setViewMonth(date.getMonth());
     setIsHydrated(true);
@@ -131,6 +133,10 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
 
   const prevMonth = () => {
     // compute based on current state to avoid closure/stale issues
+    if (viewMode === "week") {
+      setWeekOffset(weekOffset - 1);
+      return;
+    }
     const m = viewMonth - 1;
     if (m < 0) {
       setViewMonth(11);
@@ -141,6 +147,10 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
   };
 
   const nextMonth = () => {
+    if (viewMode === "week") {
+      setWeekOffset(weekOffset + 1);
+      return;
+    }
     const m = viewMonth + 1;
     if (m > 11) {
       setViewMonth(0);
@@ -154,13 +164,14 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
     const now = new Date();
     setViewYear(now.getFullYear());
     setViewMonth(now.getMonth());
+    setWeekOffset(0);
   };
 
   // Get current week dates
   const getWeekDates = useMemo(() => {
-    const now = new Date(viewYear, viewMonth, 1);
+    const now = new Date();
     const weekStart = new Date(now);
-    weekStart.setDate(now.getDate() - now.getDay()); // Start from Sunday
+    weekStart.setDate(now.getDate() - now.getDay() + (weekOffset * 7)); // Start from Sunday + offset
 
     const weekDates = [];
     for (let i = 0; i < 7; i++) {
@@ -169,7 +180,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
       weekDates.push(date);
     }
     return weekDates;
-  }, [viewYear, viewMonth]);
+  }, [weekOffset]);
 
   // Get time slots for week view
   const timeSlots = useMemo(() => {
@@ -266,16 +277,6 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                 }`}
               >
                 week
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={`rounded-lg px-2 sm:px-4 py-1.5 sm:py-2 transition-all duration-300 text-xs sm:text-sm font-semibold border ${
-                  viewMode === "list"
-                    ? "bg-white text-font border-white"
-                    : "bg-white/20 text-white border-white hover:bg-white/30"
-                }`}
-              >
-                list
               </button>
             </div>
           </div>
@@ -545,23 +546,6 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                   ))}
                 </tbody>
               </table>
-            </div>
-          </div>
-        )}
-
-        {/* List View */}
-        {viewMode === "list" && (
-          <div
-            className="rounded-b-3xl px-4 md:px-10 py-12 shadow-xl"
-            style={{ backgroundColor: "white" }}
-          >
-            <div className="text-center py-12">
-              <p
-                className="text-2xl font-serif"
-                style={{ color: "var(--color-font)" }}
-              >
-                No events to display
-              </p>
             </div>
           </div>
         )}
