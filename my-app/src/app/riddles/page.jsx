@@ -110,170 +110,190 @@ export default function RiddlesPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen py-12 px-4 mt-24" style={{ color: "var(--color-font)" }}>
+      <div
+        className="min-h-screen py-12 px-4 mt-26"
+        style={{ color: "var(--color-font)" }}
+      >
         <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4" style={{ color: "var(--color-font)" }}>
-            🧩 Riddle Challenge
-          </h1>
-          <p className="text-xl" style={{ color: "var(--color-font)" }}>
-            Test your wit and earn coins!
-          </p>
-          {user && (
-            <p className="text-sm mt-2" style={{ color: "var(--color-font)" }}>
-              Logged in as: {user.email}
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1
+              className="text-5xl font-bold mb-4"
+              style={{ color: "var(--color-font)" }}
+            >
+              🧩 Riddle Challenge
+            </h1>
+            <p className="text-xl" style={{ color: "var(--color-font)" }}>
+              Test your wit and earn coins!
             </p>
+          </div>
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-center">
+              {error}
+            </div>
           )}
-        </div>
 
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-center">
-            {error}
-          </div>
-        )}
+          {riddles.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="text-6xl mb-4">🤔</div>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                No Riddles Available
+              </h2>
+              <p className="text-gray-600">Check back later for new riddles!</p>
+            </div>
+          ) : (
+            <div className="grid gap-8">
+              {riddles.map((riddle, index) => {
+                const result = results[riddle.id];
+                const isSubmitting = submitting[riddle.id];
 
-        {riddles.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="text-6xl mb-4">🤔</div>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-              No Riddles Available
-            </h2>
-            <p className="text-gray-600">
-              Check back later for new riddles!
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-8">
-            {riddles.map((riddle, index) => {
-              const result = results[riddle.id];
-              const isSubmitting = submitting[riddle.id];
-
-              return (
-                <div
-                  key={riddle.id}
-                  className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-purple-100 hover:border-purple-300 transition-all duration-300"
-                >
-                  <div className="p-6" style={{ background: "var(--color-green)" }}>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <span className="inline-block px-3 py-1 rounded-full text-sm font-semibold mb-3" style={{ background: 'rgba(255,255,255,0.2)', color: 'var(--color-font)' }}>
-                          Riddle #{riddle.riddleNo || index + 1}
-                        </span>
-                        <h3 className="text-2xl font-bold" style={{ color: 'var(--color-font)' }}>
-                          {riddle.question}
-                        </h3>
-                      </div>
-                      <div className="text-right">
-                        <div className="px-4 py-2 rounded-full font-bold text-lg" style={{ backgroundColor: "var(--color-orange)", color: "var(--color-font)" }}>
-                          🪙 {riddle.coins}
+                return (
+                  <div
+                    key={riddle.id}
+                    className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-black hover:border-font transition-all duration-300"
+                  >
+                    <div
+                      className="p-6"
+                      style={{ background: "var(--color-green)" }}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <span
+                            className="inline-block px-3 py-1 rounded-full text-sm font-semibold mb-3"
+                            style={{
+                              background: "rgba(255,255,255,0.2)",
+                              color: "var(--color-font)",
+                            }}
+                          >
+                            Riddle #{riddle.riddleNo || index + 1}
+                          </span>
+                          <h3
+                            className="text-2xl font-bold"
+                            style={{ color: "var(--color-font)" }}
+                          >
+                            {riddle.question}
+                          </h3>
+                        </div>
+                        <div className="text-right">
+                          <div
+                            className="px-4 py-2 rounded-full font-bold text-lg w-25 text-center"
+                            style={{
+                              backgroundColor: "var(--color-orange)",
+                              color: "var(--color-font)",
+                            }}
+                          >
+                            🪙 {riddle.coins}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="p-6">
-                    {result ? (
-                      <div
-                        className={`text-center py-8 rounded-xl ${
-                          result.correct
-                            ? "bg-green-50 border-2 border-green-300"
-                            : "bg-red-50 border-2 border-red-300"
-                        }`}
-                      >
-                        <div className="text-6xl mb-4">
-                          {result.correct ? "🎉" : "❌"}
-                        </div>
-                        <p
-                          className={`text-2xl font-bold mb-2 ${
-                            result.correct ? "text-green-700" : "text-red-700"
+                    <div className="p-6">
+                      {result ? (
+                        <div
+                          className={`text-center py-8 rounded-xl ${
+                            result.correct
+                              ? "bg-green-50 border-2 border-green-300"
+                              : "bg-red-50 border-2 border-red-300"
                           }`}
                         >
-                          {result.message}
-                        </p>
-                        {result.correct && !result.alreadySolved && (
-                          <p className="text-lg text-green-600 font-semibold">
-                            +{result.coins} coins! Total: {result.totalCoins} 🪙
+                          <div className="text-6xl mb-4">
+                            {result.correct ? "🎉" : "❌"}
+                          </div>
+                          <p
+                            className={`text-2xl font-bold mb-2 ${
+                              result.correct ? "text-green-700" : "text-red-700"
+                            }`}
+                          >
+                            {result.message}
                           </p>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Your Answer:
-                          </label>
-                          <input
-                            type="text"
-                            value={answers[riddle.id] || ""}
-                            onChange={(e) =>
-                              handleAnswerChange(riddle.id, e.target.value)
-                            }
-                            onKeyPress={(e) => {
-                              if (e.key === "Enter") {
-                                handleSubmit(riddle.id);
-                              }
-                            }}
-                            placeholder="Type your answer here..."
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-lg"
-                            disabled={isSubmitting}
-                          />
-                        </div>
-                        <button
-                          onClick={() => handleSubmit(riddle.id)}
-                          disabled={isSubmitting}
-                          className="w-full py-3 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                          style={{
-                            backgroundColor: isSubmitting ? '#9ca3af' : 'var(--color-pink)',
-                            color: 'var(--color-font)',
-                            cursor: isSubmitting ? 'not-allowed' : 'pointer'
-                          }}
-                        >
-                          {isSubmitting ? (
-                            <span className="flex items-center justify-center">
-                              <svg
-                                className="animate-spin h-5 w-5 mr-3"
-                                viewBox="0 0 24 24"
-                              >
-                                <circle
-                                  className="opacity-25"
-                                  cx="12"
-                                  cy="12"
-                                  r="10"
-                                  stroke="currentColor"
-                                  strokeWidth="4"
-                                  fill="none"
-                                />
-                                <path
-                                  className="opacity-75"
-                                  fill="currentColor"
-                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                />
-                              </svg>
-                              Checking...
-                            </span>
-                          ) : (
-                            "Submit Answer"
+                          {result.correct && !result.alreadySolved && (
+                            <p className="text-lg text-green-600 font-semibold">
+                              +{result.coins} coins! Total: {result.totalCoins}{" "}
+                              🪙
+                            </p>
                           )}
-                        </button>
-                      </div>
-                    )}
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Your Answer:
+                            </label>
+                            <input
+                              type="text"
+                              value={answers[riddle.id] || ""}
+                              onChange={(e) =>
+                                handleAnswerChange(riddle.id, e.target.value)
+                              }
+                              onKeyPress={(e) => {
+                                if (e.key === "Enter") {
+                                  handleSubmit(riddle.id);
+                                }
+                              }}
+                              placeholder="Type your answer here..."
+                              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-font focus:border-font text-lg"
+                              disabled={isSubmitting}
+                            />
+                          </div>
+                          <button
+                            onClick={() => handleSubmit(riddle.id)}
+                            disabled={isSubmitting}
+                            className="w-full py-3 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                            style={{
+                              backgroundColor: isSubmitting
+                                ? "#9ca3af"
+                                : "var(--color-pink)",
+                              color: "var(--color-font)",
+                              cursor: isSubmitting ? "not-allowed" : "pointer",
+                            }}
+                          >
+                            {isSubmitting ? (
+                              <span className="flex items-center justify-center">
+                                <svg
+                                  className="animate-spin h-5 w-5 mr-3"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <circle
+                                    className="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                    fill="none"
+                                  />
+                                  <path
+                                    className="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                  />
+                                </svg>
+                                Checking...
+                              </span>
+                            ) : (
+                              "Submit Answer"
+                            )}
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+                );
+              })}
+            </div>
+          )}
 
-        {/* Back to Home */}
-        <div className="text-center mt-12">
-          <button
-            onClick={() => router.push("/")}
-            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors font-medium"
-          >
-            ← Back to Home
-          </button>
-        </div>
+          {/* Back to Home */}
+          <div className="text-center mt-12">
+            <button
+              onClick={() => router.push("/")}
+              className="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors font-medium"
+            >
+              ← Back to Home
+            </button>
+          </div>
         </div>
       </div>
       <Footer />

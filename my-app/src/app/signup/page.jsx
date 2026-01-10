@@ -36,18 +36,37 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-md p-8">
-        <h1 className="text-2xl font-semibold text-gray-900 text-center">
+    <div
+      className="min-h-screen flex items-center justify-center px-4"
+      style={{ backgroundColor: "var(--color-bg)" }}
+    >
+      <div
+        className="w-full max-w-md rounded-xl shadow-lg p-8"
+        style={{
+          backgroundColor: "white",
+          borderColor: "var(--color-font)",
+          borderWidth: "2px",
+        }}
+      >
+        <h1
+          className="text-3xl font-bold text-center"
+          style={{ color: "var(--color-font)" }}
+        >
           Create an account
         </h1>
-        <p className="text-sm text-gray-500 text-center mt-1">
+        <p
+          className="text-sm text-center mt-2"
+          style={{ color: "var(--color-font)", opacity: "0.7" }}
+        >
           Get started in less than a minute
         </p>
 
-        <form onSubmit={handleSignup} className="mt-6 space-y-5">
+        <form onSubmit={handleSignup} className="mt-8 space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              className="block text-sm font-medium mb-2"
+              style={{ color: "var(--color-font)" }}
+            >
               Email
             </label>
             <input
@@ -55,12 +74,19 @@ export default function SignupPage() {
               type="email"
               required
               placeholder="you@example.com"
-              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+              className="w-full rounded-lg px-4 py-2 text-sm border-2"
+              style={{
+                borderColor: "var(--color-green)",
+                color: "var(--color-font)",
+              }}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              className="block text-sm font-medium mb-2"
+              style={{ color: "var(--color-font)" }}
+            >
               Password
             </label>
             <input
@@ -69,30 +95,43 @@ export default function SignupPage() {
               required
               minLength={6}
               placeholder="At least 6 characters"
-              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+              className="w-full rounded-lg px-4 py-2 text-sm border-2"
+              style={{
+                borderColor: "var(--color-green)",
+                color: "var(--color-font)",
+              }}
             />
           </div>
 
           <button
             type="submit"
-            className="w-full rounded-md bg-black py-2 text-sm font-medium text-white"
+            className="w-full rounded-lg py-3 text-sm font-bold transition-all duration-300 hover:shadow-lg"
+            style={{
+              backgroundColor: "var(--color-pink)",
+              color: "var(--color-font)",
+            }}
           >
             Sign up
           </button>
         </form>
-         <div className="mt-6">
-                  <GoogleLoginButton />
-                </div>
+        <div className="mt-6">
+          <GoogleLoginButton />
+        </div>
 
-        <p className="text-sm text-gray-500 text-center mt-6">
+        <p
+          className="text-sm text-center mt-6"
+          style={{ color: "var(--color-font)" }}
+        >
           Already have an account?{" "}
-          <a href="/login" className="text-black font-medium hover:underline">
+          <a
+            href="/login"
+            className="font-bold hover:underline"
+            style={{ color: "var(--color-orange)" }}
+          >
             Login
           </a>
         </p>
-       
       </div>
-      
     </div>
   );
 }
