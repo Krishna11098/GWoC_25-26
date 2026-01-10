@@ -338,7 +338,9 @@ export default function EventsCalendarPage() {
                   </div>
                 </div>
                 <div className="flex-1 min-w-[140px] md:min-w-[160px] px-4 py-3 bg-[var(--orange)]/30 backdrop-blur-sm rounded-xl border border-[var(--font)]/20 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="text-xs text-[var(--font)]/70 font-bold uppercase tracking-wider">PAST</div>
+                  <div className="text-xs text-[var(--font)]/70 font-bold uppercase tracking-wider">
+                    PAST
+                  </div>
                   <div className="text-2xl font-black text-[var(--font)]">
                     {previousEvents.length}
                   </div>
@@ -386,7 +388,7 @@ export default function EventsCalendarPage() {
             {/* <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-8 border border-gray-200/50">
               <div className="flex items-center justify-between mb-6">
                 {/* <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3"> */}
-                  {/* <span className="p-2 bg-[#E6F1EC] rounded-lg">
+            {/* <span className="p-2 bg-[#E6F1EC] rounded-lg">
                     <svg
                       className="w-6 h-6 text-[#3E6F5C]"
                       fill="none"
@@ -404,7 +406,7 @@ export default function EventsCalendarPage() {
                   Calendar
                 </h2>
               </div> */}
-              <Calendar events={eventsFromDb} />
+            <Calendar events={eventsFromDb} />
             {/* </div> */}
           </div>
 
@@ -644,43 +646,63 @@ export default function EventsCalendarPage() {
       </main>
 
       {/* Contact Section for Custom Experiences */}
-      <section className="py-16 px-4 md:px-10 bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-50">
+      <section className="py-16 px-4 md:px-10">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-emerald-200/50">
+          <div
+            className="rounded-2xl shadow-lg p-8 md:p-12"
+            style={{
+              backgroundColor: "var(--green)",
+              borderColor: "black",
+              borderWidth: "2px",
+            }}
+          >
             <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-2xl">
+              <div
+                className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                style={{ backgroundColor: "var(--orange)" }}
+              >
                 ✨
               </div>
               <div>
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
+                <h3
+                  className="text-2xl md:text-3xl font-bold"
+                  style={{ color: "black" }}
+                >
                   Want Beautiful Custom Experiences?
                 </h3>
-                <p className="text-gray-600 mt-2 text-lg">
-                  Create personalized, pleasing experiences tailored to your needs with JoyJuncture.
+                <p className="mt-2 text-lg" style={{ color: "black" }}>
+                  Create personalized, pleasing experiences tailored to your
+                  needs with JoyJuncture.
                 </p>
               </div>
             </div>
-            
-            <p className="text-gray-700 mb-6 leading-relaxed">
-              Whether it's a private celebration, corporate team-building, or a unique gathering, our expert team designs unforgettable moments. Contact us to bring your vision to life with our curated experiences, games, and entertainment.
+
+            <p className="mb-6 leading-relaxed" style={{ color: "black" }}>
+              Whether it's a private celebration, corporate team-building, or a
+              unique gathering, our expert team designs unforgettable moments.
+              Contact us to bring your vision to life with our curated
+              experiences, games, and entertainment.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="mailto:contact@joyjuncture.com"
-                className="px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                className="px-6 py-3 text-white rounded-xl hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                style={{ backgroundColor: "var(--font)" }}
               >
                 📧 Email Us
               </a>
               <a
                 href="tel:+91-XXXXXXXXXX"
-                className="px-6 py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                className="px-6 py-3 text-white rounded-xl hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                style={{ backgroundColor: "var(--font)" }}
               >
                 📞 Call Us
               </a>
               <a
                 href="/contact"
-                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                className="px-6 py-3 text-white rounded-xl hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                style={{ backgroundColor: "var(--font)" }}
               >
                 💬 Get In Touch
               </a>
@@ -774,7 +796,9 @@ export default function EventsCalendarPage() {
                       key={idx}
                       className="flex items-center gap-3 p-4 bg-white/40 border border-[var(--font)]/5 rounded-xl"
                     >
-                      <span className="text-xl drop-shadow-sm">{item.icon}</span>
+                      <span className="text-xl drop-shadow-sm">
+                        {item.icon}
+                      </span>
                       <div>
                         <div className="text-[10px] font-black text-[var(--font)]/50 uppercase tracking-widest">
                           {item.label}
@@ -790,7 +814,9 @@ export default function EventsCalendarPage() {
                 {selectedEvent.description && (
                   <div className="mt-4">
                     <div className="rounded-xl p-5 bg-white/40 border border-[var(--font)]/5">
-                      <p className="text-[10px] font-black text-[var(--font)]/50 uppercase tracking-widest mb-2">Description</p>
+                      <p className="text-[10px] font-black text-[var(--font)]/50 uppercase tracking-widest mb-2">
+                        Description
+                      </p>
                       <p className="text-[var(--font)]/90 leading-relaxed font-medium">
                         {selectedEvent.description}
                       </p>

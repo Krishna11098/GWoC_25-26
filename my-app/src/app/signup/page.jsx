@@ -36,12 +36,9 @@ export default function SignupPage() {
   }
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4"
-      style={{ backgroundColor: "var(--color-bg)" }}
-    >
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
       <div
-        className="w-full max-w-md rounded-xl shadow-lg p-8"
+        className="w-full max-w-lg rounded-xl shadow-lg p-10"
         style={{
           backgroundColor: "white",
           borderColor: "var(--color-font)",
@@ -132,6 +129,17 @@ export default function SignupPage() {
           </a>
         </p>
       </div>
+
+      <button
+        onClick={() => (window.location.href = "/")}
+        className="mt-6 px-6 py-2 rounded-lg font-medium transition-all duration-300 hover:shadow-lg"
+        style={{
+          backgroundColor: "var(--color-green)",
+          color: "var(--color-font)",
+        }}
+      >
+        ← Back to Home
+      </button>
     </div>
   );
 }

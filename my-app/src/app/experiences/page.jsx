@@ -129,43 +129,61 @@ export default function ExperiencesLanding() {
         </section>
 
         {/* Contact Section for Custom Experiences */}
-        <section className="py-16 px-4 md:px-10">
+        <section className="py-16 px-4 md:px-10 font-black">
           <div className="mx-auto max-w-7xl">
-            <div className="bg-gradient-to-br from-slate-100 to-slate-50 rounded-3xl border border-slate-200 shadow-lg p-8 md:p-12">
+            <div
+              className="rounded-3xl border shadow-lg p-8 md:p-12"
+              style={{
+                backgroundColor: "var(--green)",
+                borderColor: "var(--font)",
+              }}
+            >
               <div className="flex items-start gap-4 mb-6">
-                <div className="flex-shrink-0 w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-3xl shadow-sm">
+                <div
+                  className="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shadow-sm"
+                  style={{
+                    backgroundColor: "var(--orange)",
+                  }}
+                >
                   ✨
                 </div>
                 <div>
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900">
+                  <h2 className="text-3xl md:text-4xl font-extrabold">
                     Want to Create Custom Experiences?
                   </h2>
-                  <p className="text-slate-700 mt-2 text-lg">
-                    Personalized, beautiful moments tailored to your vision with JoyJuncture.
+                  <p className="mt-2 text-lg">
+                    Personalized, beautiful moments tailored to your vision with
+                    JoyJuncture.
                   </p>
                 </div>
               </div>
-              
-              <p className="text-slate-700 mb-8 leading-relaxed text-base">
-                Whether it's a private celebration, corporate team-building, wedding, or a unique gathering, our expert team designs unforgettable moments. Contact us to bring your vision to life with our curated experiences, games, and entertainment.
+
+              <p className="mb-8 leading-relaxed text-base">
+                Whether it's a private celebration, corporate team-building,
+                wedding, or a unique gathering, our expert team designs
+                unforgettable moments. Contact us to bring your vision to life
+                with our curated experiences, games, and entertainment.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
                   href="mailto:contact@joyjuncture.com"
-                  className="px-7 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                  className="px-7 py-3 text-white rounded-full hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                  style={{ backgroundColor: "var(--font)" }}
                 >
                   📧 Email Us
                 </a>
                 <a
                   href="tel:+91-XXXXXXXXXX"
-                  className="px-7 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                  className="px-7 py-3 text-white rounded-full hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                  style={{ backgroundColor: "var(--font)" }}
                 >
                   📞 Call Us
                 </a>
                 <a
                   href="/contact"
-                  className="px-7 py-3 bg-red-500 text-white rounded-full hover:bg-red-600 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                  className="px-7 py-3 text-white rounded-full hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                  style={{ backgroundColor: "var(--font)" }}
                 >
                   💬 Get In Touch
                 </a>
@@ -173,7 +191,6 @@ export default function ExperiencesLanding() {
             </div>
           </div>
         </section>
-
       </main>
       <Footer />
     </>

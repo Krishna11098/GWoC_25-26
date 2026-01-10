@@ -84,7 +84,7 @@ const Navbar = () => {
   };
 
   const linkClasses = (href) =>
-    `relative text-sm font-light tracking-wide text-white hover:text-gray-900 transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:bg-gray-900 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
+    `relative text-lg font-light tracking-wide text-white hover:text-gray-900 transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:bg-gray-900 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
       isActive(href) ? "text-gray-900 after:scale-x-100" : ""
     }`;
 
@@ -170,7 +170,7 @@ const Navbar = () => {
                         setCommunityDropdownOpen(false);
                         setCommunityDropdownClicked(false);
                       }}
-                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
+                      className="block px-4 py-2 text-lg text-gray-800 hover:bg-slate-100"
                     >
                       About Us
                     </Link>
@@ -180,7 +180,7 @@ const Navbar = () => {
                         setCommunityDropdownOpen(false);
                         setCommunityDropdownClicked(false);
                       }}
-                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
+                      className="block px-4 py-2 text-lg text-gray-800 hover:bg-slate-100"
                     >
                       Blogs
                     </Link>
@@ -228,7 +228,7 @@ const Navbar = () => {
                         setPlayDropdownOpen(false);
                         setPlayDropdownClicked(false);
                       }}
-                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
+                      className="block px-4 py-2 text-lg text-gray-800 hover:bg-slate-100"
                     >
                       Sudoku
                     </Link>
@@ -238,7 +238,7 @@ const Navbar = () => {
                         setPlayDropdownOpen(false);
                         setPlayDropdownClicked(false);
                       }}
-                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
+                      className="block px-4 py-2 text-lg text-gray-800 hover:bg-slate-100"
                     >
                       Riddles
                     </Link>
@@ -248,7 +248,7 @@ const Navbar = () => {
                         setPlayDropdownOpen(false);
                         setPlayDropdownClicked(false);
                       }}
-                      className="block px-4 py-2 text-sm text-gray-800 hover:bg-slate-100"
+                      className="block px-4 py-2 text-lg text-gray-800 hover:bg-slate-100"
                     >
                       Movies
                     </Link>
@@ -263,13 +263,13 @@ const Navbar = () => {
                 <>
                   <Link
                     href="/login"
-                    className="rounded-full px-4 py-2 text-sm font-medium hover:bg-gray-100"
+                    className="rounded-full px-4 py-2 text-lg font-medium text-white hover:text-gray-300 transition-colors"
                   >
                     Login
                   </Link>
                   <Link
                     href="/signup"
-                    className="rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white"
+                    className="rounded-full bg-white px-4 py-2 text-lg font-medium text-gray-900 hover:bg-gray-200 transition-colors"
                   >
                     Sign up
                   </Link>
@@ -278,13 +278,13 @@ const Navbar = () => {
                 <>
                   <Link
                     href="/profile"
-                    className="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900"
+                    className="rounded-full bg-gray-100 px-4 py-2 text-lg font-medium text-gray-900"
                   >
                     Welcome {user.name}
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white"
+                    className="rounded-full bg-gray-900 px-4 py-2 text-lg font-medium text-white"
                   >
                     Logout
                   </button>
@@ -314,7 +314,7 @@ const Navbar = () => {
             <Link
               key={link.name}
               href={link.href}
-              className="text-2xl font-light"
+              className="text-3xl font-light"
               onClick={() => setMobileOpen(false)}
             >
               {link.name}
@@ -325,7 +325,7 @@ const Navbar = () => {
           <div className="w-full">
             <button
               onClick={() => setMobileCommunityOpen(!mobileCommunityOpen)}
-              className="flex items-center justify-center gap-2 w-full text-2xl font-light py-2"
+              className="flex items-center justify-center gap-2 w-full text-3xl font-light py-2"
             >
               <span>Community</span>
               <span
@@ -345,14 +345,14 @@ const Navbar = () => {
             >
               <Link
                 href="/about-us"
-                className="text-xl opacity-60"
+                className="text-3xl opacity-60"
                 onClick={() => setMobileOpen(false)}
               >
                 About Us
               </Link>
               <Link
                 href="/community/blog"
-                className="text-xl opacity-60"
+                className="text-3xl opacity-60"
                 onClick={() => setMobileOpen(false)}
               >
                 Blogs
@@ -364,7 +364,7 @@ const Navbar = () => {
           <div className="w-full">
             <button
               onClick={() => setMobilePlayOpen(!mobilePlayOpen)}
-              className="flex items-center justify-center gap-2 w-full text-2xl font-light py-2"
+              className="flex items-center justify-center gap-2 w-full text-3xl font-light py-2"
             >
               <span>Play</span>
               <span
@@ -384,21 +384,21 @@ const Navbar = () => {
             >
               <Link
                 href="/sudoku"
-                className="text-xl opacity-60"
+                className="text-3xl opacity-60"
                 onClick={() => setMobileOpen(false)}
               >
                 Sudoku
               </Link>
               <Link
                 href="/riddles"
-                className="text-xl opacity-60"
+                className="text-3xl opacity-60"
                 onClick={() => setMobileOpen(false)}
               >
                 Riddles
               </Link>
               <Link
                 href="/movies"
-                className="text-xl opacity-60"
+                className="text-3xl opacity-60"
                 onClick={() => setMobileOpen(false)}
               >
                 Movies
@@ -412,14 +412,14 @@ const Navbar = () => {
             <div className="flex flex-col items-center gap-6">
               <Link
                 href="/login"
-                className="text-xl"
+                className="text-3xl text-bg hover:opacity-70 transition-opacity"
                 onClick={() => setMobileOpen(false)}
               >
                 Login
               </Link>
               <Link
                 href="/signup"
-                className="rounded-full bg-bg px-10 py-3 text-lg font-medium text-font"
+                className="rounded-full bg-bg px-10 py-3 text-2xl font-medium text-font hover:opacity-80 transition-opacity"
                 onClick={() => setMobileOpen(false)}
               >
                 Sign up
@@ -429,7 +429,7 @@ const Navbar = () => {
             <div className="flex flex-col items-center gap-6">
               <Link
                 href="/profile"
-                className="text-xl"
+                className="text-3xl"
                 onClick={() => setMobileOpen(false)}
               >
                 Profile ({user.name})
