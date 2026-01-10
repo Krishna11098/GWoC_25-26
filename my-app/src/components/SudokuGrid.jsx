@@ -84,14 +84,14 @@ export default function SudokuGrid({ grid, initial, setGrid }) {
 
       {/* Grid */}
       <div
-        className="inline-block border-4 shadow-2xl rounded-2xl overflow-hidden bg-white"
+        className="inline-block border-2 sm:border-3 md:border-4 lg:border-6 shadow-2xl rounded-2xl overflow-hidden bg-white"
         style={{ borderColor: "var(--color-font)" }}
       >
         {Array.from({ length: 9 }).map((_, rowIdx) => (
           <div
             key={rowIdx}
             className={`flex ${
-              rowIdx % 3 === 2 && rowIdx !== 8 ? "border-b-4" : ""
+              rowIdx % 3 === 2 && rowIdx !== 8 ? "border-b-2" : ""
             }`}
           >
             {Array.from({ length: 9 }).map((_, colIdx) => {

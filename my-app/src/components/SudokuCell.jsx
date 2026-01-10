@@ -28,40 +28,38 @@ const SudokuCell = forwardRef(function SudokuCell(
       onFocus={onFocus}
       onKeyDown={onKeyDown}
       className={`
-        h-12 w-12 flex items-center justify-center text-lg font-semibold text-center
-        border border-gray-300
+        h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 lg:h-12 lg:w-12 flex items-center justify-center text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-center
+        border border-black
         transition-all duration-150
-        ${colIdx % 3 === 2 && colIdx !== 8 ? "border-r-4" : ""}
-        ${rowIdx % 3 === 2 && rowIdx !== 8 ? "border-b-4" : ""}
+        ${colIdx % 3 === 2 && colIdx !== 8 ? "border-r-2" : ""}
+        ${rowIdx % 3 === 2 && rowIdx !== 8 ? "border-b-2" : ""}}
         ${
           fixed
             ? "font-extrabold cursor-default"
             : "cursor-pointer hover:bg-gray-100"
         }
-        ${isSelected ? "border-2 ring-2 ring-offset-0" : ""}
         
         focus:outline-none
       `}
       style={{
         ...(isSelected
           ? {
-              borderColor: "var(--color-font)",
-              ringColor: "var(--color-orange)",
-              backgroundColor: "var(--color-orange)",
+              backgroundColor: "var(--color-pink)",
               opacity: 0.3,
+              color: "black",
             }
           : {}),
         ...(fixed
           ? {
               backgroundColor: "var(--color-green)",
-              color: "var(--color-font)",
+              color: "black",
               opacity: 0.85,
             }
           : {
-              color: "var(--color-font)",
+              color: "black",
             }),
         ...(isSameRow || isSameCol || isSameBox
-          ? { backgroundColor: "var(--color-pink)", opacity: 0.6 }
+          ? { backgroundColor: "var(--color-orange)", color: "black" }
           : {}),
       }}
     />

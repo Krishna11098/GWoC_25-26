@@ -24,7 +24,8 @@ const Navbar = () => {
   const [mobilePlayOpen, setMobilePlayOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [communityDropdownOpen, setCommunityDropdownOpen] = useState(false);
-  const [communityDropdownClicked, setCommunityDropdownClicked] = useState(false);
+  const [communityDropdownClicked, setCommunityDropdownClicked] =
+    useState(false);
   const [playDropdownOpen, setPlayDropdownOpen] = useState(false);
   const [playDropdownClicked, setPlayDropdownClicked] = useState(false);
 
@@ -221,7 +222,6 @@ const Navbar = () => {
                   }}
                 >
                   <div className="py-2">
-                    
                     <Link
                       href="/sudoku"
                       onClick={() => {
@@ -323,39 +323,91 @@ const Navbar = () => {
 
           {/* Community Section Mobile */}
           <div className="w-full">
-            <button 
+            <button
               onClick={() => setMobileCommunityOpen(!mobileCommunityOpen)}
               className="flex items-center justify-center gap-2 w-full text-2xl font-light py-2"
             >
               <span>Community</span>
-              <span className={`text-xs transition-transform duration-300 ${mobileCommunityOpen ? 'rotate-180' : ''}`}>▼</span>
+              <span
+                className={`text-xs transition-transform duration-300 ${
+                  mobileCommunityOpen ? "rotate-180" : ""
+                }`}
+              >
+                ▼
+              </span>
             </button>
-            <div className={`overflow-hidden transition-all duration-300 flex flex-col gap-4 px-4 ${mobileCommunityOpen ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
-              <Link href="/about-us" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>About Us</Link>
-              <Link href="/community/blog" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>Blogs</Link>
+            <div
+              className={`overflow-hidden transition-all duration-300 flex flex-col gap-4 px-4 ${
+                mobileCommunityOpen
+                  ? "max-h-40 opacity-100 mt-4"
+                  : "max-h-0 opacity-0"
+              }`}
+            >
+              <Link
+                href="/about-us"
+                className="text-xl opacity-60"
+                onClick={() => setMobileOpen(false)}
+              >
+                About Us
+              </Link>
+              <Link
+                href="/community/blog"
+                className="text-xl opacity-60"
+                onClick={() => setMobileOpen(false)}
+              >
+                Blogs
+              </Link>
             </div>
           </div>
 
           {/* Play Section Mobile */}
           <div className="w-full">
-            <button 
+            <button
               onClick={() => setMobilePlayOpen(!mobilePlayOpen)}
               className="flex items-center justify-center gap-2 w-full text-2xl font-light py-2"
             >
               <span>Play</span>
-              <span className={`text-xs transition-transform duration-300 ${mobilePlayOpen ? 'rotate-180' : ''}`}>▼</span>
+              <span
+                className={`text-xs transition-transform duration-300 ${
+                  mobilePlayOpen ? "rotate-180" : ""
+                }`}
+              >
+                ▼
+              </span>
             </button>
-            <div className={`overflow-hidden transition-all duration-300 flex flex-col gap-4 px-4 ${mobilePlayOpen ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
-              <Link href="/play" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>Play Hub</Link>
-              <Link href="/games" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>Games</Link>
-              <Link href="/sudoku" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>Sudoku</Link>
-              <Link href="/riddles" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>Riddles</Link>
-              <Link href="/movies" className="text-xl opacity-60" onClick={() => setMobileOpen(false)}>Movies</Link>
+            <div
+              className={`overflow-hidden transition-all duration-300 flex flex-col gap-4 px-4 ${
+                mobilePlayOpen
+                  ? "max-h-96 opacity-100 mt-4"
+                  : "max-h-0 opacity-0"
+              }`}
+            >
+              <Link
+                href="/sudoku"
+                className="text-xl opacity-60"
+                onClick={() => setMobileOpen(false)}
+              >
+                Sudoku
+              </Link>
+              <Link
+                href="/riddles"
+                className="text-xl opacity-60"
+                onClick={() => setMobileOpen(false)}
+              >
+                Riddles
+              </Link>
+              <Link
+                href="/movies"
+                className="text-xl opacity-60"
+                onClick={() => setMobileOpen(false)}
+              >
+                Movies
+              </Link>
             </div>
           </div>
-          
+
           <div className="w-20 h-[1px] bg-bg/20 my-4" />
-          
+
           {!user ? (
             <div className="flex flex-col items-center gap-6">
               <Link
