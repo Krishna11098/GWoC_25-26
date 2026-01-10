@@ -10,7 +10,7 @@ export default function AboutHero() {
         viewport={{ amount: 0.4 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="max-w-4xl text-center flex flex-col justify-center h-full pb-5"
+        className="max-w-4xl text-center flex flex-col justify-center pb-5"
       >
         <h1 className="text-5xl md:text-7xl font-bold mb-6">
           Our{" "}
