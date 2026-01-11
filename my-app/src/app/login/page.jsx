@@ -211,7 +211,7 @@ export default function LoginPage() {
         onClick={() => (window.location.href = "/")}
         className="mt-6 px-6 py-2 rounded-lg font-medium transition-all duration-300 hover:shadow-lg"
         style={{
-          backgroundColor: "var(--color-font)",
+          backgroundColor: "var(--color-green)",
           color: "var(--color-font)",
         }}
       >
