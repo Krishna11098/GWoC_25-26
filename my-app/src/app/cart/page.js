@@ -107,7 +107,12 @@ export default function CartPage() {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ action: "update", gameId, quantity }),
       });
-      if (!res.ok) throw new Error("Failed to update");
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to update");
+      }
+      
       // Optimistic: update local state immediately
       setItems((prev) =>
         prev.map((item) => (item.id === gameId ? { ...item, quantity } : item)).filter((item) => item.quantity > 0)
@@ -117,6 +122,8 @@ export default function CartPage() {
     } catch (e) {
       console.error(e);
       alert(e.message);
+      // Refresh cart to show correct quantities
+      fetchCart(user, { showLoading: false });
     }
   }
 

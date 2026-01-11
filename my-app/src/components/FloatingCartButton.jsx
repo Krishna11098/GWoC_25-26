@@ -71,7 +71,12 @@ export default function FloatingCartButton() {
         },
         body: JSON.stringify({ action: "update", gameId, quantity: 1 }),
       });
-      if (!res.ok) throw new Error("Failed to add to cart");
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to add to cart");
+      }
+      
       setItemCount((c) => c + 1);
       setIsDropping(true);
       setTimeout(() => setIsDropping(false), 500);

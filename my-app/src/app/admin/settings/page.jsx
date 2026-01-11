@@ -17,9 +17,6 @@ export default function AdminSettingsPage() {
     // Content Moderation
     autoHideReportedContent: true,
 
-    // Performance
-    cacheDuration: 3600, // seconds
-    maxUploadSize: 5, // MB
   });
 
   const [loading, setLoading] = useState(true);
@@ -324,7 +321,6 @@ export default function AdminSettingsPage() {
             </div>
           </div>
         </div>
-
         {/* Save Button */}
         <div className="mt-8 flex justify-end">
           <button

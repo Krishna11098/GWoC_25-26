@@ -29,6 +29,7 @@
     "mathjs": "^15.1.0",
     "motion": "^12.23.26",
     "next": "16.0.10",
+    "nodemailer": "^7.0.12",
     "qr-code-styling": "^1.9.2",
     "qrcode": "^1.5.4",
     "razorpay": "^2.9.6",

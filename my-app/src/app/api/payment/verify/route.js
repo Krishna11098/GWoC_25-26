@@ -38,6 +38,30 @@ export async function POST(request) {
     const coinsUsed = orderData.coinsUsed || 0;
     const amountPaid = orderData.finalAmount;
     
+    // Validate stock availability before processing order
+    for (const item of orderData.items) {
+      const productRef = db.collection("products").doc(item.id);
+      const productDoc = await productRef.get();
+      
+      if (!productDoc.exists) {
+        return NextResponse.json(
+          { error: `Product ${item.title || item.id} not found` },
+          { status: 400 }
+        );
+      }
+      
+      const productData = productDoc.data();
+      const availableStock = productData.stockAvailable || 0;
+      const requestedQuantity = item.quantity || 1;
+      
+      if (requestedQuantity > availableStock) {
+        return NextResponse.json(
+          { error: `Insufficient stock for ${item.title}. Only ${availableStock} units available.` },
+          { status: 400 }
+        );
+      }
+    }
+    
     // Calculate 10% cashback
     const coinsEarned = Math.floor(amountPaid * 0.1);
 
@@ -48,6 +72,8 @@ export async function POST(request) {
     const order = {
       orderId: razorpay_order_id,
       paymentId: razorpay_payment_id,
+      userId: userId,
+      userEmail: userData.email || "",
       items: orderData.items,
       subtotal: orderData.subtotal,
       shipping: orderData.shipping,
@@ -60,6 +86,26 @@ export async function POST(request) {
       createdAt: new Date(),
     };
 
+    // Create order document in orders collection
+    await db.collection("orders").add(order);
+
+    // Reduce product quantities
+    for (const item of orderData.items) {
+      const productRef = db.collection("products").doc(item.id);
+      const productDoc = await productRef.get();
+      
+      if (productDoc.exists) {
+        const productData = productDoc.data();
+        const currentStock = productData.stockAvailable || 0;
+        const newStock = Math.max(0, currentStock - (item.quantity || 1));
+        
+        await productRef.update({
+          stockAvailable: newStock,
+          updatedAt: new Date(),
+        });
+      }
+    }
+
     // Update user document
     const updates = {
       "wallet.coins": newCoins,
@@ -67,6 +113,12 @@ export async function POST(request) {
       "cart.items": [], // Clear cart
       updatedAt: new Date(),
     };
+
+    // Track redeemed coins if any were used
+    if (coinsUsed > 0) {
+      const currentRedeemed = userData.wallet?.coinsRedeemed || 0;
+      updates["wallet.coinsRedeemed"] = currentRedeemed + coinsUsed;
+    }
 
     await userRef.update(updates);
 
