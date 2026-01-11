@@ -5,6 +5,7 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, Sparkles, Users, Trophy } from "lucide-react";
 import CountUp from "./CountUp";
+import Link from "next/link";
 
 /**
  * CTASection - Call-to-Action section with stats and action buttons
@@ -82,33 +83,25 @@ const CTASection = () => {
         </motion.p>
 
         {/* CTA Buttons */}
-        <motion.div
-          variants={itemVariants}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
-        >
+        <Link href="/games">
           <motion.button
-            className="group relative px-8 py-4 bg-orange text-font rounded-full font-semibold text-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(247,213,124,0.4)] hover:scale-105"
+            className="group relative px-8 py-4 bg-orange text-font rounded-full font-semibold text-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(247,213,124,0.4)]"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <span className="relative z-10 flex items-center gap-2 group">
-                Explore Games
-                <Link
-                  href="/games"
-                  className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
-                >
-                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </span>
-
-
+            <span className="relative z-10 flex items-center gap-2">
+              Explore Games
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            </span>
+        
             <motion.div
               className="absolute inset-0 bg-gradient-to-r from-pink/30 to-transparent"
               initial={{ x: "-100%" }}
               whileHover={{ x: "100%" }}
               transition={{ duration: 0.5 }}
             />
-          </motion.button>
+            </motion.button>
+          </Link>
 
           <Link href="/events">
             <motion.button
