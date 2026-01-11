@@ -342,22 +342,22 @@ export default function AdminExperiencesPage() {
 
   return (
     <>
-      <div className="flex min-h-screen bg-background">
+      <div className="flex min-h-screen bg-white">
         <main className="flex-1 p-6">
           {/* Header */}
           <div className="mb-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-font">
+                <h1 className="text-3xl font-bold text-gray-900">
                   Contact Form Requests
                 </h1>
-                <p className="text-font-2 mt-2">
+                <p className="text-gray-600 mt-2">
                   Manage contact form requests submitted by users
                 </p>
               </div>
               <button
                 onClick={fetchExperiences}
-                className="px-4 py-2 bg-foreground text-font-2 rounded-lg hover:opacity-90 flex items-center gap-2"
+                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 border border-gray-300 flex items-center gap-2"
               >
                 <span>🔄</span>
                 Refresh
@@ -366,11 +366,11 @@ export default function AdminExperiencesPage() {
 
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6">
-              <div className="bg-background-2 rounded-xl border border-foreground/20 p-4">
-                <div className="text-2xl font-bold text-font">
+              <div className="bg-white rounded-xl shadow border border-gray-200 p-4">
+                <div className="text-2xl font-bold text-blue-600">
                   {stats.total}
                 </div>
-                <div className="text-sm text-font-2">Total Requests</div>
+                <div className="text-sm text-gray-600">Total Requests</div>
               </div>
               <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
                 <div className="text-2xl font-bold text-yellow-700">
@@ -400,11 +400,11 @@ export default function AdminExperiencesPage() {
           </div>
 
           {/* Filters */}
-          <div className="bg-background-2 rounded-xl border border-foreground/20 p-6 mb-6">
+          <div className="bg-white rounded-xl shadow border border-gray-200 p-6 mb-6">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Search */}
               <div>
-                <label className="block text-sm font-medium text-font-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Search
                 </label>
                 <input
@@ -412,19 +412,19 @@ export default function AdminExperiencesPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search by name, email, event..."
-                  className="w-full px-4 py-2 bg-background border border-foreground/20 rounded-lg"
+                  className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
               {/* Category Filter */}
               <div>
-                <label className="block text-sm font-medium text-font-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Category
                 </label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full px-4 py-2 bg-background border border-foreground/20 rounded-lg"
+                  className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">All Categories</option>
                   {categories.map((cat) => (
@@ -437,13 +437,13 @@ export default function AdminExperiencesPage() {
 
               {/* Status Filter */}
               <div>
-                <label className="block text-sm font-medium text-font-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Status
                 </label>
                 <select
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="w-full px-4 py-2 bg-background border border-foreground/20 rounded-lg"
+                  className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   {statuses.map((status) => (
                     <option key={status.value} value={status.value}>
@@ -455,13 +455,13 @@ export default function AdminExperiencesPage() {
 
               {/* Sort By */}
               <div>
-                <label className="block text-sm font-medium text-font-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Sort By
                 </label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full px-4 py-2 bg-background border border-foreground/20 rounded-lg"
+                  className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   {sortOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -474,19 +474,19 @@ export default function AdminExperiencesPage() {
           </div>
 
           {/* Experiences List */}
-          <div className="bg-background-2 rounded-xl border border-foreground/20 overflow-hidden">
+          <div className="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
             {loading ? (
               <div className="p-8 text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground mx-auto"></div>
-                <p className="mt-4 text-font-2">Loading experiences...</p>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+                <p className="mt-4 text-gray-600">Loading experiences...</p>
               </div>
             ) : filteredExperiences.length === 0 ? (
               <div className="p-8 text-center">
-                <div className="text-4xl mb-4">📝</div>
-                <h3 className="text-xl font-bold text-font mb-2">
+                <div className="text-4xl mb-4">📋</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
                   No experiences found
                 </h3>
-                <p className="text-font-2">
+                <p className="text-gray-600">
                   {experiences.length === 0
                     ? "No experience requests have been submitted yet."
                     : "No experiences match your filters."}
@@ -496,26 +496,26 @@ export default function AdminExperiencesPage() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="bg-foreground/5 border-b border-foreground/20">
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                    <tr className="bg-gray-50 border-b border-gray-200">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Name
                       </th>
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Category
                       </th>
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Event
                       </th>
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Date
                       </th>
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Status
                       </th>
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Submitted
                       </th>
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Actions
                       </th>
                     </tr>
@@ -528,17 +528,17 @@ export default function AdminExperiencesPage() {
                       return (
                         <tr
                           key={experience.id}
-                          className="border-b border-foreground/10 hover:bg-foreground/5"
+                          className="border-b border-gray-200 hover:bg-gray-50"
                         >
                           <td className="p-4">
                             <div>
-                              <div className="font-medium text-font">
+                              <div className="font-medium text-gray-900">
                                 {experience.fullName}
                               </div>
-                              <div className="text-sm text-font-2">
+                              <div className="text-sm text-gray-600">
                                 {experience.email}
                               </div>
-                              <div className="text-sm text-font-2">
+                              <div className="text-sm text-gray-600">
                                 {experience.phone}
                               </div>
                             </div>
@@ -549,10 +549,10 @@ export default function AdminExperiencesPage() {
                                 {categoryInfo.icon}
                               </span>
                               <div>
-                                <div className="font-medium text-font">
+                                <div className="font-medium text-gray-900">
                                   {categoryInfo.label}
                                 </div>
-                                <div className="text-xs text-font-2">
+                                <div className="text-xs text-gray-600">
                                   {experience.companyName}
                                 </div>
                               </div>
@@ -560,19 +560,19 @@ export default function AdminExperiencesPage() {
                           </td>
                           <td className="p-4">
                             <div>
-                              <div className="font-medium text-font">
+                              <div className="font-medium text-gray-900">
                                 {experience.eventTitle}
                               </div>
-                              <div className="text-sm text-font-2">
+                              <div className="text-sm text-gray-600">
                                 {experience.venue}
                               </div>
                             </div>
                           </td>
                           <td className="p-4">
-                            <div className="font-medium">
+                            <div className="font-medium text-gray-900">
                               {formatDate(experience.eventDate)}
                             </div>
-                            <div className="text-sm text-font-2">
+                            <div className="text-sm text-gray-600">
                               {experience.eventTime}
                             </div>
                           </td>
@@ -584,7 +584,7 @@ export default function AdminExperiencesPage() {
                             </span>
                           </td>
                           <td className="p-4">
-                            <div className="text-sm">
+                            <div className="text-sm text-gray-600">
                               {formatDateTime(experience.submittedAt)}
                             </div>
                           </td>
@@ -592,13 +592,13 @@ export default function AdminExperiencesPage() {
                             <div className="flex gap-2">
                               <button
                                 onClick={() => openDetailModal(experience)}
-                                className="px-3 py-1 bg-background border border-foreground/20 rounded-lg text-sm hover:bg-foreground/5"
+                                className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-lg text-sm hover:bg-gray-200"
                               >
                                 View
                               </button>
                               <button
                                 onClick={() => openUpdateModal(experience)}
-                                className="px-3 py-1 bg-foreground text-font-2 rounded-lg text-sm hover:opacity-90"
+                                className="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
                               >
                                 Update
                               </button>
@@ -614,16 +614,16 @@ export default function AdminExperiencesPage() {
 
             {/* Pagination */}
             {!loading && filteredExperiences.length > 0 && (
-              <div className="p-4 border-t border-foreground/20 flex justify-between items-center">
-                <div className="text-sm text-font-2">
+              <div className="p-4 border-t border-gray-200 flex justify-between items-center">
+                <div className="text-sm text-gray-600">
                   Showing {filteredExperiences.length} of {experiences.length}{" "}
                   experiences
                 </div>
                 <div className="flex gap-2">
-                  <button className="px-3 py-1 border border-foreground/20 rounded-lg text-sm">
+                  <button className="px-3 py-1 border border-gray-300 rounded-lg text-sm hover:bg-gray-50">
                     Previous
                   </button>
-                  <button className="px-3 py-1 bg-foreground text-font-2 rounded-lg text-sm">
+                  <button className="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
                     Next
                   </button>
                 </div>
@@ -636,20 +636,20 @@ export default function AdminExperiencesPage() {
       {/* Experience Detail Modal */}
       {isDetailModalOpen && selectedExperience && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-background rounded-2xl w-full max-w-4xl max-h-[90vh] bg-white overflow-hidden flex flex-col">
+          <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-xl">
             {/* Header */}
-            <div className="p-6 border-b border-foreground/20 flex justify-between items-start">
+            <div className="p-6 border-b border-gray-200 flex justify-between items-start">
               <div>
-                <h2 className="text-2xl font-bold text-font">
+                <h2 className="text-2xl font-bold text-gray-900">
                   {selectedExperience.eventTitle}
                 </h2>
-                <p className="text-font-2">
+                <p className="text-gray-600">
                   Submitted by {selectedExperience.fullName}
                 </p>
               </div>
               <button
                 onClick={() => setIsDetailModalOpen(false)}
-                className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-foreground/10"
+                className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100"
               ></button>
             </div>
 
@@ -658,80 +658,82 @@ export default function AdminExperiencesPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Left Column */}
                 <div className="space-y-6">
-                  <div className="bg-background-2 rounded-xl p-4">
-                    <h3 className="font-bold text-font mb-4">
+                  <div className="bg-gray-50 rounded-xl p-4">
+                    <h3 className="font-bold text-gray-900 mb-4">
                       Client Information
                     </h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-font-2">Full Name:</span>
-                        <span className="font-medium">
+                        <span className="text-gray-600">Full Name:</span>
+                        <span className="font-medium text-gray-900">
                           {selectedExperience.fullName}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Email:</span>
-                        <span className="font-medium">
+                        <span className="text-gray-600">Email:</span>
+                        <span className="font-medium text-gray-900">
                           {selectedExperience.email}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Phone:</span>
-                        <span className="font-medium">
+                        <span className="text-gray-600">Phone:</span>
+                        <span className="font-medium text-gray-900">
                           {selectedExperience.phone}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Company:</span>
-                        <span className="font-medium">
+                        <span className="text-gray-600">Company:</span>
+                        <span className="font-medium text-gray-900">
                           {selectedExperience.companyName || "Not provided"}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Designation:</span>
-                        <span className="font-medium">
+                        <span className="text-gray-600">Designation:</span>
+                        <span className="font-medium text-gray-900">
                           {selectedExperience.designation || "Not provided"}
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-background-2 rounded-xl p-4">
-                    <h3 className="font-bold text-font mb-4">Event Details</h3>
+                  <div className="bg-gray-50 rounded-xl p-4">
+                    <h3 className="font-bold text-gray-900 mb-4">
+                      Event Details
+                    </h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-font-2">Category:</span>
+                        <span className="text-gray-700">Category:</span>
                         <span className="font-medium">
                           {getCategoryInfo(selectedExperience.category).label}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Event Date:</span>
+                        <span className="text-gray-700">Event Date:</span>
                         <span className="font-medium">
                           {formatDate(selectedExperience.eventDate)}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Time:</span>
+                        <span className="text-gray-700">Time:</span>
                         <span className="font-medium">
                           {selectedExperience.eventTime || "Not specified"}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Duration:</span>
+                        <span className="text-gray-700">Duration:</span>
                         <span className="font-medium">
                           {selectedExperience.eventDuration || "Not specified"}{" "}
                           hours
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Venue:</span>
+                        <span className="text-gray-700">Venue:</span>
                         <span className="font-medium">
                           {selectedExperience.venue}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Has Venue:</span>
+                        <span className="text-gray-700">Has Venue:</span>
                         <span className="font-medium">
                           {selectedExperience.hasVenue === "yes"
                             ? "Yes"
@@ -746,38 +748,42 @@ export default function AdminExperiencesPage() {
 
                 {/* Right Column */}
                 <div className="space-y-6">
-                  <div className="bg-background-2 rounded-xl p-4">
-                    <h3 className="font-bold text-font mb-4">Requirements</h3>
+                  <div className="bg-gray-50 rounded-xl p-4">
+                    <h3 className="font-bold text-gray-900 mb-4">
+                      Requirements
+                    </h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-font-2">Event Type:</span>
+                        <span className="text-gray-700">Event Type:</span>
                         <span className="font-medium">
                           {eventTypes[selectedExperience.eventType] ||
                             "Not specified"}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Audience Size:</span>
+                        <span className="text-gray-700">Audience Size:</span>
                         <span className="font-medium">
                           {audienceSizes[selectedExperience.audienceSize] ||
                             "Not specified"}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Budget Range:</span>
+                        <span className="text-gray-700">Budget Range:</span>
                         <span className="font-medium">
                           {budgetRanges[selectedExperience.budgetRange] ||
                             "Not specified"}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Preferred Games:</span>
+                        <span className="text-gray-700">Preferred Games:</span>
                         <span className="font-medium text-right">
                           {selectedExperience.preferredGames || "Not specified"}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-font-2">Theme Preferences:</span>
+                        <span className="text-gray-700">
+                          Theme Preferences:
+                        </span>
                         <span className="font-medium">
                           {selectedExperience.themePreferences ||
                             "Not specified"}
@@ -786,23 +792,23 @@ export default function AdminExperiencesPage() {
                     </div>
                   </div>
 
-                  <div className="bg-background-2 rounded-xl p-4">
-                    <h3 className="font-bold text-font mb-4">
+                  <div className="bg-gray-50 rounded-xl p-4">
+                    <h3 className="font-bold text-gray-900 mb-4">
                       Special Requirements
                     </h3>
-                    <p className="text-font whitespace-pre-wrap">
+                    <p className="text-gray-900 whitespace-pre-wrap">
                       {selectedExperience.specialRequirements ||
                         "No special requirements"}
                     </p>
                   </div>
 
-                  <div className="bg-background-2 rounded-xl p-4">
-                    <h3 className="font-bold text-font mb-4">
+                  <div className="bg-gray-50 rounded-xl p-4">
+                    <h3 className="font-bold text-gray-900 mb-4">
                       Additional Information
                     </h3>
                     <div className="space-y-3">
                       <div>
-                        <div className="text-font-2 mb-1">
+                        <div className="text-gray-700 mb-1">
                           How they heard about us:
                         </div>
                         <div className="font-medium capitalize">
@@ -810,7 +816,7 @@ export default function AdminExperiencesPage() {
                         </div>
                       </div>
                       <div>
-                        <div className="text-font-2 mb-1">Comments:</div>
+                        <div className="text-gray-700 mb-1">Comments:</div>
                         <div className="font-medium whitespace-pre-wrap">
                           {selectedExperience.comments ||
                             "No additional comments"}
@@ -823,8 +829,8 @@ export default function AdminExperiencesPage() {
             </div>
 
             {/* Footer */}
-            <div className="p-6 border-t border-foreground/20 flex justify-between items-center">
-              <div className="text-sm text-font-2">
+            <div className="p-6 border-t border-gray-200 flex justify-between items-center">
+              <div className="text-sm text-gray-600">
                 Submitted on {formatDateTime(selectedExperience.submittedAt)}
               </div>
               <div className="flex gap-3">
@@ -833,13 +839,13 @@ export default function AdminExperiencesPage() {
                     setIsDetailModalOpen(false);
                     openUpdateModal(selectedExperience);
                   }}
-                  className="px-4 py-2 bg-foreground text-font-2 rounded-lg hover:opacity-90"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                 >
                   Update Status
                 </button>
                 <button
                   onClick={() => setIsDetailModalOpen(false)}
-                  className="px-4 py-2 border border-foreground/20 rounded-lg"
+                  className="px-4 py-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50"
                 >
                   Close
                 </button>
@@ -852,19 +858,19 @@ export default function AdminExperiencesPage() {
       {/* Update Status Modal */}
       {isUpdateModalOpen && selectedExperience && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-background rounded-2xl w-full max-w-md bg-white">
-            <div className="p-6 border-b border-foreground/20">
-              <h2 className="text-xl font-bold text-font">
+          <div className="bg-white rounded-2xl w-full max-w-md">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">
                 Update Experience Status
               </h2>
-              <p className="text-font-2 mt-1">
+              <p className="text-gray-600 mt-1">
                 {selectedExperience.eventTitle}
               </p>
             </div>
 
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-font-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Status
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -899,8 +905,8 @@ export default function AdminExperiencesPage() {
                           }
                           className={`px-4 py-3 rounded-lg border text-center ${
                             isCurrentStatus
-                              ? `${status.color} border-foreground`
-                              : "border-foreground/20 hover:border-foreground/40"
+                              ? `${status.color} border-gray-300`
+                              : "border-gray-200 hover:border-gray-300 text-gray-700"
                           } disabled:opacity-50 disabled:cursor-not-allowed`}
                         >
                           {status.label}
@@ -911,7 +917,7 @@ export default function AdminExperiencesPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-font-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Admin Notes (Optional)
                 </label>
                 <textarea
@@ -919,7 +925,7 @@ export default function AdminExperiencesPage() {
                   onChange={(e) => setAdminNotes(e.target.value)}
                   rows={4}
                   placeholder="Add any notes or comments..."
-                  className="w-full px-4 py-3 bg-background border border-foreground/20 rounded-lg"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -935,10 +941,10 @@ export default function AdminExperiencesPage() {
               )}
             </div>
 
-            <div className="p-6 border-t border-foreground/20 flex justify-end gap-3">
+            <div className="p-6 border-t border-gray-200 flex justify-end gap-3">
               <button
                 onClick={() => setIsUpdateModalOpen(false)}
-                className="px-4 py-2 border border-foreground/20 rounded-lg"
+                className="px-4 py-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50"
               >
                 Cancel
               </button>
