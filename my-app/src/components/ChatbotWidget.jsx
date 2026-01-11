@@ -32,7 +32,7 @@ export default function ChatbotWidget() {
         </button>
       ) : (
         /* Chat window with close button at bottom */
-        <div className="fixed right-6 bottom-6 z-50 flex flex-col">
+        <div className="fixed right-6 bottom-6 z-50 flex flex-col items-end">
           <div
             className="flex flex-col overflow-hidden rounded-2xl shadow-2xl border border-gray-200 bg-white"
             style={{ width: "360px", height: "60vh", maxHeight: "520px" }}
@@ -50,7 +50,7 @@ export default function ChatbotWidget() {
             type="button"
             onClick={() => setIsOpen(false)}
             aria-label="Close JoyHelper chatbot"
-            className="mt-2 shadow-lg transition-transform duration-150 ease-out hover:scale-105 focus:outline-none self-center"
+            className="mt-2 shadow-lg transition-transform duration-150 ease-out hover:scale-105 focus:outline-none"
             style={{
               background: "linear-gradient(135deg, #111827, #1f2937)",
               color: "#f9fafb",
