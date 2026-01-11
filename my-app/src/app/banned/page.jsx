@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
+import { Ban } from "lucide-react";
 
 export default function BannedPage() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function BannedPage() {
         {/* Header */}
         <div className="mb-8">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mb-4">
-            <span className="text-3xl">🚫</span>
+            <Ban size={32} className="text-red-600" />
           </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Account Suspended

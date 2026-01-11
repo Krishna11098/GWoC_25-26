@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { Menu, X, ChevronDown } from "lucide-react";
 
 const navLinks = [
   { name: "Home", href: "/home" },
@@ -297,7 +298,7 @@ const Navbar = () => {
               className="md:hidden ml-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white z-50"
               onClick={() => setMobileOpen((o) => !o)}
             >
-              {mobileOpen ? "✕" : "☰"}
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
@@ -328,13 +329,12 @@ const Navbar = () => {
               className="flex items-center justify-center gap-2 w-full text-3xl font-light py-2"
             >
               <span>Community</span>
-              <span
-                className={`text-xs transition-transform duration-300 ${
+              <ChevronDown
+                size={16}
+                className={`transition-transform duration-300 ${
                   mobileCommunityOpen ? "rotate-180" : ""
                 }`}
-              >
-                ▼
-              </span>
+              />
             </button>
             <div
               className={`overflow-hidden transition-all duration-300 flex flex-col gap-4 px-4 ${
@@ -367,13 +367,12 @@ const Navbar = () => {
               className="flex items-center justify-center gap-2 w-full text-3xl font-light py-2"
             >
               <span>Play</span>
-              <span
-                className={`text-xs transition-transform duration-300 ${
+              <ChevronDown
+                size={16}
+                className={`transition-transform duration-300 ${
                   mobilePlayOpen ? "rotate-180" : ""
                 }`}
-              >
-                ▼
-              </span>
+              />
             </button>
             <div
               className={`overflow-hidden transition-all duration-300 flex flex-col gap-4 px-4 ${

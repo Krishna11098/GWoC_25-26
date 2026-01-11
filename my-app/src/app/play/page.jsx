@@ -4,6 +4,7 @@ import { useState } from "react";
 import SudokuBoard from "@/components/SudokuBoard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Keyboard, Lightbulb, CheckCircle2, ArrowRight, ArrowLeft } from "lucide-react";
 
 // Sample Sudoku puzzles
 const puzzles = [
@@ -111,12 +112,13 @@ export default function SudokuPage() {
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-2 text-sm font-semibold">
-                        <span>Play Now</span>
-                        <span className="group-hover:translate-x-2 transition-transform">
-                          →
-                        </span>
-                      </div>
+                        <div className="flex items-center gap-2 text-sm font-semibold">
+                          <span>Play Now</span>
+                          <ArrowRight
+                            size={16}
+                            className="group-hover:translate-x-2 transition-transform"
+                          />
+                        </div>
                     </div>
 
                     {/* Border animation */}
@@ -136,7 +138,9 @@ export default function SudokuPage() {
               {/* Features Section */}
               <div className="mt-16 grid md:grid-cols-3 gap-8">
                 <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
-                  <div className="text-4xl mb-3">⌨️</div>
+                  <div className="text-4xl mb-3 text-blue-500">
+                    <Keyboard size={40} />
+                  </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">
                     Keyboard Navigation
                   </h3>
@@ -146,7 +150,9 @@ export default function SudokuPage() {
                   </p>
                 </div>
                 <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
-                  <div className="text-4xl mb-3">💡</div>
+                  <div className="text-4xl mb-3 text-yellow-500">
+                    <Lightbulb size={40} />
+                  </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">
                     Smart Hints
                   </h3>
@@ -156,7 +162,9 @@ export default function SudokuPage() {
                   </p>
                 </div>
                 <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
-                  <div className="text-4xl mb-3">✅</div>
+                  <div className="text-4xl mb-3 text-green-500">
+                    <CheckCircle2 size={40} />
+                  </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">
                     Instant Feedback
                   </h3>
@@ -174,7 +182,7 @@ export default function SudokuPage() {
                 onClick={() => setSelectedPuzzle(null)}
                 className="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-gray-900 font-semibold shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-95"
               >
-                ← Back to Puzzles
+                <ArrowLeft size={16} /> Back to Puzzles
               </button>
 
               {/* Game Board */}

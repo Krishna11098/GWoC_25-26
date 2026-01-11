@@ -2,6 +2,19 @@
 
 import { useState, useEffect } from "react";
 import productService from "@/app/lib/productService";
+import {
+  ShoppingBag,
+  Plus,
+  Package,
+  CheckCircle2,
+  CircleX,
+  ClipboardList,
+  Star,
+  Check,
+  Edit,
+  Trash2,
+  X,
+} from "lucide-react";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -133,15 +146,17 @@ export default function AdminProducts() {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">🛍️ Products Management</h1>
+        <h1 className="text-3xl font-bold flex items-center gap-2">
+          <ShoppingBag className="text-blue-600" /> Products Management
+        </h1>
         <button
           onClick={() => {
             resetForm();
             setShowAddModal(true);
           }}
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
         >
-          ➕ Add New Product
+          <Plus size={20} /> Add New Product
         </button>
       </div>
 
@@ -153,7 +168,9 @@ export default function AdminProducts() {
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-lg shadow">
-          <div className="text-5xl mb-4">📦</div>
+          <div className="flex justify-center mb-4 text-gray-400">
+            <Package size={64} />
+          </div>
           <h3 className="text-xl font-semibold mb-2">No Products Found</h3>
           <p className="text-gray-500 mb-6">
             Get started by adding your first product!
@@ -214,8 +231,16 @@ export default function AdminProducts() {
                     </div>
                     <div>
                       <span className="text-gray-500">Featured:</span>
-                      <p className="font-bold">
-                        {product.isFeatured ? "✅ Yes" : "❌ No"}
+                      <p className="font-bold flex items-center gap-1">
+                        {product.isFeatured ? (
+                          <>
+                            <CheckCircle2 size={16} className="text-green-500" /> Yes
+                          </>
+                        ) : (
+                          <>
+                            <CircleX size={16} className="text-red-500" /> No
+                          </>
+                        )}
                       </p>
                     </div>
                   </div>
@@ -223,8 +248,8 @@ export default function AdminProducts() {
                   {/* How to Play Section */}
                   {product.howToPlay && product.howToPlay.length > 0 && (
                     <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                      <h4 className="font-semibold text-blue-900 mb-2">
-                        📋 How to Play:
+                      <h4 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
+                        <ClipboardList size={18} /> How to Play:
                       </h4>
                       <div className="space-y-2">
                         {product.howToPlay.map((step, idx) => (
@@ -246,13 +271,13 @@ export default function AdminProducts() {
                   {/* Key Features Section */}
                   {product.keyFeatures && product.keyFeatures.length > 0 && (
                     <div className="mb-4 p-3 bg-green-50 rounded-lg border border-green-200">
-                      <h4 className="font-semibold text-green-900 mb-2">
-                        ⭐ Key Features:
+                      <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
+                        <Star size={18} /> Key Features:
                       </h4>
                       <ul className="space-y-1">
                         {product.keyFeatures.map((feature, idx) => (
                           <li key={idx} className="flex gap-2 text-sm">
-                            <span className="text-green-600">✓</span>
+                            <Check size={16} className="text-green-600" />
                             <div>
                               <p className="font-semibold text-gray-700">
                                 {feature.title}
@@ -272,15 +297,15 @@ export default function AdminProducts() {
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEdit(product)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors flex items-center gap-1"
                 >
-                  ✏️ Edit
+                  <Edit size={16} /> Edit
                 </button>
                 <button
                   onClick={() => setDeleteConfirm(product.id)}
-                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors flex items-center gap-1"
                 >
-                  🗑️ Delete
+                  <Trash2 size={16} /> Delete
                 </button>
               </div>
 

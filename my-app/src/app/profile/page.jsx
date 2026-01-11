@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { auth } from "@/lib/firebaseClient";
 import { userFetch } from "@/lib/userFetch";
+import { Gamepad2, PartyPopper, BookOpen } from "lucide-react";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -572,13 +573,13 @@ export default function ProfilePage() {
               ) : (
                 <>
                   <ActivityCard
-                    icon="🕹️"
+                    icon={<Gamepad2 size={24} />}
                     label="Games Played"
                     value={userData?.gamesHistory?.length || 0}
                     bgColor="var(--color-pink)"
                   />
                   <ActivityCard
-                    icon="🎊"
+                    icon={<PartyPopper size={24} />}
                     label="Events Attended"
                     value={
                       userData?.userEvents?.filter((e) => e.attended)?.length ||
@@ -587,7 +588,7 @@ export default function ProfilePage() {
                     bgColor="var(--color-orange)"
                   />
                   <ActivityCard
-                    icon="📖"
+                    icon={<BookOpen size={24} />}
                     label="Workshops"
                     value={userData?.userWorkshops?.length || 0}
                     bgColor="var(--color-green)"

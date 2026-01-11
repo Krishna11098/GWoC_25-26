@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { PartyPopper } from "lucide-react";
 
 export default function SudokuResultModal() {
   const router = useRouter();
@@ -18,7 +19,9 @@ export default function SudokuResultModal() {
         }}
       >
         <div className="text-center">
-          <div className="text-6xl mb-4">🎉</div>
+          <div className="flex justify-center mb-4 text-white">
+            <PartyPopper size={64} />
+          </div>
           <h2 className="text-3xl font-bold mb-2">Sudoku Solved!</h2>
           <p className="mb-6">
             Congratulations! Coins have been added to your wallet.

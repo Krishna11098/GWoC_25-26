@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 const faqs = [
   {
@@ -36,13 +37,43 @@ const faqs = [
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(-1);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: false, margin: "-100px" });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.25, 0.4, 0.25, 1] },
+    },
+  };
 
   return (
-    <section className="px-6 py-24 md:px-10 flex justify-center">
-      {/* ENTRY ANIMATION */}
-      <div className="w-full max-w-4xl space-y-16 animate-fade-in">
+    <motion.section
+      ref={sectionRef}
+      className="px-6 py-24 md:px-10 flex justify-center"
+      variants={containerVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+    >
+      <div className="w-full max-w-4xl space-y-16">
         {/* ================= HEADER ================= */}
-        <div className="relative mx-auto max-w-3xl text-center space-y-6">
+        <motion.div
+          variants={itemVariants}
+          className="relative mx-auto max-w-3xl text-center space-y-6"
+        >
           <p className="relative text-[11px] uppercase tracking-[0.4em]">
             Uh huh we know you have questions!!
           </p>
@@ -54,10 +85,11 @@ export default function FAQ() {
 
           {/* OFF-CENTER ACCENT */}
           <div className="relative mx-auto h-1 w-20 rounded-full bg-black translate-x-6" />
-        </div>
+        </motion.div>
 
         {/* ================= FAQ CARD ================= */}
-        <div
+        <motion.div
+          variants={itemVariants}
           className="
             w-full overflow-hidden rounded-2xl
             border border-white/40 bg-white backdrop-blur-md
@@ -114,8 +146,8 @@ export default function FAQ() {
               </div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

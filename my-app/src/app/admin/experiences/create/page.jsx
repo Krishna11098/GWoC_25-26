@@ -5,6 +5,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { userFetch } from "@/lib/userFetch";
 import BlogCard from "@/components/BlogCard";
+import { Save, Eye, Rocket, RotateCcw, FileText, Upload, Loader2, Plus } from "lucide-react";
 const EXPERIENCE_CATEGORIES = [
   { id: "private_birthdays", label: "Private Birthdays" },
   { id: "corporate_events", label: "Corporate Events" },
@@ -269,8 +270,8 @@ export default function CreateExperiencePage() {
                     placeholder="https://example.com/image.jpg"
                   />
                   <label className="cursor-pointer flex-shrink-0">
-                    <div className="px-4 py-3 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-700 hover:bg-emerald-100 transition text-sm font-medium whitespace-nowrap">
-                      {uploading ? '⏳' : '📁'}
+                    <div className="px-4 py-3 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-700 hover:bg-emerald-100 transition text-sm font-medium whitespace-nowrap flex items-center justify-center">
+                      {uploading ? <Loader2 className="animate-spin" size={18} /> : <Upload size={18} />}
                     </div>
                     <input
                       type="file"
@@ -438,7 +439,7 @@ export default function CreateExperiencePage() {
                   disabled={loading || uploading}
                   className="w-full px-6 py-4 rounded-2xl bg-slate-100 border border-slate-300 text-slate-900 font-semibold hover:bg-slate-200 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  <span>💾</span>
+                  <Save size={20} />
                   <span>{loading ? "Saving..." : "Save Draft"}</span>
                 </button>
 
@@ -448,7 +449,7 @@ export default function CreateExperiencePage() {
                   rel="noopener noreferrer"
                   className="w-full px-6 py-4 rounded-2xl bg-blue-50 border border-blue-300 text-blue-700 font-semibold hover:bg-blue-100 transition flex items-center justify-center gap-2 text-center"
                 >
-                  <span>👁️</span>
+                  <Eye size={20} />
                   <span>Preview Experience</span>
                 </a>
 
@@ -457,7 +458,7 @@ export default function CreateExperiencePage() {
                   disabled={loading || uploading}
                   className="w-full px-6 py-4 rounded-2xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  <span>🚀</span>
+                  <Rocket size={20} />
                   <span>{loading ? "Publishing..." : "Publish Experience"}</span>
                 </button>
 
@@ -466,14 +467,16 @@ export default function CreateExperiencePage() {
                   disabled={loading}
                   className="w-full px-6 py-4 rounded-2xl bg-slate-200 border border-slate-300 text-slate-900 font-semibold hover:bg-slate-300 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  <span>↩️</span>
+                  <RotateCcw size={20} />
                   <span>Cancel</span>
                 </button>
               </div>
             </div>
 
             <div className="rounded-3xl bg-slate-50 border border-slate-200 p-4">
-              <h3 className="font-semibold text-slate-900 mb-2 text-sm">📝 Quick Guide</h3>
+              <h3 className="font-semibold text-slate-900 mb-2 text-sm flex items-center gap-2">
+                <FileText size={16} /> Quick Guide
+              </h3>
               <ul className="text-xs text-slate-600 space-y-1">
                 <li>• <strong>Save Draft:</strong> Save without publishing</li>
                 <li>• <strong>Preview:</strong> See how it looks</li>

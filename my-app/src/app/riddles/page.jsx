@@ -7,6 +7,7 @@ import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged } from "firebase/auth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Puzzle, Search, Coins, PartyPopper, CircleX } from "lucide-react";
 
 export default function RiddlesPage() {
   const router = useRouter();
@@ -118,10 +119,10 @@ export default function RiddlesPage() {
           {/* Header */}
           <div className="text-center mb-12">
             <h1
-              className="text-5xl font-bold mb-4"
+              className="text-5xl font-bold mb-4 flex items-center justify-center gap-3"
               style={{ color: "var(--color-font)" }}
             >
-              🧩 Riddle Challenge
+              <Puzzle size={48} /> Riddle Challenge
             </h1>
             <p className="text-xl" style={{ color: "var(--color-font)" }}>
               Test your wit and earn coins!
@@ -136,7 +137,9 @@ export default function RiddlesPage() {
 
           {riddles.length === 0 ? (
             <div className="text-center py-16">
-              <div className="text-6xl mb-4">🤔</div>
+              <div className="flex justify-center mb-4 text-gray-400">
+                <Search size={64} />
+              </div>
               <h2 className="text-2xl font-semibold text-gray-800 mb-2">
                 No Riddles Available
               </h2>
@@ -177,13 +180,13 @@ export default function RiddlesPage() {
                         </div>
                         <div className="text-right">
                           <div
-                            className="px-4 py-2 rounded-full font-bold text-lg w-25 text-center"
+                            className="px-4 py-2 rounded-full font-bold text-lg w-25 text-center flex items-center justify-center gap-2"
                             style={{
                               backgroundColor: "var(--color-orange)",
                               color: "var(--color-font)",
                             }}
                           >
-                            🪙 {riddle.coins}
+                            <Coins size={20} /> {riddle.coins}
                           </div>
                         </div>
                       </div>
@@ -198,8 +201,12 @@ export default function RiddlesPage() {
                               : "bg-red-50 border-2 border-red-300"
                           }`}
                         >
-                          <div className="text-6xl mb-4">
-                            {result.correct ? "🎉" : "❌"}
+                          <div className="flex justify-center mb-4">
+                            {result.correct ? (
+                              <PartyPopper size={64} className="text-green-500" />
+                            ) : (
+                              <CircleX size={64} className="text-red-500" />
+                            )}
                           </div>
                           <p
                             className={`text-2xl font-bold mb-2 ${
@@ -209,9 +216,9 @@ export default function RiddlesPage() {
                             {result.message}
                           </p>
                           {result.correct && !result.alreadySolved && (
-                            <p className="text-lg text-green-600 font-semibold">
+                            <p className="text-lg text-green-600 font-semibold flex items-center justify-center gap-2">
                               +{result.coins} coins! Total: {result.totalCoins}{" "}
-                              🪙
+                              <Coins size={20} />
                             </p>
                           )}
                         </div>

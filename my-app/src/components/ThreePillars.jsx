@@ -50,10 +50,10 @@ export default function ThreePillars() {
   ];
 
   const mobileGridPositions = [
-    { x: -165, y: 0 },
-    { x: -55, y: 0 },
-    { x: 55, y: 0 },
-    { x: 165, y: 0 },
+    { x: -82, y: -115 }, // Top Left
+    { x: 82, y: -115 },  // Top Right
+    { x: -82, y: 115 },  // Bottom Left
+    { x: 82, y: 115 },   // Bottom Right
   ];
 
   useLayoutEffect(() => {
@@ -80,33 +80,33 @@ export default function ThreePillars() {
           },
         });
 
-        // Initial stacked state: slight offsets + z-index stacking so they look overlapped
+        // Initial stacked state
         gsap.set(cardsRef.current, {
           x: 0,
-          y: (i) => i * 12, // slightly more offset for better visibility
-          scale: isDesktop ? 0.9 : 0.85,
+          y: (i) => i * 12,
+          scale: isDesktop ? 0.9 : 0.75,
           rotationY: 0,
           zIndex: (i) => cardsData.length - i,
         });
 
-        // Animate cards from stacked to horizontal row and grow them slightly
+        // Animate cards from stacked to grid/row and grow
         tl.to(cardsRef.current, {
           x: (i) =>
             isDesktop ? desktopGridPositions[i].x : mobileGridPositions[i].x,
           y: (i) =>
             isDesktop ? desktopGridPositions[i].y : mobileGridPositions[i].y,
-          scale: isDesktop ? 1 : 0.95,
+          scale: isDesktop ? 1 : 0.82,
           duration: 1.2,
           ease: "power2.out",
-          stagger: 0.06,
+          stagger: 0.05,
         })
-          // Flip cards once they reach their positions
+          // Flip cards
           .to(
             cardsRef.current,
             {
-              rotationY: isDesktop ? 180 : 140,
+              rotationY: 180,
               duration: 0.9,
-              stagger: 0.09,
+              stagger: 0.08,
               ease: "back.out(1.1)",
             },
             ">-0.1"

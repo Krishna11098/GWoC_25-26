@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import SudokuCell from "./SudokuCell";
+import { Lightbulb } from "lucide-react";
 
 export default function SudokuGrid({ grid, initial, setGrid }) {
   const [selectedCell, setSelectedCell] = useState(null);
@@ -76,8 +77,8 @@ export default function SudokuGrid({ grid, initial, setGrid }) {
           <span className="font-bold">Bold</span> •
           <strong className="ml-4">Your entries:</strong> <span>Regular</span>
         </p>
-        <p className="mt-2 text-xs opacity-90">
-          💡 Use arrow keys to navigate. Type 1-9 to fill cells. Press
+        <p className="mt-2 text-xs opacity-90 flex items-center gap-1">
+          <Lightbulb size={12} className="shrink-0" /> Use arrow keys to navigate. Type 1-9 to fill cells. Press
           Delete/Backspace to clear.
         </p>
       </div>
