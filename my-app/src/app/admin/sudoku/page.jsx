@@ -95,7 +95,7 @@ export default function AdminSudokuPage() {
   }
 
   useEffect(() => {
-    const unsub = auth.onAuthStateChanged(user => {
+    const unsub = auth.onAuthStateChanged((user) => {
       if (user) loadLevels();
       else {
         setLevels([]);
@@ -107,30 +107,55 @@ export default function AdminSudokuPage() {
   }, []);
 
   if (loading) {
-    return <p className="p-6">Loading sudoku levels...</p>;
+    return (
+      <div className="p-6">
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading sudoku levels...</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className="p-6 text-red-500 font-medium">
-        {error}
+      <div className="p-6">
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+          <div className="flex items-center">
+            <svg
+              className="w-5 h-5 text-red-600 mr-2"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span className="text-red-600 font-medium">{error}</span>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">
-        Admin • Sudoku Control
-      </h1>
+    <div className="p-6 ">
+      <div className="mb-8">
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Sudoku Management
+            </h1>
+            <p className="text-gray-600 mt-1">Manage sudoku levels</p>
+          </div>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {levels.map(level => (
-          <SudokuCard
-            key={level.levelId}
-            level={level}
-            refresh={loadLevels}
-          />
+        {levels.map((level) => (
+          <SudokuCard key={level.levelId} level={level} refresh={loadLevels} />
         ))}
 
         <AddSudokuCard onAdded={loadLevels} />
