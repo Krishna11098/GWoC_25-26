@@ -21,6 +21,9 @@ import {
   User,
   Armchair,
   X,
+  Mail,
+  Phone,
+  FileText,
 } from "lucide-react";
 
 const palette = {

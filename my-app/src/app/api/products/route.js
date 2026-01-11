@@ -54,12 +54,14 @@ export async function POST(request) {
 
     const docRef = await db.collection("products").add({
       ...productData,
+      stockAvailable: productData.stockAvailable ?? 0, // Default to 0 if not provided
       createdAt: new Date(),
     });
 
     return NextResponse.json({
       id: docRef.id,
       ...productData,
+      stockAvailable: productData.stockAvailable ?? 0,
       createdAt: new Date().toISOString(),
     });
   } catch (error) {
