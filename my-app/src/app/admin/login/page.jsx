@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/app/lib/firebaseConfig";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { PartyPopper, Lock, AlertTriangle, Beaker, Flame } from "lucide-react";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -100,10 +101,12 @@ export default function AdminLogin() {
       <div className=" backdrop-blur-md rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-foreground/20">
         {/* Header */}
         <div className="p-8 text-center">
-          <h1 className="text-4xl font-bold drop-shadow-sm">🎉 JoyJuncture</h1>
+          <h1 className="text-4xl font-bold drop-shadow-sm flex items-center justify-center gap-2">
+            <PartyPopper className="text-orange-500" /> JoyJuncture
+          </h1>
           <p className="mt-2 font-medium">Admin Portal</p>
           <div className="mt-4 inline-flex items-center px-4 py-1.5 rounded-full text-sm font-bold backdrop-blur-sm border border-white/30">
-            <span className="mr-2">🔒</span>
+            <Lock size={14} className="mr-2" />
             Secure Firebase Authentication
           </div>
         </div>
@@ -150,7 +153,7 @@ export default function AdminLogin() {
             {error && (
               <div className="p-4 bg-pink/20 border-2 border-pink/50 rounded-xl animate-pulse-soft">
                 <p className="text-red-800 text-sm font-bold flex items-center">
-                  <span className="mr-2 text-xl">⚠️</span>
+                  <AlertTriangle size={18} className="mr-2" />
                   {error}
                 </p>
               </div>
@@ -168,7 +171,9 @@ export default function AdminLogin() {
                   Authenticating...
                 </div>
               ) : (
-                "🔐 Sign In to Admin Panel"
+                <span className="flex items-center justify-center gap-2">
+                  <Lock size={20} /> Sign In to Admin Panel
+                </span>
               )}
             </button>
           </form>
@@ -179,9 +184,9 @@ export default function AdminLogin() {
             <button
               type="button"
               onClick={useTestCredentials}
-              className="w-full py-3 bg-green/20 text-background-2 font-bold rounded-xl border-2 border-green/30 hover:bg-green hover:border-green transition-all duration-300"
+              className="w-full py-3 bg-green/20 text-background-2 font-bold rounded-xl border-2 border-green/30 hover:bg-green hover:border-green transition-all duration-300 flex items-center justify-center gap-2"
             >
-              🧪 Use Test Credentials
+              <Beaker size={18} /> Use Test Credentials
             </button>
             <p className="text-xs text-font/40 mt-3 text-center font-bold">
               Note: Create this user in Firebase Console first
@@ -191,7 +196,7 @@ export default function AdminLogin() {
           {/* Firebase Status */}
           <div className="mt-8 p-5 bg-bg/50 rounded-xl border border-foreground/10">
             <p className="font-bold text-background-2 mb-3 flex items-center">
-              <span className="mr-2">🔥</span>
+              <Flame size={18} className="mr-2 text-orange-500" />
               Firebase Authentication
             </p>
             <div className="space-y-2">

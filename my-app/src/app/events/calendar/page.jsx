@@ -3,7 +3,16 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Calendar from "@/components/Calendar";
+import CalendarIcon from "@/components/Calendar";
+import {
+  Calendar,
+  MapPin,
+  User,
+  Clock,
+  Coins,
+  Palette,
+  X,
+} from "lucide-react";
 
 const palette = {
   background: "var(--color-bg)",
@@ -133,7 +142,7 @@ export default function EventsCalendarPage() {
                 {loadError}
               </div>
             )}
-            <Calendar events={eventsFromDb} />
+            <CalendarIcon events={eventsFromDb} />
           </div>
 
           <aside className="w-full">
@@ -147,10 +156,10 @@ export default function EventsCalendarPage() {
               >
                 <div className="flex items-center justify-between mb-4">
                   <h2
-                    className="text-xl font-bold"
+                    className="text-xl font-bold flex items-center gap-2"
                     style={{ color: "var(--color-font)" }}
                   >
-                    📅 Upcoming Events
+                    <Calendar size={20} /> Upcoming Events
                   </h2>
                   <span
                     className="px-4 py-1 rounded-full text-sm font-bold text-white"
@@ -205,10 +214,10 @@ export default function EventsCalendarPage() {
               >
                 <div className="flex items-center justify-between mb-4">
                   <h2
-                    className="text-xl font-bold"
+                    className="text-xl font-bold flex items-center gap-2"
                     style={{ color: "var(--color-font)" }}
                   >
-                    📍 Past Events
+                    <MapPin size={20} /> Past Events
                   </h2>
                   <span
                     className="px-4 py-1 rounded-full text-sm font-bold text-white"
@@ -283,12 +292,12 @@ export default function EventsCalendarPage() {
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className="inline-flex items-center px-4 py-2 rounded-full text-white shadow-lg text-sm font-semibold drop-shadow-md"
+                    className="inline-flex items-center px-4 py-2 rounded-full text-white shadow-lg text-sm font-semibold drop-shadow-md gap-2"
                     style={{
                       backgroundColor: "var(--color-pink)",
                     }}
                   >
-                    👤 {selectedEvent.host || "Unknown"}
+                    <User size={16} /> {selectedEvent.host || "Unknown"}
                   </div>
                 </div>
                 <h3
@@ -309,9 +318,7 @@ export default function EventsCalendarPage() {
                     className="flex items-baseline gap-3 text-lg font-semibold"
                     style={{ color: "var(--color-green)" }}
                   >
-                    <span role="img" aria-label="calendar">
-                      🗓️
-                    </span>
+                    <Calendar size={20} />
                     <span>Date:</span>
                     <span
                       className="font-medium"
@@ -324,9 +331,7 @@ export default function EventsCalendarPage() {
                     className="flex items-baseline gap-3 text-lg font-semibold"
                     style={{ color: "var(--color-orange)" }}
                   >
-                    <span role="img" aria-label="clock">
-                      ⏱️
-                    </span>
+                    <Clock size={20} />
                     <span>Time:</span>
                     <span
                       className="font-medium"
@@ -339,9 +344,7 @@ export default function EventsCalendarPage() {
                     className="flex items-baseline gap-3 text-lg font-semibold"
                     style={{ color: "var(--color-pink)" }}
                   >
-                    <span role="img" aria-label="location">
-                      📍
-                    </span>
+                    <MapPin size={20} />
                     <span>Location:</span>
                     <span
                       className="font-medium"
@@ -355,9 +358,7 @@ export default function EventsCalendarPage() {
                       className="flex items-baseline gap-3 text-lg font-semibold"
                       style={{ color: palette.foregroundBold }}
                     >
-                      <span role="img" aria-label="price">
-                        💰
-                      </span>
+                      <Coins size={20} />
                       <span>Price:</span>
                       <span
                         className="font-medium"
@@ -372,9 +373,7 @@ export default function EventsCalendarPage() {
                       className="flex items-baseline gap-3 text-lg font-semibold"
                       style={{ color: palette.foregroundBold }}
                     >
-                      <span role="img" aria-label="category">
-                        🎨
-                      </span>
+                      <Palette size={20} />
                       <span>Category:</span>
                       <span
                         className="font-medium"
@@ -421,7 +420,7 @@ export default function EventsCalendarPage() {
                 }}
                 aria-label="Close event details"
               >
-                ×
+                <X size={24} />
               </button>
             </div>
           </div>

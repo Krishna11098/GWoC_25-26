@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { GoogleMap, Marker, Autocomplete } from "@react-google-maps/api";
+import { Lightbulb } from "lucide-react";
 
 const defaultCenter = {
   lat: 20.5937,
@@ -105,8 +106,8 @@ export default function LocationPicker({ value, onChange, apiKey }) {
         </div>
       )}
 
-      <p className="text-xs text-gray-500">
-        💡 Tip: Use the autocomplete search above or click on the map to select
+      <p className="text-xs text-gray-500 flex items-center gap-1">
+        <Lightbulb size={12} className="shrink-0" /> Tip: Use the autocomplete search above or click on the map to select
         a location
       </p>
     </div>

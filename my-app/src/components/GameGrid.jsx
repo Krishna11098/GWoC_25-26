@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import AddToCartButton from "@/components/AddToCartButton";
 
 export default function GameGrid({
@@ -63,8 +64,16 @@ export default function GameGrid({
   return (
     <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {items.map((p, idx) => (
-        <div
+        <motion.div
           key={p.id}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: "-50px" }}
+          transition={{
+            duration: 0.5,
+            ease: [0.25, 0.4, 0.25, 1],
+            delay: idx * 0.05,
+          }}
           draggable
           onDragStart={(e) =>
             handleDragStart(
@@ -122,7 +131,7 @@ export default function GameGrid({
               <AddToCartButton gameId={p.id} />
             </div>
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

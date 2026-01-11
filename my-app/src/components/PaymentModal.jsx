@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { X, Coins, Check } from "lucide-react";
 import { loadRazorpayScript, formatCurrency } from "@/utils/razorpayUtils";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -362,7 +363,7 @@ export default function PaymentModal({
               </p>
             </div>
             <button onClick={onClose} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-blue-800 text-white">
-              ✕
+              <X size={20} />
             </button>
           </div>
         </div>
@@ -372,7 +373,7 @@ export default function PaymentModal({
             <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-xl p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl">🪙</span>
+                  <Coins size={24} className="text-amber-500" />
                   <div>
                     <h4 className="font-bold text-gray-900">Your Coins</h4>
                     <p className="text-sm text-gray-600">
@@ -423,7 +424,7 @@ export default function PaymentModal({
                 <>
                   <div className="flex justify-between items-center text-amber-600">
                     <span className="flex items-center gap-1">
-                      <span>🪙</span> Coins Used
+                      <Coins size={14} /> Coins Used
                     </span>
                     <span className="font-medium">- ₹{coinsToUse}</span>
                   </div>
@@ -448,9 +449,9 @@ export default function PaymentModal({
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                 {finalAmount === 0 ? (
-                  <span className="text-green-600 text-xl">✓</span>
+                  <Check size={20} className="text-green-600" />
                 ) : (
-                  <span className="text-blue-600 text-xl">₹</span>
+                  <span className="text-blue-600 text-xl font-bold">₹</span>
                 )}
               </div>
               <div className="flex-1">

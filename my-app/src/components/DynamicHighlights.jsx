@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import EventService from "@/app/lib/eventService";
 import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged } from "firebase/auth";
 import { userFetch } from "@/lib/userFetch";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Puzzle, Brain, Film } from "lucide-react";
 
 export default function DynamicHighlights() {
   const [events, setEvents] = useState([]);
@@ -24,6 +25,28 @@ export default function DynamicHighlights() {
 
   const eventRef = useRef(null);
   const gameRef = useRef(null);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: false, margin: "-100px" });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.25, 0.4, 0.25, 1] },
+    },
+  };
 
   const handleEventPrev = () => {
     if (events.length <= 1) return;
@@ -116,7 +139,7 @@ export default function DynamicHighlights() {
 
   const games = [
     {
-      emoji: "🧩",
+      emoji: <Puzzle />,
       title: "Sudoku",
       desc: loadingGames
         ? "Loading..."
@@ -126,7 +149,7 @@ export default function DynamicHighlights() {
       href: "/sudoku",
     },
     {
-      emoji: "🧠",
+      emoji: <Brain />,
       title: "Riddle",
       desc: loadingGames
         ? "Loading..."
@@ -136,7 +159,7 @@ export default function DynamicHighlights() {
       href: "/riddles",
     },
     {
-      emoji: "🎬",
+      emoji: <Film />,
       title: "Guess the Movie",
       desc: loadingGames
         ? "Loading..."
@@ -148,9 +171,15 @@ export default function DynamicHighlights() {
   ];
 
   return (
-    <section className="max-w-5xl mx-auto px-4 mt-20 mb-20 md:mb-28 space-y-24 md:space-y-32">
+    <motion.section
+      ref={sectionRef}
+      className="max-w-5xl mx-auto px-4 mt-20 mb-20 md:mb-28 space-y-24 md:space-y-32"
+      variants={containerVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+    >
       {/* ================= UPCOMING EVENTS ================= */}
-      <div className="text-center">
+      <motion.div variants={itemVariants} className="text-center">
         <h2 className="text-3xl md:text-4xl font-bold">Upcoming Events</h2>
         <p className="mt-2 text-sm md:text-base opacity-80">
           Don’t miss what’s happening next
@@ -158,13 +187,13 @@ export default function DynamicHighlights() {
 
         <div className="relative mt-8 md:mt-10">
           {/* Navigation Arrows */}
-          <button 
+          <button
             onClick={handleEventPrev}
             className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-14 z-20 bg-white p-3 rounded-full text-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all border border-zinc-200"
           >
             <ChevronLeft size={28} />
           </button>
-          <button 
+          <button
             onClick={handleEventNext}
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-14 z-20 bg-white p-3 rounded-full text-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all border border-zinc-200"
           >
@@ -184,13 +213,16 @@ export default function DynamicHighlights() {
                       href={`/events/${e.id}`}
                       className="min-w-full px-1 md:px-2"
                     >
-                      <div 
+                      <div
                         className="rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-8 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-[6px] border-white/40 relative overflow-hidden group/card hover:border-white/80"
-                        style={{ backgroundColor: themeColors[events.indexOf(e) % themeColors.length] }}
+                        style={{
+                          backgroundColor:
+                            themeColors[events.indexOf(e) % themeColors.length],
+                        }}
                       >
                         {/* Inner Shine Effect */}
                         <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 shadow-inner" />
-                        
+
                         <h3 className="text-xl md:text-2xl font-black text-white relative z-10 drop-shadow-md">
                           {e.title || e.name}
                         </h3>
@@ -226,17 +258,17 @@ export default function DynamicHighlights() {
               />
             ))}
           </div>
-          <Link 
-            href="/events" 
+          <Link
+            href="/events"
             className="inline-block bg-[var(--font)] text-bg px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all"
           >
             View All Events
           </Link>
         </div>
-      </div>
+      </motion.div>
 
       {/* ================= PLAY SPOTLIGHT ================= */}
-      <div className="text-center">
+      <motion.div variants={itemVariants} className="text-center">
         <h2 className="text-3xl md:text-4xl font-bold">Play Spotlight</h2>
         <p className="mt-2 text-sm md:text-base opacity-80">
           Pick up where the fun begins
@@ -244,13 +276,13 @@ export default function DynamicHighlights() {
 
         <div className="relative mt-8 md:mt-12">
           {/* Navigation Arrows */}
-          <button 
+          <button
             onClick={handleGamePrev}
             className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-14 z-20 bg-white p-3 rounded-full text-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all border border-zinc-200"
           >
             <ChevronLeft size={28} />
           </button>
-          <button 
+          <button
             onClick={handleGameNext}
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-14 z-20 bg-white p-3 rounded-full text-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all border border-zinc-200"
           >
@@ -264,13 +296,17 @@ export default function DynamicHighlights() {
             >
               {games.map((g, i) => (
                 <Link key={i} href={g.href} className="min-w-full px-2 md:px-4">
-                  <div 
+                  <div
                     className="rounded-[2.5rem] md:rounded-[3.5rem] p-10 md:p-14 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-[6px] border-white/40 relative overflow-hidden group/game hover:border-white/80"
-                    style={{ backgroundColor: themeColors[i % themeColors.length] }}
+                    style={{
+                      backgroundColor: themeColors[i % themeColors.length],
+                    }}
                   >
                     <div className="relative z-10">
-                      <div className="text-7xl md:text-8xl animate-float drop-shadow-2xl">{g.emoji}</div>
-                      <h3 className="mt-8 text-2xl md:text-4xl font-black text-white drop-shadow-md">
+                      <div className="text-9xl md:text-[10rem] animate-float drop-shadow-2xl flex justify-center">
+                        {g.emoji}
+                      </div>
+                      <h3 className="mt-4 text-2xl md:text-4xl font-black text-white drop-shadow-md">
                         {g.title}
                       </h3>
                       <p className="mt-4 text-sm md:text-xl text-white font-medium max-w-md mx-auto leading-relaxed">
@@ -313,7 +349,7 @@ export default function DynamicHighlights() {
             Explore More Games
           </Link> */}
         </div>
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   );
 }

@@ -11,7 +11,7 @@ import CountUp from "./CountUp";
  */
 const CTASection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: false, margin: "-100px" });
 
   const stats = [
     { icon: Users, value: 500, suffix: "+", label: "Events Hosted" },

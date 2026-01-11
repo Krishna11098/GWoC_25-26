@@ -6,6 +6,7 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { auth } from "@/app/lib/firebaseConfig";
 import { useRouter, usePathname } from "next/navigation";
 import AdminSidebar from "./AdminSidebar"; // Make sure this exists
+import { Ban } from "lucide-react";
 
 export default function AdminLayout({ children }) {
   const [user, setUser] = useState(null);
@@ -91,7 +92,9 @@ export default function AdminLayout({ children }) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="max-w-md w-full mx-auto p-8 rounded-xl shadow-lg text-center">
-          <div className="text-6xl mb-4">🚫</div>
+          <div className="flex justify-center mb-4 text-red-500">
+            <Ban size={64} />
+          </div>
           <h1 className="text-3xl font-bold mb-2">Access Denied</h1>
           <p className="mb-6">
             You don't have permission to access the admin panel.

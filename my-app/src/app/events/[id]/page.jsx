@@ -8,6 +8,18 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PaymentModal from "@/components/PaymentModal";
 import EventService from "@/app/lib/eventService";
+import {
+  Frown,
+  Calendar,
+  Clock,
+  MapPin,
+  Users,
+  Mail,
+  Phone,
+  Check,
+  User,
+  Coins,
+} from "lucide-react";
 
 export default function EventDetailPage() {
   const params = useParams();
@@ -340,7 +352,9 @@ export default function EventDetailPage() {
       <>
         <Navbar />
         <div className="max-w-7xl mx-auto p-6 mt-32 text-center">
-          <div className="text-6xl mb-4">😔</div>
+          <div className="flex justify-center mb-4 text-gray-400">
+            <Frown size={64} />
+          </div>
           <h1 className="text-2xl font-bold mb-2">Event Not Found</h1>
           <p className="text-gray-600 mb-6">
             {error ||
@@ -434,7 +448,7 @@ export default function EventDetailPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div className="flex items-center gap-3 bg-white p-4 rounded-xl shadow-sm">
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <span className="text-blue-600 text-xl">📅</span>
+                    <Calendar size={20} className="text-blue-600" />
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Date</div>
@@ -451,7 +465,7 @@ export default function EventDetailPage() {
 
                 <div className="flex items-center gap-3 bg-white p-4 rounded-xl shadow-sm">
                   <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                    <span className="text-green-600 text-xl">⏰</span>
+                    <Clock size={20} className="text-green-600" />
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Time</div>
@@ -463,7 +477,7 @@ export default function EventDetailPage() {
 
                 <div className="flex items-center gap-3 bg-white p-4 rounded-xl shadow-sm">
                   <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <span className="text-purple-600 text-xl">📍</span>
+                    <MapPin size={20} className="text-purple-600" />
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Venue</div>
@@ -475,7 +489,7 @@ export default function EventDetailPage() {
 
                 <div className="flex items-center gap-3 bg-white p-4 rounded-xl shadow-sm">
                   <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
-                    <span className="text-amber-600 text-xl">👥</span>
+                    <Users size={20} className="text-amber-600" />
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Host</div>
@@ -537,11 +551,11 @@ export default function EventDetailPage() {
                     </h3>
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
-                        <span className="text-gray-500">📧</span>
+                        <Mail size={16} className="text-gray-500" />
                         <span>{event.contactEmail || "N/A"}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-gray-500">📞</span>
+                        <Phone size={16} className="text-gray-500" />
                         <span>{event.contactPhone || "N/A"}</span>
                       </div>
                     </div>
@@ -555,7 +569,7 @@ export default function EventDetailPage() {
               <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
-                    <span className="text-purple-600 text-xl">✓</span>
+                    <Check size={20} className="text-purple-600" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-purple-900">
@@ -685,7 +699,7 @@ export default function EventDetailPage() {
                 <div className="mb-4 p-3 bg-green-50 rounded-lg border border-green-200">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                      <span className="text-green-600 text-sm">👤</span>
+                      <User size={16} className="text-green-600" />
                     </div>
                     <div>
                       <div className="text-sm font-medium text-green-800">
@@ -771,8 +785,8 @@ export default function EventDetailPage() {
               {/* Coin Reward */}
               <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-xl p-4 mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full flex items-center justify-center shadow-sm">
-                    <span className="text-xl text-white">🪙</span>
+                  <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full flex items-center justify-center shadow-sm text-white">
+                    <Coins size={20} />
                   </div>
                   <div>
                     <div className="font-bold text-amber-800">

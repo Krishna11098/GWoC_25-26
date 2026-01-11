@@ -5,6 +5,21 @@ import { auth } from "@/app/lib/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import {
+  LayoutDashboard,
+  PlusCircle,
+  ClipboardList,
+  ShoppingCart,
+  Gamepad2,
+  Puzzle,
+  Film,
+  FileText,
+  Ticket,
+  Mail,
+  MessageSquare,
+  Users,
+  Settings,
+} from "lucide-react";
 
 export default function AdminSidebar({ user, isAdmin }) {
   const router = useRouter();
@@ -49,7 +64,7 @@ export default function AdminSidebar({ user, isAdmin }) {
           href="/admin"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
-          <span className="mr-3">📊</span>
+          <LayoutDashboard className="mr-3" size={20} />
           Dashboard
         </Link>
 
@@ -57,7 +72,7 @@ export default function AdminSidebar({ user, isAdmin }) {
           href="/admin/create-event"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
-          <span className="mr-3">➕</span>
+          <PlusCircle className="mr-3" size={20} />
           Create Event
         </Link>
 
@@ -65,7 +80,7 @@ export default function AdminSidebar({ user, isAdmin }) {
           href="/admin/events"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
-          <span className="mr-3">📋</span>
+          <ClipboardList className="mr-3" size={20} />
           All Events
         </Link>
 
@@ -73,7 +88,7 @@ export default function AdminSidebar({ user, isAdmin }) {
           href="/admin/orders"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
-          <span className="mr-3">🛒</span>
+          <ShoppingCart className="mr-3" size={20} />
           Orders
         </Link>
 
@@ -81,7 +96,7 @@ export default function AdminSidebar({ user, isAdmin }) {
           href="/admin/sudoku"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
-          <span className="mr-3">🎮</span>
+          <Gamepad2 className="mr-3" size={20} />
           Sudoku
         </Link>
 
@@ -89,7 +104,7 @@ export default function AdminSidebar({ user, isAdmin }) {
           href="/admin/riddles"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
-          <span className="mr-3">🧩</span>
+          <Puzzle className="mr-3" size={20} />
           Riddles
         </Link>
 
@@ -97,7 +112,7 @@ export default function AdminSidebar({ user, isAdmin }) {
           href="/admin/movies"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
-          <span className="mr-3">🎬</span>
+          <Film className="mr-3" size={20} />
           Movies
         </Link>
 
@@ -105,7 +120,7 @@ export default function AdminSidebar({ user, isAdmin }) {
           href="/admin/blogs"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
-          <span className="mr-3">📝</span>
+          <FileText className="mr-3" size={20} />
           Blogs
         </Link>
 
@@ -114,7 +129,7 @@ export default function AdminSidebar({ user, isAdmin }) {
             href="/admin/experiences"
             className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
           >
-            <span className="mr-3">🎟️</span>
+            <Ticket className="mr-3" size={20} />
             Experience
           </Link>
         )}
@@ -123,7 +138,7 @@ export default function AdminSidebar({ user, isAdmin }) {
           href="/admin/contact-form"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
-          <span className="mr-3">📩</span>
+          <Mail className="mr-3" size={20} />
           Contact Form
         </Link>
 
@@ -131,7 +146,7 @@ export default function AdminSidebar({ user, isAdmin }) {
           href="/admin/queries"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
-          <span className="mr-3">💬</span>
+          <MessageSquare className="mr-3" size={20} />
           Queries
         </Link>
 
@@ -139,7 +154,7 @@ export default function AdminSidebar({ user, isAdmin }) {
           href="/admin/users"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
-          <span className="mr-3">👥</span>
+          <Users className="mr-3" size={20} />
           Users
         </Link>
 
@@ -147,7 +162,7 @@ export default function AdminSidebar({ user, isAdmin }) {
           href="/admin/settings"
           className="flex items-center p-3 hover:bg-bg hover:text-black rounded"
         >
-          <span className="mr-3">⚙️</span>
+          <Settings className="mr-3" size={20} />
           Settings
         </Link>
       </nav>

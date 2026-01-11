@@ -4,6 +4,25 @@ import { useState, useEffect } from "react";
 import eventService from "@/app/lib/eventService";
 import userService from "@/app/lib/userService";
 
+import {
+  Flame,
+  Calendar,
+  Users,
+  CheckCircle2,
+  Flag,
+  Zap,
+  Plus,
+  Puzzle,
+  Film,
+  FileText,
+  Target,
+  ShoppingBag,
+  AlertTriangle,
+  MapPin,
+  Hammer,
+  RefreshCw,
+} from "lucide-react";
+
 export default function AdminDashboard() {
   const [events, setEvents] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
@@ -58,7 +77,9 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-2">🔥 JoyJuncture Admin</h1>
+      <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
+        <Flame className="text-orange-500" /> JoyJuncture Admin
+      </h1>
       <p className="mb-6">Powered by Firebase Firestore</p>
 
       {/* Stats */}
@@ -67,7 +88,7 @@ export default function AdminDashboard() {
         <div className="p-6 rounded-xl border">
           <div className="flex items-center mb-2">
             <div className="p-2 rounded-lg mr-3">
-              <span>📅</span>
+              <Calendar size={20} />
             </div>
             <h3 className="text-lg font-semibold">Total Events</h3>
           </div>
@@ -80,7 +101,7 @@ export default function AdminDashboard() {
         <div className="p-6 rounded-xl border">
           <div className="flex items-center mb-2">
             <div className="p-2 rounded-lg mr-3">
-              <span>👥</span>
+              <Users size={20} />
             </div>
             <h3 className="text-lg font-semibold">Total Users</h3>
           </div>
@@ -93,7 +114,7 @@ export default function AdminDashboard() {
         <div className="p-6 rounded-xl border">
           <div className="flex items-center mb-2">
             <div className="p-2 rounded-lg mr-3">
-              <span>✅</span>
+              <CheckCircle2 size={20} className="text-green-500" />
             </div>
             <h3 className="text-lg font-semibold">Active Users</h3>
           </div>
@@ -113,7 +134,7 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center">
               <div className="p-2 rounded-lg mr-3">
-                <span>🚩</span>
+                <Flag size={20} />
               </div>
               <h3 className="text-lg font-semibold">Reports</h3>
             </div>
@@ -174,52 +195,52 @@ export default function AdminDashboard() {
         <div className="p-6 rounded-xl border">
           <div className="flex items-center mb-2">
             <div className="p-2 rounded-lg mr-3">
-              <span>⚡</span>
+              <Zap size={20} className="text-yellow-500" />
             </div>
             <h3 className="text-lg font-semibold">Quick Actions</h3>
           </div>
           <div className="space-y-2 mt-3">
             <a
               href="/admin/create-event"
-              className="block w-full text-center px-4 py-2 rounded-lg"
+              className="block w-full text-center px-4 py-2 rounded-lg flex items-center justify-center gap-2"
             >
-              ➕ Create Event
+              <Plus size={16} /> Create Event
             </a>
             <a
               href="/admin/users"
-              className="block w-full text-center px-4 py-2 rounded-lg"
+              className="block w-full text-center px-4 py-2 rounded-lg flex items-center justify-center gap-2"
             >
-              👥 Manage Users
+              <Users size={16} /> Manage Users
             </a>
             <a
               href="/admin/riddles"
-              className="block w-full text-center px-4 py-2 bg-font text-white rounded-lg hover:bg-font/80 hover:text-black"
+              className="block w-full text-center px-4 py-2 bg-font text-white rounded-lg hover:bg-font/80 hover:text-black flex items-center justify-center gap-2"
             >
-              🧩 Manage Riddles
+              <Puzzle size={16} /> Manage Riddles
             </a>
             <a
               href="/admin/movies"
-              className="block w-full text-center px-4 py-2 bg-font text-white rounded-lg hover:bg-font/80 hover:text-black"
+              className="block w-full text-center px-4 py-2 bg-font text-white rounded-lg hover:bg-font/80 hover:text-black flex items-center justify-center gap-2"
             >
-              🎬 Manage Movies
+              <Film size={16} /> Manage Movies
             </a>
             <a
               href="/admin/blogs"
-              className="block w-full text-center px-4 py-2 bg-font text-white rounded-lg hover:bg-font/80 hover:text-black"
+              className="block w-full text-center px-4 py-2 bg-font text-white rounded-lg hover:bg-font/80 hover:text-black flex items-center justify-center gap-2"
             >
-              📝 Manage Blogs
+              <FileText size={16} /> Manage Blogs
             </a>
             <a
               href="/admin/sudoku"
-              className="block w-full text-center px-4 py-2 bg-font text-white rounded-lg hover:bg-font/80 hover:text-black"
+              className="block w-full text-center px-4 py-2 bg-font text-white rounded-lg hover:bg-font/80 hover:text-black flex items-center justify-center gap-2"
             >
-              🎯 Manage Sudoku
+              <Target size={16} /> Manage Sudoku
             </a>
             <a
               href="/admin/products"
-              className="block w-full text-center px-4 py-2 bg-font text-white rounded-lg hover:bg-font/80 hover:text-black"
+              className="block w-full text-center px-4 py-2 bg-font text-white rounded-lg hover:bg-font/80 hover:text-black flex items-center justify-center gap-2"
             >
-              🛍️ Manage Products
+              <ShoppingBag size={16} /> Manage Products
             </a>
           </div>
         </div>
@@ -227,7 +248,7 @@ export default function AdminDashboard() {
         <div className="p-6 rounded-xl border">
           <div className="flex items-center mb-2">
             <div className="p-2 rounded-lg mr-3">
-              <span>⚠️</span>
+              <AlertTriangle size={20} className="text-amber-500" />
             </div>
             <h3 className="text-lg font-semibold">Moderation</h3>
           </div>
@@ -300,7 +321,9 @@ export default function AdminDashboard() {
           </div>
         ) : events.length === 0 ? (
           <div className="text-center py-8">
-            <div className="text-5xl mb-4">📅</div>
+            <div className="flex justify-center mb-4 text-gray-400">
+              <Calendar size={64} />
+            </div>
             <h3 className="text-xl font-semibold mb-2">No Events Created</h3>
             <p className="mb-6">Get started by creating your first event!</p>
             <a
@@ -318,16 +341,16 @@ export default function AdminDashboard() {
                 className="p-4 border rounded-lg transition-colors"
               >
                 <h3 className="font-bold text-lg flex items-center">
-                  <span className="mr-2">🎯</span>
+                  <Target size={18} className="mr-2" />
                   {event.title}
                 </h3>
                 <p className="mt-1">{event.description || "No description"}</p>
                 <div className="flex items-center mt-2 text-sm">
-                  <span className="mr-4">
-                    📍 {event.location || "Location not set"}
+                  <span className="mr-4 flex items-center gap-1">
+                    <MapPin size={14} /> {event.location || "Location not set"}
                   </span>
-                  <span>
-                    📅{" "}
+                  <span className="flex items-center gap-1">
+                    <Calendar size={14} />{" "}
                     {event.date
                       ? new Date(event.date).toLocaleDateString()
                       : "No date"}
@@ -349,7 +372,7 @@ export default function AdminDashboard() {
           >
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg">
-                <span>🚩</span>
+                <Flag size={20} />
               </div>
               <div>
                 <h3 className="font-semibold">Review Reports</h3>
@@ -364,7 +387,7 @@ export default function AdminDashboard() {
           >
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg">
-                <span>👥</span>
+                <Users size={20} />
               </div>
               <div>
                 <h3 className="font-semibold">Manage Users</h3>
@@ -379,7 +402,7 @@ export default function AdminDashboard() {
           >
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg">
-                <span>🔨</span>
+                <Hammer size={20} />
               </div>
               <div>
                 <h3 className="font-semibold">Ban Management</h3>
@@ -392,18 +415,18 @@ export default function AdminDashboard() {
 
       {/* Quick Refresh Button */}
       <div className="mt-6 flex justify-end">
-        <button
-          onClick={() => {
-            setLoading(true);
-            setUserLoading(true);
-            loadEvents();
-            loadUsers();
-          }}
-          className="px-4 py-2 rounded-lg flex items-center"
-        >
-          <span className="mr-2">🔄</span>
-          Refresh Data
-        </button>
+          <button
+            onClick={() => {
+              setLoading(true);
+              setUserLoading(true);
+              loadEvents();
+              loadUsers();
+            }}
+            className="px-4 py-2 rounded-lg flex items-center gap-2 font-bold"
+          >
+            <RefreshCw size={18} />
+            Refresh Data
+          </button>
       </div>
     </div>
   );

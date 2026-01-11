@@ -10,6 +10,16 @@ import {
   Star,
   Share2,
   Heart,
+  Wrench,
+  Theater,
+  Book,
+  Handshake,
+  Trophy,
+  Palette,
+  Briefcase,
+  PartyPopper,
+  CircleDollarSign,
+  User,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -52,15 +62,15 @@ const EventCard = ({ event, view = "grid" }) => {
 
   const getCategoryIcon = (category) => {
     const icons = {
-      workshop: "🔧",
-      social: "🎭",
-      educational: "📚",
-      networking: "🤝",
-      sports: "⚽",
-      arts: "🎨",
-      conference: "💼",
+      workshop: <Wrench className="h-4 w-4" />,
+      social: <Theater className="h-4 w-4" />,
+      educational: <Book className="h-4 w-4" />,
+      networking: <Handshake className="h-4 w-4" />,
+      sports: <Trophy className="h-4 w-4" />,
+      arts: <Palette className="h-4 w-4" />,
+      conference: <Briefcase className="h-4 w-4" />,
     };
-    return icons[category] || "🎉";
+    return icons[category] || <PartyPopper className="h-4 w-4" />;
   };
 
   // Grid View
@@ -262,7 +272,7 @@ const EventCard = ({ event, view = "grid" }) => {
                   </div>
                   <div className="flex items-center">
                     <div className="h-4 w-4 text-gray-400 mr-3 flex items-center justify-center">
-                      💲
+                      <CircleDollarSign size={16} />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500">Price</p>
@@ -273,7 +283,7 @@ const EventCard = ({ event, view = "grid" }) => {
                   </div>
                   <div className="flex items-center">
                     <div className="h-4 w-4 text-gray-400 mr-3 flex items-center justify-center">
-                      👤
+                      <User size={16} />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500">Host</p>
@@ -341,7 +351,7 @@ const EventCard = ({ event, view = "grid" }) => {
                 {/* Category */}
                 <div className="absolute bottom-4 left-4">
                   <span
-                    className={`px-4 py-2 rounded-full text-sm font-bold ${getCategoryColor(
+                    className={`px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 ${getCategoryColor(
                       event.category
                     )}`}
                   >
@@ -395,7 +405,7 @@ const EventCard = ({ event, view = "grid" }) => {
                 <div className="bg-gray-50 rounded-xl p-4">
                   <div className="flex items-center mb-2">
                     <div className="h-5 w-5 text-purple-600 mr-3 flex items-center justify-center">
-                      💲
+                      <CircleDollarSign size={20} />
                     </div>
                     <span className="font-bold text-gray-900">Investment</span>
                   </div>
