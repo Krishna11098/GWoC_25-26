@@ -17,9 +17,6 @@ export default function AdminSettingsPage() {
     // Content Moderation
     autoHideReportedContent: true,
 
-    // Performance
-    cacheDuration: 3600, // seconds
-    maxUploadSize: 5, // MB
   });
 
   const [loading, setLoading] = useState(true);
@@ -264,67 +261,7 @@ export default function AdminSettingsPage() {
               </div>
             </div>
           </div>
-
-          {/* Performance Settings */}
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm p-8 border border-foreground/10">
-            <div className="flex items-center gap-4 mb-8 border-b border-foreground/10 pb-4">
-              <div className="p-3 bg-green/20 rounded-xl">
-                <FaDatabase className="text-background-2 text-2xl" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-background-2">
-                  Performance Settings
-                </h2>
-                <p className="text-font/70 font-medium">
-                  Performance optimization and caching
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <label className="block text-sm font-bold text-background-2 mb-2 ml-1">
-                  Cache Duration (seconds)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="86400"
-                  value={settings.cacheDuration}
-                  onChange={(e) =>
-                    handleChange("cacheDuration", parseInt(e.target.value))
-                  }
-                  className="w-full px-4 py-3 border-2 border-foreground/20 rounded-xl focus:ring-2 focus:ring-orange focus:border-orange bg-bg/50 font-medium transition-all"
-                />
-                <p className="text-xs text-font/60 mt-2 font-bold ml-1">
-                  {settings.cacheDuration === 0
-                    ? "Caching disabled"
-                    : `Data cached for ${settings.cacheDuration} seconds`}
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-background-2 mb-2 ml-1">
-                  Max Upload Size (MB)
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  max="100"
-                  value={settings.maxUploadSize}
-                  onChange={(e) =>
-                    handleChange("maxUploadSize", parseInt(e.target.value))
-                  }
-                  className="w-full px-4 py-3 border-2 border-foreground/20 rounded-xl focus:ring-2 focus:ring-orange focus:border-orange bg-bg/50 font-medium transition-all"
-                />
-                <p className="text-xs text-font/60 mt-2 font-bold ml-1">
-                  Maximum file size for uploads
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
-
         {/* Save Button */}
         <div className="mt-8 flex justify-end">
           <button

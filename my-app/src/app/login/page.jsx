@@ -1,29 +1,91 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { auth } from "@/lib/firebaseClient";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import GoogleLoginButton from "@/components/loginButton";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Suppress Firebase console errors
+  useEffect(() => {
+    const originalError = console.error;
+    console.error = (...args) => {
+      // Suppress Firebase auth errors from console
+      if (
+        args[0]?.includes?.("Firebase:") ||
+        args[0]?.message?.includes?.("Firebase:")
+      ) {
+        return;
+      }
+      originalError(...args);
+    };
+
+    return () => {
+      console.error = originalError;
+    };
+  }, []);
+
   async function handleLogin(e) {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+    try {
+      const email = e.target.email.value;
+      const password = e.target.password.value;
 
-    const res = await signInWithEmailAndPassword(auth, email, password);
-    const token = await res.user.getIdToken();
+      if (!email || !password) {
+        setError("Please enter both email and password");
+        setLoading(false);
+        return;
+      }
 
-    await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token }),
-    });
+      try {
+        const res = await signInWithEmailAndPassword(auth, email, password);
+        const token = await res.user.getIdToken();
 
-    alert("Login successful");
+        await fetch("/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token }),
+        });
+
+        alert("Login successful");
+        router.push("/home");
+      } catch (authError) {
+        // Catch Firebase auth errors specifically
+        let errorMessage = "Login failed. Please try again.";
+
+        if (authError.code === "auth/invalid-credential") {
+          errorMessage =
+            "Invalid email or password. Please check and try again.";
+        } else if (authError.code === "auth/user-not-found") {
+          errorMessage = "Email not registered. Please sign up first.";
+        } else if (authError.code === "auth/wrong-password") {
+          errorMessage = "Incorrect password. Please try again.";
+        } else if (authError.code === "auth/invalid-email") {
+          errorMessage = "Invalid email address.";
+        } else if (authError.code === "auth/user-disabled") {
+          errorMessage = "This account has been disabled.";
+        } else if (authError.message) {
+          errorMessage = authError.message;
+        }
+
+        setError(errorMessage);
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error("Unexpected login error:", err);
+      setError("An unexpected error occurred. Please try again.");
+      setLoading(false);
+    }
   }
 
   return (
@@ -48,6 +110,20 @@ export default function LoginPage() {
         >
           Login to your account
         </p>
+
+        {error && (
+          <div
+            className="mt-4 p-3 rounded-lg text-sm"
+            style={{
+              backgroundColor: "#fee2e2",
+              color: "#991b1b",
+              borderColor: "#fecaca",
+              borderWidth: "1px",
+            }}
+          >
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleLogin} className="mt-8 space-y-5">
           <div>
@@ -90,15 +166,26 @@ export default function LoginPage() {
             />
           </div>
 
+          <div className="text-right">
+            <a
+              href="/forgot-password"
+              className="text-xs font-medium hover:underline"
+              style={{ color: "var(--color-orange)" }}
+            >
+              Forgot Password?
+            </a>
+          </div>
+
           <button
             type="submit"
-            className="w-full rounded-lg py-3 text-sm font-bold transition-all duration-300 hover:shadow-lg"
+            disabled={loading}
+            className="w-full rounded-lg py-3 text-sm font-bold transition-all duration-300 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
               backgroundColor: "var(--color-pink)",
               color: "var(--color-font)",
             }}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <div className="mt-6">
