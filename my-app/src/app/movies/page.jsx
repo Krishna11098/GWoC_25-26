@@ -7,6 +7,7 @@ import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged } from "firebase/auth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Film, PartyPopper } from "lucide-react";
 
 export default function MoviesPage() {
   const router = useRouter();
@@ -118,8 +119,8 @@ export default function MoviesPage() {
       <div className="min-h-screen p-8 pt-32">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold py-2">
-              🎬 Guess the Movie
+            <h1 className="text-4xl md:text-5xl font-bold py-2 flex items-center gap-3">
+              <Film size={40} /> Guess the Movie
             </h1>
           </div>
 
@@ -252,8 +253,8 @@ export default function MoviesPage() {
                           {result.message}
                         </p>
                         {result.correct && result.coins > 0 && (
-                          <p className="text-base mt-1">
-                            You earned {result.coins} coins 🎉
+                          <p className="text-base mt-1 flex items-center gap-2">
+                            You earned {result.coins} coins <PartyPopper size={18} />
                           </p>
                         )}
                       </div>

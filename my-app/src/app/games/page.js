@@ -1,33 +1,29 @@
-import { db } from "@/lib/firebaseAdmin";
+"use client";
+
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingCartButton from "@/components/FloatingCartButton";
 import ShopWithFilters from "@/components/ShopWithFilters";
 
-export const dynamic = "force-dynamic"; // ensure fresh data in dev
+export default function GamesPage() {
+  const [products, setProducts] = useState([]);
 
-async function getProducts() {
-  if (!db) return [];
-  const snap = await db.collection("products").get();
-  return snap.docs.map((d) => {
-    const raw = d.data();
-    const plain = {};
-
-    Object.entries(raw).forEach(([key, value]) => {
-      if (value && typeof value.toMillis === "function") {
-        // Firestore Timestamp -> number (ms)
-        plain[key] = value.toMillis();
-      } else {
-        plain[key] = value;
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const res = await fetch("/api/products");
+        if (res.ok) {
+          const data = await res.json();
+          setProducts(data);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
-    });
-
-    return { id: d.id, ...plain };
-  });
-}
-
-export default async function GamesPage() {
-  const products = await getProducts();
+    }
+    fetchProducts();
+  }, []);
   const images = [
     "/gallery/marketplace/Buzzed – The Drinking Card Game.webp",
     "/gallery/marketplace/Court 52 Pickleball.WEBP",
@@ -118,16 +114,45 @@ export default async function GamesPage() {
 
       <div className="px-5 md:px-12 pt-5 pb-12 mt-32">
         <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-semibold text-gray-900">
-                Game Marketplace
+          <div className="mb-10 mt-2 text-center relative">
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.8,
+                ease: "easeOut",
+                type: "spring",
+                stiffness: 100,
+                damping: 15,
+              }}
+              className="inline-flex flex-col items-center gap-2"
+            >
+              <h1 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
+                <span className="text-black/80">Game</span>{" "}
+                <span className="relative inline-block text-font drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                  Marketplace
+                </span>
               </h1>
-              <p className="mt-2 text-sm md:text-base text-gray-600">
-                Browse and add games to your cart.
-              </p>
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{ width: "60px" }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+                className="h-1.5 bg-font rounded-full mt-4 shadow-sm"
+              />
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="mt-6 text-sm md:text-base text-gray-600"
+            >
+              Browse and add games to your cart.
+            </motion.p>
+            <div className="absolute top-0 right-0">
+              <FloatingCartButton />
             </div>
-            <FloatingCartButton />
           </div>
 
           <ShopWithFilters

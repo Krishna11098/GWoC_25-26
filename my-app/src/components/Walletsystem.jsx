@@ -1,12 +1,46 @@
 "use client";
 
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+
 export default function GamificationTeaser() {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: false, margin: "-100px" });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.25, 0.4, 0.25, 1] },
+    },
+  };
   return (
-    <section className="relative py-24 md:py-40 overflow-hidden text-[var(--font)]">
+    <motion.section
+      ref={sectionRef}
+      className="relative py-24 md:py-40 overflow-hidden text-[var(--font)]"
+      variants={containerVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+    >
       <div className="mx-auto max-w-7xl px-6 md:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-24 items-center">
           {/* LEFT — TEXT */}
-          <div className="lg:col-span-6 space-y-6 md:space-y-8 animate-fade-in">
+          <motion.div
+            variants={itemVariants}
+            className="lg:col-span-6 space-y-6 md:space-y-8"
+          >
             {/* <div className="flex items-center gap-3">
               <span className="h-9 w-2 rounded-full bg-[var(--orange)]" />
               <p className="text-sm font-semibold uppercase tracking-[0.25em]">
@@ -37,17 +71,19 @@ export default function GamificationTeaser() {
                 Redeem points for rewards & experiences
               </li>
             </ul>
-          </div>
+          </motion.div>
 
           {/* RIGHT — VISUAL WALLET */}
-          <div className="lg:col-span-6 relative flex justify-center">
+          <motion.div
+            variants={itemVariants}
+            className="lg:col-span-6 relative flex justify-center"
+          >
             <div className="relative mx-auto w-full max-w-lg rounded-3xl bg-[var(--bg)] text-[var(--font)] backdrop-blur-xl border-2 border-[var(--green)] shadow-[0_30px_80px_rgba(0,0,0,0.12)] p-6 md:p-8 space-y-6 animate-float">
               {/* Wallet Header */}
               <div className="flex items-center justify-between">
                 <p className="text-sm md:text-base uppercase tracking-wider">
                   Joy Wallet
                 </p>
-                
               </div>
 
               {/* Balance */}
@@ -80,10 +116,10 @@ export default function GamificationTeaser() {
             <div className="absolute -top-4 md:-top-6 -right-2 md:-right-6 rounded-xl bg-[var(--orange)] px-4 md:px-5 py-1.5 md:py-2 text-sm md:text-base font-medium text-[var(--font)] shadow-xl animate-pulse-soft">
               +250 points earned
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
@@ -93,9 +129,7 @@ function WalletRow({ label, points }) {
   return (
     <div className="flex items-center justify-between rounded-xl bg-[var(--green)]/15 px-5 py-3 border border-[var(--green)]/40 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[var(--green)]/25">
       <span className="text-base ">{label}</span>
-      <span className="text-base font-medium text-black/60">
-        {points}
-      </span>
+      <span className="text-base font-medium text-black/60">{points}</span>
     </div>
   );
 }

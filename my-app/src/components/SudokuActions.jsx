@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { userFetch } from "@/lib/userFetch";
+import { Lightbulb, CircleX } from "lucide-react";
 
 export default function SudokuActions({ onSubmit, gameId }) {
   const [hintMessage, setHintMessage] = useState("");
@@ -15,10 +16,18 @@ export default function SudokuActions({ onSubmit, gameId }) {
       const data = await res.json();
       const row = Math.floor(data.index / 9) + 1; // 1-based row
       const col = (data.index % 9) + 1; // 1-based col
-      setHintMessage(`💡 Row ${row}, Col ${col} = ${data.value}`);
+      setHintMessage(
+        <span className="flex items-center gap-2">
+          <Lightbulb size={18} /> Row {row}, Col {col} = {data.value}
+        </span>
+      );
       setTimeout(() => setHintMessage(""), 4000);
     } catch (error) {
-      setHintMessage("❌ Error getting hint");
+      setHintMessage(
+        <span className="flex items-center gap-2 text-red-600">
+          <CircleX size={18} /> Error getting hint
+        </span>
+      );
       setTimeout(() => setHintMessage(""), 3000);
     }
   }

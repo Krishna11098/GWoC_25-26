@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { formatCurrency } from "@/utils/razorpayUtils";
+import { Coins, ChevronDown, MailX, Lightbulb, Gift } from "lucide-react";
 
 export default function WalletCard({ userId }) {
   const [wallet, setWallet] = useState({ coins: 0, walletHistory: [] });
@@ -97,9 +98,10 @@ export default function WalletCard({ userId }) {
           className="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
         >
           {showHistory ? "Hide" : "View"} Transaction History
-          <span className={`transform transition-transform ${showHistory ? "rotate-180" : ""}`}>
-            ▼
-          </span>
+          <ChevronDown
+            size={16}
+            className={`transform transition-transform ${showHistory ? "rotate-180" : ""}`}
+          />
         </button>
 
         <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
@@ -128,7 +130,7 @@ export default function WalletCard({ userId }) {
 
             {wallet.walletHistory.length === 0 ? (
               <div className="text-center py-8 text-gray-500">
-                <p className="text-4xl mb-2">📭</p>
+                <MailX size={48} className="mx-auto mb-2 text-gray-400" />
                 <p>No transactions yet</p>
                 <p className="text-sm mt-1">
                   Book events to earn and use coins!
@@ -182,11 +184,11 @@ export default function WalletCard({ userId }) {
       <div className="bg-amber-100 p-4 border-t border-amber-200">
         <div className="text-xs text-amber-800 space-y-1">
           <p className="flex items-center gap-2">
-            <span>💡</span>
+            <Lightbulb size={14} />
             <span>1 coin = ₹1 for event bookings</span>
           </p>
           <p className="flex items-center gap-2">
-            <span>🎁</span>
+            <Gift size={14} />
             <span>Earn 10% cashback on all payments</span>
           </p>
         </div>

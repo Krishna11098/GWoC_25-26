@@ -5,6 +5,26 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Calendar from "@/components/Calendar";
 import EventService from "@/app/lib/eventService";
+import {
+  RefreshCw,
+  Calendar as CalendarIcon,
+  Search,
+  Wrench,
+  GraduationCap,
+  Users,
+  Target,
+  History,
+  Sparkles,
+  Clock,
+  MapPin,
+  CircleDollarSign,
+  User,
+  Armchair,
+  X,
+  Mail,
+  Phone,
+  FileText,
+} from "lucide-react";
 
 const palette = {
   background: "var(--bg)",
@@ -296,24 +316,12 @@ export default function EventsCalendarPage() {
               >
                 {isLoading ? (
                   <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-[var(--font)] border-t-transparent"></div>
+                    <RefreshCw className="animate-spin h-5 w-5" />
                     <span className="font-medium">Loading...</span>
                   </>
                 ) : (
                   <>
-                    <svg
-                      className="w-5 h-5 font-bold"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
-                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                      />
-                    </svg>
+                    <RefreshCw className="w-5 h-5 font-bold" />
                     <span className="font-black">Refresh Events</span>
                   </>
                 )}
@@ -450,7 +458,7 @@ export default function EventsCalendarPage() {
                   ) : upcomingEvents.length === 0 ? (
                     <div className="text-center py-10">
                       <div className="inline-block p-4 bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl mb-4">
-                        <div className="text-4xl">📅</div>
+                        <CalendarIcon size={40} className="text-blue-500" />
                       </div>
                       <p className="text-gray-600 font-medium">
                         No upcoming events scheduled
@@ -484,15 +492,17 @@ export default function EventsCalendarPage() {
                                     : "bg-gray-100/80"
                                 }`}
                               >
-                                <span className="text-lg">
-                                  {event.category === "workshop"
-                                    ? "🔧"
-                                    : event.category === "seminar"
-                                    ? "🎓"
-                                    : event.category === "conference"
-                                    ? "👥"
-                                    : "🎯"}
-                                </span>
+                                  <span className="text-lg">
+                                    {event.category === "workshop" ? (
+                                      <Wrench size={20} />
+                                    ) : event.category === "seminar" ? (
+                                      <GraduationCap size={20} />
+                                    ) : event.category === "conference" ? (
+                                      <Users size={20} />
+                                    ) : (
+                                      <Target size={20} />
+                                    )}
+                                  </span>
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="text-base font-bold truncate text-gray-800 hover:text-blue-600 transition-colors duration-300">
@@ -597,7 +607,7 @@ export default function EventsCalendarPage() {
                   ) : previousEvents.length === 0 ? (
                     <div className="text-center py-10">
                       <div className="inline-block p-4 bg-gradient-to-r from-gray-100 to-slate-100 rounded-2xl mb-4">
-                        <div className="text-4xl">📜</div>
+                        <History size={40} className="text-gray-500" />
                       </div>
                       <p className="text-gray-600 font-medium">
                         No previous events yet
@@ -617,7 +627,7 @@ export default function EventsCalendarPage() {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-3">
                               <div className="p-2 rounded-lg bg-gray-100/50">
-                                <span className="text-lg">📝</span>
+                                <FileText size={20} className="text-gray-500" />
                               </div>
                               <div>
                                 <div className="text-base font-bold truncate text-gray-700">
@@ -658,10 +668,10 @@ export default function EventsCalendarPage() {
           >
             <div className="flex items-start gap-4 mb-6">
               <div
-                className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
                 style={{ backgroundColor: "var(--orange)" }}
               >
-                ✨
+                <Sparkles size={24} />
               </div>
               <div>
                 <h3
@@ -687,17 +697,17 @@ export default function EventsCalendarPage() {
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="mailto:contact@joyjuncture.com"
-                className="px-6 py-3 text-white rounded-xl hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                className="px-6 py-3 text-white rounded-xl hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center flex items-center justify-center gap-2"
                 style={{ backgroundColor: "var(--font)" }}
               >
-                📧 Email Us
+                <Mail size={18} /> Email Us
               </a>
               <a
                 href="tel:+91-XXXXXXXXXX"
-                className="px-6 py-3 text-white rounded-xl hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
+                className="px-6 py-3 text-white rounded-xl hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center flex items-center justify-center gap-2"
                 style={{ backgroundColor: "var(--font)" }}
               >
-                📞 Call Us
+                <Phone size={18} /> Call Us
               </a>
               <a
                 href="/contact"
@@ -738,20 +748,22 @@ export default function EventsCalendarPage() {
                 className="absolute right-4 top-4 w-8 h-8 flex items-center justify-center rounded-full bg-[var(--font)]/10 text-[var(--font)] hover:bg-[var(--font)]/20"
                 aria-label="Close event details"
               >
-                ✕
+                <X size={20} />
               </button>
 
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-[var(--green)]/30 rounded-lg">
                     <span className="text-xl">
-                      {selectedEvent.category === "workshop"
-                        ? "🔧"
-                        : selectedEvent.category === "seminar"
-                        ? "🎓"
-                        : selectedEvent.category === "conference"
-                        ? "👥"
-                        : "🎯"}
+                      {selectedEvent.category === "workshop" ? (
+                        <Wrench size={24} />
+                      ) : selectedEvent.category === "seminar" ? (
+                        <GraduationCap size={24} />
+                      ) : selectedEvent.category === "conference" ? (
+                        <Users size={24} />
+                      ) : (
+                        <Target size={24} />
+                      )}
                     </span>
                   </div>
                   <span
@@ -774,20 +786,20 @@ export default function EventsCalendarPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
                     {
-                      icon: "🗓️",
+                      icon: <CalendarIcon size={20} />,
                       label: "Date",
                       value: formatLongDate(selectedEvent.date),
                     },
-                    { icon: "⏱️", label: "Time", value: selectedEvent.time },
+                    { icon: <Clock size={20} />, label: "Time", value: selectedEvent.time },
                     {
-                      icon: "📍",
+                      icon: <MapPin size={20} />,
                       label: "Location",
                       value: selectedEvent.location || selectedEvent.venue,
                     },
-                    { icon: "💰", label: "Price", value: selectedEvent.price },
-                    { icon: "👤", label: "Host", value: selectedEvent.host },
+                    { icon: <CircleDollarSign size={20} />, label: "Price", value: selectedEvent.price },
+                    { icon: <User size={20} />, label: "Host", value: selectedEvent.host },
                     {
-                      icon: "💺",
+                      icon: <Armchair size={20} />,
                       label: "Seats",
                       value: `${selectedEvent.availableSeats} of ${selectedEvent.totalSeats} available`,
                     },
@@ -796,7 +808,7 @@ export default function EventsCalendarPage() {
                       key={idx}
                       className="flex items-center gap-3 p-4 bg-white/40 border border-[var(--font)]/5 rounded-xl"
                     >
-                      <span className="text-xl drop-shadow-sm">
+                      <span className="text-blue-600 drop-shadow-sm">
                         {item.icon}
                       </span>
                       <div>
@@ -834,7 +846,7 @@ export default function EventsCalendarPage() {
                     rel="noopener noreferrer"
                     className="px-8 py-3.5 bg-[var(--orange)] text-[var(--font)] rounded-xl hover:scale-105 active:scale-95 transition-all font-black flex items-center gap-2 shadow-lg border-2 border-[var(--font)]/10"
                   >
-                    📍 Get Directions
+                    <MapPin size={20} /> Get Directions
                   </a>
 
                   {selectedEvent.dateValue >= new Date() && (

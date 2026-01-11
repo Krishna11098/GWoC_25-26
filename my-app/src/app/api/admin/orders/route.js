@@ -4,7 +4,7 @@ import { getUserFromRequest } from "@/lib/authMiddleware";
 
 /**
  * GET /api/admin/orders
- * Fetches all orders from all users
+ * Fetches all orders from the orders collection
  */
 export async function GET(req) {
   const user = await getUserFromRequest(req);
@@ -22,52 +22,49 @@ export async function GET(req) {
   }
 
   try {
-    // Fetch all users
-    const usersSnapshot = await db.collection("users").get();
+    // Fetch all orders from the orders collection
+    const ordersSnapshot = await db.collection("orders").get();
     const allOrders = [];
 
-    // Iterate through all users and collect their orders
-    for (const userDoc of usersSnapshot.docs) {
-      const userData = userDoc.data();
-      const username = userData.username || userData.email || "Unknown";
+    // Process each order document
+    for (const orderDoc of ordersSnapshot.docs) {
+      const orderData = orderDoc.data();
+      
+      // Parse order date with proper handling
+      let orderDate = new Date().toISOString();
 
-      // Get orders for this user
-      if (userData.userOrders && Array.isArray(userData.userOrders)) {
-        userData.userOrders.forEach((order, orderIndex) => {
-          // Parse order date with proper handling
-          let orderDate = new Date().toISOString();
-
-          if (order.createdAt) {
-            if (typeof order.createdAt.toDate === "function") {
-              // Firestore Timestamp
-              orderDate = order.createdAt.toDate().toISOString();
-            } else if (order.createdAt instanceof Date) {
-              orderDate = order.createdAt.toISOString();
-            } else if (typeof order.createdAt === "string") {
-              orderDate = order.createdAt;
-            } else if (typeof order.createdAt === "number") {
-              orderDate = new Date(order.createdAt).toISOString();
-            }
-          }
-
-          // Generate unique orderId: use bookingId, id, or combination of userId and index
-          const orderId =
-            order.bookingId || order.id || `${userDoc.id}-order-${orderIndex}`;
-
-          allOrders.push({
-            orderId: orderId,
-            userId: userDoc.id,
-            username: username,
-            email: userData.email || "No email",
-            orderDate: orderDate,
-            price: order.totalPrice || order.price || 0,
-            itemCount: order.items?.length || 1,
-            items: order.items || [],
-            status: order.status || "completed",
-            paymentMethod: order.paymentMethod || "unknown",
-          });
-        });
+      if (orderData.createdAt) {
+        if (typeof orderData.createdAt.toDate === "function") {
+          // Firestore Timestamp
+          orderDate = orderData.createdAt.toDate().toISOString();
+        } else if (orderData.createdAt instanceof Date) {
+          orderDate = orderData.createdAt.toISOString();
+        } else if (typeof orderData.createdAt === "string") {
+          orderDate = orderData.createdAt;
+        } else if (typeof orderData.createdAt === "number") {
+          orderDate = new Date(orderData.createdAt).toISOString();
+        }
       }
+
+      allOrders.push({
+        id: orderDoc.id,
+        orderId: orderData.orderId || orderDoc.id,
+        paymentId: orderData.paymentId || "",
+        userId: orderData.userId || "",
+        userEmail: orderData.userEmail || "No email",
+        username: orderData.username || orderData.userEmail?.split("@")[0] || "Unknown",
+        orderDate: orderDate,
+        items: orderData.items || [],
+        itemCount: orderData.items?.length || 0,
+        subtotal: orderData.subtotal || 0,
+        shipping: orderData.shipping || 0,
+        tax: orderData.tax || 0,
+        coinsUsed: orderData.coinsUsed || 0,
+        discount: orderData.discount || 0,
+        finalAmount: orderData.finalAmount || 0,
+        coinsEarned: orderData.coinsEarned || 0,
+        status: orderData.status || "completed",
+      });
     }
 
     // Sort by order date (newest first)

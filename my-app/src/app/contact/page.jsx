@@ -4,36 +4,52 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import {
+  Tent,
+  Check,
+  X,
+  User,
+  Target,
+  Cake,
+  Building2,
+  Package,
+  FerrisWheel,
+  
+  MessageSquare,
+  Palette,
+  Rocket,
+  PartyPopper,
+} from "lucide-react";
 
 const categories = [
   {
     id: "private_birthdays",
     label: "Private Birthdays: Theme-based games & engagement",
-    icon: "🎂",
+    icon: <Cake className="text-pink-500" />,
   },
   {
     id: "corporate_events",
     label:
       "Corporate Events & Team Building: Festivals, milestone celebrations, team-building",
-    icon: "🏢",
+    icon: <Building2 className="text-blue-500" />,
   },
   {
     id: "monthly_kits",
     label:
       "Monthly Corporate Engagement Kits: Ready-to-play kits sent to employees",
-    icon: "📦",
+    icon: <Package className="text-amber-500" />,
   },
   {
     id: "carnivals",
     label:
       "Carnivals & Experience Zones: Large-scale experience zones & activities",
-    icon: "🎡",
+    icon: <FerrisWheel className="text-purple-500" />,
   },
   {
     id: "weddings",
     label:
       "Weddings & Entertainment Hampers: Custom games, entertainment hampers & interactive setups",
-    icon: "💍",
+    icon: <Ring className="text-yellow-600" />,
   },
 ];
 
@@ -161,7 +177,7 @@ export default function ExperienceFormPage() {
 
       if (data.success) {
         setSuccess(
-          "🎉 Your details have been submitted successfully! We'll contact you soon."
+          "Your details have been submitted successfully! We'll contact you soon."
         );
         setFormData({
           fullName: "",
@@ -206,8 +222,8 @@ export default function ExperienceFormPage() {
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <div className="mb-4">
-              <span className="text-5xl md:text-6xl">🎪</span>
+            <div className="flex justify-center mb-4 text-orange-500">
+              <Tent size={64} />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-font mb-4">
               Book an Experience
@@ -223,7 +239,7 @@ export default function ExperienceFormPage() {
             <div className="mb-8 p-6 bg-green-50 border border-green-200 rounded-2xl shadow-sm">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <span className="text-2xl text-green-600">✓</span>
+                  <PartyPopper className="text-green-600" />
                 </div>
                 <div className="flex-1">
                   <p className="text-green-800 font-medium">{success}</p>
@@ -237,7 +253,7 @@ export default function ExperienceFormPage() {
             <div className="mb-8 p-6 bg-red-50 border border-red-200 rounded-2xl shadow-sm">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                  <span className="text-2xl text-red-600">✕</span>
+                  <X className="text-red-600" />
                 </div>
                 <div className="flex-1">
                   <p className="text-red-800 font-medium">{error}</p>
@@ -252,7 +268,7 @@ export default function ExperienceFormPage() {
             <div className="bg-background-2 rounded-2xl border border-foreground/20 p-6 md:p-8 shadow-sm">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-foreground/10 rounded-xl flex items-center justify-center">
-                  <span className="text-xl text-font">👤</span>
+                  <User className="text-font" />
                 </div>
                 <h2 className="text-2xl font-bold text-font">
                   Personal Information
@@ -339,7 +355,7 @@ export default function ExperienceFormPage() {
             <div className="bg-background-2 rounded-2xl border border-foreground/20 p-6 md:p-8 shadow-sm">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-foreground/10 rounded-xl flex items-center justify-center">
-                  <span className="text-xl text-font">🎯</span>
+                  <Target className="text-font" />
                 </div>
                 <h2 className="text-2xl font-bold text-font">Event Details</h2>
               </div>
@@ -363,7 +379,7 @@ export default function ExperienceFormPage() {
                       }`}
                     >
                       <div className="flex items-start gap-4">
-                        <div className="text-3xl flex-shrink-0">{cat.icon}</div>
+                        <div className="flex-shrink-0">{cat.icon}</div>
                         <div className="flex-1">
                           <div className="font-bold text-font text-base">
                             {cat.label}
@@ -373,9 +389,7 @@ export default function ExperienceFormPage() {
                           <div className="flex items-center justify-center flex-shrink-0">
                             <div className="absolute w-8 h-8 bg-foreground rounded-full animate-pulse"></div>
                             <div className="w-8 h-8 bg-foreground rounded-full flex items-center justify-center relative z-10">
-                              <span className="text-background text-lg font-bold">
-                                ✓
-                              </span>
+                              <Check className="text-background" size={16} />
                             </div>
                           </div>
                         )}
@@ -583,7 +597,7 @@ export default function ExperienceFormPage() {
             <div className="bg-background-2 rounded-2xl border border-foreground/20 p-6 md:p-8 shadow-sm">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-foreground/10 rounded-xl flex items-center justify-center">
-                  <span className="text-xl text-font">🎨</span>
+                  <Palette className="text-font" />
                 </div>
                 <h2 className="text-2xl font-bold text-font">
                   Requirements & Preferences
@@ -659,7 +673,7 @@ export default function ExperienceFormPage() {
             <div className="bg-background-2 rounded-2xl border border-foreground/20 p-6 md:p-8 shadow-sm">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-foreground/10 rounded-xl flex items-center justify-center">
-                  <span className="text-xl text-font">💬</span>
+                  <MessageSquare className="text-font" />
                 </div>
                 <h2 className="text-2xl font-bold text-font">
                   Additional Information
@@ -735,7 +749,7 @@ export default function ExperienceFormPage() {
                       </>
                     ) : (
                       <>
-                        <span>🚀</span>
+                        <Rocket size={20} />
                         Submit Experience Request
                       </>
                     )}

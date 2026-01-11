@@ -41,7 +41,7 @@ export default function ThreePillars() {
   const containerRef = useRef(null);
   const cardsRef = useRef([]);
 
-  // Desktop layout (4 cards in one row)
+  // Horizontal target positions (row of 4) — increased spacing to avoid overlap
   const desktopGridPositions = [
     { x: -510, y: 0 },
     { x: -170, y: 0 },
@@ -49,12 +49,11 @@ export default function ThreePillars() {
     { x: 510, y: 0 },
   ];
 
-  // Mobile layout (<= 1400px): one card per row, vertically stacked and centered
   const mobileGridPositions = [
-    { x: 0, y: -800 },
-    { x: 0, y: -260 },
-    { x: 0, y: 260 },
-    { x: 0, y: 800 },
+    { x: -82, y: -115 }, // Top Left
+    { x: 82, y: -115 },  // Top Right
+    { x: -82, y: 115 },  // Bottom Left
+    { x: 82, y: 115 },   // Bottom Right
   ];
 
   useLayoutEffect(() => {
@@ -63,65 +62,55 @@ export default function ThreePillars() {
 
     mm.add(
       {
-        isDesktop: "(min-width: 1400px)",
-        isMobile: "(max-width: 1399px)",
+        isDesktop: "(min-width: 768px)",
+        isMobile: "(max-width: 767px)",
       },
       (context) => {
         const { isDesktop, isMobile } = context.conditions;
 
-        if (isDesktop) {
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top top",
-              end: "+=1200",
-              pin: true,
-              scrub: 1,
-              anticipatePin: 1,
-              invalidateOnRefresh: true,
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: isDesktop ? "+=1200" : "+=800",
+            pin: true,
+            scrub: 1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // Initial stacked state
+        gsap.set(cardsRef.current, {
+          x: 0,
+          y: (i) => i * 12,
+          scale: isDesktop ? 0.9 : 0.75,
+          rotationY: 0,
+          zIndex: (i) => cardsData.length - i,
+        });
+
+        // Animate cards from stacked to grid/row and grow
+        tl.to(cardsRef.current, {
+          x: (i) =>
+            isDesktop ? desktopGridPositions[i].x : mobileGridPositions[i].x,
+          y: (i) =>
+            isDesktop ? desktopGridPositions[i].y : mobileGridPositions[i].y,
+          scale: isDesktop ? 1 : 0.82,
+          duration: 1.2,
+          ease: "power2.out",
+          stagger: 0.05,
+        })
+          // Flip cards
+          .to(
+            cardsRef.current,
+            {
+              rotationY: 180,
+              duration: 0.9,
+              stagger: 0.08,
+              ease: "back.out(1.1)",
             },
-          });
-
-          // Initial slight stack on desktop only
-          gsap.set(cardsRef.current, {
-            x: 0,
-            y: (i) => i * 12,
-            scale: 0.9,
-            rotationY: 0,
-            zIndex: (i) => cardsData.length - i,
-          });
-
-          // Animate to horizontal row
-          tl.to(cardsRef.current, {
-            x: (i) => desktopGridPositions[i].x,
-            y: (i) => desktopGridPositions[i].y,
-            scale: 1,
-            duration: 1.2,
-            ease: "power2.out",
-            stagger: 0.06,
-          })
-            // Flip cards once they reach their positions
-            .to(
-              cardsRef.current,
-              {
-                rotationY: 180,
-                duration: 0.9,
-                stagger: 0.09,
-                ease: "back.out(1.1)",
-              },
-              ">-0.1"
-            );
-        } else {
-          // No animation on smaller screens: just place one card per row, centered
-          gsap.killTweensOf(cardsRef.current);
-          gsap.set(cardsRef.current, {
-            x: 0,
-            y: (i) => mobileGridPositions[i].y,
-            scale: 1,
-            rotationY: 0,
-            zIndex: (i) => cardsData.length - i,
-          });
-        }
+            ">-0.1"
+          );
 
         return () => {
           // Cleanup handled by mm.revert()
@@ -159,12 +148,12 @@ export default function ThreePillars() {
       //     backgroundColor: "var(--bg)",
       //   }}
     >
-      <h2 className="text-font text-4xl md:text-5xl font-winky-rough mb-6 z-10 text-center px-1 max-w-2xl">
+      <h2 className="text-font text-4xl md:text-5xl font-winky-rough mb-2 z-10 text-center px-1 max-w-2xl">
         <span className="text-black">Choose your</span> playstyle
       </h2>
 
       <div
-        className="relative w-full max-w-4xl px-4 min-h-[2400px] xl:min-h-[1200px] 2xl:min-h-[700px]"
+        className="relative w-full max-w-4xl h-[520px] md:h-[560px] px-4"
         style={{ perspective: "1000px" }}
       >
         {cardsData.map((card, i) => (
@@ -179,7 +168,7 @@ export default function ThreePillars() {
           >
             {/* FRONT */}
             <div
-              className="absolute left-1/2 top-1/2 w-[170px] sm:w-[200px] md:w-[260px] lg:w-[320px] h-[240px] sm:h-[300px] md:h-[360px] lg:h-[420px] -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-font/10 shadow-xl overflow-hidden bg-[length:750px_280px] sm:bg-[length:900px_330px] md:bg-[length:1100px_400px] lg:bg-[length:1300px_480px]"
+              className="absolute left-1/2 top-1/2 w-[180px] md:w-[320px] h-[260px] md:h-[420px] -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-font/10 shadow-xl overflow-hidden bg-[length:800px_300px] md:bg-[length:1300px_480px]"
               style={{
                 backgroundImage: `url('/gallery/image1.png')`,
                 backgroundPosition: card.bgPos,
@@ -191,7 +180,7 @@ export default function ThreePillars() {
 
             {/* BACK */}
             <div
-              className={`absolute left-1/2 top-1/2 w-[170px] sm:w-[200px] md:w-[260px] lg:w-[320px] h-[240px] sm:h-[300px] md:h-[360px] lg:h-[420px] -translate-x-1/2 -translate-y-1/2 rounded-3xl flex flex-col border-4 border-white shadow-2xl ${card.color} overflow-hidden`}
+              className={`absolute left-1/2 top-1/2 w-[180px] md:w-[320px] h-[260px] md:h-[420px] -translate-x-1/2 -translate-y-1/2 rounded-3xl flex flex-col border-4 border-white shadow-2xl ${card.color} overflow-hidden`}
               style={{
                 backfaceVisibility: "hidden",
                 WebkitBackfaceVisibility: "hidden",

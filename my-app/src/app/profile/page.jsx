@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { auth } from "@/lib/firebaseClient";
 import { userFetch } from "@/lib/userFetch";
+import { Gamepad2, PartyPopper, BookOpen } from "lucide-react";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -104,23 +105,41 @@ export default function ProfilePage() {
   }, [authUser]);
 
   const walletStats = useMemo(() => {
-    if (!userData?.walletHistory && !userData?.wallet?.coinHistory) {
+    if (!userData?.walletHistory && !userData?.wallet?.coinHistory && !userData?.wallet) {
       return { earned: 0, redeemed: 0 };
     }
+    
+    // First, try to use the coinsRedeemed field from wallet for accuracy
+    let redeemed = userData?.wallet?.coinsRedeemed || 0;
+    
+    // Calculate earned from history
     const history = userData.walletHistory?.length
       ? userData.walletHistory
       : userData.wallet?.coinHistory || [];
     let earned = 0;
-    let redeemed = 0;
-    history.forEach((tx) => {
-      const amount = typeof tx.coins === "number" ? tx.coins : tx.amount ?? 0;
-      const type = tx.action || tx.type || "";
-      if (type === "earn" || amount > 0) {
-        earned += Math.abs(amount);
-      } else if (type === "redeem" || type === "redeemed" || amount < 0) {
-        redeemed += Math.abs(amount);
-      }
-    });
+    
+    // If coinsRedeemed is not set in wallet, calculate from history as fallback
+    if (redeemed === 0 && history.length > 0) {
+      history.forEach((tx) => {
+        const amount = typeof tx.coins === "number" ? tx.coins : tx.amount ?? 0;
+        const type = tx.action || tx.type || "";
+        if (type === "earn" || amount > 0) {
+          earned += Math.abs(amount);
+        } else if (type === "redeem" || type === "redeemed" || type === "spend" || amount < 0) {
+          redeemed += Math.abs(amount);
+        }
+      });
+    } else {
+      // Calculate earned from history
+      history.forEach((tx) => {
+        const amount = typeof tx.coins === "number" ? tx.coins : tx.amount ?? 0;
+        const type = tx.action || tx.type || "";
+        if (type === "earn" || amount > 0) {
+          earned += Math.abs(amount);
+        }
+      });
+    }
+    
     return { earned, redeemed };
   }, [userData]);
 
@@ -572,13 +591,13 @@ export default function ProfilePage() {
               ) : (
                 <>
                   <ActivityCard
-                    icon="🕹️"
+                    icon={<Gamepad2 size={24} />}
                     label="Games Played"
                     value={userData?.gamesHistory?.length || 0}
                     bgColor="var(--color-pink)"
                   />
                   <ActivityCard
-                    icon="🎊"
+                    icon={<PartyPopper size={24} />}
                     label="Events Attended"
                     value={
                       userData?.userEvents?.filter((e) => e.attended)?.length ||
@@ -587,7 +606,7 @@ export default function ProfilePage() {
                     bgColor="var(--color-orange)"
                   />
                   <ActivityCard
-                    icon="📖"
+                    icon={<BookOpen size={24} />}
                     label="Workshops"
                     value={userData?.userWorkshops?.length || 0}
                     bgColor="var(--color-green)"
@@ -695,7 +714,7 @@ export default function ProfilePage() {
                                         : "var(--color-orange)",
                                     }}
                                   >
-                                    {g.completed ? "Completed" : "In Progress"}
+                                    {g.completed ? "Completed" : "Ended"}
                                   </span>
                                 </div>
                               </div>
@@ -748,40 +767,6 @@ export default function ProfilePage() {
                   <EmptyState
                     title="No games yet"
                     description="Play a game to see it here."
-                  />
-                )}
-              </div>
-
-              {/* Cart */}
-              <div
-                className="rounded-2xl border p-5 shadow-sm"
-                style={{
-                  backgroundColor: "white",
-                  borderColor: "var(--color-green)",
-                }}
-              >
-                <h3 className="text-lg font-bold text-font mb-3">Cart</h3>
-                {loadingData ? (
-                  <SkeletonCard />
-                ) : userData?.cart?.items?.length > 0 ? (
-                  <div>
-                    <p className="text-sm font-semibold text-font/70 mb-3">
-                      {userData.cart.items.length} item(s) in cart
-                    </p>
-                    <button
-                      className="w-full rounded-lg px-4 py-2 font-semibold hover:opacity-90 transition-opacity"
-                      style={{
-                        backgroundColor: "var(--color-font)",
-                        color: "white",
-                      }}
-                    >
-                      View Cart
-                    </button>
-                  </div>
-                ) : (
-                  <EmptyState
-                    title="Cart is empty"
-                    description="Add items from the shop."
                   />
                 )}
               </div>
@@ -979,7 +964,7 @@ function GameDetailModal({ game, onClose }) {
       label: "Finished",
       value:
         game.finishedAt?.toLocaleString() ||
-        (game.completed ? "—" : "In Progress"),
+        (game.completed ? "—" : "Ended"),
     },
   ];
   return (
@@ -993,7 +978,7 @@ function GameDetailModal({ game, onClose }) {
             <h4 className="text-xl font-bold text-font">Game Details</h4>
             {game.difficulty && <Badge text={game.difficulty} tone="info" />}
             <Badge
-              text={game.completed ? "Completed" : "In Progress"}
+              text={game.completed ? "Completed" : "Ended"}
               tone={game.completed ? "success" : "info"}
             />
           </div>

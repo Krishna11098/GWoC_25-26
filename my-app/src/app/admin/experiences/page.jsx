@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { userFetch } from "@/lib/userFetch";
-import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { ThumbsUp, ThumbsDown, Plus, RefreshCw, Trash2, Edit, CheckCircle2, AlertCircle } from "lucide-react";
 
 const EXPERIENCE_CATEGORIES = [
   { id: "private_birthdays", label: "Private Birthdays" },
@@ -134,15 +134,15 @@ export default function AdminExperiencesPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.push("/admin/experiences/create")}
-            className="px-6 py-3 bg-[var(--orange)] text-[var(--font)] rounded-lg font-semibold"
+            className="px-6 py-3 bg-[var(--orange)] text-[var(--font)] rounded-lg font-semibold flex items-center gap-2"
           >
-            + Create Experience
+            <Plus size={20} /> Create Experience
           </button>
           <button
             onClick={fetchExperiences}
-            className="px-4 py-3 bg-[var(--bg)] text-[var(--font)] rounded-lg font-medium"
+            className="px-4 py-3 bg-[var(--bg)] text-[var(--font)] rounded-lg font-medium flex items-center gap-2"
           >
-            Refresh
+            <RefreshCw size={18} /> Refresh
           </button>
         </div>
       </div>
@@ -217,11 +217,11 @@ export default function AdminExperiencesPage() {
 
                         <div className="flex items-center gap-2 ml-4 mt-2">
                           <div className="flex items-center gap-1 px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">
-                            <FaThumbsUp className="text-xs" />
+                            <ThumbsUp className="text-xs" size={14} />
                             <span className="font-semibold">{experience.upvotes || 0}</span>
                           </div>
                           <div className="flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 rounded text-xs">
-                            <FaThumbsDown className="text-xs" />
+                            <ThumbsDown className="text-xs" size={14} />
                             <span className="font-semibold">{experience.downvotes || 0}</span>
                           </div>
                         </div>
@@ -229,9 +229,9 @@ export default function AdminExperiencesPage() {
                         <div className="flex gap-2 ml-4 flex-shrink-0">
                           <button
                             onClick={() => router.push(`/admin/experiences/edit/${experience.id}`)}
-                            className="px-3 py-2 bg-[var(--green)] text-[var(--font)] rounded text-sm font-medium hover:opacity-80"
+                            className="px-3 py-2 bg-[var(--green)] text-[var(--font)] rounded text-sm font-medium hover:opacity-80 flex items-center gap-1"
                           >
-                            Edit
+                            <Edit size={14} /> Edit
                           </button>
                           <button
                             onClick={() => handleTogglePublish(experience)}
@@ -245,9 +245,9 @@ export default function AdminExperiencesPage() {
                           </button>
                           <button
                             onClick={() => handleDelete(experience.id)}
-                            className="px-3 py-2 bg-[var(--pink)] text-[var(--font)] rounded text-sm font-medium hover:opacity-80"
+                            className="px-3 py-2 bg-[var(--pink)] text-[var(--font)] rounded text-sm font-medium hover:opacity-80 flex items-center gap-1"
                           >
-                            Delete
+                            <Trash2 size={14} /> Delete
                           </button>
                         </div>
                       </div>
