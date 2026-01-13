@@ -260,22 +260,22 @@ export default function AdminQueriesPage() {
 
   return (
     <>
-      <div className="flex min-h-screen bg-background">
+      <div className="flex min-h-screen bg-white">
         <main className="flex-1 p-6">
           {/* Header */}
           <div className="mb-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-font">
+                <h1 className="text-3xl font-bold text-gray-900">
                   Contact Queries
                 </h1>
-                <p className="text-font-2 mt-2">
+                <p className="text-gray-600 mt-2">
                   Manage all contact form queries from users
                 </p>
               </div>
               <button
                 onClick={fetchQueries}
-                className="px-4 py-2 bg-foreground text-font-2 rounded-lg hover:opacity-90 flex items-center gap-2"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
               >
                 <span>🔄</span>
                 Refresh
@@ -285,9 +285,11 @@ export default function AdminQueriesPage() {
 
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-            <div className="bg-background-2 rounded-xl border border-foreground/20 p-4">
-              <div className="text-2xl font-bold text-font">{stats.total}</div>
-              <div className="text-sm text-font-2">Total Queries</div>
+            <div className="bg-gray-50 rounded-xl border border-gray-200 p-4">
+              <div className="text-2xl font-bold text-gray-900">
+                {stats.total}
+              </div>
+              <div className="text-sm text-gray-600">Total Queries</div>
             </div>
             <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
               <div className="text-2xl font-bold text-yellow-700">
@@ -310,11 +312,11 @@ export default function AdminQueriesPage() {
           </div>
 
           {/* Filters */}
-          <div className="bg-background-2 rounded-xl border border-foreground/20 p-6 mb-6 mt-6">
+          <div className="bg-gray-50 rounded-xl border border-gray-200 p-6 mb-6 mt-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Search */}
               <div>
-                <label className="block text-sm font-medium text-font-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Search
                 </label>
                 <input
@@ -322,19 +324,19 @@ export default function AdminQueriesPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search by name, email, subject..."
-                  className="w-full px-4 py-2 bg-background border border-foreground/20 rounded-lg"
+                  className="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
               {/* Category Filter */}
               <div>
-                <label className="block text-sm font-medium text-font-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Category
                 </label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full px-4 py-2 bg-background border border-foreground/20 rounded-lg"
+                  className="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   {categories.map((cat) => (
                     <option key={cat.value} value={cat.value}>
@@ -346,13 +348,13 @@ export default function AdminQueriesPage() {
 
               {/* Status Filter */}
               <div>
-                <label className="block text-sm font-medium text-font-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Status
                 </label>
                 <select
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="w-full px-4 py-2 bg-background border border-foreground/20 rounded-lg"
+                  className="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   {statuses.map((status) => (
                     <option key={status.value} value={status.value}>
@@ -365,19 +367,19 @@ export default function AdminQueriesPage() {
           </div>
 
           {/* Queries List */}
-          <div className="bg-background-2 rounded-xl border border-foreground/20 overflow-hidden">
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             {loading ? (
               <div className="p-8 text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground mx-auto"></div>
-                <p className="mt-4 text-font-2">Loading queries...</p>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+                <p className="mt-4 text-gray-600">Loading queries...</p>
               </div>
             ) : filteredQueries.length === 0 ? (
               <div className="p-8 text-center">
                 <div className="text-4xl mb-4">💬</div>
-                <h3 className="text-xl font-bold text-font mb-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
                   No queries found
                 </h3>
-                <p className="text-font-2">
+                <p className="text-gray-600">
                   {queries.length === 0
                     ? "No contact queries have been submitted yet."
                     : "No queries match your filters."}
@@ -387,23 +389,23 @@ export default function AdminQueriesPage() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="bg-foreground/5 border-b border-foreground/20">
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                    <tr className="bg-gray-50 border-b border-gray-200">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Name
                       </th>
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Category
                       </th>
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Subject
                       </th>
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Status
                       </th>
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Submitted
                       </th>
-                      <th className="text-left p-4 text-sm font-medium text-font-2">
+                      <th className="text-left p-4 text-sm font-medium text-gray-700">
                         Actions
                       </th>
                     </tr>
@@ -416,25 +418,25 @@ export default function AdminQueriesPage() {
                       return (
                         <tr
                           key={query.id}
-                          className="border-b border-foreground/10 hover:bg-foreground/5"
+                          className="border-b border-gray-200 hover:bg-gray-50"
                         >
                           <td className="p-4">
                             <div>
-                              <div className="font-medium text-font">
+                              <div className="font-medium text-gray-900">
                                 {query.fullName}
                               </div>
-                              <div className="text-sm text-font-2">
+                              <div className="text-sm text-gray-600">
                                 {query.email}
                               </div>
                             </div>
                           </td>
                           <td className="p-4">
-                            <div className="text-sm font-medium text-font">
+                            <div className="text-sm font-medium text-gray-900">
                               {categoryInfo.label}
                             </div>
                           </td>
                           <td className="p-4">
-                            <div className="text-sm font-medium text-font">
+                            <div className="text-sm font-medium text-gray-900">
                               {query.subject || "No subject"}
                             </div>
                           </td>
@@ -454,13 +456,13 @@ export default function AdminQueriesPage() {
                             <div className="flex gap-2">
                               <button
                                 onClick={() => openDetailModal(query)}
-                                className="px-3 py-1 bg-background border border-foreground/20 rounded-lg text-sm hover:bg-foreground/5"
+                                className="px-3 py-1 bg-white border border-gray-200 rounded-lg text-sm hover:bg-gray-50"
                               >
                                 View
                               </button>
                               <button
                                 onClick={() => openUpdateModal(query)}
-                                className="px-3 py-1 bg-foreground text-font-2 rounded-lg text-sm hover:opacity-90"
+                                className="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
                               >
                                 Update
                               </button>
@@ -480,18 +482,18 @@ export default function AdminQueriesPage() {
       {/* Query Detail Modal */}
       {isDetailModalOpen && selectedQuery && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-background rounded-2xl w-full max-w-2xl max-h-[90vh] bg-white overflow-hidden flex flex-col">
+          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
             {/* Header */}
-            <div className="p-6 border-b border-foreground/20 flex justify-between items-start">
+            <div className="p-6 border-b border-gray-200 flex justify-between items-start">
               <div>
-                <h2 className="text-2xl font-bold text-font">
+                <h2 className="text-2xl font-bold text-gray-900">
                   {selectedQuery.subject || "No Subject"}
                 </h2>
-                <p className="text-font-2">From {selectedQuery.fullName}</p>
+                <p className="text-gray-600">From {selectedQuery.fullName}</p>
               </div>
               <button
                 onClick={() => setIsDetailModalOpen(false)}
-                className="text-2xl leading-none text-font-2 hover:text-font"
+                className="text-2xl leading-none text-gray-600 hover:text-gray-900"
               >
                 ✕
               </button>
@@ -501,24 +503,24 @@ export default function AdminQueriesPage() {
             <div className="flex-1 overflow-y-auto p-6">
               <div className="space-y-6">
                 {/* Contact Information */}
-                <div className="bg-background-2 rounded-xl p-4">
-                  <h3 className="font-bold text-font mb-4">
+                <div className="bg-gray-50 rounded-xl p-4">
+                  <h3 className="font-bold text-gray-900 mb-4">
                     Contact Information
                   </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="text-font-2">Full Name:</span>
+                      <span className="text-gray-600">Full Name:</span>
                       <span className="font-medium">
                         {selectedQuery.fullName}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-font-2">Email:</span>
+                      <span className="text-gray-600">Email:</span>
                       <span className="font-medium">{selectedQuery.email}</span>
                     </div>
                     {selectedQuery.phone && (
                       <div className="flex justify-between">
-                        <span className="text-font-2">Phone:</span>
+                        <span className="text-gray-600">Phone:</span>
                         <span className="font-medium">
                           {selectedQuery.phone}
                         </span>
@@ -528,17 +530,21 @@ export default function AdminQueriesPage() {
                 </div>
 
                 {/* Query Details */}
-                <div className="bg-background-2 rounded-xl p-4">
-                  <h3 className="font-bold text-font mb-4">Query Details</h3>
+                <div className="bg-gray-50 rounded-xl p-4">
+                  <h3 className="font-bold text-gray-900 mb-4">
+                    Query Details
+                  </h3>
                   <div className="space-y-3">
                     <div>
-                      <div className="text-sm text-font-2 mb-1">Category:</div>
+                      <div className="text-sm text-gray-600 mb-1">
+                        Category:
+                      </div>
                       <div className="font-medium">
                         {getCategoryInfo(selectedQuery.category).label}
                       </div>
                     </div>
                     <div>
-                      <div className="text-sm text-font-2 mb-1">Status:</div>
+                      <div className="text-sm text-gray-600 mb-1">Status:</div>
                       <div className="font-medium">
                         {getStatusInfo(selectedQuery.status).label}
                       </div>
@@ -547,9 +553,9 @@ export default function AdminQueriesPage() {
                 </div>
 
                 {/* Message */}
-                <div className="bg-background-2 rounded-xl p-4">
-                  <h3 className="font-bold text-font mb-4">Message</h3>
-                  <p className="text-font whitespace-pre-wrap">
+                <div className="bg-gray-50 rounded-xl p-4">
+                  <h3 className="font-bold text-gray-900 mb-4">Message</h3>
+                  <p className="text-gray-900 whitespace-pre-wrap">
                     {selectedQuery.message}
                   </p>
                 </div>
@@ -569,8 +575,8 @@ export default function AdminQueriesPage() {
             </div>
 
             {/* Footer */}
-            <div className="p-6 border-t border-foreground/20 flex justify-between items-center">
-              <div className="text-sm text-font-2">
+            <div className="p-6 border-t border-gray-200 flex justify-between items-center">
+              <div className="text-sm text-gray-600">
                 Submitted on {formatDateTime(selectedQuery.createdAt)}
               </div>
               <div className="flex gap-3">
@@ -579,13 +585,13 @@ export default function AdminQueriesPage() {
                     setIsDetailModalOpen(false);
                     openUpdateModal(selectedQuery);
                   }}
-                  className="px-4 py-2 bg-foreground text-font-2 rounded-lg hover:opacity-90"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                 >
                   Update Status
                 </button>
                 <button
                   onClick={() => setIsDetailModalOpen(false)}
-                  className="px-4 py-2 border border-foreground/20 rounded-lg"
+                  className="px-4 py-2 border border-gray-200 rounded-lg"
                 >
                   Close
                 </button>
@@ -598,17 +604,17 @@ export default function AdminQueriesPage() {
       {/* Update Status Modal */}
       {isUpdateModalOpen && selectedQuery && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-background rounded-2xl w-full max-w-md bg-white">
-            <div className="p-6 border-b border-foreground/20">
-              <h2 className="text-xl font-bold text-font">
+          <div className="bg-white rounded-2xl w-full max-w-md">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">
                 Update Query Status
               </h2>
-              <p className="text-font-2 mt-1">{selectedQuery.subject}</p>
+              <p className="text-gray-600 mt-1">{selectedQuery.subject}</p>
             </div>
 
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-font-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Status
                 </label>
                 <div className="grid grid-cols-1 gap-2">
@@ -634,8 +640,8 @@ export default function AdminQueriesPage() {
                           disabled={isCurrentStatus || isUpdating}
                           className={`px-4 py-3 rounded-lg border text-center ${
                             isCurrentStatus
-                              ? `${status.color} border-foreground`
-                              : "border-foreground/20 hover:border-foreground/40"
+                              ? `${status.color} border-gray-300`
+                              : "border-gray-200 hover:border-gray-300"
                           } disabled:opacity-50 disabled:cursor-not-allowed`}
                         >
                           {status.label}
@@ -646,7 +652,7 @@ export default function AdminQueriesPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-font-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Admin Notes (Optional)
                 </label>
                 <textarea
@@ -654,7 +660,7 @@ export default function AdminQueriesPage() {
                   onChange={(e) => setAdminNotes(e.target.value)}
                   rows={4}
                   placeholder="Add any notes or comments..."
-                  className="w-full px-4 py-3 bg-background border border-foreground/20 rounded-lg"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -670,10 +676,10 @@ export default function AdminQueriesPage() {
               )}
             </div>
 
-            <div className="p-6 border-t border-foreground/20 flex justify-end gap-3">
+            <div className="p-6 border-t border-gray-200 flex justify-end gap-3">
               <button
                 onClick={() => setIsUpdateModalOpen(false)}
-                className="px-4 py-2 border border-foreground/20 rounded-lg"
+                className="px-4 py-2 border border-gray-200 rounded-lg"
               >
                 Cancel
               </button>

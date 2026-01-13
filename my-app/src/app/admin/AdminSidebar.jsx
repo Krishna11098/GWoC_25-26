@@ -19,9 +19,10 @@ import {
   MessageSquare,
   Users,
   Settings,
+  X,
 } from "lucide-react";
 
-export default function AdminSidebar({ user, isAdmin }) {
+export default function AdminSidebar({ user, isAdmin, open = false, onClose }) {
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -47,8 +48,8 @@ export default function AdminSidebar({ user, isAdmin }) {
     { href: "/admin/settings", label: "Settings", icon: "/icons/bulb.svg" },
   ];
 
-  return (
-    <aside className="w-64 h-screen fixed top-0 left-0 overflow-y-auto p-6 bg-font text-white">
+  const SidebarContent = () => (
+    <>
       <div className="mb-8">
         <h1 className="text-2xl font-bold">JoyJuncture</h1>
         <p className="text-sm opacity-90">Admin Panel</p>
@@ -182,6 +183,34 @@ export default function AdminSidebar({ user, isAdmin }) {
         <img src="/icons/cross.svg" alt="Logout" className="mr-2 w-5 h-5" />
         Logout
       </button>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:block w-64 h-screen fixed top-0 left-0 overflow-y-auto p-6 bg-font text-white">
+        <SidebarContent />
+      </aside>
+
+      {/* Mobile Sidebar Overlay */}
+      <div
+        className={`md:hidden fixed inset-0 z-50 transition-transform duration-500 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+        <aside className="relative w-64 h-full bg-font text-white p-6">
+          <button
+            aria-label="Close sidebar"
+            className="absolute top-3 right-3 rounded-full p-2 bg-white/10 hover:bg-white/20"
+            onClick={onClose}
+          >
+            <X size={20} />
+          </button>
+          <SidebarContent />
+        </aside>
+      </div>
+    </>
   );
 }

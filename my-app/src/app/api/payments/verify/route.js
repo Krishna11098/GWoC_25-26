@@ -185,6 +185,11 @@ export async function POST(request) {
         userUpdateData['wallet.coins'] = increment(coinsChange);
       }
 
+      // Track redeemed coins if any were used
+      if (coinsUsed > 0) {
+        userUpdateData['wallet.coinsRedeemed'] = increment(coinsUsed);
+      }
+
       // Add wallet history entries
       if (walletUpdates.length > 0) {
         userUpdateData['wallet.coinHistory'] = arrayUnion(...walletUpdates);
