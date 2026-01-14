@@ -33,25 +33,11 @@ export default function ShopWithFilters({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Derive available options from items
+  // Predefined filter options
   const options = useMemo(() => {
-    const occ = new Set();
-    const moods = new Set();
-    const types = new Set();
     const playerBuckets = new Set();
 
     items.forEach((it) => {
-      if (it.occasion) {
-        const arr = Array.isArray(it.occasion) ? it.occasion : [it.occasion];
-        arr.forEach((o) => o && occ.add(o));
-      }
-      if (it.mood) {
-        const arr = Array.isArray(it.mood) ? it.mood : [it.mood];
-        arr.forEach((m) => m && moods.add(m));
-      }
-      if (it.category) types.add(it.category);
-      if (it.gameType) types.add(it.gameType);
-
       const p = it.numberOfPlayers || it.players || it.playersRange || "";
       const norm = normalizePlayers(p);
       if (norm) {
@@ -64,9 +50,9 @@ export default function ShopWithFilters({
     });
 
     return {
-      occasions: Array.from(occ).sort(),
-      moods: Array.from(moods).sort(),
-      types: Array.from(types).sort(),
+      occasions: ["All", "party", "family", "corporate", "wedding", "kids"],
+      moods: ["fun", "strategic", "creative", "competitive", "relaxing"],
+      types: ["party", "family", "strategy", "adults only"],
       playerBuckets: Array.from(playerBuckets).sort(),
     };
   }, [items]);
@@ -187,21 +173,21 @@ export default function ShopWithFilters({
           {/* All filters kept inside panel */}
           <div className="space-y-6">
             {/* Occasion */}
-            {options.occasions.length > 0 && (
+            {options.occasions.length > 1 && (
               <div>
-                <div className="text-sm font-semibold mb-2">By occasion</div>
+                <div className="text-sm font-semibold mb-2">By Occasion</div>
                 <div className="flex flex-wrap gap-2">
-                  {options.occasions.map((o) => (
+                  {options.occasions.filter((o) => o !== "All").map((o) => (
                     <button
                       key={o}
                       onClick={() => toggleMulti(setOccasion, occasion, o)}
-                      className={`px-3 py-1 rounded-full border text-sm ${
+                      className={`px-3 py-1.5 rounded-full border text-sm font-medium transition-all ${
                         occasion.includes(o)
-                          ? "bg-gray-900 text-white"
-                          : "bg-white text-gray-800"
+                          ? "bg-[var(--color-font)] text-white border-[var(--color-font)]"
+                          : "bg-white text-[var(--color-font)] border-[var(--color-font)]/30 hover:border-[var(--color-font)]"
                       }`}
                     >
-                      {o}
+                      {o.charAt(0).toUpperCase() + o.slice(1)}
                     </button>
                   ))}
                 </div>
@@ -211,12 +197,13 @@ export default function ShopWithFilters({
             {/* Players */}
             <div>
               <div className="text-sm font-semibold mb-2">
-                By number of players
+                By Number of Players
               </div>
               <select
                 value={players}
                 onChange={(e) => setPlayers(e.target.value)}
-                className="rounded border px-3 py-2 text-sm w-full"
+                className="rounded border border-[var(--color-font)]/30 px-3 py-2 text-sm w-full focus:outline-none focus:border-[var(--color-font)] transition-colors"
+                style={{ color: "var(--color-font)" }}
               >
                 <option value="">All</option>
                 {options.playerBuckets.map((b) => (
@@ -230,19 +217,19 @@ export default function ShopWithFilters({
             {/* Mood */}
             {options.moods.length > 0 && (
               <div>
-                <div className="text-sm font-semibold mb-2">By mood / vibe</div>
+                <div className="text-sm font-semibold mb-2">By Mood / Vibe</div>
                 <div className="flex flex-wrap gap-2">
                   {options.moods.map((m) => (
                     <button
                       key={m}
                       onClick={() => toggleMulti(setMood, mood, m)}
-                      className={`px-3 py-1 rounded-full border text-sm ${
+                      className={`px-3 py-1.5 rounded-full border text-sm font-medium transition-all ${
                         mood.includes(m)
-                          ? "bg-gray-900 text-white"
-                          : "bg-white text-gray-800"
+                          ? "bg-[var(--color-font)] text-white border-[var(--color-font)]"
+                          : "bg-white text-[var(--color-font)] border-[var(--color-font)]/30 hover:border-[var(--color-font)]"
                       }`}
                     >
-                      {m}
+                      {m.charAt(0).toUpperCase() + m.slice(1)}
                     </button>
                   ))}
                 </div>
@@ -252,19 +239,19 @@ export default function ShopWithFilters({
             {/* Game Type */}
             {options.types.length > 0 && (
               <div>
-                <div className="text-sm font-semibold mb-2">By game type</div>
+                <div className="text-sm font-semibold mb-2">By Game Type</div>
                 <div className="flex flex-wrap gap-2">
                   {options.types.map((t) => (
                     <button
                       key={t}
                       onClick={() => toggleMulti(setGameType, gameType, t)}
-                      className={`px-3 py-1 rounded-full border text-sm ${
+                      className={`px-3 py-1.5 rounded-full border text-sm font-medium transition-all ${
                         gameType.includes(t)
-                          ? "bg-gray-900 text-white"
-                          : "bg-white text-gray-800"
+                          ? "bg-[var(--color-font)] text-white border-[var(--color-font)]"
+                          : "bg-white text-[var(--color-font)] border-[var(--color-font)]/30 hover:border-[var(--color-font)]"
                       }`}
                     >
-                      {t}
+                      {t.charAt(0).toUpperCase() + t.slice(1)}
                     </button>
                   ))}
                 </div>
