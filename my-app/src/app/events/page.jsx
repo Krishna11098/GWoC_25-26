@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Calendar from "@/components/Calendar";
@@ -285,20 +286,43 @@ export default function EventsCalendarPage() {
         <div className="flex flex-col gap-10">
           {/* Header Section */}
           <div className="space-y-4 transform-gpu">
-            <div
-              className={`transition-all duration-1000 ${
-                isInitialLoad
-                  ? "opacity-0 translate-y-8"
-                  : "opacity-100 translate-y-0"
-              }`}
-            >
-              <h1 className="text-4xl md:text-5xl font-bold text-font leading-tight">
-                Events Calendar
-              </h1>
-              <p className="mt-3 text-lg text-font/80 max-w-2xl">
+            <div className="mb-10 mt-2 text-center relative">
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.8,
+                  ease: "easeOut",
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 15,
+                }}
+                className="inline-flex flex-col items-center gap-2"
+              >
+                <h1 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
+                  <span className="text-black/80">Events</span>{" "}
+                  <span className="relative inline-block text-font drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                    Calendar
+                  </span>
+                </h1>
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "60px" }}
+                  transition={{ delay: 0.6, duration: 0.8 }}
+                  className="h-1.5 bg-font rounded-full mt-4 shadow-sm"
+                />
+              </motion.div>
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="mt-6 text-sm md:text-base text-gray-600"
+              >
                 Discover and join amazing events. Browse dates and see events
                 stored in Firebase Firestore.
-              </p>
+              </motion.p>
             </div>
 
             {/* Stats & Refresh Section */}
@@ -492,17 +516,17 @@ export default function EventsCalendarPage() {
                                     : "bg-gray-100/80"
                                 }`}
                               >
-                                  <span className="text-lg">
-                                    {event.category === "workshop" ? (
-                                      <Wrench size={20} />
-                                    ) : event.category === "seminar" ? (
-                                      <GraduationCap size={20} />
-                                    ) : event.category === "conference" ? (
-                                      <Users size={20} />
-                                    ) : (
-                                      <Target size={20} />
-                                    )}
-                                  </span>
+                                <span className="text-lg">
+                                  {event.category === "workshop" ? (
+                                    <Wrench size={20} />
+                                  ) : event.category === "seminar" ? (
+                                    <GraduationCap size={20} />
+                                  ) : event.category === "conference" ? (
+                                    <Users size={20} />
+                                  ) : (
+                                    <Target size={20} />
+                                  )}
+                                </span>
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="text-base font-bold truncate text-gray-800 hover:text-blue-600 transition-colors duration-300">
@@ -790,14 +814,26 @@ export default function EventsCalendarPage() {
                       label: "Date",
                       value: formatLongDate(selectedEvent.date),
                     },
-                    { icon: <Clock size={20} />, label: "Time", value: selectedEvent.time },
+                    {
+                      icon: <Clock size={20} />,
+                      label: "Time",
+                      value: selectedEvent.time,
+                    },
                     {
                       icon: <MapPin size={20} />,
                       label: "Location",
                       value: selectedEvent.location || selectedEvent.venue,
                     },
-                    { icon: <CircleDollarSign size={20} />, label: "Price", value: selectedEvent.price },
-                    { icon: <User size={20} />, label: "Host", value: selectedEvent.host },
+                    {
+                      icon: <CircleDollarSign size={20} />,
+                      label: "Price",
+                      value: selectedEvent.price,
+                    },
+                    {
+                      icon: <User size={20} />,
+                      label: "Host",
+                      value: selectedEvent.host,
+                    },
                     {
                       icon: <Armchair size={20} />,
                       label: "Seats",

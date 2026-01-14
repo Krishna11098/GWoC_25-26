@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { userFetch } from "@/lib/userFetch";
 import { auth } from "@/lib/firebaseClient";
 import Link from "next/link";
@@ -73,22 +74,43 @@ export default function SudokuPage() {
           ) : (
             <div>
               {/* Header */}
-              <div className="text-center mb-12">
-                <h1
-                  className="text-5xl md:text-6xl font-bold mb-4"
-                  style={{
-                    textShadow: "0 4px 20px rgba(0,0,0,0.25)",
+              <div className="mb-10 mt-2 text-center relative">
+                <motion.div
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.8,
+                    ease: "easeOut",
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 15,
                   }}
+                  className="inline-flex flex-col items-center gap-2"
                 >
-                  Sudoku Challenge
-                </h1>
-                <p
-                  className="text-lg max-w-2xl mx-auto"
-                  style={{ opacity: 0.9 }}
+                  <h1 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
+                    <span className="text-black/80">Sudoku</span>{" "}
+                    <span className="relative inline-block text-font drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                      Challenge
+                    </span>
+                  </h1>
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "60px" }}
+                    transition={{ delay: 0.6, duration: 0.8 }}
+                    className="h-1.5 bg-font rounded-full mt-4 shadow-sm"
+                  />
+                </motion.div>
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3, duration: 0.6 }}
+                  className="mt-6 text-sm md:text-base text-gray-600"
                 >
                   Test your logic and problem-solving skills. Choose a
                   difficulty level and start playing!
-                </p>
+                </motion.p>
               </div>
 
               {/* Difficulty Tabs */}

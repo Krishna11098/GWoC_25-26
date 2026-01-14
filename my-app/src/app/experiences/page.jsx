@@ -1,9 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BlogCard from "@/components/BlogCard";
 
 // Fixed categories from admin/create form
 const CATEGORIES = [
@@ -37,57 +39,63 @@ export default function ExperiencesLanding() {
   return (
     <>
       <Navbar />
-      <main className="mt-20">
-        {/* Hero */}
-        <section className="py-12 md:py-16">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h1
-                  className="text-3xl sm:text-4xl md:text-5xl font-extrabold"
-                  style={{ color: "var(--color-font)" }}
-                >
-                  Experiences
-                </h1>
-                <p
-                  className="mt-2 text-sm sm:text-base"
-                  style={{ color: "var(--color-font)" }}
-                >
-                  Curated live experiences, games and engagement formats.
-                </p>
-              </div>
-              {/* right-side CTA removed; See All Events moved to Themes section */}
-            </div>
-            <div className="overflow-x-auto no-scrollbar py-6">
-              <div
-                ref={sliderRef}
-                className="flex gap-6 items-stretch snap-x snap-mandatory px-2"
+      <main className="px-5 md:px-12 pt-5 pb-12 mt-32">
+        <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
+          {/* Hero Heading Section */}
+          <div className="mb-16">
+            <div className="mb-10 mt-2 text-center relative">
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.8,
+                  ease: "easeOut",
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 15,
+                }}
+                className="inline-flex flex-col items-center gap-2"
               >
-                {heroEvents.map((ev, i) => (
-                  <div
-                    key={ev.id}
-                    className="snap-center flex-shrink-0 w-[86%] sm:min-w-[320px] sm:max-w-[380px]"
-                  >
-                    <BlogCard post={{ ...ev }} index={i} hero />
-                  </div>
-                ))}
-              </div>
+                <h1 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
+                  <span className="text-black/80">Our</span>{" "}
+                  <span className="relative inline-block text-font drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                    Experiences
+                  </span>
+                </h1>
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "60px" }}
+                  transition={{ delay: 0.6, duration: 0.8 }}
+                  className="h-1.5 bg-font rounded-full mt-4 shadow-sm"
+                />
+              </motion.div>
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="mt-6 text-sm md:text-base text-gray-600"
+              >
+                Curated live experiences, games and engagement formats.
+              </motion.p>
             </div>
           </div>
-        </section>
 
-        {/* Themes */}
-        <section className="py-12 px-4 md:px-10">
-          <div className="mx-auto max-w-7xl">
-            <div className="flex items-center justify-between mb-4">
+          {/* Themes Section */}
+          <div className="mb-16">
+            <div className="flex items-center justify-between mb-8">
               <h2
-                className="text-2xl font-bold"
+                className="text-3xl md:text-4xl font-bold"
                 style={{ color: "var(--color-font)" }}
               >
                 Explore by Theme
               </h2>
-              <Link href="/experiences/events" className="font-medium">
-                see all event &gt;
+              <Link
+                href="/experiences/events"
+                className="font-semibold text-lg hover:opacity-75 transition"
+              >
+                See all &gt;
               </Link>
             </div>
 
@@ -96,7 +104,7 @@ export default function ExperiencesLanding() {
                 <Link
                   key={c.id}
                   href={`/experiences/events?category=${c.id}`}
-                  className={`w-full p-5 rounded-3xl border shadow-sm hover:shadow-lg transform hover:-translate-y-1 transition duration-200 flex items-start gap-4`}
+                  className="w-full p-5 rounded-3xl border shadow-sm hover:shadow-lg transform hover:-translate-y-1 transition duration-200 flex items-start gap-4 h-26"
                   style={{
                     backgroundColor: "var(--bg)",
                     borderColor: "rgba(0,0,0,0.06)",
@@ -104,14 +112,14 @@ export default function ExperiencesLanding() {
                 >
                   <div
                     style={{ backgroundColor: `var(${c.colorVar})` }}
-                    className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center text-2xl shadow-sm`}
+                    className="flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center text-2xl shadow-sm"
                   >
                     {c.icon}
                   </div>
                   <div className="flex flex-col">
                     <span
-                      className={`font-semibold text-lg`}
-                      style={{ color: `var(${c.colorVar})` }}
+                      className="font-semibold text-lg"
+                      style={{ color: "var(--color-font)" }}
                     >
                       {c.label}
                     </span>
@@ -126,11 +134,9 @@ export default function ExperiencesLanding() {
               ))}
             </div>
           </div>
-        </section>
 
-        {/* Contact Section for Custom Experiences */}
-        <section className="py-16 px-4 md:px-10 font-black">
-          <div className="mx-auto max-w-7xl">
+          {/* Contact Section for Custom Experiences */}
+          <div className="mb-16">
             <div
               className="rounded-3xl border shadow-lg p-8 md:p-12"
               style={{
@@ -190,7 +196,7 @@ export default function ExperiencesLanding() {
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </main>
       <Footer />
     </>
