@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { userFetch } from "@/lib/userFetch";
 import { auth } from "@/lib/firebaseClient";
@@ -112,21 +113,47 @@ export default function RiddlesPage() {
     <>
       <Navbar />
       <div
-        className="min-h-screen py-12 px-4 mt-26"
+        className="px-5 md:px-12 pt-5 pb-12 mt-32"
         style={{ color: "var(--color-font)" }}
       >
-        <div className="max-w-4xl mx-auto">
+        <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1
-              className="text-5xl font-bold mb-4 flex items-center justify-center gap-3"
-              style={{ color: "var(--color-font)" }}
+          <div className="mb-10 mt-2 text-center relative">
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.8,
+                ease: "easeOut",
+                type: "spring",
+                stiffness: 100,
+                damping: 15,
+              }}
+              className="inline-flex flex-col items-center gap-2"
             >
-              <Puzzle size={48} /> Riddle Challenge
-            </h1>
-            <p className="text-xl" style={{ color: "var(--color-font)" }}>
+              <h1 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
+                <span className="text-black/80">Riddle</span>{" "}
+                <span className="relative inline-block text-font drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                  Challenge
+                </span>
+              </h1>
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{ width: "60px" }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+                className="h-1.5 bg-font rounded-full mt-4 shadow-sm"
+              />
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="mt-6 text-sm md:text-base text-gray-600"
+            >
               Test your wit and earn coins!
-            </p>
+            </motion.p>
           </div>
 
           {error && (
@@ -203,7 +230,10 @@ export default function RiddlesPage() {
                         >
                           <div className="flex justify-center mb-4">
                             {result.correct ? (
-                              <PartyPopper size={64} className="text-green-500" />
+                              <PartyPopper
+                                size={64}
+                                className="text-green-500"
+                              />
                             ) : (
                               <CircleX size={64} className="text-red-500" />
                             )}

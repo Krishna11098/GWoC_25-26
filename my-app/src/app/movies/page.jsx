@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { userFetch } from "@/lib/userFetch";
 import { auth } from "@/lib/firebaseClient";
@@ -116,12 +117,44 @@ export default function MoviesPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen p-8 pt-32">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold py-2 flex items-center gap-3">
-              <Film size={40} /> Guess the Movie
-            </h1>
+      <div className="px-5 md:px-12 pt-5 pb-12 mt-32">
+        <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
+          <div className="mb-10 mt-2 text-center relative">
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.8,
+                ease: "easeOut",
+                type: "spring",
+                stiffness: 100,
+                damping: 15,
+              }}
+              className="inline-flex flex-col items-center gap-2"
+            >
+              <h1 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
+                <span className="text-black/80">Guess the</span>{" "}
+                <span className="relative inline-block text-font drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                  Movie
+                </span>
+              </h1>
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{ width: "60px" }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+                className="h-1.5 bg-font rounded-full mt-4 shadow-sm"
+              />
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="mt-6 text-sm md:text-base text-gray-600"
+            >
+              Test your movie knowledge and solve the mystery scenes!
+            </motion.p>
           </div>
 
           {error && (
@@ -254,7 +287,8 @@ export default function MoviesPage() {
                         </p>
                         {result.correct && result.coins > 0 && (
                           <p className="text-base mt-1 flex items-center gap-2">
-                            You earned {result.coins} coins <PartyPopper size={18} />
+                            You earned {result.coins} coins{" "}
+                            <PartyPopper size={18} />
                           </p>
                         )}
                       </div>

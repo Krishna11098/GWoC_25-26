@@ -268,7 +268,7 @@ export default function CreateExperiencePage() {
                     onChange={handleHeaderChange}
                     className="flex-1 px-4 py-3 rounded-2xl bg-white border border-slate-300 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-emerald-400"
                     placeholder="https://example.com/image.jpg"
-                  />
+                  />   
                   <label className="cursor-pointer flex-shrink-0">
                     <div className="px-4 py-3 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-700 hover:bg-emerald-100 transition text-sm font-medium whitespace-nowrap flex items-center justify-center">
                       {uploading ? <Loader2 className="animate-spin" size={18} /> : <Upload size={18} />}
