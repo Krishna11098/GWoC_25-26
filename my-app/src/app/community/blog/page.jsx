@@ -82,7 +82,7 @@ export default function CommunityBlogPage() {
     <>
       <Navbar />
       <div className="px-5 md:px-12 pt-5 pb-12 mt-32">
-        <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
+        {/*<div className="mx-auto w-full max-w-6xl px-4 md:px-10">
           <div className="mb-10 mt-2 text-center relative">
             <motion.div
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -120,7 +120,7 @@ export default function CommunityBlogPage() {
               Discover stories and insights from our amazing community.
             </motion.p>
           </div>
-        </div>
+        </div>*/}
         <BlogPage blogPosts={blogPosts} />
       </div>
       <Footer />
