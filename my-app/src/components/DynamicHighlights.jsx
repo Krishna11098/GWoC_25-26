@@ -180,10 +180,25 @@ export default function DynamicHighlights() {
     >
       {/* ================= UPCOMING EVENTS ================= */}
       <motion.div variants={itemVariants} className="text-center">
-        <h2 className="text-3xl md:text-4xl font-bold">Upcoming Events</h2>
-        <p className="mt-2 text-sm md:text-base opacity-80">
-          Don’t miss what’s happening next
-        </p>
+        <motion.h2
+          className="text-3xl md:text-5xl font-black"
+          style={{
+            background: "linear-gradient(135deg, #a855f7, #ec4899, #f43f5e)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
+          Upcoming Events
+        </motion.h2>
+        <motion.p
+          className="mt-2 text-sm md:text-base font-semibold"
+          style={{ color: "var(--color-font)" }}
+          animate={{ opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
+          ✨ Don't miss what's happening next ✨
+        </motion.p>
 
         <div className="relative mt-8 md:mt-10">
           {/* Navigation Arrows */}
@@ -213,31 +228,69 @@ export default function DynamicHighlights() {
                       href={`/events/${e.id}`}
                       className="min-w-full px-1 md:px-2"
                     >
-                      <div
-                        className="rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-8 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-[6px] border-white/40 relative overflow-hidden group/card hover:border-white/80"
+                      <motion.div
+                        className="rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-8 shadow-2xl transition-all duration-500 border-[3px] relative overflow-hidden group/card"
                         style={{
                           backgroundColor:
                             themeColors[events.indexOf(e) % themeColors.length],
+                          borderColor: "rgba(255,255,255,0.6)",
+                        }}
+                        whileHover={{
+                          scale: 1.02,
+                          boxShadow: "0 30px 60px rgba(168, 85, 247, 0.4)",
+                          borderColor: "rgba(255,255,255,0.9)",
                         }}
                       >
-                        {/* Inner Shine Effect */}
-                        <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 shadow-inner" />
+                        {/* Animated gradient overlay */}
+                        <motion.div
+                          className="absolute inset-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500"
+                          style={{
+                            background:
+                              "linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1))",
+                          }}
+                          animate={{
+                            backgroundPosition: ["0% 0%", "100% 100%"],
+                          }}
+                          transition={{ duration: 3, repeat: Infinity }}
+                        />
 
-                        <h3 className="text-xl md:text-2xl font-black text-white relative z-10 drop-shadow-md">
+                        {/* Shine effect */}
+                        <motion.div
+                          className="absolute inset-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500"
+                          style={{
+                            background:
+                              "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
+                          }}
+                          animate={{ x: ["100%", "-100%"] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+
+                        <motion.h3
+                          className="text-xl md:text-2xl font-black text-white relative z-10 drop-shadow-md"
+                          initial={{ y: 0 }}
+                          whileHover={{ y: -5 }}
+                        >
                           {e.title || e.name}
-                        </h3>
-                        <p className="mt-2 text-sm md:text-base text-white relative z-10 font-medium">
-                          {e.location || "TBA"}
-                        </p>
-                        <p className="mt-3 text-xs md:text-sm text-white/80 relative z-10 font-bold uppercase tracking-wider">
-                          {new Date(e.date).toLocaleDateString()}
-                        </p>
+                        </motion.h3>
+                        <motion.p
+                          className="mt-2 text-sm md:text-base text-white relative z-10 font-semibold"
+                          style={{ textShadow: "0 2px 4px rgba(0,0,0,0.2)" }}
+                        >
+                          📍 {e.location || "TBA"}
+                        </motion.p>
+                        <motion.p className="mt-3 text-xs md:text-sm text-white/90 relative z-10 font-bold uppercase tracking-wider">
+                          🗓️ {new Date(e.date).toLocaleDateString()}
+                        </motion.p>
                         <div className="mt-6 flex items-center justify-center relative z-10">
-                          <span className="bg-white px-8 py-2.5 rounded-full text-xs md:text-sm font-black text-slate-800 shadow-lg group-hover/card:scale-110 transition-transform duration-300">
-                            View Details
-                          </span>
+                          <motion.span
+                            className="bg-white px-8 py-2.5 rounded-full text-xs md:text-sm font-black text-slate-800 shadow-lg"
+                            whileHover={{ scale: 1.1, y: -3 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            View Details →
+                          </motion.span>
                         </div>
-                      </div>
+                      </motion.div>
                     </Link>
                   ))}
             </div>
@@ -250,17 +303,15 @@ export default function DynamicHighlights() {
             {events.map((_, i) => (
               <span
                 key={i}
-                className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${
-                  i === eventIndex
-                    ? "bg-[var(--font)] w-8"
-                    : "bg-[var(--font)] opacity-20"
+                className={`h-2.5 w-2.5 rounded-full transition-all duration-300 bg-font ${
+                  i === eventIndex ? "w-8" : "opacity-20"
                 }`}
               />
             ))}
           </div>
           <Link
             href="/events"
-            className="inline-block bg-[var(--font)] text-bg px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all"
+            className="inline-block bg-font text-bg px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all"
           >
             View All Events
           </Link>
@@ -269,10 +320,25 @@ export default function DynamicHighlights() {
 
       {/* ================= PLAY SPOTLIGHT ================= */}
       <motion.div variants={itemVariants} className="text-center">
-        <h2 className="text-3xl md:text-4xl font-bold">Play Spotlight</h2>
-        <p className="mt-2 text-sm md:text-base opacity-80">
-          Pick up where the fun begins
-        </p>
+        <motion.h2
+          className="text-3xl md:text-5xl font-black"
+          style={{
+            background: "linear-gradient(135deg, #ec4899, #a855f7, #0ea5e9)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
+          Play Spotlight
+        </motion.h2>
+        <motion.p
+          className="mt-2 text-sm md:text-base font-semibold"
+          style={{ color: "var(--color-font)" }}
+          animate={{ opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
+          🎮 Pick up where the fun begins 🎮
+        </motion.p>
 
         <div className="relative mt-8 md:mt-12">
           {/* Navigation Arrows */}
@@ -296,32 +362,90 @@ export default function DynamicHighlights() {
             >
               {games.map((g, i) => (
                 <Link key={i} href={g.href} className="min-w-full px-2 md:px-4">
-                  <div
-                    className="rounded-[2.5rem] md:rounded-[3.5rem] p-10 md:p-14 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-[6px] border-white/40 relative overflow-hidden group/game hover:border-white/80"
+                  <motion.div
+                    className="rounded-[2.5rem] md:rounded-[3.5rem] p-10 md:p-14 shadow-2xl transition-all duration-500 border-[3px] relative overflow-hidden group/game"
                     style={{
                       backgroundColor: themeColors[i % themeColors.length],
+                      borderColor: "rgba(255,255,255,0.6)",
+                    }}
+                    whileHover={{
+                      scale: 1.03,
+                      boxShadow: "0 40px 80px rgba(168, 85, 247, 0.4)",
+                      borderColor: "rgba(255,255,255,0.9)",
                     }}
                   >
+                    {/* Animated gradient background */}
+                    <motion.div
+                      className="absolute inset-0 opacity-0 group-hover/game:opacity-100 transition-opacity duration-500"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05))",
+                      }}
+                    />
+
+                    {/* Premium shine effect */}
+                    <motion.div
+                      className="absolute inset-0 opacity-0 group-hover/game:opacity-100"
+                      style={{
+                        background:
+                          "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
+                      }}
+                      animate={{ x: ["100%", "-100%"] }}
+                      transition={{ duration: 2.5, repeat: Infinity }}
+                    />
+
                     <div className="relative z-10">
-                      <div className="text-9xl md:text-[10rem] animate-float drop-shadow-2xl flex justify-center">
+                      <motion.div
+                        className="text-9xl md:text-[10rem] drop-shadow-2xl flex justify-center"
+                        animate={{ y: [0, -15, 0], rotate: [0, 5, -5, 0] }}
+                        transition={{
+                          duration: 3.5,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                      >
                         {g.emoji}
-                      </div>
-                      <h3 className="mt-4 text-2xl md:text-4xl font-black text-white drop-shadow-md">
+                      </motion.div>
+
+                      <motion.h3
+                        className="mt-4 text-2xl md:text-4xl font-black text-white drop-shadow-md"
+                        whileHover={{ scale: 1.05, y: -5 }}
+                      >
                         {g.title}
-                      </h3>
-                      <p className="mt-4 text-sm md:text-xl text-white font-medium max-w-md mx-auto leading-relaxed">
+                      </motion.h3>
+
+                      <motion.p
+                        className="mt-4 text-sm md:text-xl text-white font-semibold max-w-md mx-auto leading-relaxed"
+                        style={{ textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}
+                      >
                         {g.desc}
-                      </p>
+                      </motion.p>
+
                       <div className="mt-10">
-                        <span className="inline-block bg-white text-slate-800 px-12 py-4 rounded-full font-black text-lg shadow-2xl transform group-hover/game:scale-110 active:scale-95 transition-all duration-300">
+                        <motion.button
+                          className="inline-block bg-white text-slate-800 px-12 py-4 rounded-full font-black text-lg shadow-2xl"
+                          whileHover={{ scale: 1.12, y: -5 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
                           Play now →
-                        </span>
+                        </motion.button>
                       </div>
                     </div>
-                    {/* Subtle Background Glows */}
-                    <div className="absolute -top-10 -left-10 w-48 h-48 bg-white/5 rounded-full blur-3xl" />
-                    <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl group-hover/game:bg-white/30 transition-colors" />
-                  </div>
+
+                    {/* Premium glowing orbs */}
+                    <motion.div
+                      className="absolute -top-10 -left-10 w-48 h-48 rounded-full blur-3xl opacity-20 group-hover/game:opacity-40 transition-opacity"
+                      style={{ background: "rgba(255,255,255,0.8)" }}
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    />
+                    <motion.div
+                      className="absolute -bottom-20 -right-20 w-80 h-80 rounded-full blur-3xl opacity-10 group-hover/game:opacity-30 transition-opacity"
+                      style={{ background: "rgba(255,255,255,1)" }}
+                      animate={{ scale: [1.2, 1, 1.2] }}
+                      transition={{ duration: 4, repeat: Infinity }}
+                    />
+                  </motion.div>
                 </Link>
               ))}
             </div>
@@ -334,10 +458,8 @@ export default function DynamicHighlights() {
             {games.map((_, i) => (
               <span
                 key={i}
-                className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${
-                  i === gameIndex
-                    ? "bg-[var(--font)] w-8"
-                    : "bg-[var(--font)] opacity-20"
+                className={`h-2.5 w-2.5 rounded-full transition-all duration-300 bg-font ${
+                  i === gameIndex ? "w-8" : "opacity-20"
                 }`}
               />
             ))}

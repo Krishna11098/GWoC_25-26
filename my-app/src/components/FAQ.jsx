@@ -74,30 +74,67 @@ export default function FAQ() {
           variants={itemVariants}
           className="relative mx-auto max-w-3xl text-center space-y-6"
         >
-          <p className="relative text-[11px] uppercase tracking-[0.4em]">
+          <motion.p
+            className="relative text-[11px] uppercase tracking-[0.4em] font-bold"
+            style={{ color: "var(--color-font)" }}
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          >
             Uh huh we know you have questions!!
-          </p>
+          </motion.p>
 
-          <h2 className="relative text-3xl md:text-4xl font-extrabold tracking-tight">
+          <motion.h2
+            className="relative text-3xl md:text-5xl font-black tracking-tight"
+            style={{ color: "var(--color-font)" }}
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             MOST ASKED…
-            <span className="block">or shall we say.. MOST DOUBTED</span>
-          </h2>
+            <motion.span
+              className="block text-2xl md:text-3xl mt-2"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              or shall we say.. MOST DOUBTED
+            </motion.span>
+          </motion.h2>
 
-          {/* OFF-CENTER ACCENT */}
-          <div className="relative mx-auto h-1 w-20 rounded-full bg-black translate-x-6" />
+          {/* Accent bar */}
+          <motion.div
+            className="relative mx-auto h-1.5 w-24 rounded-full translate-x-6"
+            style={{ background: "var(--color-green)" }}
+            animate={{ width: [80, 110, 80], opacity: [0.8, 1, 0.8] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          />
         </motion.div>
 
         {/* ================= FAQ CARD ================= */}
         <motion.div
           variants={itemVariants}
           className="
-            w-full overflow-hidden rounded-2xl
-            border border-white/40 bg-white backdrop-blur-md
-            shadow-[0_25px_70px_rgba(0,0,0,0.25)]
-            transition-transform duration-300
-            hover:-translate-y-1
+            w-full overflow-hidden rounded-3xl
+            border-2 bg-white
+            shadow-lg
+            transition-all duration-300
+            hover:shadow-2xl hover:-translate-y-2
           "
+          style={{
+            borderColor: "var(--color-green)",
+            position: "relative",
+          }}
         >
+          {/* Shimmer overlay effect */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, rgba(203, 216, 172, 0.3), transparent)",
+              width: "30%",
+            }}
+            animate={{ x: ["-100%", "500%"] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          />
           {faqs.map((item, idx) => {
             const open = openIndex === idx;
 
@@ -108,41 +145,103 @@ export default function FAQ() {
               >
                 <button
                   onClick={() => setOpenIndex(open ? -1 : idx)}
-                  className={`w-full flex items-start justify-between gap-4 px-7 md:px-8 py-6 text-left transition-all duration-300
-                    ${
-                      open
-                        ? "bg-green/80 font-bold underline"
-                        : "hover:bg-black/5"
-                    }
-                  `}
+                  className={`w-full flex items-start justify-between gap-4 px-7 md:px-8 py-5 text-left transition-all duration-300 relative group ${
+                    open ? "bg-green/20" : "hover:bg-green/5"
+                  }`}
                 >
-                  <span className="text-base md:text-lg font-semibold">
+                  {/* Animated left bar */}
+                  <motion.div
+                    className="absolute left-0 top-0 bottom-0 w-1.5"
+                    style={{ background: "var(--color-green)" }}
+                    initial={{ scaleY: 0, opacity: 0 }}
+                    animate={{ scaleY: open ? 1 : 0, opacity: open ? 1 : 0.5 }}
+                    transition={{
+                      duration: 0.4,
+                      type: "spring",
+                      stiffness: 80,
+                    }}
+                  />
+
+                  {/* Animated top bar when open */}
+                  <motion.div
+                    className="absolute top-0 left-0 right-0 h-0.5"
+                    style={{ background: "var(--color-green)" }}
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    animate={{ scaleX: open ? 1 : 0, opacity: open ? 1 : 0 }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
+                  />
+
+                  <span
+                    className="text-base md:text-lg font-semibold"
+                    style={{ color: "var(--color-font)" }}
+                  >
                     {item.question}
                   </span>
 
-                  <span
-                    className={`text-xl transition-transform duration-300 ${
-                      open ? "rotate-180 text-font" : "text-black/60"
-                    }`}
+                  <motion.span
+                    className="text-lg shrink-0"
+                    style={{
+                      color: open ? "var(--color-green)" : "var(--color-font)",
+                    }}
+                    animate={{ rotate: open ? 180 : 0, scale: open ? 1.2 : 1 }}
+                    transition={{
+                      duration: 0.3,
+                      type: "spring",
+                      stiffness: 200,
+                    }}
                   >
                     ⌄
-                  </span>
+                  </motion.span>
                 </button>
 
                 {/* ANSWER ANIMATION */}
-                <div
+                <motion.div
                   className={`grid transition-all duration-300 ease-out ${
                     open
                       ? "grid-rows-[1fr] opacity-100"
                       : "grid-rows-[0fr] opacity-0"
                   }`}
                 >
-                  <div className="overflow-hidden">
-                    <div className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed font-bold bg-green/80">
-                      {item.answer}
+                  <motion.div
+                    className="overflow-hidden"
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={
+                      open ? { y: 0, opacity: 1 } : { y: -20, opacity: 0 }
+                    }
+                    transition={{
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 120,
+                      damping: 20,
+                    }}
+                  >
+                    <div
+                      className="px-7 md:px-8 py-6 text-sm md:text-base leading-relaxed border-l-4 relative"
+                      style={{
+                        color: "var(--color-font)",
+                        backgroundColor: "rgba(203, 216, 172, 0.12)",
+                        borderLeftColor: "var(--color-green)",
+                      }}
+                    >
+                      {/* Gradient shimmer on answer */}
+                      <motion.div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          background:
+                            "linear-gradient(90deg, rgba(255,255,255,0), rgba(203, 216, 172, 0.2), rgba(255,255,255,0))",
+                          width: "40%",
+                        }}
+                        animate={{ x: ["-100%", "300%"] }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                      />
+                      <span className="relative z-10">{item.answer}</span>
                     </div>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               </div>
             );
           })}

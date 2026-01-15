@@ -17,27 +17,18 @@ export default function AboutPage() {
         <StorySection>
           <StoryHero />
           <div className="space-y-12">
-            <StoryBlock
-              title="No Grand Origin Story"
-              bgColor="var(--color-pink)"
-            >
+            <StoryBlock title="No Grand Origin Story" position="left">
               Honestly? There's no dramatic lifelong passion here—just two
               people who discovered they're great at creating chaos, laughter,
               and competitive tension.
             </StoryBlock>
 
-            <StoryBlock
-              title="The Wrong Family Business"
-              bgColor="var(--color-orange)"
-            >
+            <StoryBlock title="The Wrong Family Business" position="right">
               Textiles and electricals? Thrilling. But we chose confusion,
               creativity, and entrepreneurship instead. No roadmap. Just vibes.
             </StoryBlock>
 
-            <StoryBlock
-              title="From Random Ideas to Real Games"
-              bgColor="var(--color-green)"
-            >
+            <StoryBlock title="From Random Ideas to Real Games" position="left">
               Somewhere between arguing over rules and laughing at bad
               strategies, Joy Juncture was born.
             </StoryBlock>
