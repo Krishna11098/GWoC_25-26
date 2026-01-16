@@ -46,6 +46,8 @@
   --color-dark-teal: var(--dark-teal);
   --color-light-orange: var(--light-orange);
   --color-black: var(--black);
+  --color-light-pink: var(--light-pink);
+  --color-light-blue: var(--light-blue);
 }
 
 body {

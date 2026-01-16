@@ -13,15 +13,11 @@ export default function AboutHero() {
         className="max-w-4xl text-center flex flex-col justify-center pb-5"
       >
         <h1 className="text-5xl md:text-7xl font-bold mb-6">
-          Our{" "}
-          <span style={{ color: "var(--color-font)" }}>
-            Accidentally Awesome
-          </span>{" "}
-          Story
+          Our <span className="text-dark-teal">Accidentally Awesome</span> Story
         </h1>
         <p className="text-xl">
           No legacies. No rulebooks.{" "}
-          <span style={{ color: "var(--color-font)" }}>Just fun</span>.
+          <span className="text-dark-teal">Just fun</span>.
         </p>
       </motion.div>
     </section>
