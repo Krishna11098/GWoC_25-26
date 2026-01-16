@@ -742,7 +742,7 @@ export default function EventsCalendarPage() {
 
       {/* Event Details Modal */}
       {selectedEvent && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 md:px-8 modal-shell">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 modal-shell">
           <div
             className={`absolute inset-0 bg-black/60 backdrop-blur-sm modal-overlay ${
               isModalVisible ? "overlay-enter" : "overlay-exit"
@@ -751,7 +751,7 @@ export default function EventsCalendarPage() {
           />
           <div
             ref={modalRef}
-            className={`relative max-w-3xl w-full rounded-2xl border-2 border-[var(--dark-teal)]/30 shadow-xl overflow-hidden modal-card ${
+            className={`relative w-full max-w-3xl rounded-2xl border shadow-xl modal-card max-h-[85vh] flex flex-col ${
               isModalVisible ? "modal-enter" : "modal-exit"
             }`}
             style={{
@@ -759,18 +759,11 @@ export default function EventsCalendarPage() {
               color: "var(--black)",
             }}
           >
-            <div className="relative p-6 md:p-8">
-              <button
-                onClick={closeModal}
-                className="absolute right-4 top-4 w-8 h-8 flex items-center justify-center rounded-full bg-[var(--light-pink)] text-[var(--dark-teal)] hover:bg-[var(--light-orange)] transition-colors duration-300"
-                aria-label="Close event details"
-              >
-                <X size={20} />
-              </button>
-
-              <div className="space-y-6">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-[var(--light-orange)] rounded-lg text-[var(--dark-teal)]">
+            {/* Header - Fixed */}
+            <div className="p-4 md:p-6 border-b border-[var(--font)]/10 flex items-start justify-between flex-shrink-0 gap-4">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-2 bg-[var(--green)]/30 rounded-lg flex-shrink-0">
                     <span className="text-xl">
                       {selectedEvent.category === "workshop" ? (
                         <Wrench size={24} />
@@ -784,7 +777,7 @@ export default function EventsCalendarPage() {
                     </span>
                   </div>
                   <span
-                    className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest ${
+                    className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest flex-shrink-0 ${
                       selectedEvent.dateValue >= new Date()
                         ? "bg-[var(--light-pink)] text-[var(--dark-teal)] shadow-sm"
                         : "bg-[var(--font)]/20 text-[var(--font)]"
@@ -795,110 +788,120 @@ export default function EventsCalendarPage() {
                       : "PAST EVENT"}
                   </span>
                 </div>
-
-                <h3 className="text-3xl font-black text-[var(--black)]">
+                <h3 className="text-xl md:text-2xl font-black text-[var(--font)] break-words">
                   {selectedEvent.title || selectedEvent.name}
                 </h3>
+              </div>
+              <button
+                onClick={closeModal}
+                className="h-8 w-8 md:h-10 md:w-10 flex items-center justify-center rounded-full bg-[var(--font)]/10 text-[var(--font)] hover:bg-[var(--font)]/20 flex-shrink-0"
+                aria-label="Close event details"
+              >
+                <X size={20} />
+              </button>
+            </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    {
-                      icon: <CalendarIcon size={20} />,
-                      label: "Date",
-                      value: formatLongDate(selectedEvent.date),
-                    },
-                    {
-                      icon: <Clock size={20} />,
-                      label: "Time",
-                      value: selectedEvent.time,
-                    },
-                    {
-                      icon: <MapPin size={20} />,
-                      label: "Location",
-                      value: selectedEvent.location || selectedEvent.venue,
-                    },
-                    {
-                      icon: <CircleDollarSign size={20} />,
-                      label: "Price",
-                      value: selectedEvent.price,
-                    },
-                    {
-                      icon: <User size={20} />,
-                      label: "Host",
-                      value: selectedEvent.host,
-                    },
-                    {
-                      icon: <Armchair size={20} />,
-                      label: "Seats",
-                      value: `${selectedEvent.availableSeats} of ${selectedEvent.totalSeats} available`,
-                    },
-                  ].map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-3 p-4 bg-white border border-[var(--dark-teal)]/15 rounded-xl"
-                    >
-                      <span className="text-[var(--dark-teal)] drop-shadow-sm">
-                        {item.icon}
-                      </span>
-                      <div>
-                        <div className="text-[10px] font-black text-[var(--dark-teal)]/50 uppercase tracking-widest">
-                          {item.label}
-                        </div>
-                        <div className="font-bold text-[var(--dark-teal)]">
-                          {item.value}
-                        </div>
+            {/* Scrollable Content Area */}
+            <div className="overflow-y-auto flex-1 p-4 md:p-6 space-y-4 md:space-y-6">
+              {/* Details Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                {[
+                  {
+                    icon: <CalendarIcon size={20} />,
+                    label: "Date",
+                    value: formatLongDate(selectedEvent.date),
+                  },
+                  {
+                    icon: <Clock size={20} />,
+                    label: "Time",
+                    value: selectedEvent.time,
+                  },
+                  {
+                    icon: <MapPin size={20} />,
+                    label: "Location",
+                    value: selectedEvent.location || selectedEvent.venue,
+                  },
+                  {
+                    icon: <CircleDollarSign size={20} />,
+                    label: "Price",
+                    value: selectedEvent.price,
+                  },
+                  {
+                    icon: <User size={20} />,
+                    label: "Host",
+                    value: selectedEvent.host,
+                  },
+                  {
+                    icon: <Armchair size={20} />,
+                    label: "Seats",
+                    value: `${selectedEvent.availableSeats} of ${selectedEvent.totalSeats} available`,
+                  },
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start gap-3 p-3 md:p-4 bg-white/40 border border-[var(--font)]/5 rounded-xl"
+                  >
+                    <span className="text-blue-600 drop-shadow-sm flex-shrink-0 mt-0.5">
+                      {item.icon}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[10px] font-black text-[var(--font)]/50 uppercase tracking-widest mb-1">
+                        {item.label}
+                      </div>
+                      <div className="font-bold text-[var(--font)] break-words text-sm md:text-base">
+                        {item.value}
                       </div>
                     </div>
-                  ))}
-                </div>
-
-                {selectedEvent.description && (
-                  <div className="mt-4">
-                    <div className="rounded-xl p-5 bg-white border border-[var(--dark-teal)]/15">
-                      <p className="text-[10px] font-black text-[var(--font)]/50 uppercase tracking-widest mb-2">
-                        Description
-                      </p>
-                      <p className="text-[var(--dark-teal)]/90 leading-relaxed font-medium">
-                        {selectedEvent.description}
-                      </p>
-                    </div>
                   </div>
-                )}
+                ))}
+              </div>
 
-                <div className="mt-6 flex gap-4 flex-wrap">
-                  {/* Get Directions Button */}
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                      selectedEvent.location || selectedEvent.venue || ""
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-8 py-3.5 bg-[var(--light-orange)] text-[var(--dark-teal)] rounded-xl hover:bg-[var(--color-orange)] hover:scale-105 active:scale-95 transition-all font-black flex items-center gap-2 shadow-lg border-2 border-[var(--dark-teal)]/20"
-                  >
-                    <MapPin size={20} /> Get Directions
-                  </a>
-
-                  {selectedEvent.dateValue >= new Date() && (
-                    <>
-                      {selectedEvent.availableSeats > 0 ? (
-                        <a
-                          href={`/events/${selectedEvent.id}`}
-                          onClick={closeModal}
-                          className="px-8 py-3.5 bg-[var(--light-pink)] text-[var(--dark-teal)] rounded-xl hover:bg-[var(--color-pink)] hover:scale-105 active:scale-95 transition-all font-black shadow-lg border-2 border-[var(--dark-teal)]/20"
-                        >
-                          Book Now
-                        </a>
-                      ) : (
-                        <button
-                          disabled
-                          className="px-8 py-3.5 bg-[var(--font)]/20 text-[var(--black)]/50 rounded-xl font-black cursor-not-allowed border-2 border-[var(--font)]/10"
-                        >
-                          Sold Out
-                        </button>
-                      )}
-                    </>
-                  )}
+              {/* Description */}
+              {selectedEvent.description && (
+                <div className="rounded-xl p-4 md:p-5 bg-white/40 border border-[var(--font)]/5">
+                  <p className="text-[10px] font-black text-[var(--font)]/50 uppercase tracking-widest mb-2">
+                    Description
+                  </p>
+                  <p className="text-[var(--font)]/90 leading-relaxed font-medium text-sm md:text-base break-words">
+                    {selectedEvent.description}
+                  </p>
                 </div>
+              )}
+
+              {/* Buttons - Inside scrollable area */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                {/* Get Directions Button */}
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                    selectedEvent.location || selectedEvent.venue || ""
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 md:px-8 py-3 md:py-3.5 bg-[var(--orange)] text-[var(--font)] rounded-xl hover:scale-105 active:scale-95 transition-all font-black flex items-center justify-center gap-2 shadow-lg border-2 border-[var(--font)]/10 flex-1 sm:flex-none text-sm md:text-base"
+                >
+                  <MapPin size={18} /> Get Directions
+                </a>
+
+                {selectedEvent.dateValue >= new Date() && (
+                  <>
+                    {selectedEvent.availableSeats > 0 ? (
+                      <a
+                        href={`/events/${selectedEvent.id}`}
+                        onClick={closeModal}
+                        className="px-6 md:px-8 py-3 md:py-3.5 bg-[var(--green)] text-[var(--font)] rounded-xl hover:scale-105 active:scale-95 transition-all font-black shadow-lg border-2 border-[var(--font)]/10 flex-1 sm:flex-none text-center text-sm md:text-base"
+                      >
+                        Book Now
+                      </a>
+                    ) : (
+                      <button
+                        disabled
+                        className="px-6 md:px-8 py-3 md:py-3.5 bg-[var(--font)]/20 text-[var(--font)]/50 rounded-xl font-black cursor-not-allowed border-2 border-[var(--font)]/10 flex-1 sm:flex-none text-sm md:text-base"
+                      >
+                        Sold Out
+                      </button>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>
