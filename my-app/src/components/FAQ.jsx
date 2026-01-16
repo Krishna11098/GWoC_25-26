@@ -74,17 +74,26 @@ export default function FAQ() {
           variants={itemVariants}
           className="relative mx-auto max-w-3xl text-center space-y-6"
         >
-          <p className="relative text-[11px] uppercase tracking-[0.4em]">
+          <p
+            className="relative text-[11px] uppercase tracking-[0.4em]"
+            style={{ color: "var(--dark-teal)" }}
+          >
             Uh huh we know you have questions!!
           </p>
 
-          <h2 className="relative text-3xl md:text-4xl font-extrabold tracking-tight">
+          <h2
+            className="relative text-3xl md:text-4xl font-extrabold tracking-tight"
+            style={{ color: "var(--dark-teal)" }}
+          >
             MOST ASKED…
             <span className="block">or shall we say.. MOST DOUBTED</span>
           </h2>
 
           {/* OFF-CENTER ACCENT */}
-          <div className="relative mx-auto h-1 w-20 rounded-full bg-black translate-x-6" />
+          <div
+            className="relative mx-auto h-1 w-20 rounded-full translate-x-6"
+            style={{ backgroundColor: "var(--dark-teal)" }}
+          />
         </motion.div>
 
         {/* ================= FAQ CARD ================= */}
@@ -109,12 +118,16 @@ export default function FAQ() {
                 <button
                   onClick={() => setOpenIndex(open ? -1 : idx)}
                   className={`w-full flex items-start justify-between gap-4 px-7 md:px-8 py-6 text-left transition-all duration-300
-                    ${
-                      open
-                        ? "bg-green/80 font-bold underline"
-                        : "hover:bg-black/5"
-                    }
+                    ${open ? "font-bold underline" : "hover:bg-black/5"}
                   `}
+                  style={
+                    open
+                      ? {
+                          backgroundColor: "var(--light-orange)",
+                          color: "var(--dark-teal)",
+                        }
+                      : { color: "var(--dark-teal)" }
+                  }
                 >
                   <span className="text-base md:text-lg font-semibold">
                     {item.question}
@@ -122,8 +135,11 @@ export default function FAQ() {
 
                   <span
                     className={`text-xl transition-transform duration-300 ${
-                      open ? "rotate-180 text-font" : "text-black/60"
+                      open ? "rotate-180" : ""
                     }`}
+                    style={{
+                      color: open ? "var(--dark-teal)" : "var(--dark-teal)/60",
+                    }}
                   >
                     ⌄
                   </span>
@@ -138,7 +154,13 @@ export default function FAQ() {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed font-bold bg-green/80">
+                    <div
+                      className="px-7 md:px-8 pb-6 text-sm md:text-base leading-relaxed font-bold"
+                      style={{
+                        backgroundColor: "var(--light-orange)",
+                        color: "var(--dark-teal)",
+                      }}
+                    >
                       {item.answer}
                     </div>
                   </div>

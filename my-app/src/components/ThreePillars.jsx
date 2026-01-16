@@ -1,5 +1,6 @@
 "use client";
 import React, { useLayoutEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -7,28 +8,28 @@ const cardsData = [
   {
     id: 1,
     title: "Play at Home",
-    color: "bg-[#cbd8ac]",
+    color: "bg-[#FA9660]",
     bgPos: "0% 50%",
     image: "/pillars/home.png",
   },
   {
     id: 2,
     title: "Play Together",
-    color: "bg-[#f7d57c]",
+    color: "bg-[#A5C5F2]",
     bgPos: "33.3% 50%",
     image: "/pillars/together.png",
   },
   {
     id: 3,
     title: "Play for Occasions",
-    color: "bg-[#f5cfc2]",
+    color: "bg-[#FF9FC8]",
     bgPos: "66.6% 50%",
     image: "/pillars/occasions.png",
   },
   {
     id: 4,
-    title: "Play and Earn Points",
-    color: "bg-[#d1d1d1]",
+    title: "Play and Earn",
+    color: "bg-[#f7d57c]",
     bgPos: "100% 50%",
     image: "/pillars/earn.png",
   },
@@ -51,9 +52,9 @@ export default function ThreePillars() {
 
   const mobileGridPositions = [
     { x: -82, y: -115 }, // Top Left
-    { x: 82, y: -115 },  // Top Right
-    { x: -82, y: 115 },  // Bottom Left
-    { x: 82, y: 115 },   // Bottom Right
+    { x: 82, y: -115 }, // Top Right
+    { x: -82, y: 115 }, // Bottom Left
+    { x: 82, y: 115 }, // Bottom Right
   ];
 
   useLayoutEffect(() => {
@@ -148,9 +149,38 @@ export default function ThreePillars() {
       //     backgroundColor: "var(--bg)",
       //   }}
     >
-      <h2 className="text-font text-4xl md:text-5xl font-winky-rough mb-2 z-10 text-center px-1 max-w-2xl">
-        <span className="text-black">Choose your</span> playstyle
-      </h2>
+      <div className="mb-8 z-10 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{
+            duration: 0.8,
+            ease: "easeOut",
+            type: "spring",
+            stiffness: 100,
+            damping: 15,
+          }}
+          className="inline-flex flex-col items-center gap-2"
+        >
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-winky-rough tracking-tight leading-none">
+            <span style={{ color: "var(--black)" }}>Choose your</span>{" "}
+            <span
+              className="relative inline-block drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]"
+              style={{ color: "var(--dark-teal)" }}
+            >
+              playstyle
+            </span>
+          </h2>
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: "60px" }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="h-1.5 rounded-full mt-4 shadow-sm"
+            style={{ backgroundColor: "var(--dark-teal)" }}
+          />
+        </motion.div>
+      </div>
 
       <div
         className="relative w-full max-w-4xl h-[520px] md:h-[560px] px-4"
@@ -198,7 +228,7 @@ export default function ThreePillars() {
 
               {/* Text at bottom */}
               <div className="p-4 md:p-6 text-center relative bg-inherit">
-                <h3 className="text-font text-lg md:text-xl font-winky-rough leading-tight drop-shadow-sm">
+                <h3 className="text-black text-xl md:text-2xl lg:text-3xl font-winky-rough leading-tight drop-shadow-sm">
                   {card.title}
                 </h3>
                 <div className="mt-2 h-1 w-12 bg-font/20 mx-auto rounded-full" />
