@@ -80,12 +80,7 @@ html {
   color: var(--color-black);
 }
 
-@media (max-width: 768px) {
-  html {
-    /* Increase JUST the height to make pattern less compressed on mobile */
-    background-size: 100% 320px;
-  }
-}
+/* Old mobile background fix removed */
 
 /* Custom Animations */
 @layer components {

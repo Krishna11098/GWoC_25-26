@@ -4,7 +4,7 @@ import { useState } from "react";
 import { auth } from "@/lib/firebaseClient";
 import { ShoppingCart, Check } from "lucide-react";
 
-export default function AddToCartButton({ gameId, className = "" }) {
+export default function AddToCartButton({ gameId, className = "", fullWidth = false }) {
   const [loading, setLoading] = useState(false);
   const [added, setAdded] = useState(false);
 
@@ -49,14 +49,14 @@ export default function AddToCartButton({ gameId, className = "" }) {
       onClick={addToCart}
       disabled={loading}
       style={{ backgroundColor: "var(--color-font)" }}
-      className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold text-white hover:opacity-90 transition disabled:opacity-60 ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-bold text-white hover:opacity-90 transition disabled:opacity-60 ${fullWidth ? "w-full" : ""} ${className}`}
     >
       {added ? (
         <Check className="h-5 w-5" />
       ) : (
         <ShoppingCart className="h-5 w-5" />
       )}
-      {loading ? "Adding..." : added ? "Added" : "Add to Cart"}
+      {loading ? "Adding..." : added ? "Added" : "Add to Bag"}
     </button>
   );
 }
