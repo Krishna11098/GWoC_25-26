@@ -564,25 +564,17 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
               <div className="flex justify-between items-start gap-4 p-6 md:p-8">
                 <div className="space-y-5 w-full">
                   <div className="flex items-center gap-3">
-                    <div
-                      className="inline-flex items-center px-4 py-2 rounded-full shadow-lg text-sm font-semibold drop-shadow-md bg-[var(--light-orange)] text-[var(--dark-teal)]"
-                    >
+                    <div className="inline-flex items-center px-4 py-2 rounded-full shadow-lg text-sm font-semibold drop-shadow-md bg-[var(--light-orange)] text-[var(--dark-teal)]">
                       By: {selectedEvent.host || "Unknown"}
                     </div>
                   </div>
-                  <h3
-                    className="text-3xl md:text-4xl font-serif leading-tight text-black"
-                  >
+                  <h3 className="text-3xl md:text-4xl font-serif leading-tight text-black">
                     {selectedEvent.title}
                   </h3>
-                  <hr
-                    className="border-[var(--dark-teal)] opacity-20"
-                  />
+                  <hr className="border-[var(--dark-teal)] opacity-20" />
 
                   <div className="space-y-3">
-                    <div
-                      className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]"
-                    >
+                    <div className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]">
                       <svg
                         className="w-5 h-5 shrink-0"
                         viewBox="0 0 24 24"
@@ -591,15 +583,11 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                         <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z" />
                       </svg>
                       <span>Date:</span>
-                      <span
-                        className="font-medium text-black"
-                      >
+                      <span className="font-medium text-black">
                         {formatLongDate(selectedEvent.date)}
                       </span>
                     </div>
-                    <div
-                      className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]"
-                    >
+                    <div className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]">
                       <svg
                         className="w-5 h-5 shrink-0"
                         viewBox="0 0 24 24"
@@ -608,15 +596,11 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                         <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
                       </svg>
                       <span>Time:</span>
-                      <span
-                        className="font-medium text-black"
-                      >
+                      <span className="font-medium text-black">
                         {selectedEvent.time}
                       </span>
                     </div>
-                    <div
-                      className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]"
-                    >
+                    <div className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]">
                       <svg
                         className="w-5 h-5 shrink-0"
                         viewBox="0 0 24 24"
@@ -625,16 +609,12 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                       </svg>
                       <span>Location:</span>
-                      <span
-                        className="font-medium text-black"
-                      >
+                      <span className="font-medium text-black">
                         {selectedEvent.location}
                       </span>
                     </div>
                     {selectedEvent.price && (
-                      <div
-                        className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]"
-                      >
+                      <div className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]">
                         <svg
                           className="w-5 h-5 flex-shrink-0"
                           viewBox="0 0 24 24"
@@ -643,17 +623,13 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                           <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" />
                         </svg>
                         <span>Price:</span>
-                        <span
-                          className="font-medium text-black"
-                        >
+                        <span className="font-medium text-black">
                           {selectedEvent.price}
                         </span>
                       </div>
                     )}
                     {selectedEvent.category && (
-                      <div
-                        className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]"
-                      >
+                      <div className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]">
                         <svg
                           className="w-5 h-5 flex-shrink-0"
                           viewBox="0 0 24 24"
@@ -662,9 +638,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                           <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z" />
                         </svg>
                         <span>Category:</span>
-                        <span
-                          className="font-medium text-black"
-                        >
+                        <span className="font-medium text-black">
                           {selectedEvent.category}
                         </span>
                       </div>
@@ -673,17 +647,11 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
 
                   {selectedEvent.description && (
                     <div className="mt-6">
-                      <div
-                        className="rounded-2xl p-5 shadow-inner bg-white border-2 border-[var(--light-blue)]"
-                      >
-                        <p
-                          className="text-lg font-semibold mb-2 text-[var(--dark-teal)]"
-                        >
+                      <div className="rounded-2xl p-5 shadow-inner bg-white border-2 border-[var(--light-blue)]">
+                        <p className="text-lg font-semibold mb-2 text-[var(--dark-teal)]">
                           Description
                         </p>
-                        <p
-                          className="text-base leading-relaxed text-black"
-                        >
+                        <p className="text-base leading-relaxed text-black">
                           {selectedEvent.description}
                         </p>
                       </div>
