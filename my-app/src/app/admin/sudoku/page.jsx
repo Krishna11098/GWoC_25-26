@@ -110,8 +110,11 @@ export default function AdminSudokuPage() {
     return (
       <div className="p-6">
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading sudoku levels...</p>
+          <div
+            className="animate-spin rounded-full h-12 w-12 border-b-2"
+            style={{ borderBottomColor: "var(--dark-teal)" }}
+          ></div>
+          <p className="mt-4 text-dark-teal">Loading sudoku levels...</p>
         </div>
       </div>
     );
@@ -120,12 +123,19 @@ export default function AdminSudokuPage() {
   if (error) {
     return (
       <div className="p-6">
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div
+          className="p-4 rounded-lg"
+          style={{
+            backgroundColor: "var(--light-orange)",
+            color: "var(--dark-teal)",
+          }}
+        >
           <div className="flex items-center">
             <svg
-              className="w-5 h-5 text-red-600 mr-2"
+              className="w-5 h-5 mr-2"
               fill="currentColor"
               viewBox="0 0 20 20"
+              style={{ color: "var(--dark-teal)" }}
             >
               <path
                 fillRule="evenodd"
@@ -133,7 +143,7 @@ export default function AdminSudokuPage() {
                 clipRule="evenodd"
               />
             </svg>
-            <span className="text-red-600 font-medium">{error}</span>
+            <span className="font-medium">{error}</span>
           </div>
         </div>
       </div>
@@ -145,10 +155,10 @@ export default function AdminSudokuPage() {
       <div className="mb-8">
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-dark-teal">
               Sudoku Management
             </h1>
-            <p className="text-gray-600 mt-1">Manage sudoku levels</p>
+            <p className="text-dark-teal mt-1">Manage sudoku levels</p>
           </div>
         </div>
       </div>

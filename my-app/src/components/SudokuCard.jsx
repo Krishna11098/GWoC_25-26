@@ -25,17 +25,23 @@ export default function SudokuCard({ level, refresh }) {
 
   return (
     <>
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+      <div className="bg-white rounded-xl p-4 shadow-sm border border-dark-teal hover:shadow-md transition-shadow">
         <div className="mb-3">
           <div className="flex items-center justify-between mb-2">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+            <span
+              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+              style={{
+                backgroundColor: "var(--light-blue)",
+                color: "var(--dark-teal)",
+              }}
+            >
               {level.difficulty}
             </span>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-dark-teal">
               Variation {level.variationNo}
             </span>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-dark-teal">
             Level {level.levelNo} • {level.coins} coins
           </p>
         </div>
@@ -45,13 +51,21 @@ export default function SudokuCard({ level, refresh }) {
         <div className="flex gap-2 mt-4">
           <button
             onClick={() => setEditing(true)}
-            className="flex-1 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium text-sm transition-colors"
+            className="flex-1 px-3 py-2 rounded-lg font-medium text-sm transition-colors"
+            style={{
+              backgroundColor: "var(--light-blue)",
+              color: "var(--dark-teal)",
+            }}
           >
             ✏️ Edit
           </button>
           <button
             onClick={removeSudoku}
-            className="flex-1 px-3 py-2 rounded-lg bg-red-50 text-red-700 hover:bg-red-100 font-medium text-sm transition-colors"
+            className="flex-1 px-3 py-2 rounded-lg font-medium text-sm transition-colors"
+            style={{
+              backgroundColor: "var(--light-orange)",
+              color: "var(--dark-teal)",
+            }}
           >
             🗑️ Remove
           </button>

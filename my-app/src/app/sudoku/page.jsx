@@ -64,8 +64,8 @@ export default function SudokuPage() {
                 href="/login"
                 className="inline-block px-6 py-3 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
                 style={{
-                  backgroundColor: "var(--color-green)",
-                  color: "white",
+                  backgroundColor: "var(--light-orange)",
+                  color: "var(--dark-teal)",
                 }}
               >
                 Go to Login
@@ -90,7 +90,7 @@ export default function SudokuPage() {
                 >
                   <h1 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
                     <span className="text-black/80">Sudoku</span>{" "}
-                    <span className="relative inline-block text-font drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                    <span className="relative inline-block text-dark-teal drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
                       Challenge
                     </span>
                   </h1>
@@ -98,7 +98,7 @@ export default function SudokuPage() {
                     initial={{ width: 0 }}
                     whileInView={{ width: "60px" }}
                     transition={{ delay: 0.6, duration: 0.8 }}
-                    className="h-1.5 bg-font rounded-full mt-4 shadow-sm"
+                    className="h-1.5 bg-dark-teal rounded-full mt-4 shadow-sm"
                   />
                 </motion.div>
                 <motion.p
@@ -117,10 +117,10 @@ export default function SudokuPage() {
               <div className="flex justify-center gap-4 mb-8">
                 {difficulties.map((lvl) => {
                   const getActiveColor = () => {
-                    if (lvl === "easy") return "var(--color-pink)";
-                    if (lvl === "medium") return "var(--color-orange)";
-                    if (lvl === "hard") return "var(--color-green)";
-                    return "var(--color-font)";
+                    if (lvl === "easy") return "var(--light-pink)";
+                    if (lvl === "medium") return "var(--light-orange)";
+                    if (lvl === "hard") return "var(--light-blue)";
+                    return "var(--dark-teal)";
                   };
 
                   return (
@@ -136,10 +136,10 @@ export default function SudokuPage() {
                         difficulty === lvl
                           ? {
                               backgroundColor: getActiveColor(),
-                              color: "var(--color-font)",
+                              color: "var(--dark-teal)",
                             }
                           : {
-                              backgroundColor: "var(--color-font)",
+                              backgroundColor: "var(--dark-teal)",
                               color: "white",
                             }
                       }
@@ -161,12 +161,12 @@ export default function SudokuPage() {
                     {levels.map((level) => {
                       const getLevelColor = () => {
                         if (level.difficulty === "easy")
-                          return "var(--color-pink)";
+                          return "var(--light-pink)";
                         if (level.difficulty === "medium")
-                          return "var(--color-orange)";
+                          return "var(--light-orange)";
                         if (level.difficulty === "hard")
-                          return "var(--color-green)";
-                        return "var(--color-pink)";
+                          return "var(--light-blue)";
+                        return "var(--light-pink)";
                       };
 
                       return (
@@ -176,8 +176,8 @@ export default function SudokuPage() {
                           className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105"
                           style={{
                             backgroundColor: getLevelColor(),
-                            color: "var(--color-font)",
-                            borderColor: "var(--color-green)",
+                            color: "var(--dark-teal)",
+                            borderColor: "var(--dark-teal)",
                           }}
                         >
                           {/* Content */}
@@ -189,7 +189,7 @@ export default function SudokuPage() {
                               <p
                                 className="transition-colors"
                                 style={{
-                                  color: "var(--color-font)",
+                                  color: "var(--dark-teal)",
                                   opacity: 0.9,
                                 }}
                               >
@@ -198,7 +198,7 @@ export default function SudokuPage() {
                               <p
                                 className="text-lg font-semibold mt-2"
                                 style={{
-                                  color: "var(--color-font)",
+                                  color: "var(--dark-teal)",
                                   opacity: 0.9,
                                 }}
                               >
@@ -225,7 +225,7 @@ export default function SudokuPage() {
                   <div className="mt-16 grid md:grid-cols-3 gap-8">
                     <div
                       className="rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow opacity-80"
-                      style={{ backgroundColor: "var(--color-font)" }}
+                      style={{ backgroundColor: "var(--dark-teal)" }}
                     >
                       <img
                         src="/icons/keyboard.svg"
@@ -251,7 +251,7 @@ export default function SudokuPage() {
                     </div>
                     <div
                       className="rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow opacity-80"
-                      style={{ backgroundColor: "var(--color-font)" }}
+                      style={{ backgroundColor: "var(--dark-teal)" }}
                     >
                       <img
                         src="/icons/bulb.svg"
@@ -277,7 +277,7 @@ export default function SudokuPage() {
                     </div>
                     <div
                       className="rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow opacity-80"
-                      style={{ backgroundColor: "var(--color-font)" }}
+                      style={{ backgroundColor: "var(--dark-teal)" }}
                     >
                       <img
                         src="/icons/check.svg"

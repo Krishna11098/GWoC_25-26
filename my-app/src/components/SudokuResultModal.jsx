@@ -14,12 +14,15 @@ export default function SudokuResultModal() {
       <div
         className="rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl"
         style={{
-          backgroundColor: "var(--color-pink)",
-          color: "var(--color-font)",
+          backgroundColor: "var(--light-pink)",
+          color: "var(--dark-teal)",
         }}
       >
         <div className="text-center">
-          <div className="flex justify-center mb-4 text-white">
+          <div
+            className="flex justify-center mb-4"
+            style={{ color: "var(--dark-teal)" }}
+          >
             <PartyPopper size={64} />
           </div>
           <h2 className="text-3xl font-bold mb-2">Sudoku Solved!</h2>
@@ -30,7 +33,7 @@ export default function SudokuResultModal() {
             onClick={() => router.push("/sudoku")}
             className="w-full px-6 py-3 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95"
             style={{
-              backgroundColor: "var(--color-green)",
+              backgroundColor: "var(--dark-teal)",
               color: "white",
             }}
           >
