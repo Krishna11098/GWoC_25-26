@@ -7,6 +7,7 @@ import { auth } from "@/lib/firebaseClient";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SoftWaveBackground from "@/components/SoftWaveBackground";
 
 export default function SudokuPage() {
   const [difficulty, setDifficulty] = useState("easy");
@@ -46,8 +47,9 @@ export default function SudokuPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen py-12 px-4 md:px-6 mt-32">
-        <div className="max-w-7xl mx-auto">
+      <main className="min-h-screen py-12 px-4 md:px-6 relative">
+        <SoftWaveBackground height="450px" className="pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative z-10 mt-32">
           {authLoading ? (
             <div className="text-center">
               <p className="text-lg">Loading authentication...</p>

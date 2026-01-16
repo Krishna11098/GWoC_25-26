@@ -8,6 +8,7 @@ import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged } from "firebase/auth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SoftWaveBackground from "@/components/SoftWaveBackground";
 import { Film, PartyPopper } from "lucide-react";
 
 export default function MoviesPage() {
@@ -117,8 +118,9 @@ export default function MoviesPage() {
   return (
     <>
       <Navbar />
-      <div className="px-5 md:px-12 pt-5 pb-12 mt-32">
-        <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
+      <div className="px-5 md:px-12 pt-5 pb-12 relative">
+        <SoftWaveBackground height="400px" className="pointer-events-none" />
+        <div className="mx-auto w-full max-w-6xl px-4 md:px-10 relative z-10 mt-32">
           <div className="mb-10 mt-2 text-center relative">
             <motion.div
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -135,7 +137,7 @@ export default function MoviesPage() {
             >
               <h1 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
                 <span className="text-black/80">Guess the</span>{" "}
-                <span className="relative inline-block text-font drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                <span className="relative inline-block text-dark-teal drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
                   Movie
                 </span>
               </h1>
@@ -143,7 +145,7 @@ export default function MoviesPage() {
                 initial={{ width: 0 }}
                 whileInView={{ width: "60px" }}
                 transition={{ delay: 0.6, duration: 0.8 }}
-                className="h-1.5 bg-font rounded-full mt-4 shadow-sm"
+                className="h-1.5 bg-dark-teal rounded-full mt-4 shadow-sm"
               />
             </motion.div>
             <motion.p
@@ -151,24 +153,37 @@ export default function MoviesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="mt-6 text-sm md:text-base text-gray-600"
+              className="mt-6 text-base md:text-lg text-gray-600"
             >
               Test your movie knowledge and solve the mystery scenes!
             </motion.p>
           </div>
 
           {error && (
-            <div className="mb-4 p-4 bg-[var(--pink)]/20 border border-[var(--pink)] rounded-lg">
+            <div
+              className="mb-4 p-4 rounded-lg border-2"
+              style={{
+                backgroundColor: "var(--light-pink)",
+                borderColor: "var(--pink)",
+                color: "var(--dark-teal)",
+              }}
+            >
               {error}
             </div>
           )}
 
           {movies.length === 0 ? (
             <div className="text-center py-12">
-              <h2 className="text-2xl md:text-3xl font-semibold">
+              <h2
+                className="text-2xl md:text-3xl font-bold"
+                style={{ color: "var(--dark-teal)" }}
+              >
                 No Movies Available
               </h2>
-              <p className="text-base md:text-lg opacity-80">
+              <p
+                className="text-base md:text-lg font-medium mt-2"
+                style={{ color: "var(--black)" }}
+              >
                 Check back later for new challenges!
               </p>
             </div>
@@ -181,11 +196,18 @@ export default function MoviesPage() {
                 return (
                   <div
                     key={movie.id}
-                    className="bg-[var(--bg)] p-6 rounded-lg shadow-sm border-2 border-[var(--green)]"
+                    className="p-6 rounded-lg shadow-md border-2"
+                    style={{
+                      backgroundColor: "var(--light-blue)",
+                      borderColor: "var(--dark-teal)",
+                    }}
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 text-sm opacity-80 mb-2">
+                        <div
+                          className="flex items-center gap-2 text-base mb-2"
+                          style={{ color: "var(--dark-teal)" }}
+                        >
                           <span>{movie.category || "General"}</span>
                           <span>•</span>
                           <span className="capitalize">
@@ -194,15 +216,26 @@ export default function MoviesPage() {
                           <span>•</span>
                           <span>Movie #{movie.movieNo || index + 1}</span>
                         </div>
-                        <p className="text-lg font-medium mb-2">
+                        <p
+                          className="text-xl font-bold mb-2"
+                          style={{ color: "var(--dark-teal)" }}
+                        >
                           Clue ({movie.clueType}): {movie.clueData}
                         </p>
-                        <p className="text-base">Coins: {movie.coins}</p>
+                        <p
+                          className="text-lg font-medium"
+                          style={{ color: "var(--black)" }}
+                        >
+                          Coins: {movie.coins}
+                        </p>
                         {Array.isArray(movie.hints) &&
                           movie.hints.length > 0 && (
                             <div className="mt-3">
                               <div className="flex items-center gap-2 mb-2">
-                                <span className="text-base font-medium">
+                                <span
+                                  className="text-lg font-medium"
+                                  style={{ color: "var(--dark-teal)" }}
+                                >
                                   Hints
                                 </span>
                                 <button
@@ -214,7 +247,11 @@ export default function MoviesPage() {
                                     (hintCounts[movie.id] || 0) >=
                                     movie.hints.length
                                   }
-                                  className="px-3 py-1 rounded bg-[var(--orange)] disabled:opacity-50 text-sm"
+                                  className="px-3 py-1 rounded disabled:opacity-50 text-base font-bold"
+                                  style={{
+                                    backgroundColor: "var(--orange)",
+                                    color: "var(--dark-teal)",
+                                  }}
                                 >
                                   {(hintCounts[movie.id] || 0) >=
                                   movie.hints.length
@@ -223,7 +260,10 @@ export default function MoviesPage() {
                                 </button>
                               </div>
                               {(hintCounts[movie.id] || 0) > 0 && (
-                                <ul className="list-disc ml-5 text-sm opacity-90">
+                                <ul
+                                  className="list-disc ml-5 text-base"
+                                  style={{ color: "var(--black)" }}
+                                >
                                   {movie.hints
                                     .slice(0, hintCounts[movie.id])
                                     .map((h, i) => (
@@ -237,7 +277,10 @@ export default function MoviesPage() {
                     </div>
 
                     <div className="mt-4">
-                      <label className="block text-sm font-medium mb-2">
+                      <label
+                        className="block text-base font-bold mb-2"
+                        style={{ color: "var(--dark-teal)" }}
+                      >
                         Your Answer
                       </label>
                       <input
@@ -246,14 +289,23 @@ export default function MoviesPage() {
                         onChange={(e) =>
                           handleAnswerChange(movie.id, e.target.value)
                         }
-                        className="w-full px-3 py-3 border border-[var(--green)] rounded-lg bg-[var(--bg)] text-base"
+                        className="w-full px-3 py-3 border-2 rounded-lg text-lg font-medium"
+                        style={{
+                          borderColor: "var(--dark-teal)",
+                          backgroundColor: "rgba(255,255,255,0.8)",
+                          color: "var(--dark-teal)",
+                        }}
                         placeholder="Type the movie name"
                       />
                       <div className="mt-3 flex gap-2">
                         <button
                           onClick={() => handleSubmit(movie.id)}
                           disabled={isSubmitting}
-                          className="px-4 py-2 rounded-lg bg-[var(--green)] disabled:opacity-60 text-base"
+                          className="px-4 py-2 rounded-lg disabled:opacity-60 text-lg font-bold"
+                          style={{
+                            backgroundColor: "var(--green)",
+                            color: "var(--dark-teal)",
+                          }}
                         >
                           {isSubmitting ? "Checking..." : "Submit"}
                         </button>
@@ -265,8 +317,11 @@ export default function MoviesPage() {
                             }));
                             setAnswers((prev) => ({ ...prev, [movie.id]: "" }));
                           }}
-                          className="px-4 py-2 rounded-lg bg-[var(--pink)]"
-                          className="px-4 py-2 rounded-lg bg-[var(--pink)] text-base"
+                          className="px-4 py-2 rounded-lg text-lg font-bold"
+                          style={{
+                            backgroundColor: "var(--pink)",
+                            color: "var(--dark-teal)",
+                          }}
                         >
                           Clear
                         </button>
@@ -275,18 +330,32 @@ export default function MoviesPage() {
 
                     {result && (
                       <div
-                        className={`mt-4 p-3 rounded-lg border ${
-                          result.correct
-                            ? "border-[var(--green)]"
-                            : "border-[var(--pink)]"
-                        }`}
+                        className="mt-4 p-3 rounded-lg border-2"
+                        style={{
+                          borderColor: result.correct
+                            ? "var(--green)"
+                            : "var(--pink)",
+                          backgroundColor: result.correct
+                            ? "rgba(203, 216, 172, 0.2)"
+                            : "rgba(243, 204, 231, 0.2)",
+                        }}
                       >
-                        <p className="font-medium">
-                          {result.correct ? "Correct!" : "Incorrect."}{" "}
+                        <p
+                          className="font-bold"
+                          style={{
+                            color: result.correct
+                              ? "var(--green)"
+                              : "var(--pink)",
+                          }}
+                        >
+                          {result.correct ? "✓ Correct!" : "✗ Incorrect."}{" "}
                           {result.message}
                         </p>
                         {result.correct && result.coins > 0 && (
-                          <p className="text-base mt-1 flex items-center gap-2">
+                          <p
+                            className="text-lg mt-1 flex items-center gap-2"
+                            style={{ color: "var(--dark-teal)" }}
+                          >
                             You earned {result.coins} coins{" "}
                             <PartyPopper size={18} />
                           </p>

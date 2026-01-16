@@ -8,6 +8,7 @@ import { auth } from "@/lib/firebaseClient";
 import { onAuthStateChanged } from "firebase/auth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SoftWaveBackground from "@/components/SoftWaveBackground";
 import { Puzzle, Search, Coins, PartyPopper, CircleX } from "lucide-react";
 
 export default function RiddlesPage() {
@@ -119,10 +120,11 @@ export default function RiddlesPage() {
     <>
       <Navbar />
       <div
-        className="px-5 md:px-12 pt-5 pb-12 mt-32"
+        className="px-5 md:px-12 pt-5 pb-12 relative"
         style={{ color: "var(--dark-teal)" }}
       >
-        <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
+        <SoftWaveBackground height="400px" className="pointer-events-none" />
+        <div className="mx-auto w-full max-w-6xl px-4 md:px-10 relative z-10 mt-32">
           {/* Header */}
           <div className="mb-10 mt-2 text-center relative">
             <motion.div
