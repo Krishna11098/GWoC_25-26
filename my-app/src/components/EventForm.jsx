@@ -81,7 +81,7 @@ const EventForm = ({ initialData = null, onSubmit }) => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[var(--color-dark-teal)] focus:ring-2 focus:ring-[var(--color-orange)] focus:ring-opacity-40"
               placeholder="Enter event name"
               required
             />
@@ -96,7 +96,7 @@ const EventForm = ({ initialData = null, onSubmit }) => {
               name="location"
               value={formData.location}
               onChange={handleChange}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[var(--color-dark-teal)] focus:ring-2 focus:ring-[var(--color-orange)] focus:ring-opacity-40"
               placeholder="Enter event location"
               required
             />
@@ -111,7 +111,7 @@ const EventForm = ({ initialData = null, onSubmit }) => {
               name="communityPartner"
               value={formData.communityPartner}
               onChange={handleChange}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[var(--color-dark-teal)] focus:ring-2 focus:ring-[var(--color-orange)] focus:ring-opacity-40"
               placeholder="Enter community partner name"
               required
             />
@@ -125,7 +125,7 @@ const EventForm = ({ initialData = null, onSubmit }) => {
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[var(--color-dark-teal)] focus:ring-2 focus:ring-[var(--color-orange)] focus:ring-opacity-40"
             >
               <option value="workshop">Workshop</option>
               <option value="community">Community</option>
@@ -148,7 +148,7 @@ const EventForm = ({ initialData = null, onSubmit }) => {
               name="date"
               value={formData.date}
               onChange={handleChange}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[var(--color-dark-teal)] focus:ring-2 focus:ring-[var(--color-orange)] focus:ring-opacity-40"
               required
             />
           </div>
@@ -162,7 +162,7 @@ const EventForm = ({ initialData = null, onSubmit }) => {
               name="time"
               value={formData.time}
               onChange={handleChange}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[var(--color-dark-teal)] focus:ring-2 focus:ring-[var(--color-orange)] focus:ring-opacity-40"
               required
             />
           </div>
@@ -176,7 +176,7 @@ const EventForm = ({ initialData = null, onSubmit }) => {
               name="capacity"
               value={formData.capacity}
               onChange={handleChange}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[var(--color-dark-teal)] focus:ring-2 focus:ring-[var(--color-orange)] focus:ring-opacity-40"
               min="1"
               required
             />
@@ -197,7 +197,7 @@ const EventForm = ({ initialData = null, onSubmit }) => {
               value={formData.shortDescription}
               onChange={handleChange}
               rows="2"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[var(--color-dark-teal)] focus:ring-2 focus:ring-[var(--color-orange)] focus:ring-opacity-40"
               placeholder="Brief description for event cards (max 150 chars)"
               maxLength={150}
               required
@@ -216,7 +216,7 @@ const EventForm = ({ initialData = null, onSubmit }) => {
               value={formData.longDescription}
               onChange={handleChange}
               rows="4"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-[var(--color-dark-teal)] focus:ring-2 focus:ring-[var(--color-orange)] focus:ring-opacity-40"
               placeholder="Detailed description for event page"
               required
             />
@@ -239,7 +239,7 @@ const EventForm = ({ initialData = null, onSubmit }) => {
               name="imageUrl"
               value={formData.imageUrl}
               onChange={handleChange}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:border-[var(--color-dark-teal)] focus:ring-2 focus:ring-[var(--color-orange)] focus:ring-opacity-40"
               placeholder="Enter image URL for event card"
               required
             />
@@ -287,13 +287,13 @@ const EventForm = ({ initialData = null, onSubmit }) => {
               type="url"
               value={galleryImage}
               onChange={(e) => setGalleryImage(e.target.value)}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:border-[var(--color-dark-teal)] focus:ring-2 focus:ring-[var(--color-orange)] focus:ring-opacity-40"
               placeholder="Enter gallery image URL"
             />
             <button
               type="button"
               onClick={addGalleryImage}
-              className="flex items-center gap-2 rounded-lg bg-purple-600 px-6 py-3 text-white hover:bg-purple-700"
+              className="flex items-center gap-2 rounded-lg bg-[var(--color-orange)] px-6 py-3 text-[var(--color-black)] hover:bg-[var(--color-light-orange)]"
             >
               <Plus className="h-4 w-4" />
               Add to Gallery
@@ -342,9 +342,9 @@ const EventForm = ({ initialData = null, onSubmit }) => {
             name="isFeatured"
             checked={formData.isFeatured}
             onChange={handleChange}
-            className="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+            className="h-5 w-5 rounded border-gray-300 text-[var(--color-dark-teal)] focus:ring-[var(--color-orange)] focus:ring-offset-1"
           />
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-sm font-medium text-[var(--color-font)]">
             Mark as Featured Event
           </span>
         </label>
@@ -353,7 +353,7 @@ const EventForm = ({ initialData = null, onSubmit }) => {
           type="submit"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-3 text-lg font-semibold text-white"
+          className="rounded-lg bg-gradient-to-r from-[var(--color-orange)] to-[var(--color-green)] px-8 py-3 text-lg font-semibold text-[var(--color-black)] shadow-md"
         >
           {initialData ? "Update Event" : "Create Event"}
         </motion.button>

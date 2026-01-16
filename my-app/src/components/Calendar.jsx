@@ -171,7 +171,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
   const getWeekDates = useMemo(() => {
     const now = new Date();
     const weekStart = new Date(now);
-    weekStart.setDate(now.getDate() - now.getDay() + (weekOffset * 7)); // Start from Sunday + offset
+    weekStart.setDate(now.getDate() - now.getDay() + weekOffset * 7); // Start from Sunday + offset
 
     const weekDates = [];
     for (let i = 0; i < 7; i++) {
@@ -224,17 +224,14 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
       />
       <div className="relative z-10">
         {/* Header background */}
-        <div
-          className="rounded-t-3xl px-4 sm:px-6 md:px-10 py-4 sm:py-6 md:py-8 shadow-lg relative overflow-hidden text-white"
-          style={{ backgroundColor: "var(--color-font)" }}
-        >
+        <div className="rounded-t-3xl px-4 sm:px-6 md:px-10 py-4 sm:py-6 md:py-8 shadow-lg relative overflow-hidden text-[var(--light-pink)] bg-[var(--dark-teal)]">
           <div className="relative flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Navigation buttons */}
             <div className="flex items-center gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={prevMonth}
-                className="bg-white/15 hover:bg-white/25 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border border-white/50 text-sm sm:text-base"
+                className="bg-white/70 text-[var(--color-dark-teal)] hover:bg-white/85 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border border-[var(--color-dark-teal)]/15 text-sm sm:text-base"
                 aria-label="Previous month"
               >
                 ‹
@@ -242,7 +239,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
               <button
                 type="button"
                 onClick={nextMonth}
-                className="bg-white/15 hover:bg-white/25 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border border-white/50 text-sm sm:text-base"
+                className="bg-white/70 text-[var(--color-dark-teal)] hover:bg-white/85 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-all duration-300 transform hover:scale-105 text-lg font-bold border border-[var(--color-dark-teal)]/15 text-sm sm:text-base"
                 aria-label="Next month"
               >
                 ›
@@ -250,9 +247,11 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
             </div>
 
             {/* Month/Year Title */}
-            <h2 className="text-lg sm:text-2xl md:text-3xl font-bold text-center">
+            <h2 className="text-lg sm:text-3xl md:text-4xl font-bold text-center text-[var(--light-pink)]">
               {viewMode === "week"
-                ? `${MONTHS[getWeekDates[0].getMonth()]} ${getWeekDates[0].getDate()} – ${getWeekDates[6].getDate()}, ${getWeekDates[6].getFullYear()}`
+                ? `${
+                    MONTHS[getWeekDates[0].getMonth()]
+                  } ${getWeekDates[0].getDate()} – ${getWeekDates[6].getDate()}, ${getWeekDates[6].getFullYear()}`
                 : `${MONTHS[viewMonth]} ${viewYear}`}
             </h2>
 
@@ -262,8 +261,8 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                 onClick={() => setViewMode("month")}
                 className={`rounded-lg px-2 sm:px-4 py-1.5 sm:py-2 transition-all duration-300 text-xs sm:text-sm font-semibold border ${
                   viewMode === "month"
-                    ? "bg-white text-font border-white"
-                    : "bg-white/20 text-white border-white hover:bg-white/30"
+                    ? "bg-white text-[var(--color-dark-teal)] border-white"
+                    : "bg-white/60 text-[var(--color-dark-teal)] border-white hover:bg-white/80"
                 }`}
               >
                 month
@@ -272,8 +271,8 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                 onClick={() => setViewMode("week")}
                 className={`rounded-lg px-2 sm:px-4 py-1.5 sm:py-2 transition-all duration-300 text-xs sm:text-sm font-semibold border ${
                   viewMode === "week"
-                    ? "bg-white text-font border-white"
-                    : "bg-white/20 text-white border-white hover:bg-white/30"
+                    ? "bg-white text-[var(--color-dark-teal)] border-white"
+                    : "bg-white/60 text-[var(--color-dark-teal)] border-white hover:bg-white/80"
                 }`}
               >
                 week
@@ -289,15 +288,12 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
             style={{ backgroundColor: "white" }}
           >
             {/* Weekday headers */}
-            <div
-              className="grid grid-cols-7 gap-px mb-0 p-px"
-              style={{ backgroundColor: "var(--color-font)" }}
-            >
+            <div className="grid grid-cols-7 gap-px mb-0 p-px bg-[var(--color-dark-teal)]">
               {WEEKDAYS.map((wd) => (
                 <div
                   key={wd}
                   className="text-center text-xs sm:text-sm font-semibold uppercase tracking-widest py-2 sm:py-3 text-white"
-                  style={{ backgroundColor: "var(--color-font)" }}
+                  style={{ backgroundColor: "var(--color-dark-teal)" }}
                 >
                   {wd}
                 </div>
@@ -322,7 +318,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                 return (
                   <div
                     key={idx}
-                    className="aspect-square border text-xs sm:text-sm"
+                    className="aspect-square border text-xl sm:text-lg"
                     style={{ borderColor: "var(--color-font)", opacity: 1 }}
                   >
                     {actualDate ? (
@@ -336,24 +332,24 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                           }
                         }}
                         disabled={isNextMonth || eventsForDate.length === 0}
-                        className={`w-full h-full rounded-none font-semibold text-xs sm:text-sm transition-all duration-300 flex flex-col items-start justify-start p-1 sm:p-2 ${
+                        className={`w-full h-full rounded-none font-semibold text-xl sm:text-lg transition-all duration-300 flex flex-col items-start justify-start p-1 sm:p-2 ${
                           isToday
-                            ? "text-white shadow-sm"
+                            ? "text-black shadow-sm"
                             : isNextMonth
                             ? "opacity-40 blur-[0.2px] cursor-default"
                             : isHovered
-                            ? "text-font"
-                            : "text-font hover:bg-gray-100"
+                            ? "text-dark-teal"
+                            : "text-dark-teal hover:bg-gray-100"
                         }`}
                         style={{
                           backgroundColor: isToday
-                            ? "var(--color-font)"
+                            ? "var(--color-light-blue)"
                             : isHovered
-                            ? "var(--color-pink)"
+                            ? "var(--color-light-pink)"
                             : "white",
                         }}
                       >
-                        <span className="text-base sm:text-lg font-bold mb-0.5 sm:mb-1">
+                        <span className="text-lg sm:text-2xl font-bold leading-tight mb-0.5 sm:mb-1">
                           {actualDate.getDate()}
                         </span>
                         {isToday && (
@@ -364,12 +360,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                         {eventsForDate.length > 0 && (
                           <div className="w-full mt-auto hidden sm:block">
                             <div
-                              className="text-[10px] sm:text-[11px] leading-snug font-bold px-2 sm:px-2.5 py-1.5 sm:py-2.5 rounded-lg shadow-lg border cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-101 flex items-center gap-1 text-white"
-                              style={{
-                                backgroundColor: "var(--color-orange)",
-                                borderColor: "var(--color-orange/80)",
-                                color: "black",
-                              }}
+                              className="text-[10px] sm:text-[11px] leading-snug font-bold px-2 sm:px-2.5 py-1.5 sm:py-2.5 rounded-lg shadow-lg cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-101 flex items-center gap-1 bg-[var(--light-orange)] text-[var(--dark-teal)] border-2 border-[var(--dark-teal)]/20 hover:bg-[var(--color-orange)]"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedEvent(eventsForDate[0]);
@@ -390,7 +381,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                           </div>
                         )}
                         {eventsForDate.length > 0 && (
-                          <div className="w-full h-1 sm:h-1.5 bg-[var(--color-orange)] rounded-full sm:hidden mt-auto"></div>
+                          <div className="w-full h-1 sm:h-1.5 bg-[var(--color-light-orange)] rounded-full sm:hidden mt-auto"></div>
                         )}
                       </button>
                     ) : (
@@ -408,7 +399,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
               <div className="overflow-x-auto rounded-lg">
                 <p
                   className="text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-3 flex items-center gap-2"
-                  style={{ color: "var(--color-font)" }}
+                  style={{ color: "var(--color-black)" }}
                 >
                   <svg
                     className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
@@ -564,9 +555,9 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                 isModalVisible ? "modal-enter" : "modal-exit"
               }`}
               style={{
-                backgroundColor: "white",
+                backgroundColor: "var(--light-blue)",
                 color: "var(--color-font)",
-                borderColor: "var(--color-font)",
+                borderColor: "var(--dark-teal)",
                 borderWidth: "2px",
               }}
             >
@@ -574,26 +565,23 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                 <div className="space-y-5 w-full">
                   <div className="flex items-center gap-3">
                     <div
-                      className="inline-flex items-center px-4 py-2 rounded-full shadow-lg text-sm font-semibold drop-shadow-md text-white"
-                      style={{ backgroundColor: "var(--color-green)" }}
+                      className="inline-flex items-center px-4 py-2 rounded-full shadow-lg text-sm font-semibold drop-shadow-md bg-[var(--light-orange)] text-[var(--dark-teal)]"
                     >
                       By: {selectedEvent.host || "Unknown"}
                     </div>
                   </div>
                   <h3
-                    className="text-3xl md:text-4xl font-serif leading-tight"
-                    style={{ color: "var(--color-font)" }}
+                    className="text-3xl md:text-4xl font-serif leading-tight text-black"
                   >
                     {selectedEvent.title}
                   </h3>
                   <hr
-                    style={{ borderColor: "var(--color-font)", opacity: "0.2" }}
+                    className="border-[var(--dark-teal)] opacity-20"
                   />
 
                   <div className="space-y-3">
                     <div
-                      className="flex items-baseline gap-3 text-lg font-semibold"
-                      style={{ color: "var(--color-green)" }}
+                      className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]"
                     >
                       <svg
                         className="w-5 h-5 shrink-0"
@@ -604,15 +592,13 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                       </svg>
                       <span>Date:</span>
                       <span
-                        className="font-medium"
-                        style={{ color: "var(--color-font)" }}
+                        className="font-medium text-black"
                       >
                         {formatLongDate(selectedEvent.date)}
                       </span>
                     </div>
                     <div
-                      className="flex items-baseline gap-3 text-lg font-semibold"
-                      style={{ color: "var(--color-orange)" }}
+                      className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]"
                     >
                       <svg
                         className="w-5 h-5 shrink-0"
@@ -623,15 +609,13 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                       </svg>
                       <span>Time:</span>
                       <span
-                        className="font-medium"
-                        style={{ color: "var(--color-font)" }}
+                        className="font-medium text-black"
                       >
                         {selectedEvent.time}
                       </span>
                     </div>
                     <div
-                      className="flex items-baseline gap-3 text-lg font-semibold"
-                      style={{ color: "var(--color-pink)" }}
+                      className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]"
                     >
                       <svg
                         className="w-5 h-5 shrink-0"
@@ -642,16 +626,14 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                       </svg>
                       <span>Location:</span>
                       <span
-                        className="font-medium"
-                        style={{ color: "var(--color-font)" }}
+                        className="font-medium text-black"
                       >
                         {selectedEvent.location}
                       </span>
                     </div>
                     {selectedEvent.price && (
                       <div
-                        className="flex items-baseline gap-3 text-lg font-semibold"
-                        style={{ color: "var(--color-orange)" }}
+                        className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]"
                       >
                         <svg
                           className="w-5 h-5 flex-shrink-0"
@@ -662,8 +644,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                         </svg>
                         <span>Price:</span>
                         <span
-                          className="font-medium"
-                          style={{ color: "var(--color-font)" }}
+                          className="font-medium text-black"
                         >
                           {selectedEvent.price}
                         </span>
@@ -671,8 +652,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                     )}
                     {selectedEvent.category && (
                       <div
-                        className="flex items-baseline gap-3 text-lg font-semibold"
-                        style={{ color: "var(--color-green)" }}
+                        className="flex items-baseline gap-3 text-lg font-semibold text-[var(--dark-teal)]"
                       >
                         <svg
                           className="w-5 h-5 flex-shrink-0"
@@ -683,8 +663,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                         </svg>
                         <span>Category:</span>
                         <span
-                          className="font-medium"
-                          style={{ color: "var(--color-font)" }}
+                          className="font-medium text-black"
                         >
                           {selectedEvent.category}
                         </span>
@@ -695,23 +674,15 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                   {selectedEvent.description && (
                     <div className="mt-6">
                       <div
-                        className="rounded-2xl p-5 shadow-inner"
-                        style={{
-                          backgroundColor: "var(--color-pink)",
-                          opacity: "0.4",
-                          borderColor: "var(--color-font)",
-                          borderWidth: "1px",
-                        }}
+                        className="rounded-2xl p-5 shadow-inner bg-white border-2 border-[var(--light-blue)]"
                       >
                         <p
-                          className="text-lg font-semibold mb-2"
-                          style={{ color: "var(--color-font)" }}
+                          className="text-lg font-semibold mb-2 text-[var(--dark-teal)]"
                         >
                           Description
                         </p>
                         <p
-                          className="text-base leading-relaxed"
-                          style={{ color: "var(--color-font)" }}
+                          className="text-base leading-relaxed text-black"
                         >
                           {selectedEvent.description}
                         </p>
@@ -722,18 +693,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
 
                 <button
                   onClick={closeModal}
-                  className="h-10 w-10 flex items-center justify-center rounded-full text-xl font-bold border transition-all text-font"
-                  style={{
-                    borderColor: "var(--color-font)",
-                    backgroundColor: "white",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor =
-                      "var(--color-orange)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.backgroundColor = "white")
-                  }
+                  className="h-10 w-10 flex items-center justify-center rounded-full text-xl font-bold border-2 transition-all bg-white text-[var(--dark-teal)] border-[var(--dark-teal)] hover:bg-[var(--light-orange)]"
                   aria-label="Close event details"
                 >
                   ×

@@ -301,8 +301,8 @@ export default function EventsCalendarPage() {
                 className="inline-flex flex-col items-center gap-2"
               >
                 <h1 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
-                  <span className="text-black/80">Events</span>{" "}
-                  <span className="relative inline-block text-font drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                  <span className="text-black">Events</span>{" "}
+                  <span className="relative inline-block text-dark-teal drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
                     Calendar
                   </span>
                 </h1>
@@ -310,7 +310,7 @@ export default function EventsCalendarPage() {
                   initial={{ width: 0 }}
                   whileInView={{ width: "60px" }}
                   transition={{ delay: 0.6, duration: 0.8 }}
-                  className="h-1.5 bg-font rounded-full mt-4 shadow-sm"
+                  className="h-1.5 bg-dark-teal rounded-full mt-4 shadow-sm"
                 />
               </motion.div>
               <motion.p
@@ -336,44 +336,44 @@ export default function EventsCalendarPage() {
               <button
                 onClick={loadEvents}
                 disabled={isLoading}
-                className="px-5 py-3 bg-[var(--green)] text-[var(--font)] border-[var(--font)] border-2 rounded-xl hover:opacity-80 disabled:opacity-50 flex items-center gap-3 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+                className="px-5 py-3 rounded-xl bg-[var(--light-orange)] text-[var(--black)] border border-[var(--dark-teal)]/20 hover:bg-[var(--color-orange)] disabled:opacity-50 flex items-center gap-3 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
               >
                 {isLoading ? (
                   <>
                     <RefreshCw className="animate-spin h-5 w-5" />
-                    <span className="font-medium">Loading...</span>
+                    <span className="text-sm font-medium">Loading...</span>
                   </>
                 ) : (
                   <>
                     <RefreshCw className="w-5 h-5 font-bold" />
-                    <span className="font-black">Refresh Events</span>
+                    <span className="text-xl font-bold">Refresh Events</span>
                   </>
                 )}
               </button>
 
               {/* Stats Cards */}
               <div className="flex flex-wrap gap-4 w-full md:w-auto">
-                <div className="flex-1 min-w-[140px] md:min-w-[160px] px-4 py-3 bg-[var(--pink)]/50 backdrop-blur-sm rounded-xl border border-[var(--font)]/20 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="text-xs text-[var(--font)]/70 font-bold uppercase tracking-wider">
+                <div className="flex-1 min-w-[140px] md:min-w-[160px] px-4 py-3 bg-[var(--color-pink)]/50 backdrop-blur-sm rounded-xl border border-[var(--color-dark-teal)]/15 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="text-xs text-[var(--color-dark-teal)]/70 font-bold uppercase tracking-wider">
                     TOTAL EVENTS
                   </div>
-                  <div className="text-2xl font-black text-[var(--font)]">
+                  <div className="text-2xl font-black text-[var(--color-dark-teal)]">
                     {parsed.length}
                   </div>
                 </div>
-                <div className="flex-1 min-w-[140px] md:min-w-[160px] px-4 py-3 bg-[var(--green)]/30 backdrop-blur-sm rounded-xl border border-[var(--font)]/20 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="text-xs text-[var(--font)]/70 font-bold uppercase tracking-wider">
+                <div className="flex-1 min-w-[140px] md:min-w-[160px] px-4 py-3 bg-[var(--color-green)]/35 backdrop-blur-sm rounded-xl border border-[var(--color-dark-teal)]/15 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="text-xs text-[var(--color-dark-teal)]/70 font-bold uppercase tracking-wider">
                     UPCOMING
                   </div>
-                  <div className="text-2xl font-black text-[var(--font)]">
+                  <div className="text-2xl font-black text-[var(--color-dark-teal)]">
                     {upcomingEvents.length}
                   </div>
                 </div>
-                <div className="flex-1 min-w-[140px] md:min-w-[160px] px-4 py-3 bg-[var(--orange)]/30 backdrop-blur-sm rounded-xl border border-[var(--font)]/20 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="text-xs text-[var(--font)]/70 font-bold uppercase tracking-wider">
+                <div className="flex-1 min-w-[140px] md:min-w-[160px] px-4 py-3 bg-[var(--color-orange)]/35 backdrop-blur-sm rounded-xl border border-[var(--color-dark-teal)]/15 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="text-xs text-[var(--color-dark-teal)]/70 font-bold uppercase tracking-wider">
                     PAST
                   </div>
-                  <div className="text-2xl font-black text-[var(--font)]">
+                  <div className="text-2xl font-black text-[var(--color-dark-teal)]">
                     {previousEvents.length}
                   </div>
                 </div>
@@ -383,7 +383,7 @@ export default function EventsCalendarPage() {
 
           {loadError && (
             <div
-              className={`p-4 bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-xl shadow-lg ${
+              className={`p-4 bg-[var(--light-pink)]/80 border border-red-200 rounded-xl shadow-lg ${
                 isInitialLoad ? "opacity-0" : "opacity-100"
               }`}
             >
@@ -453,10 +453,10 @@ export default function EventsCalendarPage() {
                     : "opacity-100 translate-x-0"
                 }`}
               >
-                <div className="rounded-3xl border border-[var(--font)]/10 shadow-2xl p-6 bg-white/40 backdrop-blur-md">
+                <div className="rounded-3xl border border-[var(--dark-teal)]/20 shadow-2xl p-6 bg-[var(--light-orange)]/30 backdrop-blur-md">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 bg-[var(--green)] rounded-full animate-pulse shadow-[0_0_8px_var(--green)]" />
+                      <div className="w-3 h-3 bg-[var(--light-orange)] rounded-full animate-pulse shadow-[0_0_8px_var(--light-orange)]" />
                       <h2 className="text-2xl font-black text-[var(--font)]">
                         Upcoming Events
                       </h2>
@@ -465,7 +465,7 @@ export default function EventsCalendarPage() {
                       <span className="text-sm font-bold text-[var(--font)]/60">
                         {upcomingEvents.length} events
                       </span>
-                      <span className="px-3 py-1 bg-[var(--green)]/40 text-[var(--font)] rounded-full text-xs font-black shadow-sm uppercase tracking-tighter">
+                      <span className="px-3 py-1 bg-[var(--light-orange)] text-[var(--black)] rounded-full text-xs font-black shadow-sm uppercase tracking-tighter">
                         Live
                       </span>
                     </div>
@@ -481,13 +481,16 @@ export default function EventsCalendarPage() {
                     </div>
                   ) : upcomingEvents.length === 0 ? (
                     <div className="text-center py-10">
-                      <div className="inline-block p-4 bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl mb-4">
-                        <CalendarIcon size={40} className="text-blue-500" />
+                      <div className="inline-block p-4 bg-[var(--light-pink)] rounded-2xl mb-4 border border-[var(--color-font)]/10">
+                        <CalendarIcon
+                          size={40}
+                          className="text-[var(--color-dark-teal)]"
+                        />
                       </div>
-                      <p className="text-gray-600 font-medium">
+                      <p className="text-[var(--color-font)] font-medium">
                         No upcoming events scheduled
                       </p>
-                      <p className="text-sm text-gray-500 mt-2">
+                      <p className="text-sm text-[var(--color-font)]/70 mt-2">
                         Check back later for exciting events!
                       </p>
                     </div>
@@ -499,7 +502,7 @@ export default function EventsCalendarPage() {
                           onMouseEnter={() => setHoveredEvent(event.id)}
                           onMouseLeave={() => setHoveredEvent(null)}
                           onClick={() => handleEventClick(event)}
-                          className={`relative rounded-2xl border border-gray-200 p-4 shadow-sm flex items-center justify-between gap-4 bg-white/80 backdrop-blur-sm cursor-pointer transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-blue-300/50
+                          className={`relative rounded-2xl border border-[var(--dark-teal)]/20 p-4 shadow-sm flex items-center justify-between gap-4 bg-white cursor-pointer transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[var(--light-orange)]
                             ${hoveredEvent === event.id ? "scale-[1.02]" : ""}`}
                         >
                           <div className="flex-1 min-w-0">
@@ -508,12 +511,12 @@ export default function EventsCalendarPage() {
                                 className={`p-2 rounded-lg transition-all duration-300
                                 ${
                                   event.category === "workshop"
-                                    ? "bg-blue-100/80"
+                                    ? "bg-[var(--light-orange)]"
                                     : event.category === "seminar"
-                                    ? "bg-purple-100/80"
+                                    ? "bg-[var(--light-pink)]"
                                     : event.category === "conference"
-                                    ? "bg-green-100/80"
-                                    : "bg-gray-100/80"
+                                    ? "bg-[var(--light-blue)]"
+                                    : "bg-[var(--light-pink)]"
                                 }`}
                               >
                                 <span className="text-lg">
@@ -529,12 +532,12 @@ export default function EventsCalendarPage() {
                                 </span>
                               </div>
                               <div className="flex-1 min-w-0">
-                                <div className="text-base font-bold truncate text-gray-800 hover:text-blue-600 transition-colors duration-300">
+                                <div className="text-base font-bold truncate text-[var(--color-dark-teal)] hover:text-[var(--color-black)] transition-colors duration-300">
                                   {event.title ||
                                     event.name ||
                                     "Untitled Event"}
                                 </div>
-                                <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
+                                <div className="flex items-center gap-3 mt-2 text-xs text-[var(--color-font)]/70">
                                   <span className="flex items-center gap-1">
                                     <svg
                                       className="w-3 h-3"
@@ -559,7 +562,7 @@ export default function EventsCalendarPage() {
                                       event.venue ||
                                       "Venue TBD"}
                                   </span>
-                                  <span className="px-2 py-0.5 bg-gray-100 rounded-full text-xs">
+                                  <span className="px-2 py-0.5 bg-[var(--light-pink)] text-[var(--dark-teal)] rounded-full text-xs font-semibold">
                                     {event.category || "General"}
                                   </span>
                                 </div>
@@ -567,10 +570,10 @@ export default function EventsCalendarPage() {
                             </div>
                           </div>
                           <div className="flex flex-col items-end">
-                            <div className="text-sm font-semibold uppercase tracking-wide whitespace-nowrap text-gray-700">
+                            <div className="text-sm font-semibold uppercase tracking-wide whitespace-nowrap text-[var(--color-dark-teal)]">
                               {formatDate(event.dateValue)}
                             </div>
-                            <div className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                            <div className="text-xs text-[var(--color-font)]/70 mt-1 flex items-center gap-1">
                               <svg
                                 className="w-3 h-3"
                                 fill="none"
@@ -587,7 +590,7 @@ export default function EventsCalendarPage() {
                               {event.startTime || event.eventStartTime || "TBD"}
                             </div>
                             {event.price > 0 && (
-                              <div className="mt-2 px-3 py-1 bg-[#E6F1EC] text-[#3E6F5C] rounded-full text-xs font-semibold shadow-sm">
+                              <div className="mt-2 px-3 py-1 bg-[var(--light-blue)] text-[var(--dark-teal)] rounded-full text-xs font-semibold shadow-sm border border-[var(--dark-teal)]/20">
                                 ₹{event.price}
                               </div>
                             )}
@@ -607,15 +610,15 @@ export default function EventsCalendarPage() {
                     : "opacity-100 translate-x-0"
                 }`}
               >
-                <div className="rounded-3xl border border-[var(--font)]/10 shadow-2xl p-6 bg-white/40 backdrop-blur-md">
+                <div className="rounded-3xl border border-[var(--dark-teal)]/20 shadow-2xl p-6 bg-[var(--light-blue)]/30 backdrop-blur-md">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 bg-[var(--font)]/30 rounded-full" />
+                      <div className="w-3 h-3 bg-[var(--light-blue)] rounded-full" />
                       <h2 className="text-2xl font-black text-[var(--font)]">
                         Previous Events
                       </h2>
                     </div>
-                    <span className="px-3 py-1 bg-[var(--font)]/10 text-[var(--font)] rounded-full text-sm font-black shadow-sm">
+                    <span className="px-3 py-1 bg-[var(--light-blue)] text-[var(--dark-teal)] rounded-full text-sm font-black shadow-sm">
                       {previousEvents.length}
                     </span>
                   </div>
@@ -630,13 +633,16 @@ export default function EventsCalendarPage() {
                     </div>
                   ) : previousEvents.length === 0 ? (
                     <div className="text-center py-10">
-                      <div className="inline-block p-4 bg-gradient-to-r from-gray-100 to-slate-100 rounded-2xl mb-4">
-                        <History size={40} className="text-gray-500" />
+                      <div className="inline-block p-4 bg-[var(--light-blue)] rounded-2xl mb-4 border border-[var(--color-font)]/10">
+                        <History
+                          size={40}
+                          className="text-[var(--color-dark-teal)]"
+                        />
                       </div>
-                      <p className="text-gray-600 font-medium">
+                      <p className="text-[var(--color-font)] font-medium">
                         No previous events yet
                       </p>
-                      <p className="text-sm text-gray-500 mt-2">
+                      <p className="text-sm text-[var(--color-font)]/70 mt-2">
                         Event history will appear here
                       </p>
                     </div>
@@ -646,26 +652,29 @@ export default function EventsCalendarPage() {
                         <div
                           key={event.id ?? idx}
                           onClick={() => handleEventClick(event)}
-                          className="relative rounded-2xl border border-gray-200/50 p-4 shadow-sm flex items-center justify-between gap-4 bg-white/60 backdrop-blur-sm cursor-pointer transform transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                          className="relative rounded-2xl border border-[var(--dark-teal)]/20 p-4 shadow-sm flex items-center justify-between gap-4 bg-white cursor-pointer transform transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:border-[var(--light-blue)]"
                         >
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-3">
-                              <div className="p-2 rounded-lg bg-gray-100/50">
-                                <FileText size={20} className="text-gray-500" />
+                              <div className="p-2 rounded-lg bg-[var(--light-pink)]">
+                                <FileText
+                                  size={20}
+                                  className="text-[var(--dark-teal)]"
+                                />
                               </div>
                               <div>
-                                <div className="text-base font-bold truncate text-gray-700">
+                                <div className="text-base font-bold truncate text-[var(--color-dark-teal)]">
                                   {event.title ||
                                     event.name ||
                                     "Untitled Event"}
                                 </div>
-                                <div className="text-xs text-gray-500 mt-1">
+                                <div className="text-xs text-[var(--color-font)]/70 mt-1">
                                   {event.category || "General"}
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div className="text-sm font-semibold uppercase tracking-wide whitespace-nowrap text-gray-600">
+                          <div className="text-sm font-semibold uppercase tracking-wide whitespace-nowrap text-[var(--color-dark-teal)]">
                             {formatDate(event.dateValue)}
                           </div>
                         </div>
@@ -682,36 +691,23 @@ export default function EventsCalendarPage() {
       {/* Contact Section for Custom Experiences */}
       <section className="py-16 px-4 md:px-10">
         <div className="max-w-4xl mx-auto">
-          <div
-            className="rounded-2xl shadow-lg p-8 md:p-12"
-            style={{
-              backgroundColor: "var(--green)",
-              borderColor: "black",
-              borderWidth: "2px",
-            }}
-          >
+          <div className="rounded-2xl shadow-lg p-8 md:p-12 bg-[var(--light-pink)] border-2 border-[var(--dark-teal)]/20">
             <div className="flex items-start gap-4 mb-6">
-              <div
-                className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: "var(--orange)" }}
-              >
+              <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center bg-[var(--light-orange)] text-[var(--dark-teal)]">
                 <Sparkles size={24} />
               </div>
               <div>
-                <h3
-                  className="text-2xl md:text-3xl font-bold"
-                  style={{ color: "black" }}
-                >
+                <h3 className="text-2xl md:text-3xl font-bold text-[var(--dark-teal)]">
                   Want Beautiful Custom Experiences?
                 </h3>
-                <p className="mt-2 text-lg" style={{ color: "black" }}>
+                <p className="mt-2 text-lg text-[var(--dark-teal)]">
                   Create personalized, pleasing experiences tailored to your
                   needs with JoyJuncture.
                 </p>
               </div>
             </div>
 
-            <p className="mb-6 leading-relaxed" style={{ color: "black" }}>
+            <p className="mb-6 leading-relaxed text-[var(--dark-teal)]">
               Whether it's a private celebration, corporate team-building, or a
               unique gathering, our expert team designs unforgettable moments.
               Contact us to bring your vision to life with our curated
@@ -721,22 +717,19 @@ export default function EventsCalendarPage() {
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="mailto:contact@joyjuncture.com"
-                className="px-6 py-3 text-white rounded-xl hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center flex items-center justify-center gap-2"
-                style={{ backgroundColor: "var(--font)" }}
+                className="px-6 py-3 bg-[var(--dark-teal)] text-white rounded-xl hover:bg-[var(--black)] font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center flex items-center justify-center gap-2"
               >
                 <Mail size={18} /> Email Us
               </a>
               <a
                 href="tel:+91-XXXXXXXXXX"
-                className="px-6 py-3 text-white rounded-xl hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center flex items-center justify-center gap-2"
-                style={{ backgroundColor: "var(--font)" }}
+                className="px-6 py-3 bg-[var(--dark-teal)] text-white rounded-xl hover:bg-[var(--black)] font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center flex items-center justify-center gap-2"
               >
                 <Phone size={18} /> Call Us
               </a>
               <a
                 href="/contact"
-                className="px-6 py-3 text-white rounded-xl hover:opacity-90 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
-                style={{ backgroundColor: "var(--font)" }}
+                className="px-6 py-3 bg-[var(--dark-teal)] text-white rounded-xl hover:bg-[var(--black)] font-semibold transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg text-center"
               >
                 💬 Get In Touch
               </a>
@@ -758,18 +751,18 @@ export default function EventsCalendarPage() {
           />
           <div
             ref={modalRef}
-            className={`relative max-w-3xl w-full rounded-2xl border shadow-xl overflow-hidden modal-card ${
+            className={`relative max-w-3xl w-full rounded-2xl border-2 border-[var(--dark-teal)]/30 shadow-xl overflow-hidden modal-card ${
               isModalVisible ? "modal-enter" : "modal-exit"
             }`}
             style={{
-              background: "var(--bg)",
-              color: "var(--font)",
+              background: "var(--light-blue)",
+              color: "var(--black)",
             }}
           >
             <div className="relative p-6 md:p-8">
               <button
                 onClick={closeModal}
-                className="absolute right-4 top-4 w-8 h-8 flex items-center justify-center rounded-full bg-[var(--font)]/10 text-[var(--font)] hover:bg-[var(--font)]/20"
+                className="absolute right-4 top-4 w-8 h-8 flex items-center justify-center rounded-full bg-[var(--light-pink)] text-[var(--dark-teal)] hover:bg-[var(--light-orange)] transition-colors duration-300"
                 aria-label="Close event details"
               >
                 <X size={20} />
@@ -777,7 +770,7 @@ export default function EventsCalendarPage() {
 
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-[var(--green)]/30 rounded-lg">
+                  <div className="p-2 bg-[var(--light-orange)] rounded-lg text-[var(--dark-teal)]">
                     <span className="text-xl">
                       {selectedEvent.category === "workshop" ? (
                         <Wrench size={24} />
@@ -793,7 +786,7 @@ export default function EventsCalendarPage() {
                   <span
                     className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest ${
                       selectedEvent.dateValue >= new Date()
-                        ? "bg-[var(--green)] text-[var(--font)] shadow-sm"
+                        ? "bg-[var(--light-pink)] text-[var(--dark-teal)] shadow-sm"
                         : "bg-[var(--font)]/20 text-[var(--font)]"
                     }`}
                   >
@@ -803,7 +796,7 @@ export default function EventsCalendarPage() {
                   </span>
                 </div>
 
-                <h3 className="text-3xl font-black text-[var(--font)]">
+                <h3 className="text-3xl font-black text-[var(--black)]">
                   {selectedEvent.title || selectedEvent.name}
                 </h3>
 
@@ -842,16 +835,16 @@ export default function EventsCalendarPage() {
                   ].map((item, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-3 p-4 bg-white/40 border border-[var(--font)]/5 rounded-xl"
+                      className="flex items-center gap-3 p-4 bg-white border border-[var(--dark-teal)]/15 rounded-xl"
                     >
-                      <span className="text-blue-600 drop-shadow-sm">
+                      <span className="text-[var(--dark-teal)] drop-shadow-sm">
                         {item.icon}
                       </span>
                       <div>
-                        <div className="text-[10px] font-black text-[var(--font)]/50 uppercase tracking-widest">
+                        <div className="text-[10px] font-black text-[var(--dark-teal)]/50 uppercase tracking-widest">
                           {item.label}
                         </div>
-                        <div className="font-bold text-[var(--font)]">
+                        <div className="font-bold text-[var(--dark-teal)]">
                           {item.value}
                         </div>
                       </div>
@@ -861,11 +854,11 @@ export default function EventsCalendarPage() {
 
                 {selectedEvent.description && (
                   <div className="mt-4">
-                    <div className="rounded-xl p-5 bg-white/40 border border-[var(--font)]/5">
+                    <div className="rounded-xl p-5 bg-white border border-[var(--dark-teal)]/15">
                       <p className="text-[10px] font-black text-[var(--font)]/50 uppercase tracking-widest mb-2">
                         Description
                       </p>
-                      <p className="text-[var(--font)]/90 leading-relaxed font-medium">
+                      <p className="text-[var(--dark-teal)]/90 leading-relaxed font-medium">
                         {selectedEvent.description}
                       </p>
                     </div>
@@ -880,7 +873,7 @@ export default function EventsCalendarPage() {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-8 py-3.5 bg-[var(--orange)] text-[var(--font)] rounded-xl hover:scale-105 active:scale-95 transition-all font-black flex items-center gap-2 shadow-lg border-2 border-[var(--font)]/10"
+                    className="px-8 py-3.5 bg-[var(--light-orange)] text-[var(--dark-teal)] rounded-xl hover:bg-[var(--color-orange)] hover:scale-105 active:scale-95 transition-all font-black flex items-center gap-2 shadow-lg border-2 border-[var(--dark-teal)]/20"
                   >
                     <MapPin size={20} /> Get Directions
                   </a>
@@ -891,14 +884,14 @@ export default function EventsCalendarPage() {
                         <a
                           href={`/events/${selectedEvent.id}`}
                           onClick={closeModal}
-                          className="px-8 py-3.5 bg-[var(--green)] text-[var(--font)] rounded-xl hover:scale-105 active:scale-95 transition-all font-black shadow-lg border-2 border-[var(--font)]/10"
+                          className="px-8 py-3.5 bg-[var(--light-pink)] text-[var(--dark-teal)] rounded-xl hover:bg-[var(--color-pink)] hover:scale-105 active:scale-95 transition-all font-black shadow-lg border-2 border-[var(--dark-teal)]/20"
                         >
                           Book Now
                         </a>
                       ) : (
                         <button
                           disabled
-                          className="px-8 py-3.5 bg-[var(--font)]/20 text-[var(--font)]/50 rounded-xl font-black cursor-not-allowed border-2 border-[var(--font)]/10"
+                          className="px-8 py-3.5 bg-[var(--font)]/20 text-[var(--black)]/50 rounded-xl font-black cursor-not-allowed border-2 border-[var(--font)]/10"
                         >
                           Sold Out
                         </button>
