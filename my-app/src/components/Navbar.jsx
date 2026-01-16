@@ -85,8 +85,8 @@ const Navbar = () => {
   };
 
   const linkClasses = (href) =>
-    `relative text-lg font-light tracking-wide text-white hover:text-gray-900 transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:bg-gray-900 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
-      isActive(href) ? "text-gray-900 after:scale-x-100" : ""
+    `relative text-lg font-light tracking-wide text-white hover:text-light-blue transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:bg-light-blue after:transition-transform after:duration-300 hover:after:scale-x-100 ${
+      isActive(href) ? "text-light-blue after:scale-x-100" : ""
     }`;
 
   return (
