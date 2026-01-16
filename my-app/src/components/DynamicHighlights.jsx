@@ -70,7 +70,7 @@ export default function DynamicHighlights() {
     setGameIndex((p) => (p + 1) % 3);
   };
 
-  const themeColors = ["#FA9660", "#FF9FC8", "#A5C5F2"];
+  const themeColors = ["var(--orange)", "var(--pink)", "var(--green)"];
 
   /* ================= EVENTS ================= */
   useEffect(() => {
@@ -173,229 +173,271 @@ export default function DynamicHighlights() {
   return (
     <motion.section
       ref={sectionRef}
-      className="w-full px-4 py-20 md:py-28"
-      style={{ backgroundColor: "var(--dark-teal)" }}
+      className="w-full px-4 py-16 md:py-20"
+      style={{ backgroundColor: "var(--light-blue)" }}
       variants={containerVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
     >
-      <div className="max-w-5xl mx-auto space-y-24 md:space-y-32">
-        {/* ================= UPCOMING EVENTS ================= */}
-        <motion.div variants={itemVariants} className="text-center">
-          <h2
-            className="text-3xl md:text-4xl font-bold"
-            style={{ color: "var(--bg)" }}
-          >
-            Upcoming Events
-          </h2>
-          <p
-            className="mt-2 text-sm md:text-base opacity-80"
-            style={{ color: "var(--bg)" }}
-          >
-            Don’t miss what’s happening next
-          </p>
-
-          <div className="relative mt-8 md:mt-10">
-            {/* Navigation Arrows */}
-            <button
-              onClick={handleEventPrev}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-14 z-20 p-3 rounded-full shadow-xl hover:scale-110 active:scale-95 transition-all border"
-              style={{
-                backgroundColor: "var(--light-orange)",
-                borderColor: "var(--light-orange)",
-                color: "var(--dark-teal)",
-              }}
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-35">
+          {/* ================= UPCOMING EVENTS ================= */}
+          <motion.div variants={itemVariants} className="text-center">
+            <h2
+              className="text-3xl md:text-4xl font-bold"
+              style={{ color: "var(--black)" }}
             >
-              <ChevronLeft size={28} />
-            </button>
-            <button
-              onClick={handleEventNext}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-14 z-20 p-3 rounded-full shadow-xl hover:scale-110 active:scale-95 transition-all border"
-              style={{
-                backgroundColor: "var(--light-orange)",
-                borderColor: "var(--light-orange)",
-                color: "var(--dark-teal)",
-              }}
+              Upcoming Events
+            </h2>
+            <p
+              className="mt-2 text-sm md:text-base opacity-80"
+              style={{ color: "var(--dark-teal)" }}
             >
-              <ChevronRight size={28} />
-            </button>
+              Don’t miss what’s happening next
+            </p>
 
-            <div className="overflow-hidden">
-              <div
-                className="flex transition-transform duration-700"
-                style={{ transform: `translateX(-${eventIndex * 100}%)` }}
+            <div className="relative mt-8 md:mt-10">
+              {/* Navigation Arrows */}
+              <button
+                onClick={handleEventPrev}
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-14 z-20 p-3 rounded-full shadow-xl hover:scale-110 active:scale-95 transition-all border"
+                style={{
+                  backgroundColor: "var(--dark-teal)",
+                  borderColor: "var(--dark-teal)",
+                  color: "white",
+                }}
               >
-                {loadingEvents
-                  ? null
-                  : events.map((e) => (
-                      <Link
-                        key={e.id}
-                        href={`/events/${e.id}`}
-                        className="min-w-full px-1 md:px-2"
-                      >
-                        <div
-                          className="rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-8 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-[6px] border-white/40 relative overflow-hidden group/card hover:border-white/80"
-                          style={{
-                            backgroundColor:
-                              themeColors[
-                                events.indexOf(e) % themeColors.length
-                              ],
-                          }}
-                        >
-                          {/* Inner Shine Effect */}
-                          <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 shadow-inner" />
+                <ChevronLeft size={28} />
+              </button>
+              <button
+                onClick={handleEventNext}
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-14 z-20 p-3 rounded-full shadow-xl hover:scale-110 active:scale-95 transition-all border"
+                style={{
+                  backgroundColor: "var(--dark-teal)",
+                  borderColor: "var(--dark-teal)",
+                  color: "white",
+                }}
+              >
+                <ChevronRight size={28} />
+              </button>
 
-                          <h3 className="text-xl md:text-2xl font-black text-white relative z-10 drop-shadow-md">
-                            {e.title || e.name}
+              <div className="overflow-hidden">
+                <div
+                  className="flex transition-transform duration-700"
+                  style={{ transform: `translateX(-${eventIndex * 100}%)` }}
+                >
+                  {loadingEvents
+                    ? null
+                    : events.map((e, i) => (
+                        <Link
+                          key={e.id}
+                          href={`/events/${e.id}`}
+                          className="min-w-full px-1 md:px-2"
+                        >
+                          <div
+                            className="rounded-[2rem] md:rounded-[2.5rem] p-5 md:p-6 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-4 border-white/40 relative overflow-hidden group/card hover:border-white/80"
+                            style={{
+                              backgroundColor:
+                                themeColors[
+                                  events.indexOf(e) % themeColors.length
+                                ],
+                            }}
+                          >
+                            {/* Inner Shine Effect */}
+                            <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 shadow-inner" />
+
+                            <h3
+                              className="text-xl md:text-2xl font-black relative z-10 drop-shadow-md"
+                              style={{
+                                color: "var(--dark-teal)",
+                              }}
+                            >
+                              {e.title || e.name}
+                            </h3>
+                            <p
+                              className="mt-2 text-sm md:text-base relative z-10 font-medium"
+                              style={{
+                                color: i === 2 ? "white/90" : "var(--black)",
+                              }}
+                            >
+                              {e.location || "TBA"}
+                            </p>
+                            <p
+                              className="mt-3 text-xs md:text-sm relative z-10 font-bold uppercase tracking-wider"
+                              style={{
+                                color: i === 2 ? "white/80" : "var(--black)",
+                              }}
+                            >
+                              {new Date(e.date).toLocaleDateString()}
+                            </p>
+                            <div className="mt-6 flex items-center justify-center relative z-10">
+                              <span
+                                className="px-8 py-2.5 rounded-full text-xs md:text-sm font-black shadow-lg group-hover/card:scale-110 transition-transform duration-300"
+                                style={{
+                                  backgroundColor: "white",
+                                  color: "var(--dark-teal)",
+                                }}
+                              >
+                                View Details
+                              </span>
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
+                </div>
+              </div>
+            </div>
+
+            {/* dots & View All */}
+            <div className="mt-6 space-y-6">
+              <div className="flex justify-center gap-3">
+                {events.map((_, i) => (
+                  <span
+                    key={i}
+                    className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${
+                      i === eventIndex ? "w-8" : "opacity-20"
+                    }`}
+                    style={{ backgroundColor: "var(--dark-teal)" }}
+                  />
+                ))}
+              </div>
+              <Link
+                href="/events"
+                className="inline-block px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all"
+                style={{
+                  backgroundColor: "var(--dark-teal)",
+                  color: "white",
+                }}
+              >
+                View All Events
+              </Link>
+            </div>
+          </motion.div>
+
+          {/* ================= PLAY SPOTLIGHT ================= */}
+          <motion.div variants={itemVariants} className="text-center">
+            <h2
+              className="text-3xl md:text-4xl font-bold"
+              style={{ color: "var(--black)" }}
+            >
+              Play Spotlight
+            </h2>
+            <p
+              className="mt-2 text-sm md:text-base opacity-80"
+              style={{ color: "var(--dark-teal)" }}
+            >
+              Pick up where the fun begins
+            </p>
+
+            <div className="relative mt-8 md:mt-12">
+              {/* Navigation Arrows */}
+              <button
+                onClick={handleGamePrev}
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-14 z-20 p-3 rounded-full shadow-xl hover:scale-110 active:scale-95 transition-all border"
+                style={{
+                  backgroundColor: "var(--dark-teal)",
+                  borderColor: "var(--dark-teal)",
+                  color: "white",
+                }}
+              >
+                <ChevronLeft size={28} />
+              </button>
+              <button
+                onClick={handleGameNext}
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-14 z-20 p-3 rounded-full shadow-xl hover:scale-110 active:scale-95 transition-all border"
+                style={{
+                  backgroundColor: "var(--dark-teal)",
+                  borderColor: "var(--dark-teal)",
+                  color: "white",
+                }}
+              >
+                <ChevronRight size={28} />
+              </button>
+
+              <div className="overflow-hidden">
+                <div
+                  className="flex transition-transform duration-700"
+                  style={{ transform: `translateX(-${gameIndex * 100}%)` }}
+                >
+                  {games.map((g, i) => (
+                    <Link
+                      key={i}
+                      href={g.href}
+                      className="min-w-full px-2 md:px-4"
+                    >
+                      <div
+                        className="rounded-[2rem] md:rounded-[3rem] p-8 md:p-10 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-4 border-white/40 relative overflow-hidden group/game hover:border-white/80"
+                        style={{
+                          backgroundColor: themeColors[i % themeColors.length],
+                        }}
+                      >
+                        <div className="relative z-10">
+                          <div
+                            className="text-8xl md:text-9xl animate-float drop-shadow-2xl flex justify-center"
+                            style={{
+                              color: "var(--dark-teal)",
+                            }}
+                          >
+                            {g.emoji}
+                          </div>
+                          <h3
+                            className="mt-4 text-2xl md:text-3xl font-black drop-shadow-md"
+                            style={{
+                              color: "var(--dark-teal)",
+                            }}
+                          >
+                            {g.title}
                           </h3>
-                          <p className="mt-2 text-sm md:text-base text-white relative z-10 font-medium">
-                            {e.location || "TBA"}
+                          <p
+                            className="mt-4 text-sm md:text-lg font-medium max-w-md mx-auto leading-relaxed"
+                            style={{ color: "var(--black)" }}
+                          >
+                            {g.desc}
                           </p>
-                          <p className="mt-3 text-xs md:text-sm text-white/80 relative z-10 font-bold uppercase tracking-wider">
-                            {new Date(e.date).toLocaleDateString()}
-                          </p>
-                          <div className="mt-6 flex items-center justify-center relative z-10">
-                            <span className="bg-white px-8 py-2.5 rounded-full text-xs md:text-sm font-black text-slate-800 shadow-lg group-hover/card:scale-110 transition-transform duration-300">
-                              View Details
+                          <div className="mt-8">
+                            <span
+                              className="inline-block px-10 py-3 rounded-full font-black text-base shadow-2xl transform group-hover/game:scale-110 active:scale-95 transition-all duration-300"
+                              style={{
+                                backgroundColor: "white",
+                                color: "var(--dark-teal)",
+                              }}
+                            >
+                              Play now →
                             </span>
                           </div>
                         </div>
-                      </Link>
-                    ))}
+                        {/* Subtle Background Glows */}
+                        <div className="absolute -top-10 -left-10 w-48 h-48 bg-white/5 rounded-full blur-3xl" />
+                        <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl group-hover/game:bg-white/30 transition-colors" />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* dots & View All */}
-          <div className="mt-8 space-y-8">
-            <div className="flex justify-center gap-3">
-              {events.map((_, i) => (
-                <span
-                  key={i}
-                  className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${
-                    i === eventIndex ? "w-8" : "opacity-20"
-                  }`}
-                  style={{ backgroundColor: "var(--light-orange)" }}
-                />
-              ))}
-            </div>
-            <Link
-              href="/events"
-              className="inline-block px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all"
-              style={{
-                backgroundColor: "var(--light-orange)",
-                color: "var(--dark-teal)",
-              }}
-            >
-              View All Events
-            </Link>
-          </div>
-        </motion.div>
-
-        {/* ================= PLAY SPOTLIGHT ================= */}
-        <motion.div variants={itemVariants} className="text-center">
-          <h2
-            className="text-3xl md:text-4xl font-bold"
-            style={{ color: "var(--bg)" }}
-          >
-            Play Spotlight
-          </h2>
-          <p
-            className="mt-2 text-sm md:text-base opacity-80"
-            style={{ color: "var(--bg)" }}
-          >
-            Pick up where the fun begins
-          </p>
-
-          <div className="relative mt-8 md:mt-12">
-            {/* Navigation Arrows */}
-            <button
-              onClick={handleGamePrev}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-14 z-20 p-3 rounded-full shadow-xl hover:scale-110 active:scale-95 transition-all border"
-              style={{
-                backgroundColor: "var(--light-orange)",
-                borderColor: "var(--light-orange)",
-                color: "var(--dark-teal)",
-              }}
-            >
-              <ChevronLeft size={28} />
-            </button>
-            <button
-              onClick={handleGameNext}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-14 z-20 p-3 rounded-full shadow-xl hover:scale-110 active:scale-95 transition-all border"
-              style={{
-                backgroundColor: "var(--light-orange)",
-                borderColor: "var(--light-orange)",
-                color: "var(--dark-teal)",
-              }}
-            >
-              <ChevronRight size={28} />
-            </button>
-
-            <div className="overflow-hidden">
-              <div
-                className="flex transition-transform duration-700"
-                style={{ transform: `translateX(-${gameIndex * 100}%)` }}
-              >
-                {games.map((g, i) => (
-                  <Link
+            {/* dots & Explore */}
+            <div className="mt-8 space-y-8">
+              <div className="flex justify-center gap-3">
+                {games.map((_, i) => (
+                  <span
                     key={i}
-                    href={g.href}
-                    className="min-w-full px-2 md:px-4"
-                  >
-                    <div
-                      className="rounded-[2.5rem] md:rounded-[3.5rem] p-10 md:p-14 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-[6px] border-white/40 relative overflow-hidden group/game hover:border-white/80"
-                      style={{
-                        backgroundColor: themeColors[i % themeColors.length],
-                      }}
-                    >
-                      <div className="relative z-10">
-                        <div className="text-9xl md:text-[10rem] animate-float drop-shadow-2xl flex justify-center">
-                          {g.emoji}
-                        </div>
-                        <h3 className="mt-4 text-2xl md:text-4xl font-black text-white drop-shadow-md">
-                          {g.title}
-                        </h3>
-                        <p className="mt-4 text-sm md:text-xl text-white font-medium max-w-md mx-auto leading-relaxed">
-                          {g.desc}
-                        </p>
-                        <div className="mt-10">
-                          <span className="inline-block bg-white text-slate-800 px-12 py-4 rounded-full font-black text-lg shadow-2xl transform group-hover/game:scale-110 active:scale-95 transition-all duration-300">
-                            Play now →
-                          </span>
-                        </div>
-                      </div>
-                      {/* Subtle Background Glows */}
-                      <div className="absolute -top-10 -left-10 w-48 h-48 bg-white/5 rounded-full blur-3xl" />
-                      <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl group-hover/game:bg-white/30 transition-colors" />
-                    </div>
-                  </Link>
+                    className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${
+                      i === gameIndex ? "w-8" : "opacity-20"
+                    }`}
+                    style={{ backgroundColor: "var(--dark-teal)" }}
+                  />
                 ))}
               </div>
-            </div>
-          </div>
-
-          {/* dots & Explore */}
-          <div className="mt-8 space-y-8">
-            <div className="flex justify-center gap-3">
-              {games.map((_, i) => (
-                <span
-                  key={i}
-                  className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${
-                    i === gameIndex ? "w-8" : "opacity-20"
-                  }`}
-                  style={{ backgroundColor: "var(--light-orange)" }}
-                />
-              ))}
-            </div>
-            {/* <Link 
+              {/* <Link 
             href="/play" 
             className="inline-block bg-[var(--font)] text-bg px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all"
           >
             Explore More Games
           </Link> */}
-          </div>
-        </motion.div>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </motion.section>
   );
