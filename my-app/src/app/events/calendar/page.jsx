@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Calendar from "@/components/Calendar";
 
-export defaultimport CalendarIcon from "@/components/Calendar";
+import CalendarIcon from "@/components/Calendar";
 import {
   Calendar,
   MapPin,
