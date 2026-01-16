@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import SoftWaveBackground from "./SoftWaveBackground";
 
 const faqs = [
   {
@@ -63,12 +64,13 @@ export default function FAQ() {
   return (
     <motion.section
       ref={sectionRef}
-      className="px-6 py-24 md:px-10 flex justify-center"
+      className="relative px-6 py-24 md:px-10 flex justify-center"
       variants={containerVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
     >
-      <div className="w-full max-w-4xl space-y-16">
+      <SoftWaveBackground height="420px" className="pointer-events-none" />
+      <div className="w-full max-w-4xl space-y-16 relative z-10">
         {/* ================= HEADER ================= */}
         <motion.div
           variants={itemVariants}
