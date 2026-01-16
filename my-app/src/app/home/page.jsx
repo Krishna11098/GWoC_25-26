@@ -20,7 +20,6 @@ export default function HomePage() {
       <ScrollProgress />
       <Navbar />
       <HeroSection />
-      <Subheading />
       {/*<ScrollAnimation /> */}
       <ThreePillars />
       <DynamicHighlights />

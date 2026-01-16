@@ -97,7 +97,7 @@ const Navbar = () => {
     >
       <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
         <div
-          className={`flex items-center rounded-2xl border border-white/60 bg-font shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 text-bg ${
+          className={`flex items-center rounded-2xl border border-white/60 bg-dark-teal shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 text-bg ${
             scrolled ? "py-0" : "py-1 md:py-1.5"
           }`}
         >
