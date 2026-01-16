@@ -45,14 +45,9 @@ export default function StartSudoku() {
         <div className="text-center">
           <div
             className="inline-block animate-spin rounded-full h-16 w-16 border-b-4 mb-4"
-            style={{ borderBottomColor: "var(--color-green)" }}
+            style={{ borderBottomColor: "var(--dark-teal)" }}
           ></div>
-          <p
-            className="text-lg font-semibold"
-            style={{ color: "var(--color-font-2)" }}
-          >
-            Starting game…
-          </p>
+          <p className="text-lg font-semibold text-dark-teal">Starting game…</p>
         </div>
       </div>
       <Footer />

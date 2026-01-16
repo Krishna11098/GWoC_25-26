@@ -44,14 +44,14 @@ const SudokuCell = forwardRef(function SudokuCell(
       style={{
         ...(isSelected
           ? {
-              backgroundColor: "var(--color-pink)",
+              backgroundColor: "var(--light-pink)",
               opacity: 0.3,
               color: "black",
             }
           : {}),
         ...(fixed
           ? {
-              backgroundColor: "var(--color-green)",
+              backgroundColor: "var(--light-blue)",
               color: "black",
               opacity: 0.85,
             }
@@ -59,7 +59,7 @@ const SudokuCell = forwardRef(function SudokuCell(
               color: "black",
             }),
         ...(isSameRow || isSameCol || isSameBox
-          ? { backgroundColor: "var(--color-orange)", color: "black" }
+          ? { backgroundColor: "var(--light-orange)", color: "black" }
           : {}),
       }}
     />

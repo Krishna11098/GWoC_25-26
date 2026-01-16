@@ -2,10 +2,10 @@ export default function SudokuDifficultyTabs({ value, onChange }) {
   const levels = ["easy", "medium", "hard"];
 
   const getActiveColor = (lvl) => {
-    if (lvl === "easy") return "var(--color-pink)";
-    if (lvl === "medium") return "var(--color-orange)";
-    if (lvl === "hard") return "var(--color-green)";
-    return "var(--color-font)";
+    if (lvl === "easy") return "var(--light-pink)";
+    if (lvl === "medium") return "var(--light-orange)";
+    if (lvl === "hard") return "var(--light-blue)";
+    return "var(--dark-teal)";
   };
 
   return (
@@ -21,9 +21,9 @@ export default function SudokuDifficultyTabs({ value, onChange }) {
             value === lvl
               ? {
                   backgroundColor: getActiveColor(lvl),
-                  color: "var(--color-font)",
+                  color: "var(--dark-teal)",
                 }
-              : { backgroundColor: "var(--color-font)", color: "white" }
+              : { backgroundColor: "var(--dark-teal)", color: "white" }
           }
         >
           {lvl}

@@ -56,20 +56,16 @@ export default function SudokuGrid({ grid, initial, setGrid }) {
   return (
     <div className="flex flex-col items-center gap-6">
       {/* Title */}
-      <h1
-        className="text-3xl md:text-4xl font-bold text-center"
-        style={{ color: "var(--color-font)" }}
-      >
+      <h1 className="text-3xl md:text-4xl font-bold text-center text-dark-teal">
         Sudoku Challenge
       </h1>
 
       {/* Instructions */}
       <div
-        className="max-w-2xl rounded-xl p-4 text-sm border-2"
+        className="max-w-2xl rounded-xl p-4 text-sm border-2 border-dark-teal"
         style={{
-          backgroundColor: "var(--color-green)",
-          borderColor: "var(--color-font)",
-          color: "white",
+          backgroundColor: "var(--light-blue)",
+          color: "var(--dark-teal)",
         }}
       >
         <p className="font-medium">
@@ -78,8 +74,8 @@ export default function SudokuGrid({ grid, initial, setGrid }) {
           <strong className="ml-4">Your entries:</strong> <span>Regular</span>
         </p>
         <p className="mt-2 text-xs opacity-90 flex items-center gap-1">
-          <Lightbulb size={12} className="shrink-0" /> Use arrow keys to navigate. Type 1-9 to fill cells. Press
-          Delete/Backspace to clear.
+          <Lightbulb size={12} className="shrink-0" /> Use arrow keys to
+          navigate. Type 1-9 to fill cells. Press Delete/Backspace to clear.
         </p>
       </div>
 
