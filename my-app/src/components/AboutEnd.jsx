@@ -41,12 +41,15 @@ export default function AboutEnd() {
         className="relative z-10 text-center max-w-4xl"
       >
         {/* Eyebrow */}
-        <motion.p variants={item} className="text-lg font-medium mb-6">
+        <motion.p
+          variants={item}
+          className="text-lg font-medium mb-6 text-dark-teal"
+        >
           Why Joy Juncture?
         </motion.p>
 
         {/* Subheading */}
-        <motion.p variants={item} className="text-xl mb-10">
+        <motion.p variants={item} className="text-xl mb-10 text-dark-teal">
           Because life is too short for boring evenings.
         </motion.p>
 
@@ -59,7 +62,7 @@ export default function AboutEnd() {
             duration: 0.7,
             ease: [0.16, 1, 0.3, 1], // soft overshoot
           }}
-          className="text-5xl md:text-7xl font-extrabold leading-tight mb-10 text-font"
+          className="text-5xl md:text-7xl font-extrabold leading-tight mb-10 text-dark-teal"
         >
           Less Small Talk.
           <br />
@@ -67,7 +70,7 @@ export default function AboutEnd() {
         </motion.h2>
 
         {/* Supporting line */}
-        <motion.p variants={item} className="text-lg md:text-xl">
+        <motion.p variants={item} className="text-lg md:text-xl text-black">
           Joy Juncture exists because boredom is the real enemy.
         </motion.p>
       </motion.div>
