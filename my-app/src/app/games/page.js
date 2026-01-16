@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import FloatingCartButton from "@/components/FloatingCartButton";
 import ShopWithFilters from "@/components/ShopWithFilters";
 import AddToCartButton from "@/components/AddToCartButton";
+import SoftWaveBackground from "@/components/SoftWaveBackground";
 
 export default function GamesPage() {
   const [products, setProducts] = useState([]);
@@ -48,7 +49,8 @@ export default function GamesPage() {
     mehfil: "/gallery/marketplace/Mehfil – The Ultimate Musical Card Game.webp",
     "one-more-round": "/gallery/marketplace/One More Round.webp",
     tamasha: "/gallery/marketplace/Tamasha – The Bollywood Bid Card Game.webp",
-    "the-bloody-inheritance": "/gallery/marketplace/The Bloody Inheritance.webp",
+    "the-bloody-inheritance":
+      "/gallery/marketplace/The Bloody Inheritance.webp",
   };
 
   // Game details for backside info (similar to the screenshot)
@@ -163,8 +165,9 @@ export default function GamesPage() {
     <>
       <Navbar />
 
-      <div className="px-5 md:px-12 pt-10 pb-16 mt-32 md:mt-36">
-        <div className="mx-auto w-full max-w-7xl px-4 md:px-10">
+      <div className="px-5 md:px-12 pt-10 pb-16 relative">
+        <SoftWaveBackground height="450px" className="pointer-events-none" />
+        <div className="mx-auto w-full max-w-7xl px-4 md:px-10 relative z-10 mt-20 md:mt-30">
           <div className="mb-14 mt-4 text-center relative">
             <motion.div
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -179,9 +182,9 @@ export default function GamesPage() {
               }}
               className="inline-flex flex-col items-center gap-2"
             >
-              <h1 className="text-6xl md:text-8xl font-bold tracking-tight leading-none">
-                <span className="text-black/90">Game</span>{" "}
-                <span className="relative inline-block text-purple-700 drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)]">
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
+                <span className="text-black">Game</span>{" "}
+                <span className="relative inline-block text-dark-teal drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)]">
                   Marketplace
                 </span>
               </h1>
@@ -189,7 +192,7 @@ export default function GamesPage() {
                 initial={{ width: 0 }}
                 whileInView={{ width: "80px" }}
                 transition={{ delay: 0.6, duration: 0.8 }}
-                className="h-2 bg-purple-600 rounded-full mt-6 shadow-md"
+                className="h-2 bg-dark-teal rounded-full mt-6 shadow-md"
               />
             </motion.div>
             <motion.p
@@ -208,7 +211,7 @@ export default function GamesPage() {
 
           {/* Games Grid - 3 cards per row with larger size */}
           <div className="mt-16">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -226,16 +229,18 @@ export default function GamesPage() {
                   onMouseLeave={() => setHoveredCard(null)}
                 >
                   {/* Card Container with 3D Flip */}
-                  <div 
+                  <div
                     className="relative h-[520px] transition-transform duration-700 ease-out"
-                    style={{ 
+                    style={{
                       transformStyle: "preserve-3d",
-                      transform: hoveredCard === item.id ? "rotateY(180deg)" : "rotateY(0deg)"
+                      transform:
+                        hoveredCard === item.id
+                          ? "rotateY(180deg)"
+                          : "rotateY(0deg)",
                     }}
                   >
-                    
                     {/* Front Side - Game Image & Basic Info */}
-                    <div 
+                    <div
                       className="absolute inset-0 rounded-3xl overflow-hidden shadow-xl border-2 border-white/50"
                       style={{ backfaceVisibility: "hidden" }}
                     >
@@ -247,89 +252,119 @@ export default function GamesPage() {
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       </div>
-                      
+
                       {/* Game Info */}
-                      <div 
+                      <div
                         className="h-1/4 p-6"
                         style={{ backgroundColor: "var(--bg)" }}
                       >
-                        <h3 
+                        <h3
                           className="text-2xl font-bold mb-2 line-clamp-1"
                           style={{ color: "var(--dark-teal)" }}
                         >
                           {item.name}
                         </h3>
                         <div className="flex items-center justify-between">
-                          <span 
+                          <span
                             className="text-2xl font-bold"
                             style={{ color: "var(--dark-teal)" }}
                           >
                             Rs. {item.price}
                           </span>
-                          <span 
+                          <span
                             className="text-sm font-semibold px-3 py-1 rounded-full"
-                            style={{ backgroundColor: "var(--green)", color: "var(--dark-teal)" }}
+                            style={{
+                              backgroundColor: "var(--green)",
+                              color: "var(--dark-teal)",
+                            }}
                           >
-                            {item.category.replace('_', ' ')}
+                            {item.category.replace("_", " ")}
                           </span>
                         </div>
                       </div>
 
                       {/* Hover Indicator */}
-                      <div 
+                      <div
                         className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-sm font-bold shadow-md"
-                        style={{ backgroundColor: "var(--orange)", color: "var(--dark-teal)" }}
+                        style={{
+                          backgroundColor: "var(--orange)",
+                          color: "var(--dark-teal)",
+                        }}
                       >
                         Hover to Flip
                       </div>
                     </div>
 
                     {/* Back Side - Detailed Info (Rotated) */}
-                    <div 
+                    <div
                       className="absolute inset-0 rounded-3xl overflow-hidden shadow-xl p-8 flex flex-col justify-between"
-                      style={{ 
-                        backfaceVisibility: "hidden", 
+                      style={{
+                        backfaceVisibility: "hidden",
                         transform: "rotateY(180deg)",
-                        backgroundColor: "var(--dark-teal)"
+                        backgroundColor: "var(--dark-teal)",
                       }}
                     >
                       {/* Decorative elements */}
-                      <div 
+                      <div
                         className="absolute top-0 right-0 w-40 h-40 rounded-full -mr-20 -mt-20 opacity-20"
                         style={{ backgroundColor: "var(--orange)" }}
                       ></div>
-                      <div 
+                      <div
                         className="absolute bottom-0 left-0 w-48 h-48 rounded-full -ml-24 -mb-24 opacity-15"
                         style={{ backgroundColor: "var(--green)" }}
                       ></div>
 
                       <div className="relative z-10">
-                        <h4 
+                        <h4
                           className="text-3xl font-bold mb-6"
                           style={{ color: "var(--orange)" }}
                         >
                           GAME DOSSIER
                         </h4>
-                        
+
                         {/* Game Details */}
                         <div className="space-y-5">
                           <div>
-                            <div className="text-sm font-semibold mb-1 opacity-70" style={{ color: "var(--bg)" }}>IDEAL GROUP</div>
-                            <div className="text-2xl font-bold" style={{ color: "var(--bg)" }}>
+                            <div
+                              className="text-sm font-semibold mb-1 opacity-70"
+                              style={{ color: "var(--bg)" }}
+                            >
+                              IDEAL GROUP
+                            </div>
+                            <div
+                              className="text-2xl font-bold"
+                              style={{ color: "var(--bg)" }}
+                            >
                               {gameDetails[item.id]?.players || "2-6 Players"}
                             </div>
                           </div>
-                          
+
                           <div>
-                            <div className="text-sm font-semibold mb-1 opacity-70" style={{ color: "var(--bg)" }}>AVERAGE SESSION</div>
-                            <div className="text-2xl font-bold" style={{ color: "var(--bg)" }}>
+                            <div
+                              className="text-sm font-semibold mb-1 opacity-70"
+                              style={{ color: "var(--bg)" }}
+                            >
+                              AVERAGE SESSION
+                            </div>
+                            <div
+                              className="text-2xl font-bold"
+                              style={{ color: "var(--bg)" }}
+                            >
                               {gameDetails[item.id]?.duration || "30-45m"}
                             </div>
                           </div>
-                          
+
                           <div>
-                            <div className="text-sm font-semibold mb-1 opacity-70" style={{ color: "var(--bg)" }}>MOOD CHECK</div>
-                            <div className="text-2xl font-bold" style={{ color: "var(--orange)" }}>
+                            <div
+                              className="text-sm font-semibold mb-1 opacity-70"
+                              style={{ color: "var(--bg)" }}
+                            >
+                              MOOD CHECK
+                            </div>
+                            <div
+                              className="text-2xl font-bold"
+                              style={{ color: "var(--orange)" }}
+                            >
                               {gameDetails[item.id]?.mood || "Fun"}
                             </div>
                           </div>
@@ -337,19 +372,31 @@ export default function GamesPage() {
                       </div>
 
                       {/* Price and Actions */}
-                      <div className="relative z-10 space-y-4 border-t pt-6" style={{ borderColor: "rgba(251, 241, 225, 0.2)" }}>
+                      <div
+                        className="relative z-10 space-y-4 border-t pt-6"
+                        style={{ borderColor: "rgba(251, 241, 225, 0.2)" }}
+                      >
                         <div className="flex items-center justify-between">
                           <div>
-                            <div className="text-3xl font-bold" style={{ color: "var(--bg)" }}>
+                            <div
+                              className="text-3xl font-bold"
+                              style={{ color: "var(--bg)" }}
+                            >
                               Rs. {item.price}
                             </div>
                           </div>
-                          <AddToCartButton gameId={item.id} className="!bg-[var(--orange)] !text-[var(--dark-teal)] hover:!opacity-90 shadow-lg font-bold" />
+                          <AddToCartButton
+                            gameId={item.id}
+                            className="!bg-[var(--orange)] !text-[var(--dark-teal)] hover:!opacity-90 shadow-lg font-bold"
+                          />
                         </div>
                         <a
                           href={`/games/${item.id}`}
                           className="block w-full text-center px-6 py-3 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:opacity-90"
-                          style={{ backgroundColor: "var(--bg)", color: "var(--dark-teal)" }}
+                          style={{
+                            backgroundColor: "var(--bg)",
+                            color: "var(--dark-teal)",
+                          }}
                         >
                           View Details
                         </a>
@@ -358,11 +405,14 @@ export default function GamesPage() {
                   </div>
 
                   {/* Category Tag */}
-                  <div 
+                  <div
                     className="absolute -top-3 left-6 px-4 py-2 rounded-full text-sm font-bold shadow-lg z-10"
-                    style={{ backgroundColor: "var(--dark-teal)", color: "var(--bg)" }}
+                    style={{
+                      backgroundColor: "var(--dark-teal)",
+                      color: "var(--bg)",
+                    }}
                   >
-                    {item.category.replace('_', ' ').toUpperCase()}
+                    {item.category.replace("_", " ").toUpperCase()}
                   </div>
                 </motion.div>
               ))}
