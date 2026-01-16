@@ -100,10 +100,16 @@ export default function RiddlesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 flex items-center justify-center">
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: "white" }}
+      >
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 text-lg">Loading riddles...</p>
+          <div
+            className="animate-spin rounded-full h-16 w-16 border-b-4"
+            style={{ borderBottomColor: "var(--dark-teal)" }}
+          ></div>
+          <p className="text-dark-teal text-lg mt-4">Loading riddles...</p>
         </div>
       </div>
     );
@@ -114,7 +120,7 @@ export default function RiddlesPage() {
       <Navbar />
       <div
         className="px-5 md:px-12 pt-5 pb-12 mt-32"
-        style={{ color: "var(--color-font)" }}
+        style={{ color: "var(--dark-teal)" }}
       >
         <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
           {/* Header */}
@@ -134,7 +140,7 @@ export default function RiddlesPage() {
             >
               <h1 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
                 <span className="text-black/80">Riddle</span>{" "}
-                <span className="relative inline-block text-font drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                <span className="relative inline-block text-dark-teal drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
                   Challenge
                 </span>
               </h1>
@@ -142,7 +148,7 @@ export default function RiddlesPage() {
                 initial={{ width: 0 }}
                 whileInView={{ width: "60px" }}
                 transition={{ delay: 0.6, duration: 0.8 }}
-                className="h-1.5 bg-font rounded-full mt-4 shadow-sm"
+                className="h-1.5 bg-dark-teal rounded-full mt-4 shadow-sm"
               />
             </motion.div>
             <motion.p
@@ -157,20 +163,32 @@ export default function RiddlesPage() {
           </div>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-center">
+            <div
+              className="mb-6 p-4 rounded-lg text-center"
+              style={{
+                backgroundColor: "var(--light-orange)",
+                color: "var(--dark-teal)",
+                borderColor: "var(--dark-teal)",
+              }}
+            >
               {error}
             </div>
           )}
 
           {riddles.length === 0 ? (
             <div className="text-center py-16">
-              <div className="flex justify-center mb-4 text-gray-400">
+              <div
+                className="flex justify-center mb-4"
+                style={{ color: "var(--dark-teal)" }}
+              >
                 <Search size={64} />
               </div>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+              <h2 className="text-2xl font-semibold text-dark-teal mb-2">
                 No Riddles Available
               </h2>
-              <p className="text-gray-600">Check back later for new riddles!</p>
+              <p className="text-dark-teal">
+                Check back later for new riddles!
+              </p>
             </div>
           ) : (
             <div className="grid gap-8">
@@ -181,27 +199,24 @@ export default function RiddlesPage() {
                 return (
                   <div
                     key={riddle.id}
-                    className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-black hover:border-font transition-all duration-300"
+                    className="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-dark-teal hover:border-dark-teal transition-all duration-300"
                   >
                     <div
                       className="p-6"
-                      style={{ background: "var(--color-green)" }}
+                      style={{ background: "var(--light-blue)" }}
                     >
                       <div className="flex justify-between items-start">
                         <div>
                           <span
                             className="inline-block px-3 py-1 rounded-full text-sm font-semibold mb-3"
                             style={{
-                              background: "rgba(255,255,255,0.2)",
-                              color: "var(--color-font)",
+                              background: "rgba(0,0,0,0.1)",
+                              color: "var(--dark-teal)",
                             }}
                           >
                             Riddle #{riddle.riddleNo || index + 1}
                           </span>
-                          <h3
-                            className="text-2xl font-bold"
-                            style={{ color: "var(--color-font)" }}
-                          >
+                          <h3 className="text-2xl font-bold text-dark-teal">
                             {riddle.question}
                           </h3>
                         </div>
@@ -209,8 +224,8 @@ export default function RiddlesPage() {
                           <div
                             className="px-4 py-2 rounded-full font-bold text-lg w-25 text-center flex items-center justify-center gap-2"
                             style={{
-                              backgroundColor: "var(--color-orange)",
-                              color: "var(--color-font)",
+                              backgroundColor: "var(--light-orange)",
+                              color: "var(--dark-teal)",
                             }}
                           >
                             <Coins size={20} /> {riddle.coins}
@@ -224,29 +239,37 @@ export default function RiddlesPage() {
                         <div
                           className={`text-center py-8 rounded-xl ${
                             result.correct
-                              ? "bg-green-50 border-2 border-green-300"
-                              : "bg-red-50 border-2 border-red-300"
+                              ? "bg-light-pink border-2 border-light-pink"
+                              : "bg-light-orange border-2 border-light-orange"
                           }`}
                         >
                           <div className="flex justify-center mb-4">
                             {result.correct ? (
                               <PartyPopper
                                 size={64}
-                                className="text-green-500"
+                                style={{ color: "var(--dark-teal)" }}
                               />
                             ) : (
-                              <CircleX size={64} className="text-red-500" />
+                              <CircleX
+                                size={64}
+                                style={{ color: "var(--dark-teal)" }}
+                              />
                             )}
                           </div>
                           <p
                             className={`text-2xl font-bold mb-2 ${
-                              result.correct ? "text-green-700" : "text-red-700"
+                              result.correct
+                                ? "text-dark-teal"
+                                : "text-dark-teal"
                             }`}
                           >
                             {result.message}
                           </p>
                           {result.correct && !result.alreadySolved && (
-                            <p className="text-lg text-green-600 font-semibold flex items-center justify-center gap-2">
+                            <p
+                              className="text-lg font-semibold flex items-center justify-center gap-2"
+                              style={{ color: "var(--dark-teal)" }}
+                            >
                               +{result.coins} coins! Total: {result.totalCoins}{" "}
                               <Coins size={20} />
                             </p>
@@ -255,7 +278,7 @@ export default function RiddlesPage() {
                       ) : (
                         <div className="space-y-4">
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-sm font-medium text-dark-teal mb-2">
                               Your Answer:
                             </label>
                             <input
@@ -270,7 +293,7 @@ export default function RiddlesPage() {
                                 }
                               }}
                               placeholder="Type your answer here..."
-                              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-font focus:border-font text-lg"
+                              className="w-full px-4 py-3 border-2 border-dark-teal rounded-xl focus:ring-2 focus:ring-dark-teal focus:border-dark-teal text-lg"
                               disabled={isSubmitting}
                             />
                           </div>
@@ -280,9 +303,9 @@ export default function RiddlesPage() {
                             className="w-full py-3 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                             style={{
                               backgroundColor: isSubmitting
-                                ? "#9ca3af"
-                                : "var(--color-pink)",
-                              color: "var(--color-font)",
+                                ? "#ccc"
+                                : "var(--light-pink)",
+                              color: "var(--dark-teal)",
                               cursor: isSubmitting ? "not-allowed" : "pointer",
                             }}
                           >
@@ -326,7 +349,11 @@ export default function RiddlesPage() {
           <div className="text-center mt-12">
             <button
               onClick={() => router.push("/")}
-              className="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors font-medium"
+              className="px-6 py-3 rounded-xl transition-colors font-medium"
+              style={{
+                backgroundColor: "var(--dark-teal)",
+                color: "white",
+              }}
             >
               ← Back to Home
             </button>
