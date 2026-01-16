@@ -1,9 +1,8 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CalendarIcon from "@/components/Calendar";
+import Calendar from "@/components/Calendar";
+
+export defaultimport CalendarIcon from "@/components/Calendar";
 import {
   Calendar,
   MapPin,
@@ -421,74 +420,3 @@ export default function EventsCalendarPage() {
                 aria-label="Close event details"
               >
                 <X size={24} />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <style jsx>{`
-        @keyframes overlayIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        @keyframes overlayOut {
-          from {
-            opacity: 1;
-          }
-          to {
-            opacity: 0;
-          }
-        }
-        @keyframes boxIn {
-          0% {
-            opacity: 0;
-            transform: translateY(24px) scale(0.95);
-          }
-          60% {
-            opacity: 1;
-            transform: translateY(6px) scale(1.01);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-        @keyframes boxOut {
-          from {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-          to {
-            opacity: 0;
-            transform: translateY(12px) scale(0.98);
-          }
-        }
-
-        .modal-shell {
-          perspective: 1600px;
-        }
-        .overlay-enter {
-          animation: overlayIn 320ms ease-out forwards;
-        }
-        .overlay-exit {
-          animation: overlayOut 220ms ease-in forwards;
-        }
-        .modal-enter {
-          animation: boxIn 480ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-          transform-origin: center;
-          will-change: transform, opacity;
-        }
-        .modal-exit {
-          animation: boxOut 340ms cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-          transform-origin: center;
-          will-change: transform, opacity;
-        }
-      `}</style>
-    </>
-  );
-}

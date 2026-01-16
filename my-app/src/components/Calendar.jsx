@@ -552,7 +552,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
 
         {/* Event modal */}
         {selectedEvent && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center px-4 md:px-8 modal-shell">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-shell">
             <div
               className={`absolute inset-0 bg-black/55 backdrop-blur-sm modal-overlay ${
                 isModalVisible ? "overlay-enter" : "overlay-exit"
@@ -560,176 +560,37 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
               onClick={closeModal}
             />
             <div
-              className={`relative max-w-3xl w-full rounded-[30px] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.45)] overflow-hidden modal-card ${
+              className={`relative w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden modal-card max-h-[85vh] flex flex-col ${
                 isModalVisible ? "modal-enter" : "modal-exit"
               }`}
               style={{
                 backgroundColor: "white",
                 color: "var(--color-font)",
-                borderColor: "var(--color-font)",
-                borderWidth: "2px",
+                border: "2px solid var(--color-font)",
               }}
             >
-              <div className="flex justify-between items-start gap-4 p-6 md:p-8">
-                <div className="space-y-5 w-full">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="inline-flex items-center px-4 py-2 rounded-full shadow-lg text-sm font-semibold drop-shadow-md text-white"
-                      style={{ backgroundColor: "var(--color-green)" }}
-                    >
-                      By: {selectedEvent.host || "Unknown"}
-                    </div>
-                  </div>
-                  <h3
-                    className="text-3xl md:text-4xl font-serif leading-tight"
-                    style={{ color: "var(--color-font)" }}
+              {/* Header - Fixed */}
+              <div className="p-3 sm:p-4 border-b border-gray-100 flex items-start justify-between flex-shrink-0">
+                <div className="pr-8 sm:pr-10 flex-1 min-w-0">
+                  <div 
+                    className="inline-flex items-center px-2 py-1 rounded-full text-white text-[10px] sm:text-xs font-bold mb-2"
+                    style={{ backgroundColor: "var(--color-green)" }}
                   >
+                    By: {selectedEvent.host}
+                  </div>
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold leading-tight break-words">
                     {selectedEvent.title}
                   </h3>
-                  <hr
-                    style={{ borderColor: "var(--color-font)", opacity: "0.2" }}
-                  />
-
-                  <div className="space-y-3">
-                    <div
-                      className="flex items-baseline gap-3 text-lg font-semibold"
-                      style={{ color: "var(--color-green)" }}
-                    >
-                      <svg
-                        className="w-5 h-5 shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z" />
-                      </svg>
-                      <span>Date:</span>
-                      <span
-                        className="font-medium"
-                        style={{ color: "var(--color-font)" }}
-                      >
-                        {formatLongDate(selectedEvent.date)}
-                      </span>
-                    </div>
-                    <div
-                      className="flex items-baseline gap-3 text-lg font-semibold"
-                      style={{ color: "var(--color-orange)" }}
-                    >
-                      <svg
-                        className="w-5 h-5 shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
-                      </svg>
-                      <span>Time:</span>
-                      <span
-                        className="font-medium"
-                        style={{ color: "var(--color-font)" }}
-                      >
-                        {selectedEvent.time}
-                      </span>
-                    </div>
-                    <div
-                      className="flex items-baseline gap-3 text-lg font-semibold"
-                      style={{ color: "var(--color-pink)" }}
-                    >
-                      <svg
-                        className="w-5 h-5 shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                      </svg>
-                      <span>Location:</span>
-                      <span
-                        className="font-medium"
-                        style={{ color: "var(--color-font)" }}
-                      >
-                        {selectedEvent.location}
-                      </span>
-                    </div>
-                    {selectedEvent.price && (
-                      <div
-                        className="flex items-baseline gap-3 text-lg font-semibold"
-                        style={{ color: "var(--color-orange)" }}
-                      >
-                        <svg
-                          className="w-5 h-5 flex-shrink-0"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" />
-                        </svg>
-                        <span>Price:</span>
-                        <span
-                          className="font-medium"
-                          style={{ color: "var(--color-font)" }}
-                        >
-                          {selectedEvent.price}
-                        </span>
-                      </div>
-                    )}
-                    {selectedEvent.category && (
-                      <div
-                        className="flex items-baseline gap-3 text-lg font-semibold"
-                        style={{ color: "var(--color-green)" }}
-                      >
-                        <svg
-                          className="w-5 h-5 flex-shrink-0"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z" />
-                        </svg>
-                        <span>Category:</span>
-                        <span
-                          className="font-medium"
-                          style={{ color: "var(--color-font)" }}
-                        >
-                          {selectedEvent.category}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {selectedEvent.description && (
-                    <div className="mt-6">
-                      <div
-                        className="rounded-2xl p-5 shadow-inner"
-                        style={{
-                          backgroundColor: "var(--color-pink)",
-                          opacity: "0.4",
-                          borderColor: "var(--color-font)",
-                          borderWidth: "1px",
-                        }}
-                      >
-                        <p
-                          className="text-lg font-semibold mb-2"
-                          style={{ color: "var(--color-font)" }}
-                        >
-                          Description
-                        </p>
-                        <p
-                          className="text-base leading-relaxed"
-                          style={{ color: "var(--color-font)" }}
-                        >
-                          {selectedEvent.description}
-                        </p>
-                      </div>
-                    </div>
-                  )}
                 </div>
-
                 <button
                   onClick={closeModal}
-                  className="h-10 w-10 flex items-center justify-center rounded-full text-xl font-bold border transition-all text-font"
+                  className="h-8 w-8 sm:h-10 sm:w-10 flex items-center justify-center rounded-full text-lg sm:text-xl font-bold border transition-colors flex-shrink-0"
                   style={{
                     borderColor: "var(--color-font)",
                     backgroundColor: "white",
                   }}
                   onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor =
-                      "var(--color-orange)")
+                    (e.currentTarget.style.backgroundColor = "var(--color-orange)")
                   }
                   onMouseLeave={(e) =>
                     (e.currentTarget.style.backgroundColor = "white")
@@ -738,6 +599,147 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                 >
                   ×
                 </button>
+              </div>
+
+              {/* Scrollable Content Area */}
+              <div className="overflow-y-auto p-3 sm:p-4 md:p-5 space-y-3 sm:space-y-4 flex-1">
+                <div className="grid grid-cols-1 gap-3 sm:gap-4">
+                  {/* Date */}
+                  <div className="flex items-start gap-3">
+                    <div 
+                      className="p-2 rounded-lg flex-shrink-0"
+                      style={{ backgroundColor: "rgba(var(--color-green-rgb, 74, 222, 128), 0.1)" }}
+                    >
+                      <svg 
+                        className="w-5 h-5" 
+                        fill="currentColor" 
+                        viewBox="0 0 24 24"
+                        style={{ color: "var(--color-green)" }}
+                      >
+                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">Date</p>
+                      <p className="font-bold text-sm sm:text-base break-words">
+                        {formatLongDate(selectedEvent.date)}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Time */}
+                  <div className="flex items-start gap-3">
+                    <div 
+                      className="p-2 rounded-lg flex-shrink-0"
+                      style={{ backgroundColor: "rgba(var(--color-orange-rgb, 251, 146, 60), 0.1)" }}
+                    >
+                      <svg 
+                        className="w-5 h-5" 
+                        fill="currentColor" 
+                        viewBox="0 0 24 24"
+                        style={{ color: "var(--color-orange)" }}
+                      >
+                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">Time</p>
+                      <p className="font-bold text-sm sm:text-base break-words">
+                        {selectedEvent.time}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Location */}
+                  <div className="flex items-start gap-3">
+                    <div 
+                      className="p-2 rounded-lg flex-shrink-0"
+                      style={{ backgroundColor: "rgba(var(--color-pink-rgb, 244, 114, 182), 0.1)" }}
+                    >
+                      <svg 
+                        className="w-5 h-5" 
+                        fill="currentColor" 
+                        viewBox="0 0 24 24"
+                        style={{ color: "var(--color-pink)" }}
+                      >
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">Location</p>
+                      <p className="font-bold text-sm sm:text-base break-words">
+                        {selectedEvent.location}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Price */}
+                  {selectedEvent.price && (
+                    <div className="flex items-start gap-3">
+                      <div 
+                        className="p-2 rounded-lg flex-shrink-0"
+                        style={{ backgroundColor: "rgba(var(--color-orange-rgb, 251, 146, 60), 0.1)" }}
+                      >
+                        <svg 
+                          className="w-5 h-5" 
+                          fill="currentColor" 
+                          viewBox="0 0 24 24"
+                          style={{ color: "var(--color-orange)" }}
+                        >
+                          <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                        </svg>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">Price</p>
+                        <p className="font-bold text-sm sm:text-base break-words">
+                          {selectedEvent.price}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Category */}
+                  {selectedEvent.category && (
+                    <div className="flex items-start gap-3">
+                      <div 
+                        className="p-2 rounded-lg flex-shrink-0"
+                        style={{ backgroundColor: "rgba(var(--color-green-rgb, 74, 222, 128), 0.1)" }}
+                      >
+                        <svg 
+                          className="w-5 h-5" 
+                          fill="currentColor" 
+                          viewBox="0 0 24 24"
+                          style={{ color: "var(--color-green)" }}
+                        >
+                          <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/>
+                        </svg>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">Category</p>
+                        <p className="font-bold text-sm sm:text-base break-words">
+                          {selectedEvent.category}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Description */}
+                {selectedEvent.description && (
+                  <div 
+                    className="mt-2 p-3 sm:p-4 rounded-xl border"
+                    style={{
+                      backgroundColor: "var(--color-pink)",
+                      opacity: "0.4",
+                      borderColor: "var(--color-font)",
+                    }}
+                  >
+                    <p className="text-xs sm:text-sm font-bold mb-1 sm:mb-2">Description</p>
+                    <p className="text-xs sm:text-sm leading-relaxed break-words">
+                      {selectedEvent.description}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
