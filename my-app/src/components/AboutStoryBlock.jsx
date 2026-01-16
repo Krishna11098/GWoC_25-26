@@ -15,18 +15,10 @@ export default function AboutStoryBlock({ title, children, bgColor }) {
       }}
     >
       {title && (
-        <h3
-          className="text-2xl font-bold mb-4 text-dark-teal"
-        >
-          {title}
-        </h3>
+        <h3 className="text-2xl font-bold mb-4 text-dark-teal">{title}</h3>
       )}
 
-      <p
-        className="text-lg leading-relaxed text-black"
-      >
-        {children}
-      </p>
+      <p className="text-lg leading-relaxed text-black">{children}</p>
     </motion.div>
   );
 }
