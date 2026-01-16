@@ -44,11 +44,18 @@ const CTASection = () => {
     <section
       ref={ref}
       className="relative py-20 md:py-32 px-6 md:px-10 overflow-hidden"
+      style={{ backgroundColor: "var(--bg)" }}
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink rounded-full blur-3xl" />
+        <div
+          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl"
+          style={{ backgroundColor: "var(--light-orange)" }}
+        />
+        <div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl"
+          style={{ backgroundColor: "var(--dark-teal)" }}
+        />
       </div>
 
       <motion.div
@@ -59,8 +66,15 @@ const CTASection = () => {
       >
         {/* Eyebrow text */}
         <motion.div variants={itemVariants} className="mb-6">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green/30 border border-green text-sm font-semibold uppercase tracking-wider text-font">
-            <Sparkles className="w-4 h-4 text-font" />
+          <span
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold uppercase tracking-wider"
+            style={{
+              backgroundColor: "var(--light-orange)/30",
+              borderColor: "var(--light-orange)",
+              color: "var(--dark-teal)",
+            }}
+          >
+            <Sparkles className="w-4 h-4" />
             Start Your Journey
           </span>
         </motion.div>
@@ -68,15 +82,21 @@ const CTASection = () => {
         {/* Main heading with gradient */}
         <motion.h2
           variants={itemVariants}
-          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-black"
+          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+          style={{ color: "var(--dark-teal)" }}
         >
-          Ready to Create <span className="text-font">Joyful Experiences</span>?
+          Ready to Create{" "}
+          <span style={{ color: "var(--light-orange)" }}>
+            Joyful Experiences
+          </span>
+          ?
         </motion.h2>
 
         {/* Description */}
         <motion.p
           variants={itemVariants}
-          className="text-lg md:text-xl text-font/70 mb-12 max-w-2xl mx-auto leading-relaxed"
+          className="text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed"
+          style={{ color: "var(--dark-teal)" }}
         >
           Join thousands of players and event organizers who've discovered the
           magic of playful connections
@@ -89,7 +109,8 @@ const CTASection = () => {
         >
           <Link href="/games">
             <motion.button
-              className="group relative px-8 py-4 bg-orange text-font rounded-full font-semibold text-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(247,213,124,0.4)]"
+              className="group relative px-8 py-4 text-white rounded-full font-semibold text-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(250,150,96,0.4)]"
+              style={{ backgroundColor: "var(--light-orange)" }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -97,27 +118,37 @@ const CTASection = () => {
                 Explore Games
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </span>
-        
+
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-pink/30 to-transparent"
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(to right, rgba(1, 47, 60, 0.3), transparent)",
+                }}
                 initial={{ x: "-100%" }}
                 whileHover={{ x: "100%" }}
                 transition={{ duration: 0.5 }}
               />
             </motion.button>
           </Link>
-        
+
           <Link href="/events">
             <motion.button
-              className="px-8 py-4 border-2 border-green text-font rounded-full font-semibold text-lg hover:bg-green/20 hover:border-green transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
+              className="px-8 py-4 border-2 text-white rounded-full font-semibold text-lg transition-all duration-300"
+              style={{
+                borderColor: "var(--dark-teal)",
+                color: "var(--dark-teal)",
+              }}
+              whileHover={{
+                scale: 1.05,
+                backgroundColor: "var(--dark-teal)/20",
+              }}
               whileTap={{ scale: 0.95 }}
             >
               Book an Event
             </motion.button>
           </Link>
         </motion.div>
-
 
         {/* Stats Grid */}
         <motion.div
@@ -130,12 +161,28 @@ const CTASection = () => {
               variants={itemVariants}
               className="group relative"
             >
-              <div className="relative p-6 rounded-2xl bg-pink/20 border border-pink backdrop-blur-sm hover:bg-pink/30 hover:border-orange transition-all duration-300">
+              <div
+                className="relative p-6 rounded-2xl backdrop-blur-sm transition-all duration-300"
+                style={{
+                  backgroundColor: "var(--light-orange)/20",
+                  borderColor: "var(--light-orange)",
+                  border: "2px solid",
+                }}
+              >
                 <div className="flex flex-col items-center gap-3">
-                  <div className="p-3 rounded-full bg-green/30 group-hover:bg-green/50 transition-colors">
-                    <stat.icon className="w-6 h-6 text-font" />
+                  <div
+                    className="p-3 rounded-full transition-colors"
+                    style={{ backgroundColor: "var(--dark-teal)/30" }}
+                  >
+                    <stat.icon
+                      className="w-6 h-6"
+                      style={{ color: "var(--dark-teal)" }}
+                    />
                   </div>
-                  <div className="text-4xl md:text-5xl font-bold text-black">
+                  <div
+                    className="text-4xl md:text-5xl font-bold"
+                    style={{ color: "var(--dark-teal)" }}
+                  >
                     <CountUp
                       from={0}
                       to={stat.value}
@@ -147,7 +194,10 @@ const CTASection = () => {
                     />
                     {stat.suffix}
                   </div>
-                  <div className="text-sm md:text-base text-font/80 font-medium">
+                  <div
+                    className="text-sm md:text-base font-medium"
+                    style={{ color: "var(--dark-teal)" }}
+                  >
                     {stat.label}
                   </div>
                 </div>

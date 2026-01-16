@@ -1,9 +1,11 @@
 "use client";
 
-import { Poppins, Baloo_2 } from "next/font/google";
+import { Poppins, Baloo_2, Londrina_Sketch } from "next/font/google";
+import Image from "next/image";
+import { motion } from "framer-motion";
 
 import PlayfulHeading from "./PlayfulHeading";
-import ShinyText from "./ShinyText";
+import { Weight } from "lucide-react";
 
 const baloo = Baloo_2({
   subsets: ["latin"],
@@ -15,12 +17,16 @@ const poppins = Poppins({
   weight: ["400", "500", "600"],
 });
 
-/**
- * HeroSection - Animates out smoothly as next section enters viewport
- * @param {number} scrollProgress - Progress value (0-1) from parent/page
- */
+const londrinaSketch = Londrina_Sketch({
+  subsets: ["latin"],
+  weight: ["400"],
+});
+
 export default function HeroSection({ scrollProgress = 0 }) {
-  // Gallery images - replace with your actual image paths
+  const scale = 1 - scrollProgress * 0.1;
+  const opacity = 1 - scrollProgress * 0.3;
+
+  // Gallery images
   const galleryImages = [
     "/gallery/image1.png",
     "/gallery/image2.png",
@@ -30,56 +36,124 @@ export default function HeroSection({ scrollProgress = 0 }) {
     "/gallery/image6.png",
   ];
 
+  const subheadingText =
+    "JoyJuncture creates playful, immersive game experiences for events, workshops, and communities";
 
-  
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05,
+        delayChildren: 0.1,
+      },
+    },
+  };
 
-  // Calculate transform values based on scroll progress
-  const scale = 1 - scrollProgress * 0.1; // Scale from 1 to 0.9
-  const translateY = scrollProgress * -80; // Move up 80px
-  const opacity = 1 - scrollProgress * 0.3; // Fade from 1 to 0.7
-  const blur = scrollProgress * 4; // Blur from 0 to 4px
+  const wordVariants = {
+    hidden: {
+      opacity: 0,
+      y: 30,
+      filter: "blur(4px)",
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: {
+        type: "spring",
+        damping: 12,
+        stiffness: 120,
+      },
+    },
+  };
+
+  const words = subheadingText.split(" ");
 
   return (
     <section
-      className="relative min-h-screen flex flex-col items-center pt-20 md:pt-32 mt-10"
+      className="relative w-full py-12 md:py-20"
       style={{
-        transform: `scale(${scale}) translateY(${translateY}px)`,
+        backgroundColor: "var(--bg)",
+        transform: `scale(${scale})`,
         opacity,
         transformOrigin: "center center",
         transition: "filter 0.1s ease-out",
-        willChange: "transform, opacity, filter",
+        willChange: "transform, opacity",
       }}
     >
-      {/* Mesh Background (Optional, if you want it here instead of global)
-      <div className="absolute inset-0 pointer-events-none opacity-50 mesh-gradient -z-10" /> */}
+      {/* Top Section - Vertical Layout */}
+      <div className="container mx-auto px-8 md:px-16 py-8 md:py-12">
+        <div className="flex flex-col gap-8 md:gap-12 my-10 items-center text-center">
+          {/* Joy Juncture */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <h1
+              className={`text-6xl md:text-7xl lg:text-8xl font-black ${londrinaSketch.className}`}
+              style={{
+                color: "var(--dark-teal)",
+                fontSize: "clamp(3rem, 12vw, 9rem)",
+                fontWeight: 900,
+              }}
+            >
+              JOY JUNCTURE
+            </h1>
+          </motion.div>
 
-      {/* Top Section - Centered Text Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-8 md:px-16 container mx-auto mt-auto">
-        <div className="max-w-4xl">
-          <PlayfulHeading
-            text="JOY JUNCTURE"
-            className="londrina-sketch-regular text-6xl md:text-8xl lg:text-9xl font-bold mb-6 italic text-font drop-shadow-sm"
-            staggerDelay={0.06}
-          />
-          <div className="mb-12">
-            <ShinyText
-              text="Play. Connect. Celebrate."
-              className="patrick-hand-sc-regular text-2xl md:text-3xl font-medium leading-snug md:leading-relaxed"
-              speed={2}
-              delay={0}
-              color="#647167"
-              shineColor="#ffffff"
-              spread={120}
-              direction="left"
-              yoyo={false}
-              pauseOnHover={false}
-            />
-          </div>
+          {/* Subheading */}
+          <motion.div
+            className="max-w-3xl"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2
+              className="text-lg md:text-2xl lg:text-3xl font-semibold leading-relaxed tracking-tight"
+              style={{ color: "var(--dark-teal)" }}
+            >
+              {words.map((word, idx) => (
+                <motion.span
+                  key={`${word}-${idx}`}
+                  variants={wordVariants}
+                  style={{ display: "inline-block", marginRight: "0.25em" }}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </h2>
+          </motion.div>
         </div>
+
+        {/* Call to Action */}
+        {/* <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="mt-12 md:mt-16 flex gap-4 md:gap-6 flex-wrap"
+        >
+          <button
+            className="px-8 md:px-10 py-3 md:py-4 font-bold text-white rounded-lg transition-all hover:scale-105 text-base md:text-lg"
+            style={{ backgroundColor: "var(--light-orange)" }}
+          >
+            Explore Games
+          </button>
+          <button
+            className="px-8 md:px-10 py-3 md:py-4 font-bold rounded-lg transition-all hover:scale-105 text-base md:text-lg border-2"
+            style={{
+              borderColor: "var(--dark-teal)",
+              color: "var(--dark-teal)",
+            }}
+          >
+            Book Event
+          </button>
+        </motion.div> */}
       </div>
 
-      {/* Bottom Section - Horizontal Scrolling Gallery */}
-      <div className="m-auto w-full relative overflow-hidden pb-12 pt-12">
+      {/* Bottom Section - Gallery Images */}
+      <div className="w-full relative overflow-hidden pb-12 md:pb-16 ">
         <div className="flex animate-marquee whitespace-nowrap hover:pause-scroll">
           {[...galleryImages, ...galleryImages, ...galleryImages].map(
             (src, index) => (
@@ -87,7 +161,7 @@ export default function HeroSection({ scrollProgress = 0 }) {
                 key={index}
                 className="inline-block px-3 md:px-4 w-[240px] md:w-[450px] shrink-0"
               >
-                <div className="bg-green/10 backdrop-blur-sm p-2 md:p-3 rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl border-2 border-green transform hover:scale-105 transition-transform duration-500">
+                <div className="bg-orange/10 backdrop-blur-sm p-2 md:p-3 rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl border-2 border-orange transform hover:scale-105 transition-transform duration-500">
                   <img
                     src={src}
                     alt={`Gallery ${index + 1}`}

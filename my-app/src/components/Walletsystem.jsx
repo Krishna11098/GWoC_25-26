@@ -30,6 +30,7 @@ export default function GamificationTeaser() {
     <motion.section
       ref={sectionRef}
       className="relative py-24 md:py-40 overflow-hidden text-[var(--font)]"
+      style={{ backgroundColor: "var(--light-blue)" }}
       variants={containerVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
@@ -48,26 +49,37 @@ export default function GamificationTeaser() {
               </p>
             </div> */}
 
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-black leading-tight">
+            <h2
+              className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight"
+              style={{ color: "var(--black)" }}
+            >
               Every interaction <br />
-              <span className="text-font">earns you rewards</span>
+              <span style={{ color: "var(--dark-teal)" }}>
+                earns you rewards
+              </span>
             </h2>
 
-            <p className="text-lg md:text-xl leading-relaxed text-black">
+            <p
+              className="text-lg md:text-xl leading-relaxed"
+              style={{ color: "var(--dark-teal)" }}
+            >
               Attend events, participate in experiences, complete challenges,
               and watch your points turn into real rewards you can actually use.
             </p>
-            <ul className="space-y-4 pt-2 text-black text-base md:text-lg">
+            <ul
+              className="space-y-4 pt-2 text-base md:text-lg"
+              style={{ color: "var(--dark-teal)" }}
+            >
               <li className="flex items-start gap-3">
-                <span className="text-font">●</span>
+                <span style={{ color: "var(--black)" }}>●</span>
                 Earn points for events, games, and workshops
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-font">●</span>
+                <span style={{ color: "var(--black)" }}>●</span>
                 Track everything in a single wallet
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-font">●</span>
+                <span style={{ color: "var(--black)" }}>●</span>
                 Redeem points for rewards & experiences
               </li>
             </ul>
@@ -78,18 +90,36 @@ export default function GamificationTeaser() {
             variants={itemVariants}
             className="lg:col-span-6 relative flex justify-center"
           >
-            <div className="relative mx-auto w-full max-w-lg rounded-3xl bg-[var(--bg)] text-[var(--font)] backdrop-blur-xl border-2 border-[var(--green)] shadow-[0_30px_80px_rgba(0,0,0,0.12)] p-6 md:p-8 space-y-6 animate-float">
+            <div
+              className="relative mx-auto w-full max-w-lg rounded-3xl backdrop-blur-xl border-2 shadow-[0_30px_80px_rgba(0,0,0,0.12)] p-6 md:p-8 space-y-6 animate-float"
+              style={{
+                backgroundColor: "var(--bg)",
+                borderColor: "var(--dark-teal)",
+                color: "var(--dark-teal)",
+              }}
+            >
               {/* Wallet Header */}
               <div className="flex items-center justify-between">
-                <p className="text-sm md:text-base uppercase tracking-wider">
+                <p
+                  className="text-sm md:text-base uppercase tracking-wider"
+                  style={{ color: "var(--dark-teal)" }}
+                >
                   Joy Wallet
                 </p>
               </div>
 
               {/* Balance */}
               <div className="pt-2">
-                <p className="text-sm md:text-base">Total Points</p>
-                <p className="text-5xl md:text-6xl font-semibold text-black tracking-tight">
+                <p
+                  className="text-sm md:text-base"
+                  style={{ color: "var(--dark-teal)/70" }}
+                >
+                  Total Points
+                </p>
+                <p
+                  className="text-5xl md:text-6xl font-semibold tracking-tight"
+                  style={{ color: "var(--dark-teal)" }}
+                >
                   2,450
                 </p>
               </div>
@@ -102,8 +132,19 @@ export default function GamificationTeaser() {
               </div>
 
               {/* Redeem Preview */}
-              <div className="rounded-2xl bg-[var(--green)]/20 p-4 md:p-5 border border-[var(--green)] space-y-4">
-                <p className="text-sm md:text-base">Redeem your points for:</p>
+              <div
+                className="rounded-2xl p-4 md:p-5 border space-y-4"
+                style={{
+                  backgroundColor: "var(--light-orange)/20",
+                  borderColor: "var(--light-orange)",
+                }}
+              >
+                <p
+                  className="text-sm md:text-base"
+                  style={{ color: "var(--dark-teal)" }}
+                >
+                  Redeem your points for:
+                </p>
                 <div className="flex flex-wrap gap-2 md:gap-3">
                   <RewardChip label="Free Event Pass" />
                   <RewardChip label="Merchandise" />
@@ -113,7 +154,13 @@ export default function GamificationTeaser() {
             </div>
 
             {/* Floating Earned Points */}
-            <div className="absolute -top-4 md:-top-6 -right-2 md:-right-6 rounded-xl bg-[var(--orange)] px-4 md:px-5 py-1.5 md:py-2 text-sm md:text-base font-medium text-[var(--font)] shadow-xl animate-pulse-soft">
+            <div
+              className="absolute -top-4 md:-top-6 -right-2 md:-right-6 rounded-xl px-4 md:px-5 py-1.5 md:py-2 text-sm md:text-base font-medium shadow-xl animate-pulse-soft"
+              style={{
+                backgroundColor: "var(--dark-teal)",
+                color: "var(--bg)",
+              }}
+            >
               +250 points earned
             </div>
           </motion.div>
@@ -127,16 +174,35 @@ export default function GamificationTeaser() {
 
 function WalletRow({ label, points }) {
   return (
-    <div className="flex items-center justify-between rounded-xl bg-[var(--green)]/15 px-5 py-3 border border-[var(--green)]/40 transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[var(--green)]/25">
-      <span className="text-base ">{label}</span>
-      <span className="text-base font-medium text-black/60">{points}</span>
+    <div
+      className="flex items-center justify-between rounded-xl px-5 py-3 border transition-transform duration-300 hover:-translate-y-0.5"
+      style={{
+        backgroundColor: "var(--light-orange)/15",
+        borderColor: "var(--light-orange)/40",
+        color: "var(--black)",
+      }}
+    >
+      <span className="text-base">{label}</span>
+      <span
+        className="text-base font-medium"
+        style={{ color: "var(--light-orange)" }}
+      >
+        {points}
+      </span>
     </div>
   );
 }
 
 function RewardChip({ label }) {
   return (
-    <span className="rounded-full bg-[var(--bg)] px-4 py-1.5 text-sm border border-[var(--green)] transition-all duration-300 hover:bg-[var(--orange)]/25">
+    <span
+      className="rounded-full px-4 py-1.5 text-sm border transition-all duration-300"
+      style={{
+        backgroundColor: "var(--bg)",
+        borderColor: "var(--dark-teal)",
+        color: "var(--dark-teal)",
+      }}
+    >
       {label}
     </span>
   );

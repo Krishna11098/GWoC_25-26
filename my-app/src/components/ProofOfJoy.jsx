@@ -45,7 +45,7 @@ export default function ProofOfJoy() {
   return (
     <motion.section
       ref={sectionRef}
-      className="relative py-20 md:py-28 bg-darkblue"
+      className="relative py-20 md:py-28"
       variants={containerVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
@@ -69,8 +69,11 @@ export default function ProofOfJoy() {
             className="inline-flex flex-col items-center gap-2"
           >
             <h2 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
-              <span className="text-black/80">Proof of</span>{" "}
-              <span className="relative inline-block text-font drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+              <span style={{ color: "var(--dark-teal)" }}>Proof of</span>{" "}
+              <span
+                className="relative inline-block drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]"
+                style={{ color: "var(--light-orange)" }}
+              >
                 Joy
                 <motion.span
                   animate={{
@@ -83,7 +86,8 @@ export default function ProofOfJoy() {
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
-                  className="absolute -top-4 -right-8 text-font"
+                  className="absolute -top-4 -right-8"
+                  style={{ color: "var(--light-orange)" }}
                 >
                   <Sparkles size={32} fill="currentColor" />
                 </motion.span>
@@ -108,7 +112,8 @@ export default function ProofOfJoy() {
               initial={{ width: 0 }}
               whileInView={{ width: "60px" }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="h-1.5 bg-font rounded-full mt-4 shadow-sm"
+              className="h-1.5 rounded-full mt-4 shadow-sm"
+              style={{ backgroundColor: "var(--dark-teal)" }}
             />
           </motion.div>
         </motion.div>
