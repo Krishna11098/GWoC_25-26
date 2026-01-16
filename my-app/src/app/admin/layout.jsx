@@ -6,13 +6,14 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { auth } from "@/app/lib/firebaseConfig";
 import { useRouter, usePathname } from "next/navigation";
 import AdminSidebar from "./AdminSidebar"; // Make sure this exists
-import { Ban } from "lucide-react";
+import { Ban, Menu } from "lucide-react";
 
 export default function AdminLayout({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminLoading, setAdminLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -130,8 +131,14 @@ export default function AdminLayout({ children }) {
 
   return (
     <div className="flex min-h-screen">
-      <AdminSidebar user={user} onLogout={handleLogout} isAdmin={isAdmin} />
-      <main className="flex-1 p-6 text-font ml-64">
+      <AdminSidebar
+        user={user}
+        onLogout={handleLogout}
+        isAdmin={isAdmin}
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+      <main className="flex-1 p-6 text-font ml-0 md:ml-64">
         {/* Admin Status Badge */}
         {isAdmin && (
           <div className="mb-4 flex items-center justify-between">
@@ -143,6 +150,14 @@ export default function AdminLayout({ children }) {
                 Logged in as: {user?.email}
               </span>
             </div>
+            {/* Mobile toggle for sidebar */}
+            <button
+              className="md:hidden ml-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open sidebar"
+            >
+              <Menu size={20} />
+            </button>
             <button
               onClick={handleLogout}
               className="px-4 py-2 text-sm rounded-lg bg-green text-fontcolor hover:opacity-90 transition"

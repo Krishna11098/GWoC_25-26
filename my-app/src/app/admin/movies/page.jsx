@@ -149,7 +149,9 @@ export default function AdminMoviesPage() {
 
   const handleAddRandomMovie = async () => {
     try {
-      const res = await userFetch("/api/admin/movies/random", { method: "POST" });
+      const res = await userFetch("/api/admin/movies/random", {
+        method: "POST",
+      });
       if (res.ok) {
         const newMovie = await res.json();
         setMovies([newMovie, ...movies]);
@@ -201,76 +203,101 @@ export default function AdminMoviesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[var(--bg)] p-8">
+      <div className="p-8">
         <div className="max-w-6xl mx-auto">
-          <p>Loading movies...</p>
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading movies...</p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] p-8">
+    <div className="p-8">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Manage Movies</h1>
-          <div className="flex gap-3">
-            <button
-              onClick={handleAddRandomMovie}
-              className="px-4 py-2 bg-[var(--orange)] rounded-lg"
-            >
-              Add Random Movie
-            </button>
-            <button
-              onClick={() => setShowCreateModal(true)}
-              className="px-4 py-2 bg-[var(--green)] rounded-lg"
-            >
-              Create New Movie
-            </button>
+        <div className="mb-8">
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Movie Management
+              </h1>
+              <p className="text-gray-600 mt-1">
+                Manage all movie guessing games from here
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={handleAddRandomMovie}
+                className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+              >
+                Add Random Movie
+              </button>
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Create New Movie
+              </button>
+            </div>
           </div>
         </div>
 
         {error && (
-          <div className="mb-4 p-4 bg-[var(--pink)]/20 border border-[var(--pink)] rounded-lg">
-            {error}
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex items-center">
+              <svg
+                className="w-5 h-5 text-red-600 mr-2"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span className="text-red-600 font-medium">{error}</span>
+            </div>
           </div>
         )}
 
         {/* Visible Movies */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">
             Visible to Users ({visibleMovies.length})
           </h2>
           <div className="grid gap-4">
             {visibleMovies.map((movie) => (
               <div
                 key={movie.id}
-                className="bg-[var(--bg)] p-6 rounded-lg shadow-sm border-2 border-[var(--green)]"
+                className="bg-white p-6 rounded-lg shadow-sm border-2 border-green-200"
               >
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
-                    <p className="text-sm uppercase tracking-wide opacity-70">
+                    <p className="text-sm uppercase tracking-wide text-gray-500">
                       {movie.category} • {movie.difficulty}
                     </p>
-                    <p className="text-lg font-medium mb-2">
+                    <p className="text-lg font-medium text-gray-900 mb-2">
                       Clue ({movie.clueType}): {movie.clueData}
                     </p>
-                    <p className="font-semibold mb-2">
+                    <p className="font-semibold text-gray-700 mb-2">
                       Answer: {movie.answer}
                     </p>
                     {Array.isArray(movie.hints) && movie.hints.length > 0 && (
-                      <p className="text-sm opacity-80 mb-2">
+                      <p className="text-sm text-gray-600 mb-2">
                         Hints: {movie.hints.join(", ")}
                       </p>
                     )}
-                    <p className="text-sm">
+                    <p className="text-sm text-gray-600">
                       Coins: {movie.coins} | Movie #{movie.movieNo || "N/A"}
                     </p>
                   </div>
                   <div className="flex gap-2 ml-4">
                     <button
                       onClick={() => openEditModal(movie)}
-                      className="px-3 py-1 bg-[var(--orange)] rounded text-sm"
+                      className="px-3 py-1 bg-blue-50 text-blue-700 rounded hover:bg-blue-100 text-sm"
                     >
                       Edit
                     </button>
@@ -278,13 +305,13 @@ export default function AdminMoviesPage() {
                       onClick={() =>
                         handleToggleVisibility(movie.id, movie.isVisibleToUser)
                       }
-                      className="px-3 py-1 bg-[var(--green)] rounded text-sm"
+                      className="px-3 py-1 bg-yellow-50 text-yellow-700 rounded hover:bg-yellow-100 text-sm"
                     >
                       Hide
                     </button>
                     <button
                       onClick={() => handleDelete(movie.id)}
-                      className="px-3 py-1 bg-[var(--pink)] rounded text-sm"
+                      className="px-3 py-1 bg-red-50 text-red-700 rounded hover:bg-red-100 text-sm"
                     >
                       Delete
                     </button>
@@ -293,46 +320,48 @@ export default function AdminMoviesPage() {
               </div>
             ))}
             {visibleMovies.length === 0 && (
-              <p className="text-center py-8">No visible movies yet</p>
+              <p className="text-center py-8 text-gray-500">
+                No visible movies yet
+              </p>
             )}
           </div>
         </div>
 
         {/* Invisible Movies */}
         <div>
-          <h2 className="text-xl font-semibold mb-4">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">
             Hidden Movies ({invisibleMovies.length})
           </h2>
           <div className="grid gap-4">
             {invisibleMovies.map((movie) => (
               <div
                 key={movie.id}
-                className="bg-[var(--bg)] p-6 rounded-lg shadow-sm border-2 border-[var(--orange)]"
+                className="bg-white p-6 rounded-lg shadow-sm border-2 border-orange-200"
               >
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
-                    <p className="text-sm uppercase tracking-wide opacity-70">
+                    <p className="text-sm uppercase tracking-wide text-gray-500">
                       {movie.category} • {movie.difficulty}
                     </p>
-                    <p className="text-lg font-medium mb-2">
+                    <p className="text-lg font-medium text-gray-900 mb-2">
                       Clue ({movie.clueType}): {movie.clueData}
                     </p>
-                    <p className="text-[var(--green)] font-semibold mb-2">
+                    <p className="text-green-600 font-semibold mb-2">
                       Answer: {movie.answer}
                     </p>
                     {Array.isArray(movie.hints) && movie.hints.length > 0 && (
-                      <p className="text-sm opacity-80 mb-2">
+                      <p className="text-sm text-gray-600 mb-2">
                         Hints: {movie.hints.join(", ")}
                       </p>
                     )}
-                    <p className="text-sm text-[var(--font)]/70">
+                    <p className="text-sm text-gray-500">
                       Coins: {movie.coins} | Movie #{movie.movieNo || "N/A"}
                     </p>
                   </div>
                   <div className="flex gap-2 ml-4">
                     <button
                       onClick={() => openEditModal(movie)}
-                      className="px-3 py-1 bg-[var(--orange)] rounded text-sm"
+                      className="px-3 py-1 bg-blue-50 text-blue-700 rounded hover:bg-blue-100 text-sm"
                     >
                       Edit
                     </button>
@@ -340,13 +369,13 @@ export default function AdminMoviesPage() {
                       onClick={() =>
                         handleToggleVisibility(movie.id, movie.isVisibleToUser)
                       }
-                      className="px-3 py-1 bg-[var(--green)] rounded text-sm"
+                      className="px-3 py-1 bg-green-50 text-green-700 rounded hover:bg-green-100 text-sm"
                     >
                       Show
                     </button>
                     <button
                       onClick={() => handleDelete(movie.id)}
-                      className="px-3 py-1 bg-[var(--pink)] rounded text-sm"
+                      className="px-3 py-1 bg-red-50 text-red-700 rounded hover:bg-red-100 text-sm"
                     >
                       Delete
                     </button>
@@ -376,114 +405,142 @@ export default function AdminMoviesPage() {
         }}
       >
         <form onSubmit={handleCreateMovie}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Clue Type</label>
-                  <select
-                    value={formData.clueType}
-                    onChange={(e) => setFormData({ ...formData, clueType: e.target.value })}
-                    className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                  >
-                    <option value="emoji">Emoji</option>
-                    <option value="dialogue">Dialogue</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Difficulty</label>
-                  <select
-                    value={formData.difficulty}
-                    onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}
-                    className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                  >
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                  </select>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Clue Type
+              </label>
+              <select
+                value={formData.clueType}
+                onChange={(e) =>
+                  setFormData({ ...formData, clueType: e.target.value })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="emoji">Emoji</option>
+                <option value="dialogue">Dialogue</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Difficulty
+              </label>
+              <select
+                value={formData.difficulty}
+                onChange={(e) =>
+                  setFormData({ ...formData, difficulty: e.target.value })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </div>
+          </div>
 
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Clue Data</label>
-                <textarea
-                  value={formData.clueData}
-                  onChange={(e) => setFormData({ ...formData, clueData: e.target.value })}
-                  className="w-full px-3 py-2 border border-[var(--green)] rounded-lg focus:ring-2 focus:ring-[var(--orange)] bg-[var(--bg)]"
-                  rows="3"
-                  required
-                />
-              </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Clue Data
+            </label>
+            <textarea
+              value={formData.clueData}
+              onChange={(e) =>
+                setFormData({ ...formData, clueData: e.target.value })
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              rows="3"
+              required
+            />
+          </div>
 
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Answer</label>
-                <input
-                  type="text"
-                  value={formData.answer}
-                  onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
-                  className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                  required
-                />
-              </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Answer
+            </label>
+            <input
+              type="text"
+              value={formData.answer}
+              onChange={(e) =>
+                setFormData({ ...formData, answer: e.target.value })
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Category</label>
-                  <input
-                    type="text"
-                    value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Coins Reward</label>
-                  <input
-                    type="number"
-                    value={formData.coins}
-                    onChange={(e) => setFormData({ ...formData, coins: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                    min="1"
-                    required
-                  />
-                </div>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Category
+              </label>
+              <input
+                type="text"
+                value={formData.category}
+                onChange={(e) =>
+                  setFormData({ ...formData, category: e.target.value })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Coins Reward
+              </label>
+              <input
+                type="number"
+                value={formData.coins}
+                onChange={(e) =>
+                  setFormData({ ...formData, coins: parseInt(e.target.value) })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                min="1"
+                required
+              />
+            </div>
+          </div>
 
-              <div className="mb-6">
-                <label className="block text-sm font-medium mb-2">Hints (comma separated)</label>
-                <input
-                  type="text"
-                  value={formData.hints}
-                  onChange={(e) => setFormData({ ...formData, hints: e.target.value })}
-                  className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                  placeholder="e.g. Space, Nolan, Time"
-                />
-              </div>
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Hints (comma separated)
+            </label>
+            <input
+              type="text"
+              value={formData.hints}
+              onChange={(e) =>
+                setFormData({ ...formData, hints: e.target.value })
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g. Space, Nolan, Time"
+            />
+          </div>
 
-              <div className="flex justify-end gap-3 mt-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowCreateModal(false);
-                    setFormData({
-                      clueType: "emoji",
-                      clueData: "",
-                      answer: "",
-                      category: "Hollywood",
-                      difficulty: "medium",
-                      hints: "",
-                      coins: 20,
-                    });
-                  }}
-                  className="px-4 py-2 bg-[var(--pink)] text-[var(--font)] rounded-lg"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-[var(--green)] text-[var(--font)] rounded-lg"
-                >
-                  Create Movie
-                </button>
-              </div>
+          <div className="flex justify-end gap-3 mt-2">
+            <button
+              type="button"
+              onClick={() => {
+                setShowCreateModal(false);
+                setFormData({
+                  clueType: "emoji",
+                  clueData: "",
+                  answer: "",
+                  category: "Hollywood",
+                  difficulty: "medium",
+                  hints: "",
+                  coins: 20,
+                });
+              }}
+              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Create Movie
+            </button>
+          </div>
         </form>
       </Modal>
 
@@ -506,115 +563,143 @@ export default function AdminMoviesPage() {
         }}
       >
         <form onSubmit={handleUpdateMovie}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Clue Type</label>
-                  <select
-                    value={formData.clueType}
-                    onChange={(e) => setFormData({ ...formData, clueType: e.target.value })}
-                    className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                  >
-                    <option value="emoji">Emoji</option>
-                    <option value="dialogue">Dialogue</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Difficulty</label>
-                  <select
-                    value={formData.difficulty}
-                    onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}
-                    className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                  >
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                  </select>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Clue Type
+              </label>
+              <select
+                value={formData.clueType}
+                onChange={(e) =>
+                  setFormData({ ...formData, clueType: e.target.value })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="emoji">Emoji</option>
+                <option value="dialogue">Dialogue</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Difficulty
+              </label>
+              <select
+                value={formData.difficulty}
+                onChange={(e) =>
+                  setFormData({ ...formData, difficulty: e.target.value })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </div>
+          </div>
 
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Clue Data</label>
-                <textarea
-                  value={formData.clueData}
-                  onChange={(e) => setFormData({ ...formData, clueData: e.target.value })}
-                  className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                  rows="3"
-                  required
-                />
-              </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Clue Data
+            </label>
+            <textarea
+              value={formData.clueData}
+              onChange={(e) =>
+                setFormData({ ...formData, clueData: e.target.value })
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              rows="3"
+              required
+            />
+          </div>
 
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Answer</label>
-                <input
-                  type="text"
-                  value={formData.answer}
-                  onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
-                  className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                  required
-                />
-              </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Answer
+            </label>
+            <input
+              type="text"
+              value={formData.answer}
+              onChange={(e) =>
+                setFormData({ ...formData, answer: e.target.value })
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Category</label>
-                  <input
-                    type="text"
-                    value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Coins Reward</label>
-                  <input
-                    type="number"
-                    value={formData.coins}
-                    onChange={(e) => setFormData({ ...formData, coins: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                    min="1"
-                    required
-                  />
-                </div>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Category
+              </label>
+              <input
+                type="text"
+                value={formData.category}
+                onChange={(e) =>
+                  setFormData({ ...formData, category: e.target.value })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Coins Reward
+              </label>
+              <input
+                type="number"
+                value={formData.coins}
+                onChange={(e) =>
+                  setFormData({ ...formData, coins: parseInt(e.target.value) })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                min="1"
+                required
+              />
+            </div>
+          </div>
 
-              <div className="mb-6">
-                <label className="block text-sm font-medium mb-2">Hints (comma separated)</label>
-                <input
-                  type="text"
-                  value={formData.hints}
-                  onChange={(e) => setFormData({ ...formData, hints: e.target.value })}
-                  className="w-full px-3 py-2 border border-[var(--green)] rounded-lg bg-[var(--bg)]"
-                  placeholder="e.g. Space, Nolan, Time"
-                />
-              </div>
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Hints (comma separated)
+            </label>
+            <input
+              type="text"
+              value={formData.hints}
+              onChange={(e) =>
+                setFormData({ ...formData, hints: e.target.value })
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g. Space, Nolan, Time"
+            />
+          </div>
 
-              <div className="flex justify-end gap-3 mt-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowEditModal(false);
-                    setEditingMovie(null);
-                    setFormData({
-                      clueType: "emoji",
-                      clueData: "",
-                      answer: "",
-                      category: "Hollywood",
-                      difficulty: "medium",
-                      hints: "",
-                      coins: 20,
-                    });
-                  }}
-                  className="px-4 py-2 bg-[var(--pink)] text-[var(--font)] rounded-lg"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-[var(--green)] text-[var(--font)] rounded-lg"
-                >
-                  Update Movie
-                </button>
-              </div>
+          <div className="flex justify-end gap-3 mt-2">
+            <button
+              type="button"
+              onClick={() => {
+                setShowEditModal(false);
+                setEditingMovie(null);
+                setFormData({
+                  clueType: "emoji",
+                  clueData: "",
+                  answer: "",
+                  category: "Hollywood",
+                  difficulty: "medium",
+                  hints: "",
+                  coins: 20,
+                });
+              }}
+              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Update Movie
+            </button>
+          </div>
         </form>
       </Modal>
     </div>

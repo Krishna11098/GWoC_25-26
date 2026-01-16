@@ -112,9 +112,9 @@ export default function GamesPage() {
     <>
       <Navbar />
 
-      <div className="px-5 md:px-12 pt-5 pb-12 mt-32">
+      <div className="px-5 md:px-12 pt-10 pb-16 mt-32 md:mt-36">
         <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
-          <div className="mb-10 mt-2 text-center relative">
+          <div className="mb-14 mt-4 text-center relative">
             <motion.div
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -155,11 +155,13 @@ export default function GamesPage() {
             </div>
           </div>
 
-          <ShopWithFilters
-            items={items}
-            imageById={imageById}
-            fallbackImages={images}
-          />
+          <div className="mt-12 md:mt-14">
+            <ShopWithFilters
+              items={items}
+              imageById={imageById}
+              fallbackImages={images}
+            />
+          </div>
         </div>
       </div>
 

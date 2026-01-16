@@ -25,35 +25,35 @@ export default function SudokuCard({ level, refresh }) {
 
   return (
     <>
-      <div className="border rounded p-4 shadow">
-        <p className="font-semibold capitalize">{level.difficulty}</p>
-        <p>Coins: {level.coins}</p>
-        <p>
-          Variation {level.variationNo} • Level {level.levelNo}
-        </p>
+      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="mb-3">
+          <div className="flex items-center justify-between mb-2">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              {level.difficulty}
+            </span>
+            <span className="text-sm text-gray-500">
+              Variation {level.variationNo}
+            </span>
+          </div>
+          <p className="text-sm text-gray-600">
+            Level {level.levelNo} • {level.coins} coins
+          </p>
+        </div>
 
         <SudokuPreview grid={level.puzzle} />
 
-        <div className="flex gap-2 mt-3">
+        <div className="flex gap-2 mt-4">
           <button
             onClick={() => setEditing(true)}
-            className="px-3 py-1 rounded"
-            style={{
-              backgroundColor: "var(--color-green)",
-              color: "white",
-            }}
+            className="flex-1 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium text-sm transition-colors"
           >
-            Edit
+            ✏️ Edit
           </button>
           <button
             onClick={removeSudoku}
-            className="px-3 py-1 rounded"
-            style={{
-              backgroundColor: "var(--color-orange)",
-              color: "white",
-            }}
+            className="flex-1 px-3 py-2 rounded-lg bg-red-50 text-red-700 hover:bg-red-100 font-medium text-sm transition-colors"
           >
-            Remove
+            🗑️ Remove
           </button>
         </div>
       </div>

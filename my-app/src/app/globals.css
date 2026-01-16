@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Winky+Rough:wght@300..900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Londrina+Sketch&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Londrina+Sketch&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sriracha&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -40,10 +41,10 @@
 
 body {
   background: var(--color-background);
-  font-family: "Winky Rough", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
+  font-family: "Sriracha", cursive;
+  font-weight: 400;
   font-style: normal;
+  font-size: 25px;
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
@@ -139,16 +140,14 @@ html {
 }
 
 .font-winky-rough {
-  font-family: "Winky Rough", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 700;
+  font-family: "Sriracha", cursive;
+  font-weight: 400;
   font-style: normal;
 }
 
 .font-winky-rough-soft {
-  font-family: "Winky Rough", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
+  font-family: "Sriracha", cursive;
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -157,7 +156,6 @@ html {
   font-weight: 900;
   font-style: normal;
 }
-
 
 /* Global utility to create a hexagon-shaped badge */
 .clip-path-hexagon {
@@ -198,8 +196,11 @@ html {
 /* Mesh Gradient Background */
 .mesh-gradient {
   background-color: var(--bg);
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(203, 216, 172, 0.4) 0px, transparent 50%),
+  background-image: radial-gradient(
+      at 0% 0%,
+      rgba(203, 216, 172, 0.4) 0px,
+      transparent 50%
+    ),
     radial-gradient(at 100% 0%, rgba(247, 213, 124, 0.4) 0px, transparent 50%),
     radial-gradient(at 100% 100%, rgba(245, 207, 194, 0.4) 0px, transparent 50%),
     radial-gradient(at 0% 100%, rgba(203, 216, 172, 0.4) 0px, transparent 50%);

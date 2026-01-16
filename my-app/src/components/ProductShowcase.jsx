@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
@@ -29,59 +29,68 @@ export default function ProductShowcase({ product, gameId }) {
   const howToStepRefs = useRef([]);
 
   useEffect(() => {
-    // Animate general sections on scroll
-    sectionRefs.current.forEach((section) => {
-      if (!section) return;
-      gsap.fromTo(
-        section,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          scrollTrigger: {
-            trigger: section,
-            start: "top 80%",
-            end: "top 20%",
-            scrub: 0.5,
-          },
-        }
-      );
-    });
-
-    // Sequential arrow reveal for How to Play steps
-    if (howToSectionRef.current && howToStepRefs.current.length > 0) {
-      const steps = howToStepRefs.current.filter(Boolean);
-
-      // Initial state: all hidden
-      gsap.set(steps, { opacity: 0, y: 20 });
-
-      // Give extra scroll runway so the final (4th) step can finish animating without the page snapping upward
-      const pinDuration = (steps.length + 1) * 350; // 4 steps -> 1750px of scroll
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: howToSectionRef.current,
-          // Pin the section when its center hits the viewport center
-          // so it stays vertically centered while animating steps
-          start: "center center",
-          end: `+=${pinDuration}`,
-          scrub: 1,
-          pin: true,
-        },
-      });
-
-      steps.forEach((el, i) => {
-        tl.to(
-          el,
-          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-          i === 0 ? 0 : "+=0.6"
+    const ctx = gsap.context(() => {
+      // 1. General Section Animations
+      sectionRefs.current.forEach((section) => {
+        if (!section || section === howToSectionRef.current) return;
+        gsap.fromTo(
+          section,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            scrollTrigger: {
+              trigger: section,
+              start: "top 85%",
+              end: "top 20%",
+              scrub: 0.5,
+            },
+          }
         );
       });
-    }
 
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
-  }, []);
+      // 2. How To Play - GAP & TIMING FIX
+      if (howToSectionRef.current && howToStepRefs.current.length > 0) {
+        const steps = howToStepRefs.current.filter(Boolean);
+
+        // Pre-set visibility: Step 1 is ready, others are hidden/offset
+        gsap.set(steps.slice(1), { opacity: 0, y: 40 });
+        gsap.set(steps[0], { opacity: 1, y: 0 });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: howToSectionRef.current,
+            // START: "top top" removes the white gap between sections
+            start: "top top",
+            end: `+=${steps.length * 600}`,
+            scrub: 1,
+            pin: true,
+            pinSpacing: true,
+            invalidateOnRefresh: true,
+            anticipatePin: 1, // Smoother pinning on mobile
+          },
+        });
+
+        // Timeline: Start animating from Step 2 immediately upon pinning
+        steps.forEach((el, i) => {
+          if (i === 0) return; // Skip Step 1 as it's already visible
+          tl.to(
+            el,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 1,
+              ease: "power2.inOut",
+            },
+            i === 1 ? 0 : ">-0.2" // Step 2 starts the moment pinning begins
+          );
+        });
+      }
+    });
+
+    return () => ctx.revert(); // Proper cleanup for Next.js
+  }, [product]);
 
   if (!product) {
     return (
@@ -470,6 +479,8 @@ export default function ProductShowcase({ product, gameId }) {
                       // Both sides pointed chevron (><) for all steps
                       clipPath:
                         "polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%)",
+                      // Force Step 1 to be visible immediately to prevent flicker
+                      opacity: idx === 0 ? 1 : 0,
                     }}
                   >
                     {/* Step Badge */}

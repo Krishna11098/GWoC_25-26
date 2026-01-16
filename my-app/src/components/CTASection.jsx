@@ -5,6 +5,7 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, Sparkles, Users, Trophy } from "lucide-react";
 import CountUp from "./CountUp";
+import Link from "next/link";
 
 /**
  * CTASection - Call-to-Action section with stats and action buttons
@@ -84,33 +85,39 @@ const CTASection = () => {
         {/* CTA Buttons */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20"
         >
-          <motion.button
-            className="group relative px-8 py-4 bg-orange text-font rounded-full font-semibold text-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(247,213,124,0.4)] hover:scale-105"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              Explore Games
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </span>
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-pink/30 to-transparent"
-              initial={{ x: "-100%" }}
-              whileHover={{ x: "100%" }}
-              transition={{ duration: 0.5 }}
-            />
-          </motion.button>
-
-          <motion.button
-            className="px-8 py-4 border-2 border-green text-font rounded-full font-semibold text-lg hover:bg-green/20 hover:border-green transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Book an Event
-          </motion.button>
+          <Link href="/games">
+            <motion.button
+              className="group relative px-8 py-4 bg-orange text-font rounded-full font-semibold text-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(247,213,124,0.4)]"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                Explore Games
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </span>
+        
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-pink/30 to-transparent"
+                initial={{ x: "-100%" }}
+                whileHover={{ x: "100%" }}
+                transition={{ duration: 0.5 }}
+              />
+            </motion.button>
+          </Link>
+        
+          <Link href="/events">
+            <motion.button
+              className="px-8 py-4 border-2 border-green text-font rounded-full font-semibold text-lg hover:bg-green/20 hover:border-green transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Book an Event
+            </motion.button>
+          </Link>
         </motion.div>
+
 
         {/* Stats Grid */}
         <motion.div
