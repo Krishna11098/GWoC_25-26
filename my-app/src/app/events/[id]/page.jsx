@@ -219,7 +219,7 @@ export default function EventDetailPage() {
     console.log(`✅ Booking confirmed! ID: ${bookingId}, Seats: ${seatsCount}`);
     console.log(`📊 Event data:`, event);
     console.log(`🪙 coinsPerSeat:`, event?.coinsPerSeat, event?.coinsReward);
-    
+
     setShowPayment(false);
 
     // Calculate coins earned using the actual coinsPerSeat value
@@ -280,7 +280,7 @@ export default function EventDetailPage() {
       isAuthenticated: userId !== "guest",
       authLoading,
     });
-    
+
     console.log("🔍 Will pass to PaymentModal:", {
       userId: userId,
       userEmail: userEmail,
@@ -384,9 +384,8 @@ export default function EventDetailPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div
-                className={`w-3 h-3 rounded-full ${
-                  userId !== "guest" ? "bg-green-500" : "bg-red-500"
-                }`}
+                className={`w-3 h-3 rounded-full ${userId !== "guest" ? "bg-green-500" : "bg-red-500"
+                  }`}
               ></div>
               <span className="text-sm font-medium">
                 {userId !== "guest"
@@ -406,31 +405,35 @@ export default function EventDetailPage() {
         </div>
 
         {/* Event Header */}
-        <div className="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-6">
+        <div className="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 relative overflow-hidden">
+          {event.image && (
+            <div className="absolute inset-0">
+              <img src={event.image} alt={event.name} className="w-full h-full object-cover opacity-20" />
+              <div className="absolute inset-0 bg-gradient-to-r from-white/90 to-white/70"></div>
+            </div>
+          )}
+          <div className="flex flex-col md:flex-row justify-between items-start gap-6 relative z-10">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-4">
                 <span
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    event.category === "workshop"
-                      ? "bg-blue-100 text-blue-700"
-                      : event.category === "seminar"
+                  className={`px-3 py-1 rounded-full text-sm font-medium ${event.category === "workshop"
+                    ? "bg-blue-100 text-blue-700"
+                    : event.category === "seminar"
                       ? "bg-purple-100 text-purple-700"
                       : event.category === "conference"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-gray-100 text-gray-700"
-                  }`}
+                        ? "bg-green-100 text-green-700"
+                        : "bg-gray-100 text-gray-700"
+                    }`}
                 >
                   {event.category || "Event"}
                 </span>
                 <span
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    event.eventType === "online"
-                      ? "bg-green-100 text-green-700"
-                      : event.eventType === "hybrid"
+                  className={`px-3 py-1 rounded-full text-sm font-medium ${event.eventType === "online"
+                    ? "bg-green-100 text-green-700"
+                    : event.eventType === "hybrid"
                       ? "bg-yellow-100 text-yellow-700"
                       : "bg-blue-100 text-blue-700"
-                  }`}
+                    }`}
                 >
                   {event.eventType || "In-Person"}
                 </span>
@@ -444,6 +447,38 @@ export default function EventDetailPage() {
               </h1>
 
               <p className="text-gray-600 text-lg mb-6">{event.description}</p>
+
+              {/* Add to Google Calendar Button */}
+              {new Date(event.date) >= new Date().setHours(0, 0, 0, 0) && (
+                <button
+                  onClick={() => {
+                    const startDate = new Date(event.date);
+                    const [startH, startM] = (event.startTime || "10:00").split(':').map(Number);
+                    startDate.setHours(startH, startM, 0);
+
+                    const endDate = new Date(startDate.getTime() + (event.duration || 120) * 60000);
+
+                    const formatGCalDate = (date) => {
+                      return date.toISOString().replace(/-|:|\.\d\d\d/g, "");
+                    };
+
+                    const startStr = formatGCalDate(startDate);
+                    const endStr = formatGCalDate(endDate);
+
+                    const title = encodeURIComponent(event.title || event.name || "Event");
+                    const details = encodeURIComponent(event.description || "");
+                    const location = encodeURIComponent(event.venue || "");
+
+                    const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startStr}/${endStr}&details=${details}&location=${location}&trp=false`;
+
+                    window.open(url, '_blank');
+                  }}
+                  className="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
+                >
+                  <Calendar size={16} className="text-blue-600" />
+                  Add to Google Calendar
+                </button>
+              )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div className="flex items-center gap-3 bg-white p-4 rounded-xl shadow-sm">
@@ -601,13 +636,12 @@ export default function EventDetailPage() {
                           </div>
                         </div>
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium ${
-                            booking.status === "confirmed"
-                              ? "bg-green-100 text-green-800"
-                              : booking.status === "cancelled"
+                          className={`px-3 py-1 rounded-full text-xs font-medium ${booking.status === "confirmed"
+                            ? "bg-green-100 text-green-800"
+                            : booking.status === "cancelled"
                               ? "bg-red-100 text-red-800"
                               : "bg-blue-100 text-blue-800"
-                          }`}
+                            }`}
                         >
                           {booking.status || "confirmed"}
                         </span>
@@ -663,7 +697,7 @@ export default function EventDetailPage() {
                   <span>
                     {Math.round(
                       ((event.bookedSeats || 0) / (event.totalSeats || 50)) *
-                        100
+                      100
                     )}
                     %
                   </span>
@@ -672,10 +706,9 @@ export default function EventDetailPage() {
                   <div
                     className="bg-green-500 h-3 rounded-full transition-all duration-500"
                     style={{
-                      width: `${
-                        ((event.bookedSeats || 0) / (event.totalSeats || 50)) *
+                      width: `${((event.bookedSeats || 0) / (event.totalSeats || 50)) *
                         100
-                      }%`,
+                        }%`,
                     }}
                   ></div>
                 </div>
@@ -807,21 +840,19 @@ export default function EventDetailPage() {
                   selectedSeatsCount === 0 ||
                   authLoading
                 }
-                className={`w-full py-4 rounded-xl font-bold text-white text-lg shadow-lg transition-all duration-200 ${
-                  availableSeats === 0
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : totalAmount === 0
+                className={`w-full py-4 rounded-xl font-bold text-white text-lg shadow-lg transition-all duration-200 ${availableSeats === 0
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : totalAmount === 0
                     ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
                     : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                } ${authLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                  } ${authLoading ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 {availableSeats === 0
                   ? "Sold Out"
                   : totalAmount === 0
-                  ? `Book ${selectedSeatsCount} Free Seat${
-                      selectedSeatsCount !== 1 ? "s" : ""
+                    ? `Book ${selectedSeatsCount} Free Seat${selectedSeatsCount !== 1 ? "s" : ""
                     }`
-                  : `Book Now - ₹${totalAmount}`}
+                    : `Book Now - ₹${totalAmount}`}
               </button>
 
               {/* Login Prompt */}

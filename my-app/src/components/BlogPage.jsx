@@ -11,7 +11,7 @@ export default function BlogPage({
   const posts = loading ? [] : blogPosts;
 
   const Heading = () => (
-    <div className="mb-10 mt-2 text-center relative">
+    <div className="mb-16 mt-2 text-center relative">
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -25,21 +25,17 @@ export default function BlogPage({
         }}
         className="inline-flex flex-col items-center gap-2"
       >
-        <h1 className="text-5xl md:text-7xl font-winky-rough tracking-tight leading-none">
-          <span className="text-black/80">Community</span>{" "}
-          <span
-            className="relative inline-block drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)]"
-            style={{ color: "var(--black)" }}
-          >
+        <h1 className="text-6xl md:text-8xl font-bold tracking-tight leading-none">
+          <span className="text-gray-800">Community</span>{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--dark-teal)] to-[var(--green)]">
             Stories
           </span>
         </h1>
         <motion.div
           initial={{ width: 0 }}
-          whileInView={{ width: "60px" }}
+          whileInView={{ width: "80px" }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          style={{ backgroundColor: "var(--dark-teal)" }}
-          className="h-1.5 rounded-full mt-4 shadow-sm"
+          className="h-2 bg-gradient-to-r from-[var(--orange)] to-[var(--pink)] rounded-full mt-4 shadow-sm"
         />
       </motion.div>
       <motion.p
@@ -47,8 +43,7 @@ export default function BlogPage({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 0.3, duration: 0.6 }}
-        style={{ color: "var(--black)" }}
-        className="mt-6 text-sm md:text-base"
+        className="mt-8 text-xl text-gray-600 max-w-2xl mx-auto"
       >
         Insights, event highlights, and the stories behind the play.
       </motion.p>
@@ -57,21 +52,25 @@ export default function BlogPage({
 
   if (posts.length === 0) {
     return (
-      <main className="mx-auto max-w-6xl xl:max-w-7xl px-5 md:px-12 pt-5 pb-12">
+      <main className="mx-auto max-w-7xl px-5 md:px-12 pt-5 pb-12 bg-gradient-to-br from-[#f5f5f0] to-white min-h-screen">
         <Heading />
-        <div className="text-center py-12">
-          <p style={{ color: "var(--black)" }}>No experiences found.</p>
+        <div className="text-center py-20">
+          <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
+            <span className="text-4xl">📝</span>
+          </div>
+          <p className="text-xl text-gray-500 font-medium">No experiences found.</p>
+          <p className="text-gray-400 mt-2">Check back later for exciting stories!</p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="mx-auto max-w-6xl xl:max-w-7xl px-5 md:px-12 pt-5 pb-12">
+    <main className="mx-auto max-w-7xl px-5 md:px-12 pt-5 pb-12 bg-gradient-to-br from-[#f5f5f0] to-white min-h-screen">
       <Heading />
 
       {/* Alternating List */}
-      <div className="grid grid-cols-1 gap-6 md:gap-8">
+      <div className="grid grid-cols-1 gap-8 md:gap-10">
         {posts.map((post, i) => (
           <BlogCard
             key={(post.id || post.title || "post") + i}

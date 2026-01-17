@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { auth } from "@/lib/firebase";
 
 export default function EditEventPage() {
   const params = useParams();
@@ -30,8 +31,10 @@ export default function EditEventPage() {
     coinsPerSeat: 100,
     maxSeatsPerUser: 4,
     isFree: false,
+    image: "",
   });
   const [bookedUsers, setBookedUsers] = useState([]);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   // Load event data
   useEffect(() => {
@@ -39,6 +42,47 @@ export default function EditEventPage() {
       loadEvent();
     }
   }, [eventId]);
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    try {
+      const user = auth.currentUser;
+      if (!user) throw new Error("You must be logged in to upload images.");
+
+      const token = await user.getIdToken();
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await fetch("/api/admin/upload", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Upload failed");
+      }
+
+      if (data.success && data.images && data.images.length > 0) {
+        setFormData(prev => ({ ...prev, image: data.images[0].url }));
+        alert("✅ Image uploaded successfully!");
+      }
+
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert(`❌ Upload failed: ${error.message}`);
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   const loadEvent = async () => {
     try {
@@ -89,6 +133,7 @@ export default function EditEventPage() {
         coinsPerSeat: event.coinsReward || event.coinsPerSeat || 100,
         maxSeatsPerUser: event.maxSeatsPerUser || 4,
         isFree: event.price === 0,
+        image: event.image || "",
       });
 
       setBookedUsers(event.bookedUsers || []);
@@ -335,6 +380,37 @@ export default function EditEventPage() {
               placeholder="Brief description (max 150 characters)"
               maxLength={150}
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Event Image *
+            </label>
+            <div className="flex items-center gap-4">
+              {formData.image && (
+                <img
+                  src={formData.image}
+                  alt="Event Preview"
+                  className="w-32 h-32 object-cover rounded-lg border border-gray-300"
+                />
+              )}
+              <div className="flex-1">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={uploadingImage}
+                  className="block w-full text-sm text-gray-500
+                         file:mr-4 file:py-2 file:px-4
+                         file:rounded-full file:border-0
+                         file:text-sm file:font-semibold
+                         file:bg-blue-50 file:text-blue-700
+                         hover:file:bg-blue-100"
+                />
+                {uploadingImage && <p className="text-sm text-blue-600 mt-1">Uploading...</p>}
+                <p className="text-xs text-gray-500 mt-1">Upload one image to replace the current one.</p>
+              </div>
+            </div>
           </div>
 
           <div>
