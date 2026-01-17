@@ -17,7 +17,7 @@ export default function ChatbotWidget() {
           type="button"
           onClick={() => setIsOpen(true)}
           aria-label="Open JoyHelper chatbot"
-          className="fixed right-6 bottom-6 z-40 shadow-lg transition-transform duration-150 ease-out hover:scale-105 focus:outline-none"
+          className="fixed right-6 bottom-6 z-40 shadow-lg transition-transform duration-150 ease-out hover:scale-105 focus:outline-none text-lg md:text-2xl"
           style={{
             background: "linear-gradient(135deg, #111827, #1f2937)",
             color: "#f9fafb",
@@ -44,7 +44,7 @@ export default function ChatbotWidget() {
               allow="clipboard-write; clipboard-read; microphone"
             />
           </div>
-          
+
           {/* Close button at the bottom */}
           <button
             type="button"
