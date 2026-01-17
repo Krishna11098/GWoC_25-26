@@ -305,7 +305,7 @@ export default function AllEventsPage() {
             Create your first event to get started
           </p>
           <Link
-            href="/admin/events/create"
+            href="/admin/create-event"
             className="inline-block mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             Create Your First Event
