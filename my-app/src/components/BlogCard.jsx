@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { ArrowRight } from "lucide-react";
 import { auth } from "@/lib/firebaseClient";
 
 export default function BlogCard({
@@ -18,6 +20,7 @@ export default function BlogCard({
   const [downvotes, setDownvotes] = useState(post.downvotes || 0);
   const [userVote, setUserVote] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -34,7 +37,6 @@ export default function BlogCard({
     return () => observer.disconnect();
   }, []);
 
-  // Listen for auth state changes (only when votes are shown)
   useEffect(() => {
     if (!showVotes) return undefined;
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -46,7 +48,6 @@ export default function BlogCard({
     return () => unsubscribe && unsubscribe();
   }, [post.id, showVotes]);
 
-  // Fetch vote counts from the blog data (only when votes are shown)
   useEffect(() => {
     if (!showVotes || !post.id) return;
     async function fetchVoteCounts() {
@@ -54,11 +55,6 @@ export default function BlogCard({
         const res = await fetch(`/api/blogs/${post.id}`);
         if (res.ok) {
           const blog = await res.json();
-          console.log("BlogCard: Fetched blog data:", {
-            id: post.id,
-            upvotes: blog.upvotes,
-            downvotes: blog.downvotes,
-          });
           setUpvotes(blog.upvotes || 0);
           setDownvotes(blog.downvotes || 0);
         }
@@ -107,16 +103,11 @@ export default function BlogCard({
 
       if (res.ok) {
         const data = await res.json();
-        console.log("BlogCard: Vote successful:", {
-          upvotes: data.upvotes,
-          downvotes: data.downvotes,
-        });
         setUpvotes(data.upvotes);
         setDownvotes(data.downvotes);
         setUserVote(data.userVote);
       } else {
         const error = await res.json();
-        console.error("BlogCard: Vote failed:", error);
         alert(error.error || "Failed to vote");
       }
     } catch (error) {
@@ -127,98 +118,72 @@ export default function BlogCard({
     }
   }
 
-  const isEven = index % 2 === 1; // 0-based: even-indexed visually right image
+  const isEven = index % 2 === 1;
 
   return (
-    <article
+    <motion.article
       ref={ref}
-      className={`relative rounded-3xl shadow-sm transition-all duration-700 ${
-        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      } ${hero ? "p-0 pb-6 md:pb-8 overflow-hidden" : "p-4 md:p-6"}`}
-      style={{
-        backgroundColor: "var(--light-blue)",
-        border: "1px solid var(--dark-teal)",
-        color: "var(--black)",
-      }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`relative rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden bg-white border-2 border-gray-100 hover:border-[var(--dark-teal)] ${hero ? "p-0" : "p-0"
+        }`}
     >
       {hero ? (
         <>
           <div className="w-full">
-            <div
-              className="w-full h-64 md:h-80 overflow-hidden"
-              style={{ backgroundColor: "var(--light-blue)" }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+            <div className="w-full h-64 md:h-80 overflow-hidden relative group">
+              <motion.img
                 src={post.image}
                 alt={post.title || "Image"}
                 className="w-full h-full object-cover"
                 loading="lazy"
+                animate={isHovered ? { scale: 1.05 } : { scale: 1 }}
+                transition={{ duration: 0.6 }}
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </div>
-            <div className="p-4 md:p-5">
+            <div className="p-6 md:p-8">
               {post.title && (
-                <h3
-                  className="text-xl md:text-2xl font-bold"
-                  style={{ color: "var(--black)" }}
-                >
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
                   {post.title}
                 </h3>
               )}
               {post.description && (
-                <p className="mt-2 text-sm" style={{ color: "var(--black)" }}>
+                <p className="text-gray-600 leading-relaxed">
                   {post.description}
                 </p>
               )}
             </div>
 
-            {/* Votes positioned bottom-right */}
             {showVotes && post.id && (
-              <div className="absolute right-4 bottom-4 flex items-center gap-3">
+              <div className="absolute right-6 bottom-6 flex items-center gap-3">
                 <button
                   onClick={() => handleVote("upvote")}
                   disabled={loading}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
-                    loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                  }`}
-                  style={
-                    userVote === "upvote"
-                      ? {
-                          backgroundColor: "var(--dark-teal)",
-                          color: "white",
-                          border: "1px solid var(--dark-teal)",
-                        }
-                      : {
-                          backgroundColor: "var(--light-blue)",
-                          color: "var(--black)",
-                        }
-                  }
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all ${loading ? "opacity-50 cursor-not-allowed" : "hover:scale-110"
+                    } ${userVote === "upvote"
+                      ? "bg-[var(--dark-teal)] text-white shadow-lg"
+                      : "bg-white text-gray-700 border-2 border-gray-200"
+                    }`}
                 >
-                  <FaThumbsUp className="text-sm" />
-                  <span className="font-semibold text-sm">{upvotes}</span>
+                  <FaThumbsUp />
+                  <span>{upvotes}</span>
                 </button>
 
                 <button
                   onClick={() => handleVote("downvote")}
                   disabled={loading}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
-                    loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                  }`}
-                  style={
-                    userVote === "downvote"
-                      ? {
-                          backgroundColor: "var(--light-pink)",
-                          color: "var(--black)",
-                          border: "1px solid var(--light-pink)",
-                        }
-                      : {
-                          backgroundColor: "var(--light-blue)",
-                          color: "var(--black)",
-                        }
-                  }
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all ${loading ? "opacity-50 cursor-not-allowed" : "hover:scale-110"
+                    } ${userVote === "downvote"
+                      ? "bg-red-500 text-white shadow-lg"
+                      : "bg-white text-gray-700 border-2 border-gray-200"
+                    }`}
                 >
-                  <FaThumbsDown className="text-sm" />
-                  <span className="font-semibold text-sm">{downvotes}</span>
+                  <FaThumbsDown />
+                  <span>{downvotes}</span>
                 </button>
               </div>
             )}
@@ -226,124 +191,101 @@ export default function BlogCard({
         </>
       ) : (
         <div
-          className={`flex flex-col ${
-            post.image
-              ? "md:flex-row items-start md:items-center gap-6 md:gap-10"
-              : ""
-          } ${post.image && isEven ? "md:flex-row-reverse" : ""}`}
+          className={`flex flex-col min-h-[400px] ${post.image
+            ? "md:flex-row items-stretch gap-0"
+            : ""
+            } ${post.image && isEven ? "md:flex-row-reverse" : ""}`}
         >
-          {/* Image - only show if exists */}
+          {/* Image */}
           {post.image && (
-            <div className="w-full md:w-1/2">
-              <div
-                className="aspect-video rounded-3xl overflow-hidden"
-                style={{ backgroundColor: "var(--light-blue)" }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={post.image}
-                  alt={post.title || "Blog image"}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
+            <div className="w-full md:w-2/5 relative overflow-hidden group">
+              <motion.img
+                src={post.image}
+                alt={post.title || "Blog image"}
+                className="h-full w-full object-cover"
+                style={{ minHeight: "400px" }}
+                loading="lazy"
+                animate={isHovered ? { scale: 1.1 } : { scale: 1 }}
+                transition={{ duration: 0.6 }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-[var(--dark-teal)]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+              {post.category && (
+                <div className="absolute top-4 left-4">
+                  <span className="inline-block rounded-full px-4 py-2 text-sm font-bold bg-white text-[var(--dark-teal)] shadow-lg">
+                    {post.category}
+                  </span>
+                </div>
+              )}
             </div>
           )}
 
           {/* Content */}
-          <div className={post.image ? "w-full md:w-1/2" : "w-full"}>
-            {post.category && (
-              <span
-                className="inline-block rounded-full px-3 py-1 text-xs font-semibold"
-                style={{
-                  border: "1px solid var(--dark-teal)",
-                  backgroundColor: "var(--dark-teal)",
-                  color: "white",
-                }}
-              >
-                {post.category}
-              </span>
-            )}
-            {post.title && (
-              <h3
-                className={`text-2xl md:text-3xl font-bold ${
-                  post.category ? "mt-3" : ""
-                }`}
-                style={{ color: "var(--black)" }}
-              >
-                {post.title}
-              </h3>
-            )}
-            <p
-              className={`${post.title ? "mt-2" : ""}`}
-              style={{ color: "var(--black)" }}
-            >
-              {post.description}
-            </p>
+          <div className={`${post.image ? "w-full md:w-3/5" : "w-full"} p-8 md:p-10 flex flex-col justify-between min-h-[400px]`}>
+            <div>
+              {!post.image && post.category && (
+                <span className="inline-block rounded-full px-4 py-2 text-sm font-bold bg-[var(--light-orange)] text-[var(--dark-teal)] mb-4">
+                  {post.category}
+                </span>
+              )}
 
-            {/* Vote Buttons */}
-            {showVotes && post.id && (
-              <div className="flex items-center gap-3 mt-4">
-                <button
-                  onClick={() => handleVote("upvote")}
-                  disabled={loading}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
-                    loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                  }`}
-                  style={
-                    userVote === "upvote"
-                      ? {
-                          backgroundColor: "var(--dark-teal)",
-                          color: "white",
-                          border: "1px solid var(--dark-teal)",
-                        }
-                      : {
-                          backgroundColor: "var(--light-blue)",
-                          color: "var(--black)",
-                        }
-                  }
+              {post.title && (
+                <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+                  {post.title}
+                </h3>
+              )}
+
+              <p className="text-gray-600 text-lg leading-relaxed mb-6">
+                {post.description}
+              </p>
+            </div>
+
+            <div className="flex items-center justify-between">
+              {/* Read More Link */}
+              {post.href && post.href !== "#" && (
+                <Link
+                  href={post.href}
+                  className="group inline-flex items-center gap-2 text-[var(--dark-teal)] font-bold text-lg hover:gap-3 transition-all"
                 >
-                  <FaThumbsUp className="text-sm" />
-                  <span className="font-semibold text-sm">{upvotes}</span>
-                </button>
+                  Read the full story
+                  <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
+                </Link>
+              )}
 
-                <button
-                  onClick={() => handleVote("downvote")}
-                  disabled={loading}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
-                    loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                  }`}
-                  style={
-                    userVote === "downvote"
-                      ? {
-                          backgroundColor: "var(--light-pink)",
-                          color: "var(--black)",
-                          border: "1px solid var(--light-pink)",
-                        }
-                      : {
-                          backgroundColor: "var(--light-blue)",
-                          color: "var(--black)",
-                        }
-                  }
-                >
-                  <FaThumbsDown className="text-sm" />
-                  <span className="font-semibold text-sm">{downvotes}</span>
-                </button>
-              </div>
-            )}
+              {/* Vote Buttons */}
+              {showVotes && post.id && (
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => handleVote("upvote")}
+                    disabled={loading}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all ${loading ? "opacity-50 cursor-not-allowed" : "hover:scale-110"
+                      } ${userVote === "upvote"
+                        ? "bg-[var(--dark-teal)] text-white shadow-lg"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                  >
+                    <FaThumbsUp />
+                    <span>{upvotes}</span>
+                  </button>
 
-            {post.href && post.href !== "#" && (
-              <Link
-                href={post.href}
-                className="mt-3 inline-block font-medium"
-                style={{ color: "var(--dark-teal)" }}
-              >
-                Read the full story
-              </Link>
-            )}
+                  <button
+                    onClick={() => handleVote("downvote")}
+                    disabled={loading}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all ${loading ? "opacity-50 cursor-not-allowed" : "hover:scale-110"
+                      } ${userVote === "downvote"
+                        ? "bg-red-500 text-white shadow-lg"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                  >
+                    <FaThumbsDown />
+                    <span>{downvotes}</span>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
-    </article>
+    </motion.article>
   );
 }

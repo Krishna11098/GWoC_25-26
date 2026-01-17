@@ -143,7 +143,10 @@ export default function SpinWheelPage() {
             }, 5000); // 5s animation duration
 
         } catch (err) {
-            console.error(err);
+            // Only log unexpected errors
+            if (err.message !== "You can only spin the wheel once a day!") {
+                console.error(err);
+            }
             setError(err.message);
             setIsSpinning(false);
         }
@@ -322,7 +325,7 @@ export default function SpinWheelPage() {
                                 </p>
 
                                 <button
-                                    onClick={() => setShowModal(false)}
+                                    onClick={() => router.push("/profile")}
                                     className="w-full py-3 rounded-xl font-bold text-white transition hover:opacity-90"
                                     style={{ backgroundColor: "var(--dark-teal)" }}
                                 >
