@@ -285,10 +285,11 @@ export default function EventsCalendarPage() {
 
       <main className="w-full py-10 relative">
         <SoftWaveBackground height="450px" className="pointer-events-none" />
-        <div className="flex flex-col gap-10 relative z-10 mt-32">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-16 relative z-10 mt-32">
           {/* Header Section */}
-          <div className="space-y-4 transform-gpu">
-            <div className="mb-10 mt-2 text-center relative">
+          <header className="space-y-8 transform-gpu px-4 md:px-6">
+            <div className="mb-12 mt-2 text-center relative">
               <motion.div
                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -381,7 +382,7 @@ export default function EventsCalendarPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </header>
 
           {loadError && (
             <div
@@ -414,10 +415,10 @@ export default function EventsCalendarPage() {
           )}
 
           {/* Calendar and Events Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-0 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full items-start">
             {/* Calendar Component - Left Side */}
             <div
-              className={`lg:col-span-3 transition-all duration-1000 delay-500 px-4 md:px-6 ${
+              className={`lg:col-span-7 transition-all duration-1000 delay-500 ${
                 isInitialLoad ? "opacity-0 scale-95" : "opacity-100 scale-100"
               }`}
             >
@@ -427,11 +428,11 @@ export default function EventsCalendarPage() {
             </div>
 
             {/* Events Lists - Right Side */}
-            <aside className="lg:col-span-2 px-4 md:px-6">
-              <div className="sticky top-24 grid grid-cols-1 gap-0">
+            <aside className="lg:col-span-5 sticky top-24 self-start h-[750px] lg:h-[800px]">
+              <div className="flex flex-col h-full gap-8">
                 {/* Upcoming Events */}
                 <div
-                  className={`transition-all duration-700 delay-300 h-[50vh] overflow-hidden ${
+                  className={`transition-all duration-700 delay-300 flex-1 min-h-0 overflow-hidden ${
                     isInitialLoad
                       ? "opacity-0 translate-x-8"
                       : "opacity-100 translate-x-0"
@@ -487,7 +488,7 @@ export default function EventsCalendarPage() {
                               onMouseEnter={() => setHoveredEvent(event.id)}
                               onMouseLeave={() => setHoveredEvent(null)}
                               onClick={() => handleEventClick(event)}
-                              className={`relative rounded-2xl border border-[var(--dark-teal)]/20 p-4 shadow-sm flex items-center justify-between gap-4 bg-white cursor-pointer transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[var(--light-orange)]
+                              className={`relative rounded-2xl border border-[var(--dark-teal)]/20 p-6 shadow-sm flex items-center justify-between gap-4 bg-white cursor-pointer transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[var(--light-orange)]
                             ${hoveredEvent === event.id ? "scale-[1.02]" : ""}`}
                             >
                               <div className="flex-1 min-w-0">
@@ -592,7 +593,7 @@ export default function EventsCalendarPage() {
 
                 {/* Previous Events */}
                 <div
-                  className={`transition-all duration-700 delay-500 h-[50vh] overflow-hidden ${
+                  className={`transition-all duration-700 delay-500 flex-1 min-h-0 overflow-hidden ${
                     isInitialLoad
                       ? "opacity-0 translate-x-8"
                       : "opacity-100 translate-x-0"
@@ -641,7 +642,7 @@ export default function EventsCalendarPage() {
                             <div
                               key={event.id ?? idx}
                               onClick={() => handleEventClick(event)}
-                              className="relative rounded-2xl border border-[var(--dark-teal)]/20 p-4 shadow-sm flex items-center justify-between gap-4 bg-white cursor-pointer transform transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:border-[var(--light-blue)]"
+                              className="relative rounded-2xl border border-[var(--dark-teal)]/20 p-6 shadow-sm flex items-center justify-between gap-4 bg-white cursor-pointer transform transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:border-[var(--light-blue)]"
                             >
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-3">
@@ -677,10 +678,11 @@ export default function EventsCalendarPage() {
             </aside>
           </div>
         </div>
-      </main>
+      </div>
+    </main>
 
       {/* Contact Section for Custom Experiences */}
-      <section className="py-16 px-4 md:px-10">
+      <section className="py-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="rounded-2xl shadow-lg p-8 md:p-12 bg-[var(--light-pink)] border-2 border-[var(--dark-teal)]/20">
             <div className="flex items-start gap-4 mb-6">
@@ -751,7 +753,7 @@ export default function EventsCalendarPage() {
             }}
           >
             {/* Header - Fixed */}
-            <div className="p-4 md:p-6 border-b border-[var(--font)]/10 flex items-start justify-between flex-shrink-0 gap-4">
+            <div className="p-6 md:p-8 border-b border-[var(--font)]/10 flex items-start justify-between flex-shrink-0 gap-6">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 bg-[var(--green)]/30 rounded-lg flex-shrink-0">
@@ -793,9 +795,9 @@ export default function EventsCalendarPage() {
             </div>
 
             {/* Scrollable Content Area */}
-            <div className="overflow-y-auto flex-1 p-4 md:p-6 space-y-4 md:space-y-6">
+            <div className="overflow-y-auto flex-1 p-6 md:p-10 space-y-8 md:space-y-10">
               {/* Details Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {[
                   {
                     icon: <CalendarIcon size={20} />,
@@ -830,7 +832,7 @@ export default function EventsCalendarPage() {
                 ].map((item, idx) => (
                   <div
                     key={idx}
-                    className="flex items-start gap-3 p-3 md:p-4 bg-white/40 border border-[var(--font)]/5 rounded-xl"
+                    className="flex items-start gap-4 p-4 md:p-5 bg-white/40 border border-[var(--font)]/5 rounded-xl"
                   >
                     <span className="text-blue-600 drop-shadow-sm flex-shrink-0 mt-0.5">
                       {item.icon}

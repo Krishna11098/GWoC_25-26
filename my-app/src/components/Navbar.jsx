@@ -85,7 +85,8 @@ const Navbar = () => {
   };
 
   const linkClasses = (href) =>
-    `relative text-lg font-light tracking-wide text-white hover:text-light-blue transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:bg-light-blue after:transition-transform after:duration-300 hover:after:scale-x-100 ${isActive(href) ? "text-light-blue after:scale-x-100" : ""
+    `relative text-lg font-light tracking-wide text-white hover:text-light-blue transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:bg-light-blue after:transition-transform after:duration-300 hover:after:scale-x-100 ${
+      isActive(href) ? "text-light-blue after:scale-x-100" : ""
     }`;
 
   return (
@@ -96,8 +97,9 @@ const Navbar = () => {
     >
       <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
         <div
-          className={`flex items-center rounded-2xl border border-white/60 bg-dark-teal shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 text-bg ${scrolled ? "py-0" : "py-1 md:py-1.5"
-            }`}
+          className={`flex items-center rounded-2xl border border-white/60 bg-dark-teal shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 text-bg ${
+            scrolled ? "py-0" : "py-1 md:py-1.5"
+          }`}
         >
           {/* Logo Div */}
           <div className="flex items-center justify-center m-0 p-0 pl-4">
@@ -151,10 +153,11 @@ const Navbar = () => {
                   Community
                 </button>
                 <div
-                  className={`absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200 bg-white shadow-md transition-opacity duration-200 ${communityDropdownOpen
-                    ? "opacity-100 pointer-events-auto"
-                    : "opacity-0 pointer-events-none"
-                    }`}
+                  className={`absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200 bg-white shadow-md transition-opacity duration-200 ${
+                    communityDropdownOpen
+                      ? "opacity-100 pointer-events-auto"
+                      : "opacity-0 pointer-events-none"
+                  }`}
                   onMouseEnter={() => setCommunityDropdownOpen(true)}
                   onMouseLeave={() => {
                     if (!communityDropdownClicked)
@@ -209,10 +212,11 @@ const Navbar = () => {
                   Play
                 </button>
                 <div
-                  className={`absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200 bg-white shadow-md transition-opacity duration-200 ${playDropdownOpen
-                    ? "opacity-100 pointer-events-auto"
-                    : "opacity-0 pointer-events-none"
-                    }`}
+                  className={`absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200 bg-white shadow-md transition-opacity duration-200 ${
+                    playDropdownOpen
+                      ? "opacity-100 pointer-events-auto"
+                      : "opacity-0 pointer-events-none"
+                  }`}
                   onMouseEnter={() => setPlayDropdownOpen(true)}
                   onMouseLeave={() => {
                     if (!playDropdownClicked) setPlayDropdownOpen(false);
@@ -312,8 +316,9 @@ const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 bg-font text-bg z-40 transition-transform duration-500 flex flex-col items-center justify-center overflow-y-auto ${mobileOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed inset-0 bg-dark-teal text-white z-40 transition-transform duration-500 flex flex-col items-center justify-center overflow-y-auto ${
+          mobileOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <div className="flex flex-col items-center gap-6 py-20 w-full px-8 text-center">
           {navLinks.map((link) => (
@@ -336,15 +341,17 @@ const Navbar = () => {
               <span>Community</span>
               <ChevronDown
                 size={16}
-                className={`transition-transform duration-300 ${mobileCommunityOpen ? "rotate-180" : ""
-                  }`}
+                className={`transition-transform duration-300 ${
+                  mobileCommunityOpen ? "rotate-180" : ""
+                }`}
               />
             </button>
             <div
-              className={`overflow-hidden transition-all duration-300 flex flex-col gap-4 px-4 ${mobileCommunityOpen
-                ? "max-h-40 opacity-100 mt-4"
-                : "max-h-0 opacity-0"
-                }`}
+              className={`overflow-hidden transition-all duration-300 flex flex-col gap-4 px-4 ${
+                mobileCommunityOpen
+                  ? "max-h-40 opacity-100 mt-4"
+                  : "max-h-0 opacity-0"
+              }`}
             >
               <Link
                 href="/about-us"
@@ -372,15 +379,17 @@ const Navbar = () => {
               <span>Play</span>
               <ChevronDown
                 size={16}
-                className={`transition-transform duration-300 ${mobilePlayOpen ? "rotate-180" : ""
-                  }`}
+                className={`transition-transform duration-300 ${
+                  mobilePlayOpen ? "rotate-180" : ""
+                }`}
               />
             </button>
             <div
-              className={`overflow-hidden transition-all duration-300 flex flex-col gap-4 px-4 ${mobilePlayOpen
-                ? "max-h-96 opacity-100 mt-4"
-                : "max-h-0 opacity-0"
-                }`}
+              className={`overflow-hidden transition-all duration-300 flex flex-col gap-4 px-4 ${
+                mobilePlayOpen
+                  ? "max-h-96 opacity-100 mt-4"
+                  : "max-h-0 opacity-0"
+              }`}
             >
               <Link
                 href="/sudoku"
