@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lemon&family=Lumanosimo&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lemon&family=Lumanosimo&family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Caveat:wght@400..700&display=swap');
         </style>
         <style>
           {`
@@ -40,6 +40,16 @@ export default function RootLayout({ children }) {
               font-optical-sizing: auto;
               font-weight: 700;
               font-style: normal;
+            }
+
+            .fraunces-chunky {
+              font-family: "Fraunces", serif;
+              font-variation-settings: "SOFT" 100, "WONK" 1;
+              font-weight: 900;
+            }
+
+            .caveat-script {
+              font-family: "Caveat", cursive;
             }
           `}
         </style>

@@ -69,7 +69,7 @@ export default function FAQ() {
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
     >
-      <SoftWaveBackground height="420px" className="pointer-events-none" />
+      <SoftWaveBackground height="340px" className="pointer-events-none" />
       <div className="w-full max-w-4xl space-y-16 relative z-10">
         {/* ================= HEADER ================= */}
         <motion.div
