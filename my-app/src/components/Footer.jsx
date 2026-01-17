@@ -1,10 +1,10 @@
 export default function Footer() {
   const links = [
-    { label: "Home", href: "/" },
+    { label: "Home", href: "/home" },
     { label: "Shop", href: "/shop" },
     { label: "Experiences", href: "/experiences" },
     { label: "Play", href: "/play" },
-    { label: "Events", href: "/experiences/events" },
+    { label: "Events", href: "/events" },
     { label: "Community", href: "/community" },
     { label: "Contact Us", href: "/contact" },
     { label: "Send a Query", href: "/query" },
