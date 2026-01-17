@@ -284,7 +284,7 @@ export default function GamesPage() {
                       </div>
 
                       {/* Hover Indicator */}
-                      <div
+                      {/* <div
                         className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-sm font-bold shadow-md"
                         style={{
                           backgroundColor: "var(--orange)",
@@ -292,7 +292,7 @@ export default function GamesPage() {
                         }}
                       >
                         Hover to Flip
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* Back Side - Detailed Info (Rotated) */}

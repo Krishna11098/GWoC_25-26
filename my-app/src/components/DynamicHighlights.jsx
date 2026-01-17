@@ -235,7 +235,7 @@ export default function DynamicHighlights() {
                           className="min-w-full px-1 md:px-2"
                         >
                           <div
-                            className="rounded-[2rem] md:rounded-[2.5rem] p-5 md:p-6 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-4 border-white/40 relative overflow-hidden group/card hover:border-white/80"
+                            className="rounded-[2rem] md:rounded-[2.5rem] p-5 md:p-6 hover:scale-[1.02] transition-all duration-500 border-4 border-white/40 relative overflow-hidden group/card hover:border-white/80"
                             style={{
                               backgroundColor:
                                 themeColors[
@@ -366,7 +366,7 @@ export default function DynamicHighlights() {
                       className="min-w-full px-2 md:px-4"
                     >
                       <div
-                        className="rounded-[2rem] md:rounded-[3rem] p-8 md:p-10 shadow-2xl hover:scale-[1.02] transition-all duration-500 border-4 border-white/40 relative overflow-hidden group/game hover:border-white/80"
+                        className="rounded-[2rem] md:rounded-[3rem] p-8 md:p-10 hover:scale-[1.02] transition-all duration-500 border-4 border-white/40 relative overflow-hidden group/game hover:border-white/80"
                         style={{
                           backgroundColor: themeColors[i % themeColors.length],
                         }}
