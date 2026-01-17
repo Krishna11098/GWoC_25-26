@@ -3,6 +3,7 @@
 import { Poppins, Baloo_2, Londrina_Sketch } from "next/font/google";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 import PlayfulHeading from "./PlayfulHeading";
 import { Weight } from "lucide-react";
@@ -25,6 +26,7 @@ const londrinaSketch = Londrina_Sketch({
 export default function HeroSection({ scrollProgress = 0 }) {
   const scale = 1 - scrollProgress * 0.1;
   const opacity = 1 - scrollProgress * 0.3;
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Gallery images
   const galleryImages = [
@@ -35,6 +37,14 @@ export default function HeroSection({ scrollProgress = 0 }) {
     "/gallery/image5.png",
     "/gallery/image6.png",
   ];
+
+  // Rotate images every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % galleryImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   const subheadingText =
     "JoyJuncture creates playful, immersive game experiences for events, workshops, and communities";
@@ -72,7 +82,7 @@ export default function HeroSection({ scrollProgress = 0 }) {
 
   return (
     <section
-      className="relative w-full py-12 md:py-20"
+      className="relative w-full h-screen flex flex-col"
       style={{
         backgroundColor: "var(--bg)",
         transform: `scale(${scale})`,
@@ -82,95 +92,123 @@ export default function HeroSection({ scrollProgress = 0 }) {
         willChange: "transform, opacity",
       }}
     >
-      {/* Top Section - Vertical Layout */}
-      <div className="container mx-auto px-8 md:px-16 py-8 md:py-12">
-        <div className="flex flex-col gap-8 md:gap-12 my-10 items-center text-center">
-          {/* Joy Juncture */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <h1
-              className={`text-6xl md:text-7xl lg:text-8xl font-black ${londrinaSketch.className}`}
+      {/* Main Content - Left and Right Sections */}
+      <div className="container mx-auto px-8 md:px-16 pt-20 md:pt-1 pb-1 flex-1 flex items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center w-full">
+          {/* LEFT SECTION - Text Content */}
+          <div className="flex flex-col gap-8 md:gap-12">
+            {/* Joy Juncture */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <h1
+                className={`text-7xl md:text-7xl lg:text-8xl font-black ${londrinaSketch.className}`}
+                style={{
+                  color: "var(--dark-teal)",
+                  fontSize: "clamp(2.9rem, 11vw, 9rem)",
+                  fontWeight: 900,
+                }}
+              >
+                JOY JUNCTURE
+              </h1>
+            </motion.div>
+
+            {/* Subheading */}
+            <motion.div
+              className="max-w-2xl"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <h2
+                className="text-lg md:text-2xl lg:text-3xl font-semibold leading-relaxed tracking-tight"
+                style={{ color: "var(--dark-teal)" }}
+              >
+                {words.map((word, idx) => (
+                  <motion.span
+                    key={`${word}-${idx}`}
+                    variants={wordVariants}
+                    style={{ display: "inline-block", marginRight: "0.25em" }}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </h2>
+            </motion.div>
+          </div>
+
+          {/* RIGHT SECTION - Images */}
+          <div className="relative h-[400px] md:h-[500px]">
+            {/* Background Image - Tilted */}
+            <motion.div
+              initial={{ opacity: 0, rotate: -5, scale: 0.9 }}
+              animate={{ opacity: 1, rotate: -5, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="absolute top-0 left-0 w-[280px] md:w-[350px] h-[300px] md:h-[400px] backdrop-blur-sm p-3 md:p-4 rounded-[2rem] md:rounded-[3rem] shadow-2xl border-4"
               style={{
-                color: "var(--dark-teal)",
-                fontSize: "clamp(3rem, 12vw, 9rem)",
-                fontWeight: 900,
+                transform: "rotate(-5deg)",
+                borderColor: "var(--dark-teal)",
               }}
+              style={{ transform: "rotate(-5deg)" }}
+              key={`bg-${currentImageIndex}`}
             >
-              JOY JUNCTURE
-            </h1>
-          </motion.div>
+              <motion.img
+                key={`bg-img-${currentImageIndex}`}
+                src={galleryImages[currentImageIndex]}
+                alt="Gallery Background"
+                className="w-full h-full object-cover rounded-[1.5rem] md:rounded-[2.5rem]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              />
+            </motion.div>
 
-          {/* Subheading */}
-          <motion.div
-            className="max-w-3xl"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2
-              className="text-lg md:text-2xl lg:text-3xl font-semibold leading-relaxed tracking-tight"
-              style={{ color: "var(--dark-teal)" }}
+            {/* Foreground Image - Overlapped and Tilted */}
+            <motion.div
+              initial={{ opacity: 0, rotate: 5, scale: 0.9 }}
+              animate={{ opacity: 1, rotate: 5, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="absolute bottom-8 right-0 w-[280px] md:w-[350px] h-[300px] md:h-[400px] backdrop-blur-sm p-3 md:p-4 rounded-[2rem] md:rounded-[3rem] shadow-2xl border-4"
+              style={{
+                transform: "rotate(5deg)",
+                zIndex: 10,
+                borderColor: "var(--dark-teal)",
+              }}
+              style={{ transform: "rotate(5deg)", zIndex: 10 }}
+              key={`fg-${(currentImageIndex + 1) % galleryImages.length}`}
             >
-              {words.map((word, idx) => (
-                <motion.span
-                  key={`${word}-${idx}`}
-                  variants={wordVariants}
-                  style={{ display: "inline-block", marginRight: "0.25em" }}
-                >
-                  {word}
-                </motion.span>
-              ))}
-            </h2>
-          </motion.div>
+              <motion.img
+                key={`fg-img-${(currentImageIndex + 1) % galleryImages.length}`}
+                src={
+                  galleryImages[(currentImageIndex + 1) % galleryImages.length]
+                }
+                alt="Gallery Foreground"
+                className="w-full h-full object-cover rounded-[1.5rem] md:rounded-[2.5rem]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              />
+            </motion.div>
+          </div>
         </div>
-
-        {/* Call to Action */}
-        {/* <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-12 md:mt-16 flex gap-4 md:gap-6 flex-wrap"
-        >
-          <button
-            className="px-8 md:px-10 py-3 md:py-4 font-bold text-white rounded-lg transition-all hover:scale-105 text-base md:text-lg"
-            style={{ backgroundColor: "var(--light-orange)" }}
-          >
-            Explore Games
-          </button>
-          <button
-            className="px-8 md:px-10 py-3 md:py-4 font-bold rounded-lg transition-all hover:scale-105 text-base md:text-lg border-2"
-            style={{
-              borderColor: "var(--dark-teal)",
-              color: "var(--dark-teal)",
-            }}
-          >
-            Book Event
-          </button>
-        </motion.div> */}
       </div>
 
-      {/* Bottom Section - Gallery Images */}
-      <div className="w-full relative overflow-hidden pb-12 md:pb-16 ">
-        <div className="flex animate-marquee whitespace-nowrap hover:pause-scroll">
-          {[...galleryImages, ...galleryImages, ...galleryImages].map(
-            (src, index) => (
-              <div
-                key={index}
-                className="inline-block px-3 md:px-4 w-[240px] md:w-[450px] shrink-0"
-              >
-                <div className="bg-orange/10 backdrop-blur-sm p-2 md:p-3 rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl border-2 border-orange transform hover:scale-105 transition-transform duration-500">
-                  <img
-                    src={src}
-                    alt={`Gallery ${index + 1}`}
-                    className="w-full h-40 md:h-72 object-cover rounded-[1.2rem] md:rounded-[2rem]"
-                  />
-                </div>
-              </div>
-            )
-          )}
+      {/* Marquee at Bottom */}
+      <div className="w-full mt-auto bg-[#FF9FC8] py-6 overflow-hidden">
+        <div className="flex animate-marquee whitespace-nowrap">
+          {[...Array(5)].map((_, i) => (
+            <div
+              key={i}
+              className="text-2xl md:text-5xl font-bold px-8"
+              style={{ color: "var(--dark-teal)" }}
+            >
+              Play. Connect. Celebrate.
+            </div>
+          ))}
         </div>
       </div>
     </section>

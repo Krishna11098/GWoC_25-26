@@ -3,6 +3,7 @@ import React, { useLayoutEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SoftWaveBackground from "./SoftWaveBackground";
 
 const cardsData = [
   {
@@ -149,6 +150,7 @@ export default function ThreePillars() {
       //     backgroundColor: "var(--bg)",
       //   }}
     >
+      <SoftWaveBackground height="350px" className="pointer-events-none" />
       <div className="mb-8 z-10 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.95 }}

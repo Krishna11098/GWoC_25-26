@@ -5,7 +5,12 @@ import Link from "next/link";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { auth } from "@/lib/firebaseClient";
 
-export default function BlogCard({ post, index, hero = false, showVotes = true }) {
+export default function BlogCard({
+  post,
+  index,
+  hero = false,
+  showVotes = true,
+}) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
   const [user, setUser] = useState(null);
@@ -131,9 +136,9 @@ export default function BlogCard({ post, index, hero = false, showVotes = true }
         inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       } ${hero ? "p-0 pb-6 md:pb-8 overflow-hidden" : "p-4 md:p-6"}`}
       style={{
-        backgroundColor: "rgba(255,255,255,0.9)",
-        border: "1px solid var(--color-green)",
-        color: "var(--color-font)",
+        backgroundColor: "var(--light-blue)",
+        border: "1px solid var(--dark-teal)",
+        color: "var(--black)",
       }}
     >
       {hero ? (
@@ -141,7 +146,7 @@ export default function BlogCard({ post, index, hero = false, showVotes = true }
           <div className="w-full">
             <div
               className="w-full h-64 md:h-80 overflow-hidden"
-              style={{ backgroundColor: "var(--bg)" }}
+              style={{ backgroundColor: "var(--light-blue)" }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -155,16 +160,13 @@ export default function BlogCard({ post, index, hero = false, showVotes = true }
               {post.title && (
                 <h3
                   className="text-xl md:text-2xl font-bold"
-                  style={{ color: "var(--color-font)" }}
+                  style={{ color: "var(--black)" }}
                 >
                   {post.title}
                 </h3>
               )}
               {post.description && (
-                <p
-                  className="mt-2 text-sm"
-                  style={{ color: "var(--color-font)" }}
-                >
+                <p className="mt-2 text-sm" style={{ color: "var(--black)" }}>
                   {post.description}
                 </p>
               )}
@@ -182,13 +184,13 @@ export default function BlogCard({ post, index, hero = false, showVotes = true }
                   style={
                     userVote === "upvote"
                       ? {
-                          backgroundColor: "var(--color-green)",
-                          color: "var(--color-font)",
-                          border: "1px solid var(--color-green)",
+                          backgroundColor: "var(--dark-teal)",
+                          color: "white",
+                          border: "1px solid var(--dark-teal)",
                         }
                       : {
-                          backgroundColor: "rgba(255,255,255,0.9)",
-                          color: "var(--color-font)",
+                          backgroundColor: "var(--light-blue)",
+                          color: "var(--black)",
                         }
                   }
                 >
@@ -205,13 +207,13 @@ export default function BlogCard({ post, index, hero = false, showVotes = true }
                   style={
                     userVote === "downvote"
                       ? {
-                          backgroundColor: "var(--color-pink)",
-                          color: "var(--color-font)",
-                          border: "1px solid var(--color-pink)",
+                          backgroundColor: "var(--light-pink)",
+                          color: "var(--black)",
+                          border: "1px solid var(--light-pink)",
                         }
                       : {
-                          backgroundColor: "rgba(255,255,255,0.9)",
-                          color: "var(--color-font)",
+                          backgroundColor: "var(--light-blue)",
+                          color: "var(--black)",
                         }
                   }
                 >
@@ -235,7 +237,7 @@ export default function BlogCard({ post, index, hero = false, showVotes = true }
             <div className="w-full md:w-1/2">
               <div
                 className="aspect-video rounded-3xl overflow-hidden"
-                style={{ backgroundColor: "var(--bg)" }}
+                style={{ backgroundColor: "var(--light-blue)" }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -254,9 +256,9 @@ export default function BlogCard({ post, index, hero = false, showVotes = true }
               <span
                 className="inline-block rounded-full px-3 py-1 text-xs font-semibold"
                 style={{
-                  border: "1px solid var(--color-green)",
-                  backgroundColor: "var(--color-green)",
-                  color: "var(--color-font)",
+                  border: "1px solid var(--dark-teal)",
+                  backgroundColor: "var(--dark-teal)",
+                  color: "white",
                 }}
               >
                 {post.category}
@@ -267,14 +269,14 @@ export default function BlogCard({ post, index, hero = false, showVotes = true }
                 className={`text-2xl md:text-3xl font-bold ${
                   post.category ? "mt-3" : ""
                 }`}
-                style={{ color: "var(--color-font)" }}
+                style={{ color: "var(--black)" }}
               >
                 {post.title}
               </h3>
             )}
             <p
               className={`${post.title ? "mt-2" : ""}`}
-              style={{ color: "var(--color-font)" }}
+              style={{ color: "var(--black)" }}
             >
               {post.description}
             </p>
@@ -291,13 +293,13 @@ export default function BlogCard({ post, index, hero = false, showVotes = true }
                   style={
                     userVote === "upvote"
                       ? {
-                          backgroundColor: "var(--color-green)",
-                          color: "var(--color-font)",
-                          border: "1px solid var(--color-green)",
+                          backgroundColor: "var(--dark-teal)",
+                          color: "white",
+                          border: "1px solid var(--dark-teal)",
                         }
                       : {
-                          backgroundColor: "var(--bg)",
-                          color: "var(--color-font)",
+                          backgroundColor: "var(--light-blue)",
+                          color: "var(--black)",
                         }
                   }
                 >
@@ -314,13 +316,13 @@ export default function BlogCard({ post, index, hero = false, showVotes = true }
                   style={
                     userVote === "downvote"
                       ? {
-                          backgroundColor: "var(--color-pink)",
-                          color: "var(--color-font)",
-                          border: "1px solid var(--color-pink)",
+                          backgroundColor: "var(--light-pink)",
+                          color: "var(--black)",
+                          border: "1px solid var(--light-pink)",
                         }
                       : {
-                          backgroundColor: "var(--bg)",
-                          color: "var(--color-font)",
+                          backgroundColor: "var(--light-blue)",
+                          color: "var(--black)",
                         }
                   }
                 >
@@ -334,7 +336,7 @@ export default function BlogCard({ post, index, hero = false, showVotes = true }
               <Link
                 href={post.href}
                 className="mt-3 inline-block font-medium"
-                style={{ color: "var(--color-green)" }}
+                style={{ color: "var(--dark-teal)" }}
               >
                 Read the full story
               </Link>

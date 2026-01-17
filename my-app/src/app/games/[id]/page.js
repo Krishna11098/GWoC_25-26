@@ -11,14 +11,16 @@ async function getProduct(id) {
   try {
     const snap = await db.collection("products").doc(id).get();
     if (!snap.exists) return null;
-    
+
     const data = snap.data();
     // Serialize Firestore objects (Timestamps, etc.) to plain objects
-    return JSON.parse(JSON.stringify({
-      id: snap.id,
-      ...data,
-      createdAt: data.createdAt?.toDate?.() || data.createdAt || null,
-    }));
+    return JSON.parse(
+      JSON.stringify({
+        id: snap.id,
+        ...data,
+        createdAt: data.createdAt?.toDate?.() || data.createdAt || null,
+      })
+    );
   } catch (err) {
     console.error("Error fetching product:", err);
     return null;
@@ -33,10 +35,20 @@ export default async function GameDetailPage({ params }) {
     return (
       <>
         <Navbar />
-        <div className="bg-black text-white min-h-screen flex items-center justify-center px-6">
+        <div
+          className="min-h-screen flex items-center justify-center px-6 py-12 mt-32"
+          style={{ backgroundColor: "var(--light-blue)" }}
+        >
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-white mb-4">Invalid Product</h1>
-            <p className="text-gray-400">No product ID provided.</p>
+            <h1
+              className="text-3xl font-bold mb-4"
+              style={{ color: "var(--dark-teal)" }}
+            >
+              Invalid Product
+            </h1>
+            <p className="text-lg" style={{ color: "var(--black)" }}>
+              No product ID provided.
+            </p>
           </div>
         </div>
         <Footer />

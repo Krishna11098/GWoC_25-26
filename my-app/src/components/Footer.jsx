@@ -11,18 +11,20 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="border-t border-gray-200 bg-font text-bg backdrop-blur-md">
+    <footer className="border-t border-white/60 bg-dark-teal text-bg backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-12 md:flex-row md:items-start md:justify-between">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4">
             <img
               src="/logo3.png"
               alt="Joy Juncture logo"
-              className="h-16 w-16 rounded-2xl object-contain shadow-lg ring-2 ring-orange/20"
+              className="h-16 w-16 rounded-2xl object-contain shadow-lg ring-2 ring-light-blue/40"
             />
-            <span className="text-2xl font-bold tracking-tight text-bg">JoyJuncture</span>
+            <span className="text-2xl font-bold tracking-tight text-bg">
+              JoyJuncture
+            </span>
           </div>
-          <p className="max-w-xs text-sm leading-relaxed text-gray-300">
+          <p className="max-w-xs text-sm leading-relaxed text-bg/80">
             Crafted experiences, joyful connections, and premium play for
             communities everywhere.
           </p>
@@ -30,13 +32,13 @@ export default function Footer() {
 
         <div className="grid flex-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           <div className="flex flex-col gap-4">
-            <h3 className="text-base font-bold">Navigate</h3>
-            <nav className="flex flex-col gap-2 text-sm text-gray-300">
+            <h3 className="text-base font-bold text-light-blue">Navigate</h3>
+            <nav className="flex flex-col gap-2 text-sm text-bg/80">
               {links.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  className="transition-all duration-200 hover:translate-x-1 hover:text-orange"
+                  className="transition-all duration-200 hover:translate-x-1 hover:text-light-pink"
                 >
                   {link.label}
                 </a>
@@ -45,31 +47,38 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-col gap-4">
-            <h3 className="text-base font-bold">Contact</h3>
-            <div className="flex flex-col gap-2 text-sm text-gray-300">
-              <a href="mailto:hello@joyjuncture.com" className="hover:text-orange">hello@joyjuncture.com</a>
-              <a href="tel:+15551234567" className="hover:text-orange">+1 (555) 123-4567</a>
+            <h3 className="text-base font-bold text-light-blue">Contact</h3>
+            <div className="flex flex-col gap-2 text-sm text-bg/80">
+              <a
+                href="mailto:hello@joyjuncture.com"
+                className="hover:text-light-pink"
+              >
+                hello@joyjuncture.com
+              </a>
+              <a href="tel:+15551234567" className="hover:text-light-pink">
+                +1 (555) 123-4567
+              </a>
             </div>
           </div>
 
           <div className="flex flex-col gap-4">
-            <h3 className="text-base font-bold">Follow</h3>
-            <div className="flex flex-wrap gap-4 text-sm text-gray-300">
+            <h3 className="text-base font-bold text-light-blue">Follow</h3>
+            <div className="flex flex-wrap gap-4 text-sm text-bg/80">
               <a
                 href="#"
-                className="transition-colors duration-200 hover:text-orange"
+                className="transition-colors duration-200 hover:text-light-pink"
               >
                 LinkedIn
               </a>
               <a
                 href="#"
-                className="transition-colors duration-200 hover:text-orange"
+                className="transition-colors duration-200 hover:text-light-pink"
               >
                 Instagram
               </a>
               <a
                 href="#"
-                className="transition-colors duration-200 hover:text-orange"
+                className="transition-colors duration-200 hover:text-light-pink"
               >
                 Twitter
               </a>
@@ -77,16 +86,16 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 py-6 text-xs text-gray-400 md:flex-row md:justify-between">
+      <div className="border-t border-white/20">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 py-6 text-xs text-bg/70 md:flex-row md:justify-between">
           <span>
             © {new Date().getFullYear()} JoyJuncture. All rights reserved.
           </span>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-orange transition-colors">
+            <a href="#" className="hover:text-light-pink transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="hover:text-orange transition-colors">
+            <a href="#" className="hover:text-light-pink transition-colors">
               Terms of Service
             </a>
           </div>

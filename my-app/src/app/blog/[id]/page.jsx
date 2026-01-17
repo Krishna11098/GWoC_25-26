@@ -43,8 +43,8 @@ export default function BlogDetailPage() {
         <Navbar />
         <main className="flex justify-center items-center min-h-screen">
           <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
-            <p className="text-slate-600 mt-4">Loading story...</p>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-dark-teal"></div>
+            <p className="text-gray-600 mt-4">Loading story...</p>
           </div>
         </main>
         <Footer />
@@ -56,10 +56,12 @@ export default function BlogDetailPage() {
     return (
       <>
         <Navbar />
-        <main className="mx-auto max-w-6xl xl:max-w-7xl px-4 md:px-10 py-10">
-          <div className="rounded-3xl bg-red-100 border border-red-300 px-6 py-4 text-red-700">
-            <h2 className="text-xl font-bold">Error</h2>
-            <p>{error || "Blog not found"}</p>
+        <main className="mx-auto max-w-6xl xl:max-w-7xl py-10 mt-32 w-full relative">
+          <div>
+            <div className="rounded-3xl bg-[var(--light-pink)]/50 border border-[var(--dark-teal)]/20 px-6 py-4 text-[var(--dark-teal)]">
+              <h2 className="text-xl font-bold">Error</h2>
+              <p>{error || "Blog not found"}</p>
+            </div>
           </div>
         </main>
         <Footer />
@@ -92,125 +94,93 @@ export default function BlogDetailPage() {
   return (
     <>
       <Navbar />
-      <main className="mx-auto max-w-6xl xl:max-w-7xl px-4 md:px-10 py-10 mt-20 pt-16">
-        {/* Header */}
-        {/* <header className="mb-8 md:mb-10">
-          <h1
-            className="text-3xl md:text-4xl font-bold"
-            style={{ color: "var(--color-font)" }}
-          >
-            {blog.title}
-          </h1>
+      <main className="mx-auto max-w-6xl xl:max-w-7xl py-10 mt-32 w-full relative">
+        <div className="px-4 md:px-6">
+          {/* Blog Content - Merged Cards as One Section */}
           <div
-            className="mt-4 flex items-center gap-4 text-sm"
-            style={{ color: "var(--color-font)" }}
+            className="rounded-3xl shadow-lg p-6 md:p-8 border-2"
+            style={{
+              backgroundColor: "var(--light-blue)",
+              borderColor: "var(--dark-teal)",
+              color: "var(--black)",
+            }}
           >
-            <span
-              className="inline-block rounded-full px-3 py-1 font-semibold"
-              style={{
-                border: "1px solid var(--color-green)",
-                backgroundColor: "var(--color-green)",
-                color: "var(--color-font)",
-              }}
-            >
-              {blog.category}
-            </span>
-            {blog.publishedAt && (
-              <time style={{ color: "var(--color-font)" }}>
-                {new Date(blog.publishedAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </time>
-            )}
-          </div>
-        </header> */}
-
-        {/* Blog Content - Merged Cards as One Section */}
-        <div
-          className="rounded-3xl shadow-sm p-6 md:p-8"
-          style={{
-            backgroundColor: "rgba(255,255,255,0.9)",
-            border: "1px solid var(--color-green)",
-            color: "var(--color-font)",
-          }}
-        >
-          {allCards.map((card, idx) => {
-            const isEven = idx % 2 === 1;
-            return (
-              <div key={idx} className={idx > 0 ? "mt-8 md:mt-12" : ""}>
-                <div
-                  className={`flex flex-col ${
-                    card.image
-                      ? "md:flex-row items-start md:items-center gap-6 md:gap-10"
-                      : ""
-                  } ${card.image && isEven ? "md:flex-row-reverse" : ""}`}
-                >
-                  {/* Image */}
-                  {card.image && (
-                    <div className="w-full md:w-1/2">
-                      <div className="aspect-video rounded-3xl overflow-hidden bg-slate-100">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={card.image}
-                          alt={card.title || "Blog image"}
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                        />
+            {allCards.map((card, idx) => {
+              const isEven = idx % 2 === 1;
+              return (
+                <div key={idx} className={idx > 0 ? "mt-8 md:mt-12" : ""}>
+                  <div
+                    className={`flex flex-col ${
+                      card.image
+                        ? "md:flex-row items-start md:items-center gap-6 md:gap-10"
+                        : ""
+                    } ${card.image && isEven ? "md:flex-row-reverse" : ""}`}
+                  >
+                    {/* Image */}
+                    {card.image && (
+                      <div className="w-full md:w-1/2">
+                        <div className="aspect-video rounded-3xl overflow-hidden bg-slate-100">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={card.image}
+                            alt={card.title || "Blog image"}
+                            className="h-full w-full object-cover"
+                            loading="lazy"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {/* Content */}
-                  <div className={card.image ? "w-full md:w-1/2" : "w-full"}>
-                    {card.category && (
-                      <span
-                        className="inline-block rounded-full px-3 py-1 text-xs font-semibold"
+                    {/* Content */}
+                    <div className={card.image ? "w-full md:w-1/2" : "w-full"}>
+                      {card.category && (
+                        <span
+                          className="inline-block rounded-full px-3 py-1 text-xs font-semibold"
+                          style={{
+                            border: "1px solid var(--dark-teal)",
+                            backgroundColor: "var(--dark-teal)",
+                            color: "white",
+                          }}
+                        >
+                          {card.category}
+                        </span>
+                      )}
+                      {card.title && (
+                        <h3
+                          className={`text-2xl md:text-3xl font-bold ${
+                            card.category ? "mt-3" : ""
+                          }`}
+                          style={{ color: "var(--black)" }}
+                        >
+                          {card.title}
+                        </h3>
+                      )}
+                      <p
+                        className={`${card.title ? "mt-2" : ""} ${
+                          !card.image ? "text-justify" : ""
+                        }`}
                         style={{
-                          border: "1px solid var(--color-green)",
-                          backgroundColor: "var(--color-green)",
-                          color: "var(--color-font)",
+                          color: "var(--black)",
+                          lineHeight: 1.7,
+                          fontSize: "1rem",
                         }}
                       >
-                        {card.category}
-                      </span>
-                    )}
-                    {card.title && (
-                      <h3
-                        className={`text-2xl md:text-3xl font-bold ${
-                          card.category ? "mt-3" : ""
-                        }`}
-                        style={{ color: "var(--color-font)" }}
-                      >
-                        {card.title}
-                      </h3>
-                    )}
-                    <p
-                      className={`${card.title ? "mt-2" : ""} ${
-                        !card.image ? "text-justify" : ""
-                      }`}
-                      style={{
-                        color: "var(--color-font)",
-                        lineHeight: 1.7,
-                        fontSize: "1rem",
-                      }}
-                    >
-                      {card.description}
-                    </p>
+                        {card.description}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
         {/* Voting Section */}
         <div className="mt-8">
           <div
             style={{
-              backgroundColor: "var(--bg)",
-              border: "1px solid var(--color-green)",
+              backgroundColor: "var(--light-blue)",
+              border: "1px solid var(--dark-teal)",
               borderRadius: 12,
               padding: 12,
             }}
@@ -224,24 +194,30 @@ export default function BlogDetailPage() {
         </div>
 
         {/* Contact CTA Section */}
-        <section className="mt-12 rounded-3xl bg-white border border-slate-200 p-8 md:p-12">
+        <section
+          className="mt-12 rounded-3xl p-8 md:p-12"
+          style={{
+            backgroundColor: "var(--light-pink)",
+            border: "1px solid var(--dark-teal)",
+          }}
+        >
           <h2
             className="text-2xl md:text-3xl font-bold mb-6"
-            style={{ color: "var(--color-font)" }}
+            style={{ color: "var(--black)" }}
           >
             Looking to host a corporate Game Night?
           </h2>
 
-          <p className="text-lg mb-4" style={{ color: "var(--color-font)" }}>
+          <p className="text-lg mb-4" style={{ color: "var(--black)" }}>
             If your company is searching for:
           </p>
 
           <ul className="space-y-3 mb-8">
             <li
               className="flex items-start gap-3"
-              style={{ color: "var(--color-font)" }}
+              style={{ color: "var(--black)" }}
             >
-              <span style={{ color: "var(--color-pink)", fontSize: "1.25rem" }}>
+              <span style={{ color: "var(--dark-teal)", fontSize: "1.25rem" }}>
                 📍
               </span>
               <span>
@@ -249,20 +225,40 @@ export default function BlogDetailPage() {
                 anywhere in India & abroad
               </span>
             </li>
-            <li className="flex items-start gap-3 text-slate-700">
-              <span className="text-pink-500 text-xl">📍</span>
+            <li
+              className="flex items-start gap-3"
+              style={{ color: "var(--black)" }}
+            >
+              <span style={{ color: "var(--dark-teal)", fontSize: "1.25rem" }}>
+                📍
+              </span>
               <span>Team-building experiences</span>
             </li>
-            <li className="flex items-start gap-3 text-slate-700">
-              <span className="text-pink-500 text-xl">📍</span>
+            <li
+              className="flex items-start gap-3"
+              style={{ color: "var(--black)" }}
+            >
+              <span style={{ color: "var(--dark-teal)", fontSize: "1.25rem" }}>
+                📍
+              </span>
               <span>Smart corporate games</span>
             </li>
-            <li className="flex items-start gap-3 text-slate-700">
-              <span className="text-pink-500 text-xl">📍</span>
+            <li
+              className="flex items-start gap-3"
+              style={{ color: "var(--black)" }}
+            >
+              <span style={{ color: "var(--dark-teal)", fontSize: "1.25rem" }}>
+                📍
+              </span>
               <span>Large-group interactive events</span>
             </li>
-            <li className="flex items-start gap-3 text-slate-700">
-              <span className="text-pink-500 text-xl">📍</span>
+            <li
+              className="flex items-start gap-3"
+              style={{ color: "var(--black)" }}
+            >
+              <span style={{ color: "var(--dark-teal)", fontSize: "1.25rem" }}>
+                📍
+              </span>
               <span>Unique corporate workshops</span>
             </li>
           </ul>
@@ -270,15 +266,14 @@ export default function BlogDetailPage() {
           <div
             className="rounded-2xl p-6"
             style={{
-              background: `linear-gradient(90deg, var(--color-green)20%, rgba(0,0,0,0) 100%)`,
-              border: "1px solid var(--color-green)",
+              border: "1px solid var(--dark-teal)",
             }}
           >
             <p
               className="mb-3 flex items-start gap-2"
-              style={{ color: "var(--color-font)" }}
+              style={{ color: "var(--black)" }}
             >
-              <span style={{ color: "var(--color-pink)", fontSize: "1.25rem" }}>
+              <span style={{ color: "var(--dark-teal)", fontSize: "1.25rem" }}>
                 📌
               </span>
               <span>
@@ -289,7 +284,7 @@ export default function BlogDetailPage() {
             <a
               href="mailto:joyjuncture@gmail.com"
               className="text-2xl font-bold transition"
-              style={{ color: "var(--color-green)" }}
+              style={{ color: "var(--dark-teal)" }}
             >
               joyjuncture@gmail.com
             </a>
@@ -301,7 +296,7 @@ export default function BlogDetailPage() {
           <Link
             href="/community/blog"
             className="rounded-2xl p-6 text-white transition text-center"
-            style={{ backgroundColor: "var(--color-green)" }}
+            style={{ backgroundColor: "var(--dark-teal)" }}
           >
             <div className="text-3xl mb-2">←</div>
             <div className="font-bold text-lg">Back to Blog</div>
@@ -309,7 +304,7 @@ export default function BlogDetailPage() {
           <Link
             href="/"
             className="rounded-2xl p-6 text-white transition text-center"
-            style={{ backgroundColor: "var(--color-pink)" }}
+            style={{ backgroundColor: "var(--light-pink)" }}
           >
             <div className="text-3xl mb-2">🏠</div>
             <div className="font-bold text-lg">Back to Home</div>

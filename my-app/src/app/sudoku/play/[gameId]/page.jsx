@@ -66,9 +66,7 @@ export default function PlaySudoku() {
           className="min-h-screen flex items-center justify-center"
           style={{ backgroundColor: "var(--color-bg)" }}
         >
-          <p className="text-lg" style={{ color: "var(--color-font)" }}>
-            Loading…
-          </p>
+          <p className="text-lg text-dark-teal">Loading…</p>
         </div>
         <Footer />
       </>
@@ -78,15 +76,13 @@ export default function PlaySudoku() {
   return (
     <>
       <Navbar />
-      <main
-        className="min-h-screen py-12 px-4 md:px-6 mt-24"
-      >
+      <main className="min-h-screen py-12 px-4 md:px-6 mt-24">
         <div className="max-w-4xl mx-auto">
           {/* Back Button */}
           <button
             onClick={() => router.push("/sudoku")}
             className="mb-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-95"
-            style={{ backgroundColor: "var(--color-font)", color: "white" }}
+            style={{ backgroundColor: "var(--dark-teal)", color: "white" }}
           >
             ← Back to Levels
           </button>
@@ -96,7 +92,7 @@ export default function PlaySudoku() {
             className="rounded-3xl shadow-2xl p-8 md:p-10 border-2"
             style={{
               backgroundColor: "white",
-              borderColor: "var(--color-font)",
+              borderColor: "var(--dark-teal)",
             }}
           >
             <SudokuGrid grid={grid} initial={initial} setGrid={setGrid} />

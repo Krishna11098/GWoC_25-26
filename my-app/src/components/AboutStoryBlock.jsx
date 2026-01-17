@@ -9,27 +9,16 @@ export default function AboutStoryBlock({ title, children, bgColor }) {
       viewport={{ amount: 0.4 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       whileHover={{ rotate: 1, scale: 1.02 }}
-      className="relative max-w-4xl mx-auto rounded-3xl p-10 shadow-2xl"
+      className="relative max-w-4xl mx-auto rounded-3xl p-10 shadow-2xl border-2 border-dark-teal"
       style={{
         backgroundColor: bgColor || "white",
-        border: "1px solid var(--color-font)",
       }}
     >
       {title && (
-        <h3
-          className="text-2xl font-bold mb-4"
-          style={{ color: "var(--color-font)" }}
-        >
-          {title}
-        </h3>
+        <h3 className="text-2xl font-bold mb-4 text-dark-teal">{title}</h3>
       )}
 
-      <p
-        className="text-lg leading-relaxed"
-        style={{ color: "var(--color-font)" }}
-      >
-        {children}
-      </p>
+      <p className="text-lg leading-relaxed text-black">{children}</p>
     </motion.div>
   );
 }

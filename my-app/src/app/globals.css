@@ -46,6 +46,8 @@
   --color-dark-teal: var(--dark-teal);
   --color-light-orange: var(--light-orange);
   --color-black: var(--black);
+  --color-light-pink: var(--light-pink);
+  --color-light-blue: var(--light-blue);
 }
 
 body {
@@ -78,12 +80,7 @@ html {
   color: var(--color-black);
 }
 
-@media (max-width: 768px) {
-  html {
-    /* Increase JUST the height to make pattern less compressed on mobile */
-    background-size: 100% 320px;
-  }
-}
+/* Old mobile background fix removed */
 
 /* Custom Animations */
 @layer components {
@@ -236,4 +233,42 @@ html {
 
 @utility rotate-y-180 {
   transform: rotateY(180deg);
+}
+@utility animate-waveMedium {
+  animation: waveMedium 20s ease-in-out infinite;
+}
+
+@utility animate-waveSlow {
+  animation: waveSlow 30s ease-in-out infinite;
+}
+
+@utility animate-waveFast {
+  animation: waveFast 15s ease-in-out infinite;
+}
+
+@keyframes waveMedium {
+  0%, 100% {
+    transform: translateX(-2%) translateY(-1%);
+  }
+  50% {
+    transform: translateX(0%) translateY(0%);
+  }
+}
+
+@keyframes waveSlow {
+  0%, 100% {
+    transform: translateX(-1%) translateY(-0.5%);
+  }
+  50% {
+    transform: translateX(0%) translateY(0%);
+  }
+}
+
+@keyframes waveFast {
+  0%, 100% {
+    transform: translateX(-3%) translateY(-1.5%);
+  }
+  50% {
+    transform: translateX(0%) translateY(0%);
+  }
 }

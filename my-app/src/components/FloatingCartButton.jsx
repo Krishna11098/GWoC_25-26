@@ -71,12 +71,12 @@ export default function FloatingCartButton() {
         },
         body: JSON.stringify({ action: "update", gameId, quantity: 1 }),
       });
-      
+
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.error || "Failed to add to cart");
       }
-      
+
       setItemCount((c) => c + 1);
       setIsDropping(true);
       setTimeout(() => setIsDropping(false), 500);
@@ -96,10 +96,11 @@ export default function FloatingCartButton() {
       onDragLeave={() => setIsDragOver(false)}
       onDrop={handleDrop}
       style={{
-        backgroundColor: isDragOver ? "var(--color-font)" : "var(--color-font)",
+        backgroundColor: isDragOver ? "var(--dark-teal)" : "var(--dark-teal)",
+        color: "white",
       }}
-      className={`fixed left-6 bottom-6 z-50 flex items-center gap-3 rounded-full px-5 md:px-6 py-3 text-base font-semibold text-bg shadow-xl transition hover:opacity-90
-        ${isDragOver ? "scale-105 ring-4 ring-font/90" : ""}
+      className={`fixed left-6 bottom-6 z-50 flex items-center gap-3 rounded-full px-5 md:px-6 py-3 text-base font-semibold shadow-xl transition hover:opacity-90
+        ${isDragOver ? "scale-105 ring-4 ring-dark-teal/50" : ""}
         ${isDropping ? "animate-[pulse_0.5s_ease-out]" : ""}
         md:right-10 md:top-1/2 md:bottom-auto md:left-auto md:-translate-y-1/2`}
     >

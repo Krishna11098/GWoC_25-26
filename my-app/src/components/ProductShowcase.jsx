@@ -94,12 +94,18 @@ export default function ProductShowcase({ product, gameId }) {
 
   if (!product) {
     return (
-      <div className="bg-black text-white min-h-screen flex items-center justify-center px-6">
+      <div
+        className="min-h-screen flex items-center justify-center px-6 py-12 mt-32"
+        style={{ backgroundColor: "var(--light-blue)" }}
+      >
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-white mb-4">
+          <h1
+            className="text-3xl font-bold mb-4"
+            style={{ color: "var(--dark-teal)" }}
+          >
             Product not found
           </h1>
-          <p className="text-gray-400">
+          <p className="text-lg" style={{ color: "var(--black)" }}>
             The game you&apos;re looking for does not exist.
           </p>
         </div>
@@ -127,7 +133,10 @@ export default function ProductShowcase({ product, gameId }) {
 
   return (
     <div
-      style={{ backgroundColor: "var(--bg)", color: "var(--color-font)" }}
+      style={{
+        backgroundColor: "var(--light-blue)",
+        color: "var(--dark-teal)",
+      }}
       className="min-h-screen pt-24"
     >
       {/* Section 1: Hero (Image Left, Content Right) */}
@@ -150,14 +159,14 @@ export default function ProductShowcase({ product, gameId }) {
           {/* Right: Content */}
           <div>
             <h1
-              className="text-5xl md:text-6xl font-black mb-4"
-              style={{ color: "var(--color-font)" }}
+              className="text-4xl md:text-5xl lg:text-6xl font-black mb-4"
+              style={{ color: "var(--dark-teal)" }}
             >
               {product.name}
             </h1>
             <p
-              className="text-2xl font-semibold"
-              style={{ color: "var(--color-font)" }}
+              className="text-xl md:text-2xl font-semibold"
+              style={{ color: "var(--dark-teal)" }}
             >
               {product.category}
             </p>
@@ -165,34 +174,40 @@ export default function ProductShowcase({ product, gameId }) {
               {product.regularPrice && product.regularPrice > product.price ? (
                 <>
                   <span
-                    className="text-xl line-through"
+                    className="text-lg md:text-xl line-through"
                     style={{ color: "rgba(0,0,0,0.5)" }}
                   >
                     Rs. {product.regularPrice?.toFixed(2)}
                   </span>
                   <span
-                    className="text-3xl font-bold"
-                    style={{ color: "black" }}
+                    className="text-2xl md:text-3xl font-bold"
+                    style={{ color: "var(--dark-teal)" }}
                   >
                     Rs. {product.price?.toFixed(2)}
                   </span>
                   <span
                     className="text-sm px-3 py-1 rounded-full font-semibold"
                     style={{
-                      backgroundColor: "var(--color-pink)",
-                      color: "white",
+                      backgroundColor: "var(--pink)",
+                      color: "var(--dark-teal)",
                     }}
                   >
                     Sale
                   </span>
                 </>
               ) : (
-                <span className="text-3xl font-bold" style={{ color: "black" }}>
+                <span
+                  className="text-2xl md:text-3xl font-bold"
+                  style={{ color: "var(--dark-teal)" }}
+                >
                   Rs. {product.price?.toFixed(2)}
                 </span>
               )}
             </div>
-            <p className="mt-2 text-sm" style={{ color: "var(--color-font)" }}>
+            <p
+              className="mt-2 text-sm md:text-base"
+              style={{ color: "var(--color-font)" }}
+            >
               Players: {product.numberOfPlayers || "N/A"} • Age:{" "}
               {product.ageGroup || "N/A"}
             </p>
@@ -214,13 +229,13 @@ export default function ProductShowcase({ product, gameId }) {
           <div>
             <h2
               className="text-4xl font-black mb-6"
-              style={{ color: "var(--color-font)" }}
+              style={{ color: "var(--dark-teal)" }}
             >
               About This Game
             </h2>
             <div
-              className="space-y-4 text-lg leading-relaxed"
-              style={{ color: "var(--color-font)" }}
+              className="space-y-4 text-base md:text-lg leading-relaxed"
+              style={{ color: "var(--black)" }}
             >
               {product.description && <p>{product.description}</p>}
               {product.longDescription && (
@@ -267,7 +282,7 @@ export default function ProductShowcase({ product, gameId }) {
 
           {/* Right: Content */}
           <div>
-            <h2 className="text-4xl font-black text-gray-900 mb-6">
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6">
               Key Features
             </h2>
 
@@ -276,19 +291,22 @@ export default function ProductShowcase({ product, gameId }) {
                 {product.keyFeatures.map((feature, idx) => (
                   <div key={idx} className="flex gap-4">
                     <div
-                      className="flex-shrink-0 text-2xl"
-                      style={{ color: "var(--color-green)" }}
+                      className="flex-shrink-0 text-xl md:text-2xl"
+                      style={{ color: "var(--color-black)" }}
                     >
                       ✓
                     </div>
                     <div>
                       <p
-                        className="font-semibold mb-1"
-                        style={{ color: "var(--color-font)" }}
+                        className="font-semibold mb-1 text-base md:text-lg"
+                        style={{ color: "var(--dark-teal)" }}
                       >
                         {feature.title}
                       </p>
-                      <p style={{ color: "var(--color-font)" }}>
+                      <p
+                        className="text-sm md:text-base"
+                        style={{ color: "var(--black)" }}
+                      >
                         {feature.description}
                       </p>
                     </div>
@@ -393,29 +411,67 @@ export default function ProductShowcase({ product, gameId }) {
       <section
         ref={(el) => el && sectionRefs.current.push(el)}
         className="py-20 px-6 md:px-12"
+        style={{ backgroundColor: "var(--bg)" }}
       >
         <div className="mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left: Content */}
           <div>
-            <h2 className="text-4xl font-black text-gray-900 mb-6">
+            <h2
+              className="text-4xl font-black mb-6"
+              style={{ color: "var(--dark-teal)" }}
+            >
               Players & Age
             </h2>
             <div className="grid gap-3 md:grid-cols-2">
-              <div className="flex items-center gap-3 bg-white/90 border border-white/60 px-5 py-3 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] max-w-xs w-full">
-                <Users className="text-gray-900 h-5 w-5" />
+              <div
+                className="flex items-center gap-3 border-2 px-5 py-3 rounded-xl shadow-md"
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.9)",
+                  borderColor: "var(--dark-teal)",
+                }}
+              >
+                <Users
+                  className="h-5 w-5"
+                  style={{ color: "var(--dark-teal)" }}
+                />
                 <div>
-                  <p className="text-sm text-gray-600">Players</p>
-                  <p className="text-xl font-bold text-gray-900">
+                  <p
+                    className="text-xs md:text-sm"
+                    style={{ color: "var(--black)" }}
+                  >
+                    Players
+                  </p>
+                  <p
+                    className="text-lg md:text-xl font-bold"
+                    style={{ color: "var(--dark-teal)" }}
+                  >
                     {product.numberOfPlayers || "N/A"}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 bg-white/90 border border-white/60 px-5 py-3 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] max-w-xs w-full">
-                <Zap className="text-gray-900 h-5 w-5" />
+              <div
+                className="flex items-center gap-3 border-2 px-5 py-3 rounded-xl shadow-md"
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.9)",
+                  borderColor: "var(--dark-teal)",
+                }}
+              >
+                <Zap
+                  className="h-5 w-5"
+                  style={{ color: "var(--dark-teal)" }}
+                />
                 <div>
-                  <p className="text-sm text-gray-600">Age Group</p>
-                  <p className="text-xl font-bold text-gray-900">
+                  <p
+                    className="text-xs md:text-sm"
+                    style={{ color: "var(--black)" }}
+                  >
+                    Age Group
+                  </p>
+                  <p
+                    className="text-lg md:text-xl font-bold"
+                    style={{ color: "var(--dark-teal)" }}
+                  >
                     {product.ageGroup || "N/A"}
                   </p>
                 </div>
@@ -440,14 +496,14 @@ export default function ProductShowcase({ product, gameId }) {
         <section
           ref={howToSectionRef}
           className="py-20 px-6 md:px-12 overflow-hidden"
-          style={{ backgroundColor: "var(--bg)" }}
+          style={{ backgroundColor: "var(--light-blue)" }}
         >
           <div className="mx-auto max-w-7xl">
             {/* Title Badge */}
-            <div className="flex justify-center mb-12">
+            <div className="flex justify-center mb-12 mt-9">
               <div
                 className="px-12 py-4 clip-path-hexagon relative"
-                style={{ backgroundColor: "var(--color-font)", color: "white" }}
+                style={{ backgroundColor: "var(--dark-teal)", color: "white" }}
               >
                 <h2 className="text-4xl md:text-5xl font-black tracking-wider">
                   HOW TO PLAY
@@ -459,10 +515,10 @@ export default function ProductShowcase({ product, gameId }) {
             <div className="relative flex flex-col lg:flex-row items-stretch justify-center gap-0">
               {product.howToPlay.map((step, idx) => {
                 const colors = [
-                  "var(--color-pink)", // Step 1
-                  "var(--color-green)", // Step 2
-                  "var(--color-orange)", // Step 3
-                  "var(--color-pink)", // Step 4
+                  "var(--pink)", // Step 1
+                  "var(--green)", // Step 2
+                  "var(--orange)", // Step 3
+                  "var(--pink)", // Step 4
                 ];
 
                 return (
@@ -487,7 +543,7 @@ export default function ProductShowcase({ product, gameId }) {
                     <div className="bg-white rounded-full px-6 py-2 mb-4 shadow-lg">
                       <span
                         className="text-base md:text-lg font-black tracking-wide"
-                        style={{ color: "var(--color-font)" }}
+                        style={{ color: "var(--dark-teal)" }}
                       >
                         STEP {idx + 1}
                       </span>
@@ -532,17 +588,20 @@ export default function ProductShowcase({ product, gameId }) {
         className="py-20 px-6 md:px-12"
         style={{
           backgroundColor: "var(--bg)",
-          borderTop: "1px solid rgba(0,0,0,0.06)",
+          borderTop: "1px solid rgba(44,66,88,0.1)",
         }}
       >
         <div className="mx-auto max-w-4xl text-center">
           <h2
-            className="text-4xl font-black mb-6"
-            style={{ color: "var(--color-font)" }}
+            className="text-3xl md:text-4xl font-black mb-6"
+            style={{ color: "var(--dark-teal)" }}
           >
             Ready to bring the fun home?
           </h2>
-          <p className="text-xl mb-8" style={{ color: "var(--color-font)" }}>
+          <p
+            className="text-lg md:text-xl mb-8"
+            style={{ color: "var(--black)" }}
+          >
             Unforgettable nights start here.
           </p>
           <AddToCartButton gameId={gameId} />

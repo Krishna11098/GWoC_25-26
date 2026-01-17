@@ -163,8 +163,11 @@ export default function AdminRiddlesPage() {
       <div className="p-8">
         <div className="max-w-6xl mx-auto">
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading riddles...</p>
+            <div
+              className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto"
+              style={{ borderBottomColor: "var(--dark-teal)" }}
+            ></div>
+            <p className="mt-4 text-dark-teal">Loading riddles...</p>
           </div>
         </div>
       </div>
@@ -177,21 +180,30 @@ export default function AdminRiddlesPage() {
         <div className="mb-8">
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-dark-teal">
                 Riddle Management
               </h1>
-              <p className="text-gray-600 mt-1">Manage all riddles from here</p>
+              <p className="text-dark-teal mt-1">
+                Manage all riddles from here
+              </p>
             </div>
             <div className="flex gap-3">
               <button
                 onClick={handleAddRandomRiddle}
-                className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-medium flex items-center gap-2"
+                className="px-4 py-2 rounded-lg text-white font-medium flex items-center gap-2 hover:scale-105 transition-transform"
+                style={{
+                  backgroundColor: "var(--light-orange)",
+                  color: "var(--dark-teal)",
+                }}
               >
                 🎲 Add Random Riddle
               </button>
               <button
                 onClick={() => setShowCreateModal(true)}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium flex items-center gap-2"
+                className="px-4 py-2 rounded-lg text-white font-medium flex items-center gap-2 hover:scale-105 transition-transform"
+                style={{
+                  backgroundColor: "var(--dark-teal)",
+                }}
               >
                 ➕ Create New Riddle
               </button>
@@ -200,12 +212,19 @@ export default function AdminRiddlesPage() {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <div
+            className="mb-6 p-4 rounded-lg"
+            style={{
+              backgroundColor: "var(--light-orange)",
+              color: "var(--dark-teal)",
+            }}
+          >
             <div className="flex items-center">
               <svg
-                className="w-5 h-5 text-red-600 mr-2"
+                className="w-5 h-5 mr-2"
                 fill="currentColor"
                 viewBox="0 0 20 20"
+                style={{ color: "var(--dark-teal)" }}
               >
                 <path
                   fillRule="evenodd"
@@ -213,38 +232,42 @@ export default function AdminRiddlesPage() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="text-red-600 font-medium">{error}</span>
+              <span className="font-medium">{error}</span>
             </div>
           </div>
         )}
 
         {/* Visible Riddles */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          <h2 className="text-xl font-semibold text-dark-teal mb-4">
             Visible to Users ({visibleRiddles.length})
           </h2>
           <div className="grid gap-4">
             {visibleRiddles.map((riddle) => (
               <div
                 key={riddle.id}
-                className="bg-white p-6 rounded-lg shadow-sm border-2 border-green-200"
+                className="bg-white p-6 rounded-lg shadow-sm border-2 border-dark-teal"
               >
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
-                    <p className="text-lg font-medium text-gray-900 mb-2">
+                    <p className="text-lg font-medium text-dark-teal mb-2">
                       {riddle.question}
                     </p>
-                    <p className="font-semibold text-gray-700 mb-2">
+                    <p className="font-semibold text-dark-teal mb-2">
                       Answer: {riddle.solution}
                     </p>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-dark-teal">
                       Coins: {riddle.coins} | Riddle #{riddle.riddleNo || "N/A"}
                     </p>
                   </div>
                   <div className="flex gap-2 ml-4">
                     <button
                       onClick={() => openEditModal(riddle)}
-                      className="px-3 py-1 bg-blue-50 text-blue-700 rounded hover:bg-blue-100 text-sm"
+                      className="px-3 py-1 rounded hover:scale-105 transition-transform text-sm"
+                      style={{
+                        backgroundColor: "var(--light-blue)",
+                        color: "var(--dark-teal)",
+                      }}
                     >
                       Edit
                     </button>
@@ -255,13 +278,21 @@ export default function AdminRiddlesPage() {
                           riddle.isVisibleToUser
                         )
                       }
-                      className="px-3 py-1 bg-yellow-50 text-yellow-700 rounded hover:bg-yellow-100 text-sm"
+                      className="px-3 py-1 rounded hover:scale-105 transition-transform text-sm"
+                      style={{
+                        backgroundColor: "var(--light-orange)",
+                        color: "var(--dark-teal)",
+                      }}
                     >
                       Hide
                     </button>
                     <button
                       onClick={() => handleDelete(riddle.id)}
-                      className="px-3 py-1 bg-red-50 text-red-700 rounded hover:bg-red-100 text-sm"
+                      className="px-3 py-1 rounded hover:scale-105 transition-transform text-sm"
+                      style={{
+                        backgroundColor: "var(--light-pink)",
+                        color: "var(--dark-teal)",
+                      }}
                     >
                       Delete
                     </button>
@@ -270,7 +301,7 @@ export default function AdminRiddlesPage() {
               </div>
             ))}
             {visibleRiddles.length === 0 && (
-              <p className="text-center py-8 text-gray-500">
+              <p className="text-center py-8 text-dark-teal">
                 No visible riddles yet
               </p>
             )}
@@ -279,31 +310,35 @@ export default function AdminRiddlesPage() {
 
         {/* Invisible Riddles */}
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          <h2 className="text-xl font-semibold text-dark-teal mb-4">
             Hidden Riddles ({invisibleRiddles.length})
           </h2>
           <div className="grid gap-4">
             {invisibleRiddles.map((riddle) => (
               <div
                 key={riddle.id}
-                className="bg-white p-6 rounded-lg shadow-sm border-2 border-orange-200"
+                className="bg-white p-6 rounded-lg shadow-sm border-2 border-dark-teal"
               >
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
-                    <p className="text-lg font-medium text-gray-900 mb-2">
+                    <p className="text-lg font-medium text-dark-teal mb-2">
                       {riddle.question}
                     </p>
-                    <p className="text-green-600 font-semibold mb-2">
+                    <p className="font-semibold text-dark-teal mb-2">
                       Answer: {riddle.solution}
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-dark-teal">
                       Coins: {riddle.coins} | Riddle #{riddle.riddleNo || "N/A"}
                     </p>
                   </div>
                   <div className="flex gap-2 ml-4">
                     <button
                       onClick={() => openEditModal(riddle)}
-                      className="px-3 py-1 bg-blue-50 text-blue-700 rounded hover:bg-blue-100 text-sm"
+                      className="px-3 py-1 rounded hover:scale-105 transition-transform text-sm"
+                      style={{
+                        backgroundColor: "var(--light-blue)",
+                        color: "var(--dark-teal)",
+                      }}
                     >
                       Edit
                     </button>
@@ -314,13 +349,21 @@ export default function AdminRiddlesPage() {
                           riddle.isVisibleToUser
                         )
                       }
-                      className="px-3 py-1 bg-green-50 text-green-700 rounded hover:bg-green-100 text-sm"
+                      className="px-3 py-1 rounded hover:scale-105 transition-transform text-sm"
+                      style={{
+                        backgroundColor: "var(--light-orange)",
+                        color: "var(--dark-teal)",
+                      }}
                     >
                       Show
                     </button>
                     <button
                       onClick={() => handleDelete(riddle.id)}
-                      className="px-3 py-1 bg-red-50 text-red-700 rounded hover:bg-red-100 text-sm"
+                      className="px-3 py-1 rounded hover:scale-105 transition-transform text-sm"
+                      style={{
+                        backgroundColor: "var(--light-pink)",
+                        color: "var(--dark-teal)",
+                      }}
                     >
                       Delete
                     </button>
@@ -335,13 +378,13 @@ export default function AdminRiddlesPage() {
       {/* Create Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-8 max-w-2xl w-full mx-4 shadow-xl">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900">
+          <div className="bg-white rounded-lg p-8 max-w-2xl w-full mx-4 shadow-xl border-2 border-dark-teal">
+            <h2 className="text-2xl font-bold mb-6 text-dark-teal">
               Create New Riddle
             </h2>
             <form onSubmit={handleCreateRiddle}>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-dark-teal mb-2">
                   Question
                 </label>
                 <textarea
@@ -349,13 +392,13 @@ export default function AdminRiddlesPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, question: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border-2 border-dark-teal rounded-lg focus:ring-2 focus:ring-dark-teal focus:border-dark-teal"
                   rows="4"
                   required
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-dark-teal mb-2">
                   Solution (Answer)
                 </label>
                 <input
@@ -364,12 +407,12 @@ export default function AdminRiddlesPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, solution: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border-2 border-dark-teal rounded-lg focus:ring-2 focus:ring-dark-teal focus:border-dark-teal"
                   required
                 />
               </div>
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-dark-teal mb-2">
                   Coins Reward
                 </label>
                 <input
@@ -381,7 +424,7 @@ export default function AdminRiddlesPage() {
                       coins: parseInt(e.target.value),
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border-2 border-dark-teal rounded-lg focus:ring-2 focus:ring-dark-teal focus:border-dark-teal"
                   min="1"
                   required
                 />
@@ -393,13 +436,14 @@ export default function AdminRiddlesPage() {
                     setShowCreateModal(false);
                     setFormData({ question: "", solution: "", coins: 20 });
                   }}
-                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="px-4 py-2 border-2 border-dark-teal text-dark-teal rounded-lg hover:bg-light-blue transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  className="px-4 py-2 text-white rounded-lg hover:scale-105 transition-transform"
+                  style={{ backgroundColor: "var(--dark-teal)" }}
                 >
                   Create Riddle
                 </button>
@@ -412,13 +456,13 @@ export default function AdminRiddlesPage() {
       {/* Edit Modal */}
       {showEditModal && editingRiddle && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-8 max-w-2xl w-full mx-4 shadow-xl">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900">
+          <div className="bg-white rounded-lg p-8 max-w-2xl w-full mx-4 shadow-xl border-2 border-dark-teal">
+            <h2 className="text-2xl font-bold mb-6 text-dark-teal">
               Edit Riddle
             </h2>
             <form onSubmit={handleUpdateRiddle}>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-dark-teal mb-2">
                   Question
                 </label>
                 <textarea
@@ -426,13 +470,13 @@ export default function AdminRiddlesPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, question: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border-2 border-dark-teal rounded-lg focus:ring-2 focus:ring-dark-teal focus:border-dark-teal"
                   rows="4"
                   required
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-dark-teal mb-2">
                   Solution (Answer)
                 </label>
                 <input
@@ -441,12 +485,12 @@ export default function AdminRiddlesPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, solution: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border-2 border-dark-teal rounded-lg focus:ring-2 focus:ring-dark-teal focus:border-dark-teal"
                   required
                 />
               </div>
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-dark-teal mb-2">
                   Coins Reward
                 </label>
                 <input
@@ -458,7 +502,7 @@ export default function AdminRiddlesPage() {
                       coins: parseInt(e.target.value),
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border-2 border-dark-teal rounded-lg focus:ring-2 focus:ring-dark-teal focus:border-dark-teal"
                   min="1"
                   required
                 />
@@ -471,13 +515,14 @@ export default function AdminRiddlesPage() {
                     setEditingRiddle(null);
                     setFormData({ question: "", solution: "", coins: 20 });
                   }}
-                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="px-4 py-2 border-2 border-dark-teal text-dark-teal rounded-lg hover:bg-light-blue transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  className="px-4 py-2 text-white rounded-lg hover:scale-105 transition-transform"
+                  style={{ backgroundColor: "var(--dark-teal)" }}
                 >
                   Update Riddle
                 </button>

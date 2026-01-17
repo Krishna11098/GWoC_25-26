@@ -85,8 +85,8 @@ const Navbar = () => {
   };
 
   const linkClasses = (href) =>
-    `relative text-lg font-light tracking-wide text-white hover:text-gray-900 transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:bg-gray-900 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
-      isActive(href) ? "text-gray-900 after:scale-x-100" : ""
+    `relative text-lg font-light tracking-wide text-white hover:text-light-blue transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-[1px] after:w-full after:origin-left after:scale-x-0 after:bg-light-blue after:transition-transform after:duration-300 hover:after:scale-x-100 ${
+      isActive(href) ? "text-light-blue after:scale-x-100" : ""
     }`;
 
   return (
@@ -253,6 +253,16 @@ const Navbar = () => {
                     >
                       Movies
                     </Link>
+                    <Link
+                      href="/games/2048"
+                      onClick={() => {
+                        setPlayDropdownOpen(false);
+                        setPlayDropdownClicked(false);
+                      }}
+                      className="block px-4 py-2 text-lg text-gray-800 hover:bg-slate-100"
+                    >
+                      2048
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -306,7 +316,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 bg-font text-bg z-40 transition-transform duration-500 flex flex-col items-center justify-center overflow-y-auto ${
+        className={`fixed inset-0 bg-dark-teal text-white z-40 transition-transform duration-500 flex flex-col items-center justify-center overflow-y-auto ${
           mobileOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -401,6 +411,13 @@ const Navbar = () => {
                 onClick={() => setMobileOpen(false)}
               >
                 Movies
+              </Link>
+              <Link
+                href="/games/2048"
+                className="text-3xl opacity-60"
+                onClick={() => setMobileOpen(false)}
+              >
+                2048
               </Link>
             </div>
           </div>
