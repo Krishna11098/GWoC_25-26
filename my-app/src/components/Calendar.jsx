@@ -67,7 +67,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
             `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
           const timeString = `${formatTime(
             startHours,
-            startMinutes
+            startMinutes,
           )} - ${formatTime(endHours, endMinutes)}`;
 
           return {
@@ -85,7 +85,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
           };
         })
         .filter(Boolean),
-    [externalEvents]
+    [externalEvents],
   );
 
   const daysGrid = useMemo(() => {
@@ -224,7 +224,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
       />
       <div className="relative z-10">
         {/* Header background */}
-        <div className="rounded-t-3xl px-2 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 shadow-lg relative overflow-hidden text-[var(--light-pink)] bg-[var(--dark-teal)]">
+        <div className="rounded-t-3xl px-2 sm:px-3 md:px-4 py-2 sm:py-3 md:py-4 shadow-lg relative overflow-hidden text-[var(--light-pink)] bg-[var(--dark-teal)]">
           <div className="relative flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Navigation buttons */}
             <div className="flex items-center gap-2 sm:gap-3">
@@ -247,7 +247,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
             </div>
 
             {/* Month/Year Title */}
-            <h2 className="text-lg sm:text-3xl md:text-4xl font-bold text-center text-[var(--light-pink)]">
+            <h2 className="text-base sm:text-xl md:text-2xl font-bold text-center text-[var(--light-pink)]">
               {viewMode === "week"
                 ? `${
                     MONTHS[getWeekDates[0].getMonth()]
@@ -284,7 +284,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
         {/* Calendar Grid - Only show month view for now */}
         {viewMode === "month" && (
           <div
-            className="rounded-b-3xl px-2 sm:px-3 md:px-6 py-4 sm:py-6 md:py-8 shadow-xl backdrop-blur-sm"
+            className="rounded-b-3xl px-2 sm:px-3 md:px-4 py-2 sm:py-3 md:py-4 shadow-xl backdrop-blur-sm"
             style={{ backgroundColor: "white" }}
           >
             {/* Weekday headers */}
@@ -292,7 +292,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
               {WEEKDAYS.map((wd) => (
                 <div
                   key={wd}
-                  className="text-center text-xs sm:text-sm font-semibold uppercase tracking-widest py-2 sm:py-3 text-white"
+                  className="text-center text-xs sm:text-xs font-semibold uppercase tracking-widest py-1 sm:py-2 text-white"
                   style={{ backgroundColor: "var(--color-dark-teal)" }}
                 >
                   {wd}
@@ -336,17 +336,17 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                           isToday
                             ? "text-black shadow-sm"
                             : isNextMonth
-                            ? "opacity-40 blur-[0.2px] cursor-default"
-                            : isHovered
-                            ? "text-dark-teal"
-                            : "text-dark-teal hover:bg-gray-100"
+                              ? "opacity-40 blur-[0.2px] cursor-default"
+                              : isHovered
+                                ? "text-dark-teal"
+                                : "text-dark-teal hover:bg-gray-100"
                         }`}
                         style={{
                           backgroundColor: isToday
                             ? "var(--color-light-blue)"
                             : isHovered
-                            ? "var(--color-light-pink)"
-                            : "white",
+                              ? "var(--color-light-pink)"
+                              : "white",
                         }}
                       >
                         <span className="text-lg sm:text-2xl font-bold leading-tight mb-0.5 sm:mb-1">

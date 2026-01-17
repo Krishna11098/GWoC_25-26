@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SoftWaveBackground from "@/components/SoftWaveBackground";
 import {
   Cake,
   Building2,
@@ -17,7 +18,7 @@ import {
   Sparkles,
   Mail,
   Phone,
-  MessageCircle
+  MessageCircle,
 } from "lucide-react";
 
 const CATEGORIES = [
@@ -78,9 +79,9 @@ export default function ExperiencesLanding() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-br from-[#f5f5f0] to-white">
+      <main className="min-h-screen relative">
+        <SoftWaveBackground height="400px" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
-
           {/* Hero Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -88,18 +89,50 @@ export default function ExperiencesLanding() {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <h1 className="text-6xl md:text-8xl font-bold mb-6">
-              <span className="text-gray-800">Our</span>{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--dark-teal)] to-[var(--green)]">
-                Experiences
-              </span>
-            </h1>
-            <div className="flex justify-center mb-6">
-              <div className="h-2 w-24 bg-gradient-to-r from-[var(--orange)] to-[var(--pink)] rounded-full"></div>
-            </div>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Curated live experiences, games and engagement formats designed to create unforgettable moments
-            </p>
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 10,
+              }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                delay: 0.2,
+                ease: "easeOut",
+                type: "spring",
+                stiffness: 100,
+                damping: 15,
+              }}
+              className="inline-flex flex-col items-center gap-2"
+            >
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
+                <span style={{ color: "var(--black)" }}>Explore</span>{" "}
+                <span
+                  className="relative inline-block drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)]"
+                  style={{ color: "var(--dark-teal)" }}
+                >
+                  Experiences
+                </span>
+              </h1>
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{ width: "80px" }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+                className="h-2 rounded-full mt-6 shadow-md"
+                style={{ backgroundColor: "var(--dark-teal)" }}
+              />
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="mt-8 text-lg md:text-xl font-medium"
+              style={{ color: "var(--dark-teal)" }}
+            >
+              Curated live experiences, games and engagement formats designed to
+              create unforgettable moments
+            </motion.p>
           </motion.div>
 
           {/* Categories Grid */}
@@ -110,19 +143,37 @@ export default function ExperiencesLanding() {
               transition={{ delay: 0.2 }}
               className="flex items-center justify-between mb-12"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-800">
-                Explore by Theme
-              </h2>
-              <Link
-                href="/experiences/events"
-                className="group flex items-center gap-2 text-lg font-semibold text-[var(--dark-teal)] hover:text-[var(--green)] transition-colors"
+              <motion.h2
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="text-3xl md:text-4xl font-bold"
+                style={{ color: "var(--dark-teal)" }}
               >
-                See all
-                <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
-              </Link>
+                Explore by Theme
+              </motion.h2>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+              >
+                <Link
+                  href="/experiences/events"
+                  className="group flex items-center gap-2 text-lg font-semibold hover:opacity-80 transition-opacity"
+                  style={{ color: "var(--dark-teal)" }}
+                >
+                  See all
+                  <ArrowRight
+                    className="group-hover:translate-x-1 transition-transform"
+                    size={20}
+                  />
+                </Link>
+              </motion.div>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
               {CATEGORIES.map((category, index) => {
                 const IconComponent = category.icon;
 
@@ -139,40 +190,59 @@ export default function ExperiencesLanding() {
                       href={`/experiences/events?category=${category.id}`}
                       className="block group"
                     >
-                      <div className={`
-                        relative overflow-hidden rounded-3xl bg-white border-2 border-gray-200
-                        shadow-lg hover:shadow-2xl transition-all duration-500 h-full
-                        ${hoveredCard === category.id ? 'scale-105 border-[var(--dark-teal)]' : ''}
-                      `}>
-                        {/* Gradient Background */}
-                        <div className={`
-                          absolute inset-0 bg-gradient-to-br ${category.bgColor} opacity-10
-                          group-hover:opacity-20 transition-opacity duration-500
-                        `}></div>
-
+                      <div
+                        className={`
+                        relative overflow-hidden rounded-3xl border-2
+                        shadow-lg hover:shadow-2xl transition-all duration-500 h-80 w-full flex flex-col
+                        ${hoveredCard === category.id ? "scale-105" : ""}
+                      `}
+                        style={{
+                          backgroundColor: [
+                            "var(--light-blue)",
+                            "var(--light-orange)",
+                            "var(--light-pink)",
+                          ][index % 3],
+                          borderColor:
+                            hoveredCard === category.id
+                              ? "var(--dark-teal)"
+                              : "transparent",
+                        }}
+                      >
                         {/* Content */}
-                        <div className="relative p-8 flex flex-col h-full min-h-[280px]">
+                        <div className="relative p-6 flex flex-col h-full justify-between">
                           {/* Icon */}
-                          <div className={`
-                            w-20 h-20 rounded-2xl bg-gradient-to-br ${category.bgColor}
-                            flex items-center justify-center mb-6 shadow-lg
+                          <div
+                            className={`
+                            w-16 h-16 rounded-2xl
+                            flex items-center justify-center mb-4 shadow-lg
                             group-hover:scale-110 transition-transform duration-500
-                          `}>
-                            <IconComponent className="text-white" size={36} />
+                          `}
+                            style={{ backgroundColor: "var(--dark-teal)" }}
+                          >
+                            <IconComponent className="text-white" size={28} />
                           </div>
 
                           {/* Title */}
-                          <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-[var(--dark-teal)] transition-colors">
+                          <h3
+                            className="text-xl font-bold mb-2 transition-colors"
+                            style={{ color: "var(--dark-teal)" }}
+                          >
                             {category.label}
                           </h3>
 
                           {/* Description */}
-                          <p className="text-gray-600 leading-relaxed mb-6 flex-1">
+                          <p
+                            className="text-lg leading-snug flex-1"
+                            style={{ color: "var(--font)" }}
+                          >
                             {category.description}
                           </p>
 
                           {/* Arrow */}
-                          <div className="flex items-center text-[var(--dark-teal)] font-semibold group-hover:gap-3 gap-2 transition-all">
+                          <div
+                            className="flex items-center font-semibold group-hover:gap-3 gap-2 transition-all"
+                            style={{ color: "var(--dark-teal)" }}
+                          >
                             <span>Explore</span>
                             <ArrowRight
                               className="group-hover:translate-x-2 transition-transform"
@@ -180,13 +250,6 @@ export default function ExperiencesLanding() {
                             />
                           </div>
                         </div>
-
-                        {/* Decorative corner */}
-                        <div className={`
-                          absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${category.bgColor}
-                          opacity-5 rounded-bl-full transform translate-x-16 -translate-y-16
-                          group-hover:translate-x-12 group-hover:-translate-y-12 transition-transform duration-500
-                        `}></div>
                       </div>
                     </Link>
                   </motion.div>
@@ -198,64 +261,123 @@ export default function ExperiencesLanding() {
           {/* Custom Experiences CTA */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--dark-teal)] to-[var(--green)] p-12 md:p-16 shadow-2xl"
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="relative overflow-hidden rounded-3xl p-12 md:p-16 shadow-2xl"
+            style={{
+              backgroundColor: "var(--bg)",
+              border: "2px solid var(--light-blue)",
+            }}
           >
             {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-32 translate-x-32"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-24 -translate-x-24"></div>
+            <div
+              className="absolute top-0 right-0 w-64 h-64 rounded-full -translate-y-32 translate-x-32"
+              style={{ backgroundColor: "var(--light-orange)", opacity: 0.1 }}
+            ></div>
+            <div
+              className="absolute bottom-0 left-0 w-48 h-48 rounded-full translate-y-24 -translate-x-24"
+              style={{ backgroundColor: "var(--light-pink)", opacity: 0.1 }}
+            ></div>
 
             <div className="relative z-10">
               <div className="flex items-start gap-6 mb-8">
-                <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: "var(--dark-teal)" }}
+                >
                   <Sparkles className="text-white" size={32} />
                 </div>
                 <div>
-                  <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                  <h2
+                    className="text-4xl md:text-5xl font-bold mb-4"
+                    style={{ color: "var(--dark-teal)" }}
+                  >
                     Want to Create Custom Experiences?
                   </h2>
-                  <p className="text-xl text-white/90 leading-relaxed">
-                    Personalized, beautiful moments tailored to your vision with JoyJuncture.
+                  <p
+                    className="text-xl leading-relaxed"
+                    style={{ color: "var(--font)" }}
+                  >
+                    Personalized, beautiful moments tailored to your vision with
+                    JoyJuncture.
                   </p>
                 </div>
               </div>
 
-              <p className="text-lg text-white/80 mb-10 leading-relaxed max-w-4xl">
-                Whether it's a private celebration, corporate team-building, wedding, or a unique gathering,
-                our expert team designs unforgettable moments. Contact us to bring your vision to life with
-                our curated experiences, games, and entertainment.
+              <p
+                className="text-lg mb-10 leading-relaxed max-w-4xl"
+                style={{ color: "var(--font)" }}
+              >
+                Whether it's a private celebration, corporate team-building,
+                wedding, or a unique gathering, our expert team designs
+                unforgettable moments. Contact us to bring your vision to life
+                with our curated experiences, games, and entertainment.
               </p>
 
               <div className="flex flex-wrap gap-4">
-                <a
+                <motion.a
                   href="mailto:contact@joyjuncture.com"
-                  className="group px-8 py-4 bg-white text-[var(--dark-teal)] rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-3"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  className="group px-8 py-4 rounded-xl font-bold hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-3"
+                  style={{
+                    backgroundColor: "var(--dark-teal)",
+                    color: "white",
+                  }}
                 >
                   <Mail size={20} />
                   Email Us
-                  <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
-                </a>
-                <a
+                  <ArrowRight
+                    className="group-hover:translate-x-1 transition-transform"
+                    size={18}
+                  />
+                </motion.a>
+                <motion.a
                   href="tel:+91-XXXXXXXXXX"
-                  className="group px-8 py-4 bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 rounded-xl font-bold hover:bg-white/20 transition-all duration-300 flex items-center gap-3"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3, duration: 0.6 }}
+                  className="group px-8 py-4 border-2 rounded-xl font-bold hover:opacity-90 transition-all duration-300 flex items-center gap-3"
+                  style={{
+                    borderColor: "var(--light-blue)",
+                    backgroundColor: "transparent",
+                    color: "var(--dark-teal)",
+                  }}
                 >
                   <Phone size={20} />
                   Call Us
-                  <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
-                </a>
-                <a
+                  <ArrowRight
+                    className="group-hover:translate-x-1 transition-transform"
+                    size={18}
+                  />
+                </motion.a>
+                <motion.a
                   href="/contact"
-                  className="group px-8 py-4 bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 rounded-xl font-bold hover:bg-white/20 transition-all duration-300 flex items-center gap-3"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4, duration: 0.6 }}
+                  className="group px-8 py-4 border-2 rounded-xl font-bold hover:opacity-90 transition-all duration-300 flex items-center gap-3"
+                  style={{
+                    borderColor: "var(--light-orange)",
+                    backgroundColor: "transparent",
+                    color: "var(--dark-teal)",
+                  }}
                 >
                   <MessageCircle size={20} />
                   Get In Touch
-                  <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
-                </a>
+                  <ArrowRight
+                    className="group-hover:translate-x-1 transition-transform"
+                    size={18}
+                  />
+                </motion.a>
               </div>
             </div>
           </motion.div>
-
         </div>
       </main>
       <Footer />
