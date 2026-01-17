@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Calendar from "@/components/Calendar";
 import EventService from "@/app/lib/eventService";
+import SoftWaveBackground from "@/components/SoftWaveBackground";
 import {
   RefreshCw,
   Calendar as CalendarIcon,
@@ -282,8 +283,9 @@ export default function EventsCalendarPage() {
     <>
       <Navbar />
 
-      <main className="mx-auto max-w-6xl xl:max-w-7xl px-4 md:px-10 py-10 mt-32">
-        <div className="flex flex-col gap-10">
+      <main className="w-full py-10 relative">
+        <SoftWaveBackground height="450px" className="pointer-events-none" />
+        <div className="flex flex-col gap-10 relative z-10 mt-32">
           {/* Header Section */}
           <div className="space-y-4 transform-gpu">
             <div className="mb-10 mt-2 text-center relative">
@@ -327,7 +329,7 @@ export default function EventsCalendarPage() {
 
             {/* Stats & Refresh Section */}
             <div
-              className={`flex flex-wrap items-center gap-4 mt-6 transition-all duration-700 delay-300 ${
+              className={`flex flex-wrap items-center justify-center gap-4 mt-6 transition-all duration-700 delay-300 ${
                 isInitialLoad
                   ? "opacity-0 translate-y-8"
                   : "opacity-100 translate-y-0"
@@ -411,104 +413,87 @@ export default function EventsCalendarPage() {
             </div>
           )}
 
-          {/* Calendar Component */}
-          <div
-            className={`transition-all duration-1000 delay-500 ${
-              isInitialLoad ? "opacity-0 scale-95" : "opacity-100 scale-100"
-            }`}
-          >
-            {/* <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-8 border border-gray-200/50">
-              <div className="flex items-center justify-between mb-6">
-                {/* <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3"> */}
-            {/* <span className="p-2 bg-[#E6F1EC] rounded-lg">
-                    <svg
-                      className="w-6 h-6 text-[#3E6F5C]"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </span>
-                  Calendar
-                </h2>
-              </div> */}
-            <Calendar events={eventsFromDb} />
-            {/* </div> */}
-          </div>
+          {/* Calendar and Events Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-0 w-full">
+            {/* Calendar Component - Left Side */}
+            <div
+              className={`lg:col-span-3 transition-all duration-1000 delay-500 px-4 md:px-6 ${
+                isInitialLoad ? "opacity-0 scale-95" : "opacity-100 scale-100"
+              }`}
+            >
+              <div className="sticky top-24">
+                <Calendar events={eventsFromDb} />
+              </div>
+            </div>
 
-          {/* Events Lists */}
-          <aside className="w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Upcoming Events */}
-              <div
-                className={`transition-all duration-700 delay-300 ${
-                  isInitialLoad
-                    ? "opacity-0 translate-x-8"
-                    : "opacity-100 translate-x-0"
-                }`}
-              >
-                <div className="rounded-3xl border border-[var(--dark-teal)]/20 shadow-2xl p-6 bg-[var(--light-orange)]/30 backdrop-blur-md">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 bg-[var(--light-orange)] rounded-full animate-pulse shadow-[0_0_8px_var(--light-orange)]" />
-                      <h2 className="text-2xl font-black text-[var(--font)]">
-                        Upcoming Events
-                      </h2>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm font-bold text-[var(--font)]/60">
-                        {upcomingEvents.length} events
-                      </span>
-                      <span className="px-3 py-1 bg-[var(--light-orange)] text-[var(--black)] rounded-full text-xs font-black shadow-sm uppercase tracking-tighter">
-                        Live
-                      </span>
-                    </div>
-                  </div>
-
-                  {isLoading ? (
-                    <div className="space-y-4">
-                      {[...Array(3)].map((_, i) => (
-                        <div key={i} className="animate-pulse">
-                          <div className="h-20 bg-gray-200/50 rounded-2xl" />
-                        </div>
-                      ))}
-                    </div>
-                  ) : upcomingEvents.length === 0 ? (
-                    <div className="text-center py-10">
-                      <div className="inline-block p-4 bg-[var(--light-pink)] rounded-2xl mb-4 border border-[var(--color-font)]/10">
-                        <CalendarIcon
-                          size={40}
-                          className="text-[var(--color-dark-teal)]"
-                        />
+            {/* Events Lists - Right Side */}
+            <aside className="lg:col-span-2 px-4 md:px-6">
+              <div className="sticky top-24 grid grid-cols-1 gap-0">
+                {/* Upcoming Events */}
+                <div
+                  className={`transition-all duration-700 delay-300 h-[50vh] overflow-hidden ${
+                    isInitialLoad
+                      ? "opacity-0 translate-x-8"
+                      : "opacity-100 translate-x-0"
+                  }`}
+                >
+                  <div className="rounded-3xl border border-[var(--dark-teal)]/20 shadow-2xl p-6 bg-[var(--light-orange)]/30 backdrop-blur-md h-full flex flex-col overflow-hidden">
+                    <div className="flex items-center justify-between mb-4 flex-shrink-0">
+                      <div className="flex items-center gap-3">
+                        <div className="w-3 h-3 bg-[var(--light-orange)] rounded-full animate-pulse shadow-[0_0_8px_var(--light-orange)]" />
+                        <h2 className="text-2xl font-black text-[var(--font)]">
+                          Upcoming Events
+                        </h2>
                       </div>
-                      <p className="text-[var(--color-font)] font-medium">
-                        No upcoming events scheduled
-                      </p>
-                      <p className="text-sm text-[var(--color-font)]/70 mt-2">
-                        Check back later for exciting events!
-                      </p>
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-bold text-[var(--font)]/60">
+                          {upcomingEvents.length} events
+                        </span>
+                        <span className="px-3 py-1 bg-[var(--light-orange)] text-[var(--black)] rounded-full text-xs font-black shadow-sm uppercase tracking-tighter">
+                          Live
+                        </span>
+                      </div>
                     </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {upcomingEvents.map((event, idx) => (
-                        <div
-                          key={event.id ?? idx}
-                          onMouseEnter={() => setHoveredEvent(event.id)}
-                          onMouseLeave={() => setHoveredEvent(null)}
-                          onClick={() => handleEventClick(event)}
-                          className={`relative rounded-2xl border border-[var(--dark-teal)]/20 p-4 shadow-sm flex items-center justify-between gap-4 bg-white cursor-pointer transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[var(--light-orange)]
+
+                    <div className="flex-1 overflow-y-auto">
+                      {isLoading ? (
+                        <div className="space-y-4">
+                          {[...Array(3)].map((_, i) => (
+                            <div key={i} className="animate-pulse">
+                              <div className="h-20 bg-gray-200/50 rounded-2xl" />
+                            </div>
+                          ))}
+                        </div>
+                      ) : upcomingEvents.length === 0 ? (
+                        <div className="text-center py-10">
+                          <div className="inline-block p-4 bg-[var(--light-pink)] rounded-2xl mb-4 border border-[var(--color-font)]/10">
+                            <CalendarIcon
+                              size={40}
+                              className="text-[var(--color-dark-teal)]"
+                            />
+                          </div>
+                          <p className="text-[var(--color-font)] font-medium">
+                            No upcoming events scheduled
+                          </p>
+                          <p className="text-sm text-[var(--color-font)]/70 mt-2">
+                            Check back later for exciting events!
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {upcomingEvents.map((event, idx) => (
+                            <div
+                              key={event.id ?? idx}
+                              onMouseEnter={() => setHoveredEvent(event.id)}
+                              onMouseLeave={() => setHoveredEvent(null)}
+                              onClick={() => handleEventClick(event)}
+                              className={`relative rounded-2xl border border-[var(--dark-teal)]/20 p-4 shadow-sm flex items-center justify-between gap-4 bg-white cursor-pointer transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[var(--light-orange)]
                             ${hoveredEvent === event.id ? "scale-[1.02]" : ""}`}
-                        >
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-start gap-3">
-                              <div
-                                className={`p-2 rounded-lg transition-all duration-300
+                            >
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-start gap-3">
+                                  <div
+                                    className={`p-2 rounded-lg transition-all duration-300
                                 ${
                                   event.category === "workshop"
                                     ? "bg-[var(--light-orange)]"
@@ -518,173 +503,179 @@ export default function EventsCalendarPage() {
                                     ? "bg-[var(--light-blue)]"
                                     : "bg-[var(--light-pink)]"
                                 }`}
-                              >
-                                <span className="text-lg">
-                                  {event.category === "workshop" ? (
-                                    <Wrench size={20} />
-                                  ) : event.category === "seminar" ? (
-                                    <GraduationCap size={20} />
-                                  ) : event.category === "conference" ? (
-                                    <Users size={20} />
-                                  ) : (
-                                    <Target size={20} />
-                                  )}
-                                </span>
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <div className="text-base font-bold truncate text-[var(--color-dark-teal)] hover:text-[var(--color-black)] transition-colors duration-300">
-                                  {event.title ||
-                                    event.name ||
-                                    "Untitled Event"}
+                                  >
+                                    <span className="text-lg">
+                                      {event.category === "workshop" ? (
+                                        <Wrench size={20} />
+                                      ) : event.category === "seminar" ? (
+                                        <GraduationCap size={20} />
+                                      ) : event.category === "conference" ? (
+                                        <Users size={20} />
+                                      ) : (
+                                        <Target size={20} />
+                                      )}
+                                    </span>
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="text-base font-bold truncate text-[var(--color-dark-teal)] hover:text-[var(--color-black)] transition-colors duration-300">
+                                      {event.title ||
+                                        event.name ||
+                                        "Untitled Event"}
+                                    </div>
+                                    <div className="flex items-center gap-3 mt-2 text-xs text-[var(--color-font)]/70">
+                                      <span className="flex items-center gap-1">
+                                        <svg
+                                          className="w-3 h-3"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                          />
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                          />
+                                        </svg>
+                                        {event.location ||
+                                          event.venue ||
+                                          "Venue TBD"}
+                                      </span>
+                                      <span className="px-2 py-0.5 bg-[var(--light-pink)] text-[var(--dark-teal)] rounded-full text-xs font-semibold">
+                                        {event.category || "General"}
+                                      </span>
+                                    </div>
+                                  </div>
                                 </div>
-                                <div className="flex items-center gap-3 mt-2 text-xs text-[var(--color-font)]/70">
-                                  <span className="flex items-center gap-1">
-                                    <svg
-                                      className="w-3 h-3"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                                      />
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                                      />
-                                    </svg>
-                                    {event.location ||
-                                      event.venue ||
-                                      "Venue TBD"}
-                                  </span>
-                                  <span className="px-2 py-0.5 bg-[var(--light-pink)] text-[var(--dark-teal)] rounded-full text-xs font-semibold">
-                                    {event.category || "General"}
-                                  </span>
+                              </div>
+                              <div className="flex flex-col items-end">
+                                <div className="text-sm font-semibold uppercase tracking-wide whitespace-nowrap text-[var(--color-dark-teal)]">
+                                  {formatDate(event.dateValue)}
                                 </div>
+                                <div className="text-xs text-[var(--color-font)]/70 mt-1 flex items-center gap-1">
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                  </svg>
+                                  {event.startTime ||
+                                    event.eventStartTime ||
+                                    "TBD"}
+                                </div>
+                                {event.price > 0 && (
+                                  <div className="mt-2 px-3 py-1 bg-[var(--light-blue)] text-[var(--dark-teal)] rounded-full text-xs font-semibold shadow-sm border border-[var(--dark-teal)]/20">
+                                    ₹{event.price}
+                                  </div>
+                                )}
                               </div>
                             </div>
-                          </div>
-                          <div className="flex flex-col items-end">
-                            <div className="text-sm font-semibold uppercase tracking-wide whitespace-nowrap text-[var(--color-dark-teal)]">
-                              {formatDate(event.dateValue)}
-                            </div>
-                            <div className="text-xs text-[var(--color-font)]/70 mt-1 flex items-center gap-1">
-                              <svg
-                                className="w-3 h-3"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                              </svg>
-                              {event.startTime || event.eventStartTime || "TBD"}
-                            </div>
-                            {event.price > 0 && (
-                              <div className="mt-2 px-3 py-1 bg-[var(--light-blue)] text-[var(--dark-teal)] rounded-full text-xs font-semibold shadow-sm border border-[var(--dark-teal)]/20">
-                                ₹{event.price}
-                              </div>
-                            )}
-                          </div>
+                          ))}
                         </div>
-                      ))}
+                      )}
                     </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Previous Events */}
-              <div
-                className={`transition-all duration-700 delay-500 ${
-                  isInitialLoad
-                    ? "opacity-0 translate-x-8"
-                    : "opacity-100 translate-x-0"
-                }`}
-              >
-                <div className="rounded-3xl border border-[var(--dark-teal)]/20 shadow-2xl p-6 bg-[var(--light-blue)]/30 backdrop-blur-md">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 bg-[var(--light-blue)] rounded-full" />
-                      <h2 className="text-2xl font-black text-[var(--font)]">
-                        Previous Events
-                      </h2>
-                    </div>
-                    <span className="px-3 py-1 bg-[var(--light-blue)] text-[var(--dark-teal)] rounded-full text-sm font-black shadow-sm">
-                      {previousEvents.length}
-                    </span>
                   </div>
+                </div>
 
-                  {isLoading ? (
-                    <div className="space-y-4">
-                      {[...Array(3)].map((_, i) => (
-                        <div key={i} className="animate-pulse">
-                          <div className="h-16 bg-gray-200/30 rounded-2xl" />
-                        </div>
-                      ))}
-                    </div>
-                  ) : previousEvents.length === 0 ? (
-                    <div className="text-center py-10">
-                      <div className="inline-block p-4 bg-[var(--light-blue)] rounded-2xl mb-4 border border-[var(--color-font)]/10">
-                        <History
-                          size={40}
-                          className="text-[var(--color-dark-teal)]"
-                        />
+                {/* Previous Events */}
+                <div
+                  className={`transition-all duration-700 delay-500 h-[50vh] overflow-hidden ${
+                    isInitialLoad
+                      ? "opacity-0 translate-x-8"
+                      : "opacity-100 translate-x-0"
+                  }`}
+                >
+                  <div className="rounded-3xl border border-[var(--dark-teal)]/20 shadow-2xl p-6 bg-[var(--light-blue)]/30 backdrop-blur-md h-full flex flex-col overflow-hidden">
+                    <div className="flex items-center justify-between mb-4 flex-shrink-0">
+                      <div className="flex items-center gap-3">
+                        <div className="w-3 h-3 bg-[var(--light-blue)] rounded-full" />
+                        <h2 className="text-2xl font-black text-[var(--font)]">
+                          Previous Events
+                        </h2>
                       </div>
-                      <p className="text-[var(--color-font)] font-medium">
-                        No previous events yet
-                      </p>
-                      <p className="text-sm text-[var(--color-font)]/70 mt-2">
-                        Event history will appear here
-                      </p>
+                      <span className="px-3 py-1 bg-[var(--light-blue)] text-[var(--dark-teal)] rounded-full text-sm font-black shadow-sm">
+                        {previousEvents.length}
+                      </span>
                     </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {previousEvents.slice(0, 5).map((event, idx) => (
-                        <div
-                          key={event.id ?? idx}
-                          onClick={() => handleEventClick(event)}
-                          className="relative rounded-2xl border border-[var(--dark-teal)]/20 p-4 shadow-sm flex items-center justify-between gap-4 bg-white cursor-pointer transform transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:border-[var(--light-blue)]"
-                        >
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-3">
-                              <div className="p-2 rounded-lg bg-[var(--light-pink)]">
-                                <FileText
-                                  size={20}
-                                  className="text-[var(--dark-teal)]"
-                                />
+
+                    <div className="flex-1 overflow-y-auto">
+                      {isLoading ? (
+                        <div className="space-y-4">
+                          {[...Array(3)].map((_, i) => (
+                            <div key={i} className="animate-pulse">
+                              <div className="h-16 bg-gray-200/30 rounded-2xl" />
+                            </div>
+                          ))}
+                        </div>
+                      ) : previousEvents.length === 0 ? (
+                        <div className="text-center py-10">
+                          <div className="inline-block p-4 bg-[var(--light-blue)] rounded-2xl mb-4 border border-[var(--color-font)]/10">
+                            <History
+                              size={40}
+                              className="text-[var(--color-dark-teal)]"
+                            />
+                          </div>
+                          <p className="text-[var(--color-font)] font-medium">
+                            No previous events yet
+                          </p>
+                          <p className="text-sm text-[var(--color-font)]/70 mt-2">
+                            Event history will appear here
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {previousEvents.slice(0, 5).map((event, idx) => (
+                            <div
+                              key={event.id ?? idx}
+                              onClick={() => handleEventClick(event)}
+                              className="relative rounded-2xl border border-[var(--dark-teal)]/20 p-4 shadow-sm flex items-center justify-between gap-4 bg-white cursor-pointer transform transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:border-[var(--light-blue)]"
+                            >
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2 rounded-lg bg-[var(--light-pink)]">
+                                    <FileText
+                                      size={20}
+                                      className="text-[var(--dark-teal)]"
+                                    />
+                                  </div>
+                                  <div>
+                                    <div className="text-base font-bold truncate text-[var(--color-dark-teal)]">
+                                      {event.title ||
+                                        event.name ||
+                                        "Untitled Event"}
+                                    </div>
+                                    <div className="text-xs text-[var(--color-font)]/70 mt-1">
+                                      {event.category || "General"}
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                              <div>
-                                <div className="text-base font-bold truncate text-[var(--color-dark-teal)]">
-                                  {event.title ||
-                                    event.name ||
-                                    "Untitled Event"}
-                                </div>
-                                <div className="text-xs text-[var(--color-font)]/70 mt-1">
-                                  {event.category || "General"}
-                                </div>
+                              <div className="text-sm font-semibold uppercase tracking-wide whitespace-nowrap text-[var(--color-dark-teal)]">
+                                {formatDate(event.dateValue)}
                               </div>
                             </div>
-                          </div>
-                          <div className="text-sm font-semibold uppercase tracking-wide whitespace-nowrap text-[var(--color-dark-teal)]">
-                            {formatDate(event.dateValue)}
-                          </div>
+                          ))}
                         </div>
-                      ))}
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </aside>
+            </aside>
+          </div>
         </div>
       </main>
 
