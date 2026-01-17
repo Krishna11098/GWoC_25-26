@@ -424,7 +424,10 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
             {/* Week Grid */}
             <div
               className="overflow-x-auto rounded-lg"
-              style={{ borderColor: "var(--color-dark-teal)", borderWidth: "1px" }}
+              style={{
+                borderColor: "var(--color-dark-teal)",
+                borderWidth: "1px",
+              }}
             >
               <table className="w-full border-collapse">
                 <thead>

@@ -289,9 +289,9 @@ const Navbar = () => {
                 <>
                   <Link
                     href="/profile"
-                    className="rounded-full bg-gray-100 px-4 py-2 text-lg font-medium text-gray-900"
+                    className="rounded-full bg-gray-100 px-4 py-2 text-lg font-medium text-gray-900 hover:bg-gray-200 transition-colors"
                   >
-                    Welcome {user.name}
+                    {user.name.charAt(0).toUpperCase()}
                   </Link>
                   <button
                     onClick={handleLogout}
@@ -448,7 +448,7 @@ const Navbar = () => {
                 className="text-3xl"
                 onClick={() => setMobileOpen(false)}
               >
-                Profile ({user.name})
+                {user.name.charAt(0).toUpperCase()}
               </Link>
               <button
                 onClick={() => {
