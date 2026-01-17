@@ -198,7 +198,7 @@ export default function HeroSection({ scrollProgress = 0 }) {
       </div>
 
       {/* Marquee at Bottom */}
-      <div className="w-full mt-auto bg-[#FF9FC8] py-6 overflow-hidden">
+      <div className="w-full mt-auto bg-light-blue py-6 overflow-hidden">
         <div className="flex animate-marquee whitespace-nowrap">
           {[...Array(5)].map((_, i) => (
             <div

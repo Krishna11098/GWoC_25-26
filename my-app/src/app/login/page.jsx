@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { auth } from "@/lib/firebaseClient";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import GoogleLoginButton from "@/components/loginButton";
 import { useRouter } from "next/navigation";
+import SoftWaveBackground from "@/components/SoftWaveBackground";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -89,24 +91,35 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
-      <div
-        className="w-full max-w-lg rounded-xl shadow-lg p-10"
+    <div className="relative min-h-screen flex flex-col items-center justify-center px-4 py-8">
+      <motion.div
+        className="pointer-events-none absolute inset-0 -z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
+        <SoftWaveBackground height="60vh" className="pointer-events-none" />
+      </motion.div>
+      <motion.div
+        className="w-full max-w-lg rounded-xl p-6 sm:p-8 md:p-10"
         style={{
           backgroundColor: "white",
-          borderColor: "var(--color-font)",
+          borderColor: "var(--dark-teal)",
           borderWidth: "2px",
         }}
+        initial={{ opacity: 0, y: 24, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
         <h1
-          className="text-3xl font-bold text-center"
-          style={{ color: "var(--color-font)" }}
+          className="text-2xl sm:text-3xl md:text-4xl font-bold text-center"
+          style={{ color: "var(--dark-teal)" }}
         >
           Welcome back
         </h1>
         <p
-          className="text-sm text-center mt-2"
-          style={{ color: "var(--color-font)", opacity: "0.7" }}
+          className="text-xs sm:text-sm md:text-base text-center mt-2"
+          style={{ color: "var(--dark-teal)", opacity: "0.7" }}
         >
           Login to your account
         </p>
@@ -128,8 +141,8 @@ export default function LoginPage() {
         <form onSubmit={handleLogin} className="mt-8 space-y-5">
           <div>
             <label
-              className="block text-sm font-medium mb-2"
-              style={{ color: "var(--color-font)" }}
+              className="block text-xs sm:text-sm font-medium mb-2"
+              style={{ color: "var(--dark-teal)" }}
             >
               Email
             </label>
@@ -137,19 +150,19 @@ export default function LoginPage() {
               name="email"
               type="email"
               required
-              className="w-full rounded-lg px-4 py-2 text-sm border-2"
+              className="w-full rounded-lg px-4 py-2 text-sm md:text-base border-2"
               placeholder="you@example.com"
               style={{
-                borderColor: "var(--color-green)",
-                color: "var(--color-font)",
+                borderColor: "var(--dark-teal)",
+                color: "var(--dark-teal)",
               }}
             />
           </div>
 
           <div>
             <label
-              className="block text-sm font-medium mb-2"
-              style={{ color: "var(--color-font)" }}
+              className="block text-xs sm:text-sm font-medium mb-2"
+              style={{ color: "var(--dark-teal)" }}
             >
               Password
             </label>
@@ -157,11 +170,11 @@ export default function LoginPage() {
               name="password"
               type="password"
               required
-              className="w-full rounded-lg px-4 py-2 text-sm border-2"
+              className="w-full rounded-lg px-4 py-2 text-sm md:text-base border-2"
               placeholder="••••••••"
               style={{
-                borderColor: "var(--color-green)",
-                color: "var(--color-font)",
+                borderColor: "var(--dark-teal)",
+                color: "var(--dark-teal)",
               }}
             />
           </div>
@@ -169,8 +182,8 @@ export default function LoginPage() {
           <div className="text-right">
             <a
               href="/forgot-password"
-              className="text-xs font-medium hover:underline"
-              style={{ color: "var(--color-orange)" }}
+              className="text-[11px] sm:text-xs font-medium hover:underline"
+              style={{ color: "var(--light-orange)" }}
             >
               Forgot Password?
             </a>
@@ -179,10 +192,10 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg py-3 text-sm font-bold transition-all duration-300 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full rounded-lg py-3 text-sm md:text-base font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
-              backgroundColor: "var(--color-pink)",
-              color: "var(--color-font)",
+              backgroundColor: "var(--dark-teal)",
+              color: "white",
             }}
           >
             {loading ? "Logging in..." : "Login"}
@@ -193,30 +206,33 @@ export default function LoginPage() {
         </div>
 
         <p
-          className="text-sm text-center mt-6"
-          style={{ color: "var(--color-font)" }}
+          className="text-xs sm:text-sm text-center mt-6"
+          style={{ color: "var(--dark-teal)" }}
         >
           Don't have an account?{" "}
           <a
             href="/signup"
             className="font-bold hover:underline"
-            style={{ color: "var(--color-orange)" }}
+            style={{ color: "var(--light-orange)" }}
           >
             Sign up
           </a>
         </p>
-      </div>
+      </motion.div>
 
-      <button
+      <motion.button
         onClick={() => (window.location.href = "/")}
-        className="mt-6 px-6 py-2 rounded-lg font-medium transition-all duration-300 hover:shadow-lg"
+        className="mt-6 px-6 py-2 rounded-lg font-medium text-sm md:text-base transition-all duration-300"
         style={{
-          backgroundColor: "var(--color-green)",
-          color: "var(--color-font)",
+          backgroundColor: "var(--green)",
+          color: "var(--dark-teal)",
         }}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.15 }}
       >
         ← Back to Home
-      </button>
+      </motion.button>
     </div>
   );
 }
