@@ -104,7 +104,7 @@ export default function ExperiencesLanding() {
                 <Link
                   key={c.id}
                   href={`/experiences/events?category=${c.id}`}
-                  className="w-full p-5 rounded-3xl border shadow-sm hover:shadow-lg transform hover:-translate-y-1 transition duration-200 flex items-start gap-4 h-26"
+                  className="w-full p-5 rounded-3xl border shadow-sm hover:shadow-lg transform hover:-translate-y-1 transition duration-200 flex items-start gap-4 h-auto min-h-fit"
                   style={{
                     backgroundColor: "var(--bg)",
                     borderColor: "rgba(0,0,0,0.06)",

@@ -98,7 +98,7 @@ const Navbar = () => {
       <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
         <div
           className={`flex items-center rounded-2xl border border-white/60 bg-dark-teal shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 text-bg ${
-            scrolled ? "py-0" : "py-1 md:py-1.5"
+            scrolled ? "py-0" : "py-0.5 md:py-1"
           }`}
         >
           {/* Logo Div */}
@@ -107,10 +107,10 @@ const Navbar = () => {
               <Image
                 src="/logo3.png"
                 alt="JoyJuncture logo"
-                width={60}
-                height={60}
+                width={45}
+                height={45}
                 priority
-                className="h-22 w-22 object-contain"
+                className="h-16 w-16 object-contain"
               />
             </Link>
           </div>
