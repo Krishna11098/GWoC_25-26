@@ -5,13 +5,14 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogCard from "@/components/BlogCard";
+import SoftWaveBackground from "@/components/SoftWaveBackground";
 
 const CATEGORIES = [
-  { id: "private_birthdays", label: "Private Birthdays", icon: "🎂", bg: "from-pink-50 to-pink-100", accent: "bg-pink-100", text: "text-pink-800", colorVar: "--pink" },
-  { id: "corporate_events", label: "Corporate Events", icon: "🏢", bg: "from-blue-50 to-blue-100", accent: "bg-blue-100", text: "text-blue-800", colorVar: "--blue" },
-  { id: "monthly_kits", label: "Monthly Kits", icon: "📦", bg: "from-indigo-50 to-indigo-100", accent: "bg-indigo-100", text: "text-indigo-800", colorVar: "--indigo" },
-  { id: "carnivals", label: "Carnivals", icon: "🎡", bg: "from-amber-50 to-amber-100", accent: "bg-amber-100", text: "text-amber-800", colorVar: "--amber" },
-  { id: "weddings", label: "Weddings", icon: "💍", bg: "from-rose-50 to-rose-100", accent: "bg-rose-100", text: "text-rose-800", colorVar: "--rose" },
+  { id: "private_birthdays", label: "Private Birthdays", image: "/gallery/experiences/JJ_Private_birthday.png", fallbackColor: "from-pink-400 to-rose-500" },
+  { id: "corporate_events", label: "Corporate Events", image: "/gallery/experiences/JJ_Corporate_Event.png", fallbackColor: "from-blue-400 to-indigo-500" },
+  { id: "monthly_kits", label: "Monthly Kits", image: "/gallery/experiences/JJ_Monthly_Kits.png", fallbackColor: "from-purple-400 to-indigo-500" },
+  { id: "carnivals", label: "Carnivals", image: "/gallery/experiences/JJ_Carnivals.png", fallbackColor: "from-yellow-400 to-orange-500" },
+  { id: "weddings", label: "Weddings", image: "/gallery/experiences/JJ_Weddings.png", fallbackColor: "from-red-400 to-pink-500" },
 ];
 
 export default function ExperiencesLanding() {
@@ -61,11 +62,8 @@ export default function ExperiencesLanding() {
       setCurrent(idx);
       const card = slider.children[idx];
       if (card) {
-        card.scrollIntoView({
-          behavior: "smooth",
-          inline: "center",
-          block: "nearest",
-        });
+        const cardWidth = card.offsetWidth + 24; // 24px is the gap
+        slider.scrollLeft = idx * cardWidth - (slider.offsetWidth - cardWidth) / 2;
       }
     }, 3000);
 
@@ -75,23 +73,34 @@ export default function ExperiencesLanding() {
   return (
     <>
       <Navbar />
-      <main className="mt-20">
-        {/* Hero */}
-        <section className="bg-gradient-to-b from-emerald-50 to-white py-16">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h1
-                  className="text-4xl font-extrabold"
-                  style={{ color: "var(--color-font)" }}
-                >
-                  Experiences
+      <main className="mt-20 min-h-screen" style={{ backgroundColor: "var(--bg)" }}>
+        {/* Hero + Wave Wrapper */}
+        <div className="relative overflow-hidden">
+          <SoftWaveBackground height="450px" className="pointer-events-none" />
+          {/* Hero */}
+          <section className="py-16 relative z-10" style={{ backgroundColor: "transparent" }}>
+            <div className="max-w-6xl mx-auto px-4">
+            {/* Centered Header - matching Game Marketplace style */}
+            <div className="mb-14 mt-4 text-center relative">
+              <div className="inline-flex flex-col items-center gap-2">
+                <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
+                  <span className="relative inline-block text-dark-teal drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)]">
+                    Experiences
+                  </span>
                 </h1>
-                <p className="mt-2" style={{ color: "var(--color-font)" }}>
-                  Curated live experiences, games and engagement formats.
-                </p>
+                <div
+                  className="h-2 rounded-full mt-6 shadow-md"
+                  style={{ 
+                    width: "80px",
+                    backgroundColor: "var(--orange)"
+                  }}
+                />
               </div>
-              {/* right-side CTA removed; See All Events moved to Themes section */}
+              <p
+                className="mt-8 text-lg md:text-xl font-medium text-gray-700"
+              >
+                Curated live experiences, games and engagement formats
+              </p>
             </div>
 
             {heroEvents.length > 0 && (
@@ -113,52 +122,72 @@ export default function ExperiencesLanding() {
             )}
           </div>
         </section>
+        </div>
 
         {/* Themes */}
-        <section className="py-12">
+        <section className="py-12 relative z-20" style={{ backgroundColor: "var(--bg)" }}>
           <div className="max-w-6xl mx-auto px-4">
-            <div className="flex items-center justify-between mb-4">
-              <h2
-                className="text-2xl font-bold"
-                style={{ color: "var(--color-font)" }}
+            <div className="flex flex-col items-center mb-12">
+              <div className="inline-flex flex-col items-center gap-2 mb-6">
+                <h2
+                  className="text-4xl font-bold"
+                  style={{ color: "var(--font)" }}
+                >
+                  Explore by Theme
+                </h2>
+                <div
+                  className="h-2 rounded-full shadow-md"
+                  style={{ 
+                    width: "80px",
+                    backgroundColor: "var(--dark-teal)"
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end mb-8">
+              <Link 
+                href="/experiences/events" 
+                className="font-medium"
+                style={{ color: "var(--orange)" }}
               >
-                Explore by Theme
-              </h2>
-              <Link href="/experiences/events" className="font-medium">
                 see all event &gt;
               </Link>
             </div>
 
-            <div className="flex flex-wrap gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {CATEGORIES.map((c) => (
                 <Link
                   key={c.id}
                   href={`/experiences/events?category=${c.id}`}
-                  className={`w-56 md:w-72 p-5 rounded-3xl border shadow-sm hover:shadow-lg transform hover:-translate-y-1 transition duration-200 flex items-start gap-4`}
-                  style={{
-                    backgroundColor: "var(--bg)",
-                    borderColor: "rgba(0,0,0,0.06)",
-                  }}
+                  className="group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300"
                 >
-                  <div
-                    style={{ backgroundColor: `var(${c.colorVar})` }}
-                    className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center text-2xl shadow-sm`}
-                  >
-                    {c.icon}
+                  {/* Background Image */}
+                  <div className="relative w-full h-80 md:h-96 overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={c.image}
+                      alt={c.label}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                    {/* Fallback gradient if image fails to load */}
+                    <div 
+                      className={`absolute inset-0 bg-gradient-to-br ${c.fallbackColor}`}
+                      style={{ zIndex: -1 }}
+                    />
                   </div>
-                  <div className="flex flex-col">
-                    <span
-                      className={`font-semibold text-lg`}
-                      style={{ color: `var(${c.colorVar})` }}
-                    >
+
+                  {/* Blurred Gradient Overlay at Bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/60 via-black/30 to-transparent backdrop-blur-sm" />
+
+                  {/* Text at Bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 flex items-center justify-center">
+                    <h3 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg text-center">
                       {c.label}
-                    </span>
-                    <span
-                      className="text-sm mt-1"
-                      style={{ color: "var(--color-font)" }}
-                    >
-                      Explore {c.label.toLowerCase()}
-                    </span>
+                    </h3>
                   </div>
                 </Link>
               ))}

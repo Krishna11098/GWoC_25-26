@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import SoftWaveBackground from "@/components/SoftWaveBackground";
 
 const DETAILS_BY_SLUG = {
   "murder-mystery-primarc-pecan-ho-mumbai": {
@@ -234,15 +235,29 @@ export default async function BlogDetailPage({ params }) {
   return (
     <>
       <Navbar />
-      <main className="mx-auto max-w-6xl xl:max-w-7xl px-4 md:px-10 py-10 mt-20">
-        {cards.map((card, i) => (
-          <section key={i} className="mb-10">
-            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden p-8 md:p-12 border border-slate-200">
-              {card.content}
+      <div className="px-5 md:px-12 pt-10 pb-16 relative" style={{ backgroundColor: 'var(--bg)' }}>
+        <SoftWaveBackground height="450px" className="pointer-events-none" />
+        <main className="mx-auto max-w-6xl xl:max-w-7xl px-4 md:px-10 relative z-10 mt-20 md:mt-30">
+          <div className="mb-14 mt-4 text-center relative">
+            <div className="inline-flex flex-col items-center gap-2">
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
+                <span className="text-black">Experience</span>{" "}
+                <span className="relative inline-block text-dark-teal drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)]">
+                  Story
+                </span>
+              </h1>
+              <div className="h-2 bg-dark-teal rounded-full mt-6 shadow-md w-[80px]" />
             </div>
-          </section>
-        ))}
-      </main>
+          </div>
+          {cards.map((card, i) => (
+            <section key={i} className="mb-10">
+              <div className="rounded-3xl overflow-hidden p-8 md:p-12 border-4 shadow-2xl -translate-y-2 transition-transform hover:translate-y-0" style={{ borderColor: 'var(--dark-teal)', backgroundColor: 'rgba(122, 184, 195, 0.08)' }}>
+                {card.content}
+              </div>
+            </section>
+          ))}
+        </main>
+      </div>
       <Footer />
     </>
   );

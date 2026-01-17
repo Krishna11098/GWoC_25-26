@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Winky+Rough:wght@300..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Londrina+Sketch&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Sriracha&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lemon&family=Lumanosimo&family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Caveat:wght@400..700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -48,6 +49,36 @@
   --color-black: var(--black);
   --color-light-pink: var(--light-pink);
   --color-light-blue: var(--light-blue);
+}
+
+/* Font Classes */
+.lemon-regular {
+  font-family: "Lemon", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.lumanosimo-regular {
+  font-family: "Lumanosimo", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.dancing-script-headline {
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.fraunces-chunky {
+  font-family: "Fraunces", serif;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-weight: 900;
+}
+
+.caveat-script {
+  font-family: "Caveat", cursive;
 }
 
 body {

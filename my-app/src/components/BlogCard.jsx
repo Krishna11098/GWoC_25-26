@@ -132,97 +132,99 @@ export default function BlogCard({
   return (
     <article
       ref={ref}
-      className={`relative rounded-3xl shadow-sm transition-all duration-700 ${
+      className={`relative rounded-3xl transition-all duration-700 ${
         inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      } ${hero ? "p-0 pb-6 md:pb-8 overflow-hidden" : "p-4 md:p-6"}`}
+      } ${hero ? "p-0 pb-6 md:pb-8 overflow-hidden" : `p-4 md:p-6 shadow-2xl -translate-y-2 hover:translate-y-0`}`}
       style={{
-        backgroundColor: "var(--light-blue)",
-        border: "1px solid var(--dark-teal)",
+        backgroundColor: hero ? "var(--light-blue)" : "rgba(122, 184, 195, 0.08)",
+        border: hero ? "1px solid var(--dark-teal)" : "2px solid var(--dark-teal)",
         color: "var(--black)",
       }}
     >
       {hero ? (
         <>
-          <div className="w-full">
-            <div
-              className="w-full h-64 md:h-80 overflow-hidden"
-              style={{ backgroundColor: "var(--light-blue)" }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={post.image}
-                alt={post.title || "Image"}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div className="p-4 md:p-5">
-              {post.title && (
-                <h3
-                  className="text-xl md:text-2xl font-bold"
-                  style={{ color: "var(--black)" }}
-                >
-                  {post.title}
-                </h3>
-              )}
-              {post.description && (
-                <p className="mt-2 text-sm" style={{ color: "var(--black)" }}>
-                  {post.description}
-                </p>
-              )}
-            </div>
-
-            {/* Votes positioned bottom-right */}
-            {showVotes && post.id && (
-              <div className="absolute right-4 bottom-4 flex items-center gap-3">
-                <button
-                  onClick={() => handleVote("upvote")}
-                  disabled={loading}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
-                    loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                  }`}
-                  style={
-                    userVote === "upvote"
-                      ? {
-                          backgroundColor: "var(--dark-teal)",
-                          color: "white",
-                          border: "1px solid var(--dark-teal)",
-                        }
-                      : {
-                          backgroundColor: "var(--light-blue)",
-                          color: "var(--black)",
-                        }
-                  }
-                >
-                  <FaThumbsUp className="text-sm" />
-                  <span className="font-semibold text-sm">{upvotes}</span>
-                </button>
-
-                <button
-                  onClick={() => handleVote("downvote")}
-                  disabled={loading}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
-                    loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                  }`}
-                  style={
-                    userVote === "downvote"
-                      ? {
-                          backgroundColor: "var(--light-pink)",
-                          color: "var(--black)",
-                          border: "1px solid var(--light-pink)",
-                        }
-                      : {
-                          backgroundColor: "var(--light-blue)",
-                          color: "var(--black)",
-                        }
-                  }
-                >
-                  <FaThumbsDown className="text-sm" />
-                  <span className="font-semibold text-sm">{downvotes}</span>
-                </button>
+          <Link href={post.href || "#"} className="block w-full">
+            <div className="w-full cursor-pointer hover:opacity-90 transition-opacity">
+              <div
+                className="w-full h-64 md:h-80 overflow-hidden"
+                style={{ backgroundColor: "var(--light-blue)" }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={post.image}
+                  alt={post.title || "Image"}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
               </div>
-            )}
-          </div>
+              <div className="p-4 md:p-5">
+                {post.title && (
+                  <h3
+                    className="text-xl md:text-2xl font-bold"
+                    style={{ color: "var(--black)" }}
+                  >
+                    {post.title}
+                  </h3>
+                )}
+                {post.description && (
+                  <p className="mt-2 text-sm" style={{ color: "var(--black)" }}>
+                    {post.description}
+                  </p>
+                )}
+              </div>
+            </div>
+          </Link>
+
+          {/* Votes positioned bottom-right */}
+          {showVotes && post.id && (
+            <div className="absolute right-4 bottom-4 flex items-center gap-3 z-10">
+              <button
+                onClick={() => handleVote("upvote")}
+                disabled={loading}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
+                  loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                }`}
+                style={
+                  userVote === "upvote"
+                    ? {
+                        backgroundColor: "var(--dark-teal)",
+                        color: "white",
+                        border: "1px solid var(--dark-teal)",
+                      }
+                    : {
+                        backgroundColor: "var(--light-blue)",
+                        color: "var(--black)",
+                      }
+                }
+              >
+                <FaThumbsUp className="text-sm" />
+                <span className="font-semibold text-sm">{upvotes}</span>
+              </button>
+
+              <button
+                onClick={() => handleVote("downvote")}
+                disabled={loading}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
+                  loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                }`}
+                style={
+                  userVote === "downvote"
+                    ? {
+                        backgroundColor: "var(--light-pink)",
+                        color: "var(--black)",
+                        border: "1px solid var(--light-pink)",
+                      }
+                    : {
+                        backgroundColor: "var(--light-blue)",
+                        color: "var(--black)",
+                      }
+                }
+              >
+                <FaThumbsDown className="text-sm" />
+                <span className="font-semibold text-sm">{downvotes}</span>
+              </button>
+            </div>
+          )}
         </>
       ) : (
         <div
