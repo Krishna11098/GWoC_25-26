@@ -8,44 +8,17 @@ import StoryEnd from "@/components/AboutEnd";
 import StorySection from "@/components/AboutStorySection";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import AboutOrigin from "@/components/AboutOrigin";
 
 export default function AboutPage() {
   return (
     <>
       <Navbar />
       <main className="overflow-x-hidden">
-        <StorySection>
-          <StoryHero />
-          <div className="space-y-12 font-black">
-            <StoryBlock
-              title="No Grand Origin Story"
-              bgColor="var(--light-pink)"
-            >
-              Honestly? There's no dramatic lifelong passion here—just two
-              people who discovered they're great at creating chaos, laughter,
-              and competitive tension.
-            </StoryBlock>
-
-            <StoryBlock
-              title="The Wrong Family Business"
-              bgColor="var(--light-orange)"
-            >
-              Textiles and electricals? Thrilling. But we chose confusion,
-              creativity, and entrepreneurship instead. No roadmap. Just vibes.
-            </StoryBlock>
-
-            <StoryBlock
-              title="From Random Ideas to Real Games"
-              bgColor="var(--light-blue)"
-            >
-              Somewhere between arguing over rules and laughing at bad
-              strategies, Joy Juncture was born.
-            </StoryBlock>
-          </div>
-        </StorySection>
-
+        <StoryHero />
         <PhilosophyScroll />
         <TeamStory />
+        <AboutOrigin />
         <StoryEnd />
       </main>
 

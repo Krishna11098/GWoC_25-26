@@ -52,9 +52,9 @@ export default function CommunityBlogPage() {
           <div className="text-center">
             <div
               className="inline-block animate-spin rounded-full h-12 w-12 border-2 border-transparent"
-              style={{ borderBottomColor: "var(--color-green)" }}
+              style={{ borderBottomColor: "var(--dark-teal)" }}
             />
-            <p style={{ color: "var(--color-font)", marginTop: "1rem" }}>
+            <p style={{ color: "var(--black)", marginTop: "1rem" }}>
               Loading blogs...
             </p>
           </div>
@@ -69,7 +69,7 @@ export default function CommunityBlogPage() {
       <>
         <Navbar />
         <div className="min-h-screen flex items-center justify-center mt-20">
-          <div className="text-center text-red-600">
+          <div className="text-center" style={{ color: "var(--dark-teal)" }}>
             <p>Error loading blogs: {error}</p>
           </div>
         </div>
