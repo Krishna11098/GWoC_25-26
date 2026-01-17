@@ -224,7 +224,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
       />
       <div className="relative z-10">
         {/* Header background */}
-        <div className="rounded-t-3xl px-4 sm:px-6 md:px-10 py-4 sm:py-6 md:py-8 shadow-lg relative overflow-hidden text-[var(--light-pink)] bg-[var(--dark-teal)]">
+        <div className="rounded-t-3xl px-2 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 shadow-lg relative overflow-hidden text-[var(--light-pink)] bg-[var(--dark-teal)]">
           <div className="relative flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Navigation buttons */}
             <div className="flex items-center gap-2 sm:gap-3">
@@ -284,7 +284,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
         {/* Calendar Grid - Only show month view for now */}
         {viewMode === "month" && (
           <div
-            className="rounded-b-3xl px-3 sm:px-4 md:px-10 py-4 sm:py-6 md:py-8 shadow-xl backdrop-blur-sm"
+            className="rounded-b-3xl px-2 sm:px-3 md:px-6 py-4 sm:py-6 md:py-8 shadow-xl backdrop-blur-sm"
             style={{ backgroundColor: "white" }}
           >
             {/* Weekday headers */}
@@ -318,7 +318,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                 return (
                   <div
                     key={idx}
-                    className="aspect-square border text-xl sm:text-lg"
+                    className="aspect-[4/5] border text-xl sm:text-lg"
                     style={{ borderColor: "var(--color-font)", opacity: 1 }}
                   >
                     {actualDate ? (
@@ -392,13 +392,13 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
               })}
             </div>
             <div
-              className="rounded-b-3xl px-3 sm:px-4 md:px-6 py-4 sm:py-6 shadow-xl"
+              className="rounded-b-3xl px-2 sm:px-3 md:px-4 py-2 sm:py-3 shadow-xl"
               style={{ backgroundColor: "white" }}
             >
               {/* Footer note */}
               <div className="overflow-x-auto rounded-lg">
                 <p
-                  className="text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-3 flex items-center gap-2"
+                  className="text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2 flex items-center gap-2"
                   style={{ color: "var(--color-black)" }}
                 >
                   <svg
@@ -418,22 +418,23 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
         {/* Week View */}
         {viewMode === "week" && (
           <div
-            className="rounded-b-3xl px-4 md:px-10 py-8 shadow-xl"
+            className="rounded-b-3xl px-2 md:px-6 py-8 shadow-xl"
             style={{ backgroundColor: "white" }}
           >
             {/* Week Grid */}
             <div
               className="overflow-x-auto rounded-lg"
-              style={{ borderColor: "var(--color-font)", borderWidth: "1px" }}
+              style={{ borderColor: "var(--color-dark-teal)", borderWidth: "1px" }}
             >
               <table className="w-full border-collapse">
                 <thead>
-                  <tr style={{ backgroundColor: "var(--color-font)" }}>
+                  <tr style={{ backgroundColor: "var(--light-pink)" }}>
                     <th
-                      className="px-4 py-3 text-left text-sm font-bold w-20 text-white"
+                      className="px-4 py-3 text-left text-sm font-bold w-20"
                       style={{
-                        borderColor: "var(--color-font)",
+                        borderColor: "var(--color-dark-teal)",
                         borderWidth: "1px",
+                        color: "var(--color-dark-teal)",
                       }}
                     >
                       Time
@@ -441,13 +442,14 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                     {getWeekDates.map((date, idx) => (
                       <th
                         key={idx}
-                        className="px-4 py-3 text-center font-semibold text-white"
+                        className="px-4 py-3 text-center font-semibold"
                         style={{
-                          borderColor: "var(--color-font)",
+                          borderColor: "var(--color-dark-teal)",
                           borderWidth: "1px",
                           backgroundColor: isSameDay(date, today)
-                            ? "var(--color-green)"
-                            : "var(--color-font)",
+                            ? "var(--light-blue)"
+                            : "var(--light-pink)",
+                          color: "var(--color-dark-teal)",
                         }}
                       >
                         <div className="text-xs uppercase tracking-wider">
@@ -472,11 +474,12 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                       className="transition-colors hover:bg-gray-50"
                     >
                       <td
-                        className="px-4 py-3 text-xs font-bold w-20 text-font"
+                        className="px-4 py-3 text-xs font-bold w-20"
                         style={{
-                          borderColor: "var(--color-font)",
+                          borderColor: "var(--color-dark-teal)",
                           borderWidth: "1px",
-                          backgroundColor: "white",
+                          backgroundColor: "var(--light-orange)/30",
+                          color: "var(--color-dark-teal)",
                         }}
                       >
                         {slot}
@@ -488,12 +491,12 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                             key={dateIdx}
                             className="px-4 py-6 text-center"
                             style={{
-                              borderColor: "var(--color-font)",
+                              borderColor: "var(--color-dark-teal)",
                               borderWidth: "1px",
                               backgroundColor: isSameDay(date, today)
-                                ? "var(--color-green)"
+                                ? "var(--light-blue)/20"
                                 : "white",
-                              opacity: isSameDay(date, today) ? "0.1" : "1",
+                              opacity: "1",
                             }}
                           >
                             {events
@@ -508,7 +511,12 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                               .map((evt, i) => (
                                 <div
                                   key={i}
-                                  className="text-xs font-bold px-4 py-3 inline-block rounded-lg shadow-lg border border-font-2/30 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-105 bg-foreground-2 text-font-2"
+                                  className="text-xs font-bold px-4 py-3 inline-block rounded-lg shadow-lg border cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-105"
+                                  style={{
+                                    backgroundColor: "var(--light-orange)",
+                                    color: "var(--color-dark-teal)",
+                                    borderColor: "var(--color-dark-teal)/30",
+                                  }}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     setSelectedEvent(evt);
@@ -563,7 +571,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
               {/* Header - Fixed */}
               <div className="p-3 sm:p-4 border-b border-gray-100 flex items-start justify-between flex-shrink-0">
                 <div className="pr-8 sm:pr-10 flex-1 min-w-0">
-                  <div 
+                  <div
                     className="inline-flex items-center px-2 py-1 rounded-full text-white text-[10px] sm:text-xs font-bold mb-2"
                     style={{ backgroundColor: "var(--color-green)" }}
                   >
@@ -581,7 +589,8 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                     backgroundColor: "white",
                   }}
                   onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor = "var(--color-orange)")
+                    (e.currentTarget.style.backgroundColor =
+                      "var(--color-orange)")
                   }
                   onMouseLeave={(e) =>
                     (e.currentTarget.style.backgroundColor = "white")
@@ -597,21 +606,26 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                 <div className="grid grid-cols-1 gap-3 sm:gap-4">
                   {/* Date */}
                   <div className="flex items-start gap-3">
-                    <div 
+                    <div
                       className="p-2 rounded-lg flex-shrink-0"
-                      style={{ backgroundColor: "rgba(var(--color-green-rgb, 74, 222, 128), 0.1)" }}
+                      style={{
+                        backgroundColor:
+                          "rgba(var(--color-green-rgb, 74, 222, 128), 0.1)",
+                      }}
                     >
-                      <svg 
-                        className="w-5 h-5" 
-                        fill="currentColor" 
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
                         viewBox="0 0 24 24"
                         style={{ color: "var(--color-green)" }}
                       >
-                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/>
+                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z" />
                       </svg>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">Date</p>
+                      <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">
+                        Date
+                      </p>
                       <p className="font-bold text-sm sm:text-base break-words">
                         {formatLongDate(selectedEvent.date)}
                       </p>
@@ -620,21 +634,26 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
 
                   {/* Time */}
                   <div className="flex items-start gap-3">
-                    <div 
+                    <div
                       className="p-2 rounded-lg flex-shrink-0"
-                      style={{ backgroundColor: "rgba(var(--color-orange-rgb, 251, 146, 60), 0.1)" }}
+                      style={{
+                        backgroundColor:
+                          "rgba(var(--color-orange-rgb, 251, 146, 60), 0.1)",
+                      }}
                     >
-                      <svg 
-                        className="w-5 h-5" 
-                        fill="currentColor" 
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
                         viewBox="0 0 24 24"
                         style={{ color: "var(--color-orange)" }}
                       >
-                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
                       </svg>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">Time</p>
+                      <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">
+                        Time
+                      </p>
                       <p className="font-bold text-sm sm:text-base break-words">
                         {selectedEvent.time}
                       </p>
@@ -643,21 +662,26 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
 
                   {/* Location */}
                   <div className="flex items-start gap-3">
-                    <div 
+                    <div
                       className="p-2 rounded-lg flex-shrink-0"
-                      style={{ backgroundColor: "rgba(var(--color-pink-rgb, 244, 114, 182), 0.1)" }}
+                      style={{
+                        backgroundColor:
+                          "rgba(var(--color-pink-rgb, 244, 114, 182), 0.1)",
+                      }}
                     >
-                      <svg 
-                        className="w-5 h-5" 
-                        fill="currentColor" 
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
                         viewBox="0 0 24 24"
                         style={{ color: "var(--color-pink)" }}
                       >
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                       </svg>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">Location</p>
+                      <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">
+                        Location
+                      </p>
                       <p className="font-bold text-sm sm:text-base break-words">
                         {selectedEvent.location}
                       </p>
@@ -667,21 +691,26 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                   {/* Price */}
                   {selectedEvent.price && (
                     <div className="flex items-start gap-3">
-                      <div 
+                      <div
                         className="p-2 rounded-lg flex-shrink-0"
-                        style={{ backgroundColor: "rgba(var(--color-orange-rgb, 251, 146, 60), 0.1)" }}
+                        style={{
+                          backgroundColor:
+                            "rgba(var(--color-orange-rgb, 251, 146, 60), 0.1)",
+                        }}
                       >
-                        <svg 
-                          className="w-5 h-5" 
-                          fill="currentColor" 
+                        <svg
+                          className="w-5 h-5"
+                          fill="currentColor"
                           viewBox="0 0 24 24"
                           style={{ color: "var(--color-orange)" }}
                         >
-                          <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                          <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" />
                         </svg>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">Price</p>
+                        <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">
+                          Price
+                        </p>
                         <p className="font-bold text-sm sm:text-base break-words">
                           {selectedEvent.price}
                         </p>
@@ -692,21 +721,26 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                   {/* Category */}
                   {selectedEvent.category && (
                     <div className="flex items-start gap-3">
-                      <div 
+                      <div
                         className="p-2 rounded-lg flex-shrink-0"
-                        style={{ backgroundColor: "rgba(var(--color-green-rgb, 74, 222, 128), 0.1)" }}
+                        style={{
+                          backgroundColor:
+                            "rgba(var(--color-green-rgb, 74, 222, 128), 0.1)",
+                        }}
                       >
-                        <svg 
-                          className="w-5 h-5" 
-                          fill="currentColor" 
+                        <svg
+                          className="w-5 h-5"
+                          fill="currentColor"
                           viewBox="0 0 24 24"
                           style={{ color: "var(--color-green)" }}
                         >
-                          <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/>
+                          <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z" />
                         </svg>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">Category</p>
+                        <p className="text-[10px] sm:text-xs uppercase opacity-60 mb-0.5">
+                          Category
+                        </p>
                         <p className="font-bold text-sm sm:text-base break-words">
                           {selectedEvent.category}
                         </p>
@@ -717,7 +751,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
 
                 {/* Description */}
                 {selectedEvent.description && (
-                  <div 
+                  <div
                     className="mt-2 p-3 sm:p-4 rounded-xl border"
                     style={{
                       backgroundColor: "var(--color-pink)",
@@ -725,7 +759,9 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                       borderColor: "var(--color-font)",
                     }}
                   >
-                    <p className="text-xs sm:text-sm font-bold mb-1 sm:mb-2">Description</p>
+                    <p className="text-xs sm:text-sm font-bold mb-1 sm:mb-2">
+                      Description
+                    </p>
                     <p className="text-xs sm:text-sm leading-relaxed break-words">
                       {selectedEvent.description}
                     </p>
