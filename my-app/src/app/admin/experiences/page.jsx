@@ -134,27 +134,29 @@ export default function AdminExperiencesPage() {
   })();
 
   return (
-    <div className="p-8">
+    <div className="p-8" style={{ backgroundColor: "var(--bg)" }}>
       <div className="mb-8">
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold" style={{ color: "var(--dark-teal)" }}>
               Experience Management
             </h1>
-            <p className="text-gray-600 mt-1">
+            <p className="mt-1" style={{ color: "var(--font)" }}>
               Manage all experiences by category
             </p>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={() => router.push("/admin/experiences/create")}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold flex items-center gap-2"
+              className="px-6 py-3 text-white rounded-lg font-semibold flex items-center gap-2 hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: "var(--dark-teal)" }}
             >
               <Plus size={20} /> Create Experience
             </button>
             <button
               onClick={fetchExperiences}
-              className="px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium flex items-center gap-2 border border-gray-300"
+              className="px-4 py-3 rounded-lg font-medium flex items-center gap-2 hover:opacity-90 transition-opacity border-2"
+              style={{ backgroundColor: "var(--light-blue)", borderColor: "var(--light-blue)", color: "var(--dark-teal)" }}
             >
               <RefreshCw size={18} /> Refresh
             </button>
@@ -163,12 +165,13 @@ export default function AdminExperiencesPage() {
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div className="mb-6 p-4 rounded-lg border-2" style={{ backgroundColor: "#f5cfc2", borderColor: "var(--light-orange)" }}>
           <div className="flex items-center">
             <svg
-              className="w-5 h-5 text-red-600 mr-2"
+              className="w-5 h-5 mr-2"
               fill="currentColor"
               viewBox="0 0 20 20"
+              style={{ color: "var(--light-orange)" }}
             >
               <path
                 fillRule="evenodd"
@@ -176,15 +179,15 @@ export default function AdminExperiencesPage() {
                 clipRule="evenodd"
               />
             </svg>
-            <span className="text-red-600 font-medium">{error}</span>
+            <span className="font-medium" style={{ color: "var(--light-orange)" }}>{error}</span>
           </div>
         </div>
       )}
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          <p className="text-gray-600 mt-4">Loading experiences...</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2" style={{ borderColor: "var(--dark-teal)" }}></div>
+          <p className="mt-4" style={{ color: "var(--font)" }}>Loading experiences...</p>
         </div>
       ) : (
         <div className="space-y-8">
@@ -192,15 +195,15 @@ export default function AdminExperiencesPage() {
             ([catId, { label, experiences: exps }]) => (
               <div key={catId}>
                 <div className="flex items-center gap-3 mb-4">
-                  <h2 className="text-2xl font-bold text-gray-900">{label}</h2>
-                  <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
+                  <h2 className="text-2xl font-bold" style={{ color: "var(--dark-teal)" }}>{label}</h2>
+                  <span className="px-3 py-1 rounded-full text-sm font-semibold" style={{ backgroundColor: "var(--light-blue)", color: "var(--dark-teal)" }}>
                     {exps.length}
                   </span>
                 </div>
 
                 {exps.length === 0 ? (
-                  <div className="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300 text-center">
-                    <p className="text-gray-500">
+                  <div className="rounded-lg p-6 border-2 border-dashed text-center" style={{ backgroundColor: "#FBF1E1", borderColor: "var(--light-blue)" }}>
+                    <p style={{ color: "var(--font)" }}>
                       No experiences in this category yet
                     </p>
                   </div>
@@ -209,31 +212,32 @@ export default function AdminExperiencesPage() {
                     {exps.map((experience) => (
                       <div
                         key={experience.id}
-                        className="bg-white rounded-lg p-5 shadow border border-gray-200 hover:border-gray-300 transition-colors"
+                        className="rounded-lg p-5 shadow border-2 hover:border-opacity-80 transition-colors"
+                        style={{ backgroundColor: "white", borderColor: "var(--light-blue)" }}
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <div className="flex items-center gap-3 mb-2 flex-wrap">
-                              <h3 className="text-lg font-bold text-gray-900">
+                              <h3 className="text-lg font-bold" style={{ color: "var(--dark-teal)" }}>
                                 {experience.title}
                               </h3>
                               <span
-                                className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                  experience.isPublished
-                                    ? "bg-green-100 text-green-800"
-                                    : "bg-yellow-100 text-yellow-800"
-                                }`}
+                                className={`px-3 py-1 rounded-full text-xs font-semibold`}
+                                style={{
+                                  backgroundColor: experience.isPublished ? "var(--green)" : "var(--orange)",
+                                  color: experience.isPublished ? "var(--dark-teal)" : "#5d4a04"
+                                }}
                               >
                                 {experience.isPublished ? "Published" : "Draft"}
                               </span>
                             </div>
                             {experience.excerpt && (
-                              <p className="text-gray-600 mb-2 text-sm">
+                              <p className="mb-2 text-sm" style={{ color: "var(--font)" }}>
                                 {experience.excerpt}
                               </p>
                             )}
 
-                            <div className="flex items-center gap-3 text-xs text-gray-500 flex-wrap">
+                            <div className="flex items-center gap-3 text-xs flex-wrap" style={{ color: "var(--font)" }}>
                               <span>
                                 By {experience.author?.email || "Admin"}
                               </span>
@@ -257,13 +261,13 @@ export default function AdminExperiencesPage() {
                           </div>
 
                           <div className="flex items-center gap-2 ml-4 mt-2">
-                            <div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 text-emerald-600 rounded text-xs border border-emerald-200">
+                            <div className="flex items-center gap-1 px-2 py-1 rounded text-xs border-2" style={{ backgroundColor: "var(--green)", borderColor: "var(--green)", color: "var(--dark-teal)" }}>
                               <ThumbsUp className="text-xs" size={14} />
                               <span className="font-semibold">
                                 {experience.upvotes || 0}
                               </span>
                             </div>
-                            <div className="flex items-center gap-1 px-2 py-1 bg-red-50 text-red-600 rounded text-xs border border-red-200">
+                            <div className="flex items-center gap-1 px-2 py-1 rounded text-xs border-2" style={{ backgroundColor: "var(--pink)", borderColor: "var(--light-orange)", color: "var(--light-orange)" }}>
                               <ThumbsDown className="text-xs" size={14} />
                               <span className="font-semibold">
                                 {experience.downvotes || 0}
@@ -278,23 +282,25 @@ export default function AdminExperiencesPage() {
                                   `/admin/experiences/edit/${experience.id}`
                                 )
                               }
-                              className="px-3 py-2 bg-blue-50 text-blue-700 rounded hover:bg-blue-100 text-sm font-medium flex items-center gap-1"
+                              className="px-3 py-2 rounded hover:opacity-80 text-sm font-medium flex items-center gap-1 transition-opacity"
+                              style={{ backgroundColor: "var(--light-blue)", color: "var(--dark-teal)" }}
                             >
                               <Edit size={14} /> Edit
                             </button>
                             <button
                               onClick={() => handleTogglePublish(experience)}
-                              className={`px-3 py-2 rounded text-sm font-medium ${
-                                experience.isPublished
-                                  ? "bg-yellow-50 text-yellow-700 hover:bg-yellow-100"
-                                  : "bg-green-50 text-green-700 hover:bg-green-100"
-                              }`}
+                              className={`px-3 py-2 rounded text-sm font-medium transition-opacity hover:opacity-80`}
+                              style={{
+                                backgroundColor: experience.isPublished ? "var(--orange)" : "var(--green)",
+                                color: experience.isPublished ? "#5d4a04" : "var(--dark-teal)"
+                              }}
                             >
                               {experience.isPublished ? "Unpublish" : "Publish"}
                             </button>
                             <button
                               onClick={() => handleDelete(experience.id)}
-                              className="px-3 py-2 bg-red-50 text-red-700 rounded hover:bg-red-100 text-sm font-medium flex items-center gap-1"
+                              className="px-3 py-2 rounded text-sm font-medium flex items-center gap-1 transition-opacity hover:opacity-80"
+                              style={{ backgroundColor: "var(--pink)", color: "var(--light-orange)" }}
                             >
                               <Trash2 size={14} /> Delete
                             </button>
@@ -309,15 +315,16 @@ export default function AdminExperiencesPage() {
           )}
 
           {experiences.length === 0 && (
-            <div className="text-center py-12 bg-gray-50 rounded-xl">
+            <div className="text-center py-12 rounded-xl" style={{ backgroundColor: "#FBF1E1" }}>
               <div className="text-6xl mb-4">🎉</div>
-              <p className="text-gray-700 text-lg mb-2">No experiences yet</p>
-              <p className="text-gray-500">
+              <p className="text-lg mb-2" style={{ color: "var(--dark-teal)" }}>No experiences yet</p>
+              <p style={{ color: "var(--font)" }}>
                 Create your first experience to get started
               </p>
               <button
                 onClick={() => router.push("/admin/experiences/create")}
-                className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="mt-4 px-6 py-2 text-white rounded-lg hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: "var(--dark-teal)" }}
               >
                 Create First Experience
               </button>

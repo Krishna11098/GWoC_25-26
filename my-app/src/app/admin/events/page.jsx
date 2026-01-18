@@ -143,8 +143,8 @@ export default function AllEventsPage() {
       // Update local state
       setEvents(
         events.map((event) =>
-          event.id === eventId ? { ...event, active: !currentActive } : event
-        )
+          event.id === eventId ? { ...event, active: !currentActive } : event,
+        ),
       );
 
       alert(`✅ Event ${!currentActive ? "activated" : "deactivated"}!`);
@@ -223,42 +223,40 @@ export default function AllEventsPage() {
         </div>
 
         {/* Stats Cards */}
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-6 gap-4">
-          <div className="bg-white p-4 rounded-xl shadow border">
-            <div className="text-2xl font-bold text-blue-600">
-              {stats.total}
-            </div>
-            <div className="text-sm text-gray-600">Total Events</div>
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="bg-white p-3 rounded-lg shadow border">
+            <div className="text-xl font-bold text-blue-600">{stats.total}</div>
+            <div className="text-xs text-gray-600">Total Events</div>
           </div>
-          <div className="bg-white p-4 rounded-xl shadow border">
-            <div className="text-2xl font-bold text-green-600">
+          <div className="bg-white p-3 rounded-lg shadow border">
+            <div className="text-xl font-bold text-green-600">
               {stats.upcoming}
             </div>
-            <div className="text-sm text-gray-600">Upcoming</div>
+            <div className="text-xs text-gray-600">Upcoming</div>
           </div>
-          <div className="bg-white p-4 rounded-xl shadow border">
-            <div className="text-2xl font-bold text-purple-600">
+          <div className="bg-white p-3 rounded-lg shadow border">
+            <div className="text-xl font-bold text-dark-teal">
               {stats.free}
             </div>
-            <div className="text-sm text-gray-600">Free Events</div>
+            <div className="text-xs text-gray-600">Free Events</div>
           </div>
-          <div className="bg-white p-4 rounded-xl shadow border">
-            <div className="text-2xl font-bold text-orange-600">
+          <div className="bg-white p-3 rounded-lg shadow border">
+            <div className="text-xl font-bold text-orange-600">
               {stats.paid}
             </div>
-            <div className="text-sm text-gray-600">Paid Events</div>
+            <div className="text-xs text-gray-600">Paid Events</div>
           </div>
-          <div className="bg-white p-4 rounded-xl shadow border">
-            <div className="text-2xl font-bold text-indigo-600">
+          <div className="bg-white p-3 rounded-lg shadow border">
+            <div className="text-xl font-bold text-dark-teal">
               {stats.bookedSeats}
             </div>
-            <div className="text-sm text-gray-600">Booked Seats</div>
+            <div className="text-xs text-gray-600">Booked Seats</div>
           </div>
-          <div className="bg-white p-4 rounded-xl shadow border">
-            <div className="text-2xl font-bold text-cyan-600">
+          <div className="bg-white p-3 rounded-lg shadow border">
+            <div className="text-xl font-bold text-light-blue">
               {stats.occupancyRate}%
             </div>
-            <div className="text-sm text-gray-600">Occupancy Rate</div>
+            <div className="text-xs text-gray-600">Occupancy Rate</div>
           </div>
         </div>
       </div>
@@ -401,8 +399,8 @@ export default function AllEventsPage() {
                                   occupancyPercentage > 80
                                     ? "#ef4444"
                                     : occupancyPercentage > 50
-                                    ? "#f59e0b"
-                                    : "#10b981",
+                                      ? "#f59e0b"
+                                      : "#10b981",
                               }}
                             ></div>
                           </div>
@@ -419,7 +417,8 @@ export default function AllEventsPage() {
                             ₹{event.price} per seat
                           </div>
                           <div className="text-yellow-600">
-                            {event.coinsPerSeat || event.coinsReward || 0} coins per seat
+                            {event.coinsPerSeat || event.coinsReward || 0} coins
+                            per seat
                           </div>
                           <div className="text-xs text-gray-500">
                             Max: {event.maxSeatsPerUser} per user
@@ -435,10 +434,10 @@ export default function AllEventsPage() {
                               status.color === "green"
                                 ? "bg-green-100 text-green-800"
                                 : status.color === "red"
-                                ? "bg-red-100 text-red-800"
-                                : status.color === "yellow"
-                                ? "bg-yellow-100 text-yellow-800"
-                                : "bg-gray-100 text-gray-800"
+                                  ? "bg-red-100 text-red-800"
+                                  : status.color === "yellow"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-gray-100 text-gray-800"
                             }`}
                           >
                             {status.text}
@@ -447,7 +446,7 @@ export default function AllEventsPage() {
                             onClick={() =>
                               handleToggleStatus(
                                 event.id,
-                                event.active !== false
+                                event.active !== false,
                               )
                             }
                             className={`text-xs px-2 py-1 rounded w-fit ${

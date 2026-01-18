@@ -197,7 +197,7 @@ export default function EventsPage() {
                       <span className="text-gray-800 uppercase tracking-tight">{selectedCategory === 'upcoming' ? 'UPCOMING' : 'PREVIOUS'}</span>
                     </h2>
                     <h3 className="text-6xl md:text-7xl font-serif italic text-gray-800 mb-6" style={{
-                      background: 'linear-gradient(to right, #FFD700 0%, #FFD700 100%)',
+                      background: 'linear-gradient(to right, var(--light-orange) 0%, var(--light-orange) 100%)',
                       backgroundPosition: '0 85%',
                       backgroundSize: '100% 30%',
                       backgroundRepeat: 'no-repeat',
@@ -324,7 +324,7 @@ export default function EventsPage() {
                                 <div className="mb-8">
                                   <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden border-2 border-gray-800">
                                     <div
-                                      className="h-full bg-gradient-to-r from-yellow-400 to-yellow-500 transition-all duration-500"
+                                      className="h-full bg-gradient-to-r from-[var(--light-orange)] to-[var(--dark-teal)] transition-all duration-500"
                                       style={{ width: `${registrationPercentage}%` }}
                                     ></div>
                                   </div>
@@ -342,7 +342,8 @@ export default function EventsPage() {
                                       </button>
                                       <button
                                         onClick={() => router.push(`/events/${event.id}`)}
-                                        className="flex-1 min-w-[200px] px-6 py-4 bg-purple-600 text-white rounded-xl font-bold hover:bg-purple-700 transition-all duration-200 uppercase tracking-wide shadow-lg"
+                                        className="flex-1 min-w-[200px] px-6 py-4 text-white rounded-xl font-bold hover:opacity-90 transition-all duration-200 uppercase tracking-wide shadow-lg"
+                                        style={{ backgroundColor: "var(--dark-teal)" }}
                                       >
                                         Register Now
                                       </button>

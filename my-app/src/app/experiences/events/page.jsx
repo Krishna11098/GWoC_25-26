@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogPage from "@/components/BlogPage";
+import SoftWaveBackground from "@/components/SoftWaveBackground";
 
 export default function EventsPage() {
   const searchParams = useSearchParams();
@@ -16,7 +17,12 @@ export default function EventsPage() {
   useEffect(() => {
     const fetchExperiences = async () => {
       try {
-        const res = await fetch("/api/experiences" + (categoryParam ? `?category=${encodeURIComponent(categoryParam)}` : ""));
+        const res = await fetch(
+          "/api/experiences" +
+            (categoryParam
+              ? `?category=${encodeURIComponent(categoryParam)}`
+              : ""),
+        );
         if (!res.ok) throw new Error("Failed to load experiences");
         const data = await res.json();
         const expsArray = data?.experiences || data || [];
@@ -36,7 +42,9 @@ export default function EventsPage() {
   }, [categoryParam]);
 
   const filtered = categoryParam
-    ? experiences.filter((e) => (e.category || "").toLowerCase() === categoryParam.toLowerCase())
+    ? experiences.filter(
+        (e) => (e.category || "").toLowerCase() === categoryParam.toLowerCase(),
+      )
     : experiences;
 
   // Map experiences to blog post shape expected by BlogPage
@@ -53,7 +61,17 @@ export default function EventsPage() {
     return (
       <>
         <Navbar />
-        <div className="mt-20 pt-8 text-center">Loading experiences...</div>
+        <div
+          className="min-h-screen pt-20"
+          style={{ backgroundColor: "var(--bg)" }}
+        >
+          <div
+            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center"
+            style={{ color: "var(--dark-teal)" }}
+          >
+            Loading experiences...
+          </div>
+        </div>
         <Footer />
       </>
     );
@@ -62,8 +80,13 @@ export default function EventsPage() {
   return (
     <>
       <Navbar />
-      <div className="mt-20 pt-8">
-        <BlogPage blogPosts={blogPosts} loading={loading} showVotes={false} />
+      <div
+        className="min-h-screen relative"
+      >
+        <SoftWaveBackground height="400px" />
+        <div className="pt-8 relative z-10">
+          <BlogPage blogPosts={blogPosts} loading={loading} showVotes={false} />
+        </div>
       </div>
       <Footer />
     </>
