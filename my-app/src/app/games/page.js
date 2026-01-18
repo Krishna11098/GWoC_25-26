@@ -181,7 +181,14 @@ export default function GamesPage() {
   // Extract unique player counts manually or dynamically.
   // Given the variety (2-4, 3-8, etc.), let's hardcode some ranges or simplified options if needed,
   // but for now let's just use unique values found in gameDetails to avoid mismatch.
-  const uniquePlayers = ["All", ...new Set(Object.values(gameDetails).map((d) => d.players).filter(Boolean))];
+  const uniquePlayers = [
+    "All",
+    ...new Set(
+      Object.values(gameDetails)
+        .map((d) => d.players)
+        .filter(Boolean),
+    ),
+  ];
 
   // Hardcoded ages for now as they are added below
   const uniqueAges = ["All", "8+", "10+", "12+", "14+", "18+", "21+"];
@@ -263,7 +270,6 @@ export default function GamesPage() {
 
           {/* Filter Bar */}
           <div className="mb-12 flex flex-col md:flex-row flex-wrap gap-6 justify-center items-center">
-
             <h2 className="text-2xl font-bold text-[var(--dark-teal)] mr-2 flex items-center gap-2">
               <span className="bg-[var(--orange)] w-2 h-8 rounded-full inline-block"></span>
               Select Filters
@@ -274,18 +280,28 @@ export default function GamesPage() {
               <div className="relative group">
                 <select
                   value={filters.type}
-                  onChange={(e) => setFilters({ ...filters, type: e.target.value })}
+                  onChange={(e) =>
+                    setFilters({ ...filters, type: e.target.value })
+                  }
                   className="appearance-none bg-white/80 backdrop-blur-sm border-2 border-[var(--dark-teal)] text-[var(--dark-teal)] font-bold py-3 px-6 pr-12 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[var(--orange)]"
                 >
                   {uniqueCategories.map((cat) => (
                     <option key={cat} value={cat}>
-                      {cat === "All" ? "All Types" : cat.replace(/_/g, " ").toUpperCase()}
+                      {cat === "All"
+                        ? "All Types"
+                        : cat.replace(/_/g, " ").toUpperCase()}
                     </option>
                   ))}
                 </select>
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--dark-teal)]">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M2.5 4.5L6 8L9.5 4.5"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </div>
               </div>
@@ -294,12 +310,14 @@ export default function GamesPage() {
               <div className="relative group">
                 <select
                   value={filters.players}
-                  onChange={(e) => setFilters({ ...filters, players: e.target.value })}
+                  onChange={(e) =>
+                    setFilters({ ...filters, players: e.target.value })
+                  }
                   className="appearance-none bg-white/80 backdrop-blur-sm border-2 border-[var(--dark-teal)] text-[var(--dark-teal)] font-bold py-3 px-6 pr-12 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[var(--orange)]"
                 >
                   <option value="All">All Players</option>
                   {uniquePlayers
-                    .filter(p => p !== "All")
+                    .filter((p) => p !== "All")
                     .map((p) => (
                       <option key={p} value={p}>
                         {p}
@@ -308,7 +326,13 @@ export default function GamesPage() {
                 </select>
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--dark-teal)]">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M2.5 4.5L6 8L9.5 4.5"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </div>
               </div>
@@ -317,19 +341,29 @@ export default function GamesPage() {
               <div className="relative group hidden md:block">
                 <select
                   value={filters.age}
-                  onChange={(e) => setFilters({ ...filters, age: e.target.value })}
+                  onChange={(e) =>
+                    setFilters({ ...filters, age: e.target.value })
+                  }
                   className="appearance-none bg-white/80 backdrop-blur-sm border-2 border-[var(--dark-teal)] text-[var(--dark-teal)] font-bold py-3 px-6 pr-12 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[var(--orange)]"
                 >
                   <option value="All">All Ages</option>
-                  {uniqueAges.filter(a => a !== "All").map((a) => (
-                    <option key={a} value={a}>
-                      {a}
-                    </option>
-                  ))}
+                  {uniqueAges
+                    .filter((a) => a !== "All")
+                    .map((a) => (
+                      <option key={a} value={a}>
+                        {a}
+                      </option>
+                    ))}
                 </select>
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--dark-teal)]">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M2.5 4.5L6 8L9.5 4.5"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </div>
               </div>
@@ -358,9 +392,19 @@ export default function GamesPage() {
                     onMouseEnter={() => setHoveredCard(item.id)}
                     onMouseLeave={() => setHoveredCard(null)}
                   >
+                    {/* Click for Details - Mobile Only */}
+                    <div className="md:hidden mb-2">
+                      <p
+                        className="text-xs font-semibold"
+                        style={{ color: "var(--dark-teal)" }}
+                      >
+                        Click for details
+                      </p>
+                    </div>
+
                     {/* Card Container with 3D Flip */}
                     <div
-                      className="relative h-[520px] transition-transform duration-700 ease-out"
+                      className="relative h-[280px] md:h-[520px] transition-transform duration-700 ease-out"
                       style={{
                         transformStyle: "preserve-3d",
                         transform:
@@ -385,24 +429,24 @@ export default function GamesPage() {
 
                         {/* Game Info */}
                         <div
-                          className="h-1/4 p-6"
+                          className="h-1/4 p-2 md:p-6"
                           style={{ backgroundColor: "var(--bg)" }}
                         >
                           <h3
-                            className="text-2xl font-bold mb-2 line-clamp-1"
+                            className="text-sm md:text-2xl font-bold mb-1 md:mb-2 line-clamp-1"
                             style={{ color: "var(--dark-teal)" }}
                           >
                             {item.name}
                           </h3>
-                          <div className="flex items-center justify-between">
+                          <div className="flex items-center justify-between gap-2">
                             <span
-                              className="text-2xl font-bold"
+                              className="text-sm md:text-2xl font-bold"
                               style={{ color: "var(--dark-teal)" }}
                             >
                               Rs. {item.price}
                             </span>
                             <span
-                              className="text-sm font-semibold px-3 py-1 rounded-full"
+                              className="text-xs md:text-sm font-semibold px-2 md:px-3 py-0.5 md:py-1 rounded-full"
                               style={{
                                 backgroundColor: "var(--green)",
                                 color: "var(--dark-teal)",
@@ -567,13 +611,15 @@ export default function GamesPage() {
             </motion.div>
             {filteredItems.length === 0 && (
               <div className="text-center py-20">
-                <h3 className="text-2xl font-bold text-[var(--dark-teal)]">No games found</h3>
+                <h3 className="text-2xl font-bold text-[var(--dark-teal)]">
+                  No games found
+                </h3>
                 <p className="text-gray-500">Try adjusting your filters.</p>
               </div>
             )}
           </div>
         </div>
-      </div >
+      </div>
 
       <Footer />
     </>
