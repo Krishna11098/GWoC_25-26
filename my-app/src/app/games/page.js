@@ -8,10 +8,10 @@ import FloatingCartButton from "@/components/FloatingCartButton";
 import ShopWithFilters from "@/components/ShopWithFilters";
 import AddToCartButton from "@/components/AddToCartButton";
 import SoftWaveBackground from "@/components/SoftWaveBackground";
-
-export default function GamesPage() {
+function GamesPage() {
   const [products, setProducts] = useState([]);
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [flippedCard, setFlippedCard] = useState(null); // for mobile click-to-flip
 
   useEffect(() => {
     async function fetchProducts() {
@@ -220,6 +220,9 @@ export default function GamesPage() {
     return true;
   });
 
+  // Helper to detect mobile
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
   return (
     <>
       <Navbar />
@@ -259,7 +262,7 @@ export default function GamesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="mt-8 text-lg md:text-xl text-gray-700 font-medium"
+              className="mt-8 text-lg md:text-xl font-medium text-[var(--dark-teal)]"
             >
               Browse premium games and expand your collection
             </motion.p>
@@ -269,21 +272,21 @@ export default function GamesPage() {
           </div>
 
           {/* Filter Bar */}
-          <div className="mb-12 flex flex-col md:flex-row flex-wrap gap-6 justify-center items-center">
-            <h2 className="text-2xl font-bold text-[var(--dark-teal)] mr-2 flex items-center gap-2">
+          <div className="mb-12 flex flex-col md:flex-row flex-wrap gap-4 md:gap-6 justify-center items-center w-full">
+            <h2 className="text-3xl md:text-4xl font-bold text-[var(--dark-teal)] mr-0 md:mr-2 flex items-center gap-2 w-full md:w-auto">
               <span className="bg-[var(--orange)] w-2 h-8 rounded-full inline-block"></span>
               Select Filters
             </h2>
 
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-col md:flex-row gap-3 md:gap-4 justify-center w-full md:w-auto">
               {/* Type Filter */}
-              <div className="relative group">
+              <div className="relative group w-full md:w-auto min-w-[180px] max-w-xs md:max-w-none">
                 <select
                   value={filters.type}
                   onChange={(e) =>
                     setFilters({ ...filters, type: e.target.value })
                   }
-                  className="appearance-none bg-white/80 backdrop-blur-sm border-2 border-[var(--dark-teal)] text-[var(--dark-teal)] font-bold py-3 px-6 pr-12 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[var(--orange)]"
+                  className="appearance-none bg-white/80 backdrop-blur-sm border-2 border-[var(--dark-teal)] text-[var(--dark-teal)] font-bold text-lg py-3 px-6 pr-12 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[var(--orange)] w-full"
                 >
                   {uniqueCategories.map((cat) => (
                     <option key={cat} value={cat}>
@@ -307,13 +310,13 @@ export default function GamesPage() {
               </div>
 
               {/* Players Filter */}
-              <div className="relative group">
+              <div className="relative group w-full md:w-auto min-w-[180px] max-w-xs md:max-w-none">
                 <select
                   value={filters.players}
                   onChange={(e) =>
                     setFilters({ ...filters, players: e.target.value })
                   }
-                  className="appearance-none bg-white/80 backdrop-blur-sm border-2 border-[var(--dark-teal)] text-[var(--dark-teal)] font-bold py-3 px-6 pr-12 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[var(--orange)]"
+                  className="appearance-none bg-white/80 backdrop-blur-sm border-2 border-[var(--dark-teal)] text-[var(--dark-teal)] font-bold text-lg py-3 px-6 pr-12 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[var(--orange)] w-full"
                 >
                   <option value="All">All Players</option>
                   {uniquePlayers
@@ -338,13 +341,13 @@ export default function GamesPage() {
               </div>
 
               {/* Age Filter */}
-              <div className="relative group hidden md:block">
+              <div className="relative group w-full md:w-auto min-w-[180px] max-w-xs md:max-w-none">
                 <select
                   value={filters.age}
                   onChange={(e) =>
                     setFilters({ ...filters, age: e.target.value })
                   }
-                  className="appearance-none bg-white/80 backdrop-blur-sm border-2 border-[var(--dark-teal)] text-[var(--dark-teal)] font-bold py-3 px-6 pr-12 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[var(--orange)]"
+                  className="appearance-none bg-white/80 backdrop-blur-sm border-2 border-[var(--dark-teal)] text-[var(--dark-teal)] font-bold text-lg py-3 px-6 pr-12 rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[var(--orange)] w-full"
                 >
                   <option value="All">All Ages</option>
                   {uniqueAges
@@ -376,237 +379,247 @@ export default function GamesPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10"
             >
               <AnimatePresence>
-                {filteredItems.map((item, index) => (
-                  <motion.div
-                    layout
-                    key={item.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="relative group cursor-pointer"
-                    style={{ perspective: "1200px" }}
-                    onMouseEnter={() => setHoveredCard(item.id)}
-                    onMouseLeave={() => setHoveredCard(null)}
-                  >
-                    {/* Click for Details - Mobile Only */}
-                    <div className="md:hidden mb-2">
-                      <p
-                        className="text-xs font-semibold"
-                        style={{ color: "var(--dark-teal)" }}
-                      >
-                        Click for details
-                      </p>
-                    </div>
-
-                    {/* Card Container with 3D Flip */}
-                    <div
-                      className="relative h-[280px] md:h-[520px] transition-transform duration-700 ease-out"
-                      style={{
-                        transformStyle: "preserve-3d",
-                        transform:
-                          hoveredCard === item.id
-                            ? "rotateY(180deg)"
-                            : "rotateY(0deg)",
+                {filteredItems.map((item, index) => {
+                  const isFlipped = isMobile
+                    ? flippedCard === item.id
+                    : hoveredCard === item.id;
+                  return (
+                    <motion.div
+                      layout
+                      key={item.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="relative group cursor-pointer"
+                      style={{ perspective: "1200px" }}
+                      onMouseEnter={() => {
+                        if (!isMobile) setHoveredCard(item.id);
+                      }}
+                      onMouseLeave={() => {
+                        if (!isMobile) setHoveredCard(null);
+                      }}
+                      onClick={() => {
+                        if (isMobile)
+                          setFlippedCard(
+                            flippedCard === item.id ? null : item.id,
+                          );
                       }}
                     >
-                      {/* Front Side - Game Image & Basic Info */}
-                      <div
-                        className="absolute inset-0 rounded-3xl overflow-hidden shadow-xl border-2 border-white/50"
-                        style={{ backfaceVisibility: "hidden" }}
-                      >
-                        {/* Game Image */}
-                        <div className="h-3/4 overflow-hidden">
-                          <img
-                            src={imageById[item.id] || images[0]}
-                            alt={item.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        </div>
 
-                        {/* Game Info */}
+                      {/* Card Container with 3D Flip */}
+                      <div
+                        className="relative h-[420px] md:h-[600px] transition-transform duration-700 ease-out"
+                        style={{
+                          transformStyle: "preserve-3d",
+                          transform: isFlipped
+                            ? "rotateY(180deg)"
+                            : "rotateY(0deg)",
+                        }}
+                      >
+                        {/* Front Side - Game Image & Basic Info */}
                         <div
-                          className="h-1/4 p-2 md:p-6"
-                          style={{ backgroundColor: "var(--bg)" }}
+                          className="absolute inset-0 rounded-3xl overflow-hidden shadow-xl border-2 border-white/50"
+                          style={{ backfaceVisibility: "hidden" }}
                         >
-                          <h3
-                            className="text-sm md:text-2xl font-bold mb-1 md:mb-2 line-clamp-1"
-                            style={{ color: "var(--dark-teal)" }}
+                          {/* Game Image */}
+                          <div className="h-3/4 overflow-hidden">
+                            <img
+                              src={imageById[item.id] || images[0]}
+                              alt={item.name}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          </div>
+
+                          {/* Game Info */}
+                          <div
+                            className="h-1/4 p-4 md:p-6"
+                            style={{ backgroundColor: "var(--bg)" }}
                           >
-                            {item.name}
-                          </h3>
-                          <div className="flex items-center justify-between gap-2">
-                            <span
-                              className="text-sm md:text-2xl font-bold"
+                            <h3
+                              className="text-xl font-bold mb-1 md:mb-2 line-clamp-1"
                               style={{ color: "var(--dark-teal)" }}
                             >
-                              Rs. {item.price}
-                            </span>
-                            <span
-                              className="text-xs md:text-sm font-semibold px-2 md:px-3 py-0.5 md:py-1 rounded-full"
+                              {item.name}
+                            </h3>
+                            <div className="flex items-center justify-between gap-2">
+                              <span
+                                className="text-lg font-bold"
+                                style={{ color: "var(--dark-teal)" }}
+                              >
+                                Rs. {item.price}
+                              </span>
+                              <span
+                                className="text-xs md:text-sm font-semibold px-2 md:px-3 py-0.5 md:py-1 rounded-full"
+                                style={{
+                                  backgroundColor: "var(--green)",
+                                  color: "var(--dark-teal)",
+                                }}
+                              >
+                                {/* Shorten category name if long */}
+                                {item.category.replace("_", " ").split(" ")[0]}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Mobile Flip Badge */}
+                          <div className="md:hidden absolute top-4 right-4 z-10">
+                            <div
+                              className="px-3 py-1.5 rounded-full text-[10px] font-bold shadow-lg flex items-center gap-1.5"
                               style={{
-                                backgroundColor: "var(--green)",
+                                backgroundColor: "var(--orange)",
+                                color: "var(--dark-teal)",
+                                border: "1px solid rgba(255,255,255,0.3)",
+                              }}
+                            >
+                              <span className="w-2 h-2 rounded-full bg-dark-teal animate-pulse"></span>
+                              CLICK TO FLIP
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Back Side - Detailed Info (Rotated) */}
+                        <div
+                          className="absolute inset-0 rounded-3xl overflow-hidden shadow-xl p-4 md:p-8 flex flex-col justify-between hidden-backface"
+                          style={{
+                            backfaceVisibility: "hidden",
+                            transform: "rotateY(180deg)",
+                            backgroundColor: "var(--dark-teal)",
+                          }}
+                        >
+                          {/* Decorative elements */}
+                          <div
+                            className="absolute top-0 right-0 w-40 h-40 rounded-full -mr-20 -mt-20 opacity-20"
+                            style={{ backgroundColor: "var(--orange)" }}
+                          ></div>
+                          <div
+                            className="absolute bottom-0 left-0 w-48 h-48 rounded-full -ml-24 -mb-24 opacity-15"
+                            style={{ backgroundColor: "var(--green)" }}
+                          ></div>
+
+                          <div className="relative z-10">
+                            <h4
+                              className="text-xl font-bold mb-4 md:mb-6"
+                              style={{ color: "var(--orange)" }}
+                            >
+                              GAME DOSSIER
+                            </h4>
+
+                            {/* Game Details */}
+                            <div className="space-y-1 md:space-y-2">
+                              <div>
+                                <div
+                                  className="text-sm font-semibold mb-1 opacity-70"
+                                  style={{ color: "var(--bg)" }}
+                                >
+                                  IDEAL GROUP
+                                </div>
+                                <div
+                                  className="text-lg font-bold"
+                                  style={{ color: "var(--bg)" }}
+                                >
+                                  {gameDetails[item.id]?.players ||
+                                    "2-6 Players"}
+                                </div>
+                              </div>
+
+                              {/* Add Age here */}
+                              <div>
+                                <div
+                                  className="text-sm font-semibold mb-1 opacity-70"
+                                  style={{ color: "var(--bg)" }}
+                                >
+                                  AGE GROUP
+                                </div>
+                                <div
+                                  className="text-lg font-bold"
+                                  style={{ color: "var(--bg)" }}
+                                >
+                                  {gameDetails[item.id]?.age || "8+"}
+                                </div>
+                              </div>
+
+                              <div>
+                                <div
+                                  className="text-sm font-semibold mb-1 opacity-70"
+                                  style={{ color: "var(--bg)" }}
+                                >
+                                  AVERAGE SESSION
+                                </div>
+                                <div
+                                  className="text-lg font-bold"
+                                  style={{ color: "var(--bg)" }}
+                                >
+                                  {gameDetails[item.id]?.duration || "30-45m"}
+                                </div>
+                              </div>
+
+                              <div>
+                                <div
+                                  className="text-sm font-semibold mb-1 opacity-70"
+                                  style={{ color: "var(--bg)" }}
+                                >
+                                  MOOD CHECK
+                                </div>
+                                <div
+                                  className="text-lg font-bold"
+                                  style={{ color: "var(--orange)" }}
+                                >
+                                  {gameDetails[item.id]?.mood || "Fun"}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Price and Actions */}
+                          <div
+                            className="relative z-10 space-y-3 md:space-y-4 border-t pt-4 md:pt-6"
+                            style={{ borderColor: "rgba(251, 241, 225, 0.2)" }}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <div
+                                  className="text-xl font-bold"
+                                  style={{ color: "var(--bg)" }}
+                                >
+                                  Rs. {item.price}
+                                </div>
+                              </div>
+                              <AddToCartButton
+                                gameId={item.id}
+                                className="!bg-[var(--orange)] !text-[var(--dark-teal)] hover:!opacity-90 shadow-lg font-bold"
+                              />
+                            </div>
+                            <a
+                              href={`/games/${item.id}`}
+                              className="block w-full text-center px-6 py-3 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:opacity-90"
+                              style={{
+                                backgroundColor: "var(--bg)",
                                 color: "var(--dark-teal)",
                               }}
                             >
-                              {/* Shorten category name if long */}
-                              {item.category.replace("_", " ").split(" ")[0]}
-                            </span>
+                              View Details
+                            </a>
                           </div>
                         </div>
-
-                        {/* Hover Indicator */}
-                        {/* <div
-                        className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-sm font-bold shadow-md"
-                        style={{
-                          backgroundColor: "var(--orange)",
-                          color: "var(--dark-teal)",
-                        }}
-                      >
-                        Hover to Flip
-                      </div> */}
                       </div>
 
-                      {/* Back Side - Detailed Info (Rotated) */}
+                      {/* Category Tag */}
                       <div
-                        className="absolute inset-0 rounded-3xl overflow-hidden shadow-xl p-8 flex flex-col justify-between hidden-backface"
+                        className="absolute -top-3 left-6 px-4 py-2 rounded-full text-sm font-bold shadow-lg z-10"
                         style={{
-                          backfaceVisibility: "hidden",
-                          transform: "rotateY(180deg)",
                           backgroundColor: "var(--dark-teal)",
+                          color: "var(--bg)",
                         }}
                       >
-                        {/* Decorative elements */}
-                        <div
-                          className="absolute top-0 right-0 w-40 h-40 rounded-full -mr-20 -mt-20 opacity-20"
-                          style={{ backgroundColor: "var(--orange)" }}
-                        ></div>
-                        <div
-                          className="absolute bottom-0 left-0 w-48 h-48 rounded-full -ml-24 -mb-24 opacity-15"
-                          style={{ backgroundColor: "var(--green)" }}
-                        ></div>
-
-                        <div className="relative z-10">
-                          <h4
-                            className="text-3xl font-bold mb-6"
-                            style={{ color: "var(--orange)" }}
-                          >
-                            GAME DOSSIER
-                          </h4>
-
-                          {/* Game Details */}
-                          <div className="space-y-4">
-                            <div>
-                              <div
-                                className="text-sm font-semibold mb-1 opacity-70"
-                                style={{ color: "var(--bg)" }}
-                              >
-                                IDEAL GROUP
-                              </div>
-                              <div
-                                className="text-2xl font-bold"
-                                style={{ color: "var(--bg)" }}
-                              >
-                                {gameDetails[item.id]?.players || "2-6 Players"}
-                              </div>
-                            </div>
-
-                            {/* Add Age here */}
-                            <div>
-                              <div
-                                className="text-sm font-semibold mb-1 opacity-70"
-                                style={{ color: "var(--bg)" }}
-                              >
-                                AGE GROUP
-                              </div>
-                              <div
-                                className="text-2xl font-bold"
-                                style={{ color: "var(--bg)" }}
-                              >
-                                {gameDetails[item.id]?.age || "8+"}
-                              </div>
-                            </div>
-
-                            <div>
-                              <div
-                                className="text-sm font-semibold mb-1 opacity-70"
-                                style={{ color: "var(--bg)" }}
-                              >
-                                AVERAGE SESSION
-                              </div>
-                              <div
-                                className="text-2xl font-bold"
-                                style={{ color: "var(--bg)" }}
-                              >
-                                {gameDetails[item.id]?.duration || "30-45m"}
-                              </div>
-                            </div>
-
-                            <div>
-                              <div
-                                className="text-sm font-semibold mb-1 opacity-70"
-                                style={{ color: "var(--bg)" }}
-                              >
-                                MOOD CHECK
-                              </div>
-                              <div
-                                className="text-2xl font-bold"
-                                style={{ color: "var(--orange)" }}
-                              >
-                                {gameDetails[item.id]?.mood || "Fun"}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Price and Actions */}
-                        <div
-                          className="relative z-10 space-y-4 border-t pt-6"
-                          style={{ borderColor: "rgba(251, 241, 225, 0.2)" }}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <div
-                                className="text-3xl font-bold"
-                                style={{ color: "var(--bg)" }}
-                              >
-                                Rs. {item.price}
-                              </div>
-                            </div>
-                            <AddToCartButton
-                              gameId={item.id}
-                              className="!bg-[var(--orange)] !text-[var(--dark-teal)] hover:!opacity-90 shadow-lg font-bold"
-                            />
-                          </div>
-                          <a
-                            href={`/games/${item.id}`}
-                            className="block w-full text-center px-6 py-3 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:opacity-90"
-                            style={{
-                              backgroundColor: "var(--bg)",
-                              color: "var(--dark-teal)",
-                            }}
-                          >
-                            View Details
-                          </a>
-                        </div>
+                        {item.category.replace("_", " ").toUpperCase()}
                       </div>
-                    </div>
-
-                    {/* Category Tag */}
-                    <div
-                      className="absolute -top-3 left-6 px-4 py-2 rounded-full text-sm font-bold shadow-lg z-10"
-                      style={{
-                        backgroundColor: "var(--dark-teal)",
-                        color: "var(--bg)",
-                      }}
-                    >
-                      {item.category.replace("_", " ").toUpperCase()}
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </AnimatePresence>
             </motion.div>
             {filteredItems.length === 0 && (
@@ -625,3 +638,5 @@ export default function GamesPage() {
     </>
   );
 }
+
+export default GamesPage;

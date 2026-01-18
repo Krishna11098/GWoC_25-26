@@ -72,7 +72,7 @@ export default function GameGrid({
   };
 
   return (
-    <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-2">
+    <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-4">
       {items.map((p, idx) => {
         const isFlipped = flipped[p.id];
         return (
@@ -126,6 +126,21 @@ export default function GameGrid({
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     priority={idx < 3}
                   />
+
+                  {/* Mobile Flip Badge */}
+                  <div className="sm:hidden absolute top-3 right-3 z-10">
+                    <div
+                      className="px-2.5 py-1.2 rounded-full text-[9px] font-black shadow-lg flex items-center gap-1.5"
+                      style={{
+                        backgroundColor: "var(--color-font)",
+                        color: "white",
+                        border: "1px solid rgba(255,255,255,0.3)",
+                      }}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                      CLICK TO FLIP
+                    </div>
+                  </div>
                 </div>
 
                 <div className="p-6 flex flex-col flex-1">
