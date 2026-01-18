@@ -14,12 +14,13 @@ import {
   Building2,
   Package,
   FerrisWheel,
-  
+  Ring,
   MessageSquare,
   Palette,
   Rocket,
   PartyPopper,
 } from "lucide-react";
+
 
 const categories = [
   {
