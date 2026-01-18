@@ -6,12 +6,9 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Calendar from "@/components/Calendar";
+import SoftWaveBackground from "@/components/SoftWaveBackground";
 import EventService from "@/app/lib/eventService";
-import {
-  Calendar as CalendarIcon,
-  MapPin,
-  Users,
-} from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Users } from "lucide-react";
 
 function parseEvents(events) {
   return events
@@ -36,11 +33,15 @@ function parseEvents(events) {
         }
       }
 
-      const isValidDate = dateValue instanceof Date && !isNaN(dateValue.getTime());
+      const isValidDate =
+        dateValue instanceof Date && !isNaN(dateValue.getTime());
       if (!isValidDate) return null;
 
       const title = event.title || event.name || "Untitled Event";
-      const description = event.description || event.fullDescription || "No description available.";
+      const description =
+        event.description ||
+        event.fullDescription ||
+        "No description available.";
       const location = event.location || event.venue || "Location TBD";
       const price = event.price || event.pricePerSeat || 0;
       const category = event.category || "general";
@@ -106,10 +107,14 @@ export default function EventsPage() {
 
   const addToGoogleCalendar = (event) => {
     const startDate = new Date(event.dateValue);
-    const [startH, startM] = (event.startTime || "10:00").split(':').map(Number);
+    const [startH, startM] = (event.startTime || "10:00")
+      .split(":")
+      .map(Number);
     startDate.setHours(startH, startM, 0);
 
-    const endDate = new Date(startDate.getTime() + (event.duration || 120) * 60000);
+    const endDate = new Date(
+      startDate.getTime() + (event.duration || 120) * 60000,
+    );
 
     const formatGCalDate = (date) => {
       return date.toISOString().replace(/-|:|\.\d\d\d/g, "");
@@ -124,21 +129,59 @@ export default function EventsPage() {
 
     const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startStr}/${endStr}&details=${details}&location=${location}&trp=false`;
 
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   };
 
-  const displayedEvents = selectedCategory === 'upcoming'
-    ? upcomingEvents
-    : selectedCategory === 'previous'
-      ? previousEvents
-      : [];
+  const displayedEvents =
+    selectedCategory === "upcoming"
+      ? upcomingEvents
+      : selectedCategory === "previous"
+        ? previousEvents
+        : [];
 
   return (
     <>
       <Navbar />
-      <main className="w-full py-10 relative min-h-screen bg-[#f5f5f0]">
+      <main className="w-full py-10 relative min-h-screen">
+        <SoftWaveBackground height="450px" className="pointer-events-none" />
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-16 relative z-10 mt-32">
+            {/* Calendar Heading */}
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.8,
+                ease: "easeOut",
+                type: "spring",
+                stiffness: 100,
+                damping: 15,
+              }}
+              className="text-center"
+            >
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
+                <span className="text-gray-800">Discover</span>{" "}
+                <span className="relative inline-block text-dark-teal drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)]">
+                  Events
+                </span>
+              </h1>
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{ width: "80px" }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+                className="h-2 bg-dark-teal rounded-full mt-6 shadow-md mx-auto"
+              />
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="mt-8 text-lg md:text-xl text-gray-700 font-medium"
+              >
+                Explore upcoming events and create unforgettable memories
+              </motion.p>
+            </motion.div>
 
             {/* Calendar Section */}
             <motion.div
@@ -157,23 +200,27 @@ export default function EventsPage() {
               transition={{ delay: 0.2 }}
               className="flex flex-col items-center gap-8"
             >
-              <h2 className="text-2xl font-bold text-gray-700">Select Event Type</h2>
+              <h2 className="text-2xl font-bold text-gray-700">
+                Select Event Type
+              </h2>
               <div className="flex flex-wrap gap-6 justify-center">
                 <button
-                  onClick={() => setSelectedCategory('upcoming')}
-                  className={`px-10 py-5 rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-105 ${selectedCategory === 'upcoming'
-                      ? 'bg-[var(--dark-teal)] text-white shadow-2xl scale-105'
-                      : 'bg-white text-gray-800 border-3 border-gray-300 hover:border-[var(--dark-teal)] shadow-lg'
-                    }`}
+                  onClick={() => setSelectedCategory("upcoming")}
+                  className={`px-10 py-5 rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-105 ${
+                    selectedCategory === "upcoming"
+                      ? "bg-[var(--dark-teal)] text-white shadow-2xl scale-105"
+                      : "bg-white text-gray-800 border-3 border-gray-300 hover:border-[var(--dark-teal)] shadow-lg"
+                  }`}
                 >
                   Upcoming Events
                 </button>
                 <button
-                  onClick={() => setSelectedCategory('previous')}
-                  className={`px-10 py-5 rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-105 ${selectedCategory === 'previous'
-                      ? 'bg-[var(--dark-teal)] text-white shadow-2xl scale-105'
-                      : 'bg-white text-gray-800 border-3 border-gray-300 hover:border-[var(--dark-teal)] shadow-lg'
-                    }`}
+                  onClick={() => setSelectedCategory("previous")}
+                  className={`px-10 py-5 rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-105 ${
+                    selectedCategory === "previous"
+                      ? "bg-[var(--dark-teal)] text-white shadow-2xl scale-105"
+                      : "bg-white text-gray-800 border-3 border-gray-300 hover:border-[var(--dark-teal)] shadow-lg"
+                  }`}
                 >
                   Previous Events
                 </button>
@@ -194,17 +241,27 @@ export default function EventsPage() {
                   {/* Header with count */}
                   <div className="mb-12">
                     <h2 className="text-5xl md:text-6xl font-bold mb-2">
-                      <span className="text-gray-800 uppercase tracking-tight">{selectedCategory === 'upcoming' ? 'UPCOMING' : 'PREVIOUS'}</span>
+                      <span className="text-gray-800 uppercase tracking-tight">
+                        {selectedCategory === "upcoming"
+                          ? "UPCOMING"
+                          : "PREVIOUS"}
+                      </span>
+                      <span className="text-dark-teal"> EVENTS</span>
                     </h2>
-                    <h3 className="text-6xl md:text-7xl font-serif italic text-gray-800 mb-6" style={{
-                      background: 'linear-gradient(to right, var(--light-orange) 0%, var(--light-orange) 100%)',
-                      backgroundPosition: '0 85%',
-                      backgroundSize: '100% 30%',
-                      backgroundRepeat: 'no-repeat',
-                      paddingBottom: '8px'
-                    }}>
+                    {/* <h3
+                      className="text-6xl md:text-7xl text-gray-800 mb-6"
+                      style={{
+                        background:
+                          "linear-gradient(to right, var(--light-orange) 0%, var(--light-orange) 100%)",
+                        backgroundPosition: "0 85%",
+                        backgroundSize: "100% 30%",
+                        backgroundRepeat: "no-repeat",
+                        paddingBottom: "8px",
+                      }}
+                    >
                       EVENTS
-                    </h3>
+                    </h3> */}
+                    <br />
                     <p className="text-gray-600 flex items-center gap-2">
                       <span className="w-2 h-2 bg-[var(--dark-teal)] rounded-full"></span>
                       {displayedEvents.length} EVENTS SCHEDULED
@@ -215,18 +272,27 @@ export default function EventsPage() {
                   {isLoading ? (
                     <div className="space-y-8">
                       {[...Array(3)].map((_, i) => (
-                        <div key={i} className="animate-pulse bg-gray-200 h-96 rounded-3xl"></div>
+                        <div
+                          key={i}
+                          className="animate-pulse bg-gray-200 h-96 rounded-3xl"
+                        ></div>
                       ))}
                     </div>
                   ) : displayedEvents.length === 0 ? (
                     <div className="text-center py-20 bg-white rounded-3xl shadow-lg">
-                      <CalendarIcon size={64} className="mx-auto text-gray-300 mb-4" />
-                      <p className="text-xl text-gray-500">No {selectedCategory} events found</p>
+                      <CalendarIcon
+                        size={64}
+                        className="mx-auto text-gray-300 mb-4"
+                      />
+                      <p className="text-xl text-gray-500">
+                        No {selectedCategory} events found
+                      </p>
                     </div>
                   ) : (
                     <div className="space-y-8">
                       {displayedEvents.map((event, index) => {
-                        const registrationPercentage = (event.bookedSeats / event.totalSeats) * 100;
+                        const registrationPercentage =
+                          (event.bookedSeats / event.totalSeats) * 100;
 
                         return (
                           <motion.div
@@ -247,12 +313,17 @@ export default function EventsPage() {
                                   />
                                 ) : (
                                   <div className="w-full h-full bg-gradient-to-br from-[var(--light-orange)] to-[var(--light-pink)] min-h-[300px] lg:min-h-[400px] flex items-center justify-center">
-                                    <CalendarIcon size={80} className="text-white opacity-50" />
+                                    <CalendarIcon
+                                      size={80}
+                                      className="text-white opacity-50"
+                                    />
                                   </div>
                                 )}
                                 <div className="absolute top-4 left-4">
                                   <span className="px-4 py-2 bg-[var(--green)] text-white rounded-full text-sm font-bold uppercase tracking-wide shadow-lg">
-                                    {selectedCategory === 'upcoming' ? 'UPCOMING' : 'PAST'}
+                                    {selectedCategory === "upcoming"
+                                      ? "UPCOMING"
+                                      : "PAST"}
                                   </span>
                                 </div>
                               </div>
@@ -275,11 +346,14 @@ export default function EventsPage() {
                                       DATE
                                     </div>
                                     <div className="font-bold text-gray-900 text-lg">
-                                      {event.dateValue.toLocaleDateString('en-US', {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit'
-                                      })}
+                                      {event.dateValue.toLocaleDateString(
+                                        "en-US",
+                                        {
+                                          year: "numeric",
+                                          month: "2-digit",
+                                          day: "2-digit",
+                                        },
+                                      )}
                                     </div>
                                     <div className="text-xs text-gray-500 mt-1">
                                       {event.startTime}
@@ -325,33 +399,43 @@ export default function EventsPage() {
                                   <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden border-2 border-gray-800">
                                     <div
                                       className="h-full bg-gradient-to-r from-[var(--light-orange)] to-[var(--dark-teal)] transition-all duration-500"
-                                      style={{ width: `${registrationPercentage}%` }}
+                                      style={{
+                                        width: `${registrationPercentage}%`,
+                                      }}
                                     ></div>
                                   </div>
                                 </div>
 
                                 {/* Action Buttons */}
                                 <div className="flex flex-wrap gap-4 mt-auto">
-                                  {selectedCategory === 'upcoming' && (
+                                  {selectedCategory === "upcoming" && (
                                     <>
                                       <button
-                                        onClick={() => addToGoogleCalendar(event)}
+                                        onClick={() =>
+                                          addToGoogleCalendar(event)
+                                        }
                                         className="flex-1 min-w-[200px] px-6 py-4 bg-white border-3 border-gray-800 text-gray-800 rounded-xl font-bold hover:bg-gray-100 transition-all duration-200 uppercase tracking-wide"
                                       >
                                         Add to Calendar
                                       </button>
                                       <button
-                                        onClick={() => router.push(`/events/${event.id}`)}
+                                        onClick={() =>
+                                          router.push(`/events/${event.id}`)
+                                        }
                                         className="flex-1 min-w-[200px] px-6 py-4 text-white rounded-xl font-bold hover:opacity-90 transition-all duration-200 uppercase tracking-wide shadow-lg"
-                                        style={{ backgroundColor: "var(--dark-teal)" }}
+                                        style={{
+                                          backgroundColor: "var(--dark-teal)",
+                                        }}
                                       >
                                         Register Now
                                       </button>
                                     </>
                                   )}
-                                  {selectedCategory === 'previous' && (
+                                  {selectedCategory === "previous" && (
                                     <button
-                                      onClick={() => router.push(`/events/${event.id}`)}
+                                      onClick={() =>
+                                        router.push(`/events/${event.id}`)
+                                      }
                                       className="w-full px-6 py-4 bg-gray-800 text-white rounded-xl font-bold hover:bg-black transition-all duration-200 uppercase tracking-wide"
                                     >
                                       View Details
@@ -377,11 +461,15 @@ export default function EventsPage() {
                 transition={{ delay: 0.3 }}
                 className="text-center py-32"
               >
-                <CalendarIcon size={100} className="mx-auto text-gray-300 mb-6" />
-                <p className="text-2xl text-gray-500 font-medium">Select a category above to view events</p>
+                <CalendarIcon
+                  size={100}
+                  className="mx-auto text-gray-300 mb-6"
+                />
+                <p className="text-2xl text-gray-500 font-medium">
+                  Select a category above to view events
+                </p>
               </motion.div>
             )}
-
           </div>
         </div>
       </main>

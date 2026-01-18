@@ -196,7 +196,7 @@ export default function ProfilePage() {
         style={{ backgroundColor: "var(--bg)" }}
       >
         {/* Background decorative elements */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
             className="absolute top-20 right-1/4 w-[500px] h-[500px] rounded-full blur-3xl opacity-30"
             style={{ backgroundColor: "var(--light-orange)" }}
@@ -209,7 +209,7 @@ export default function ProfilePage() {
             className="absolute top-1/2 right-10 w-[300px] h-[300px] rounded-full blur-3xl opacity-25"
             style={{ backgroundColor: "var(--light-pink)" }}
           />
-        </div>
+        </div> */}
 
         <motion.div
           className="mx-auto flex max-w-6xl flex-col gap-8 relative z-10"

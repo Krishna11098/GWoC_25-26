@@ -318,7 +318,7 @@ export default function Calendar({ initialDate, events: externalEvents = [] }) {
                 return (
                   <div
                     key={idx}
-                    className="aspect-[4/5] border text-xl sm:text-lg"
+                    className="aspect-[4/3] border text-xl sm:text-lg"
                     style={{ borderColor: "var(--color-font)", opacity: 1 }}
                   >
                     {actualDate ? (
