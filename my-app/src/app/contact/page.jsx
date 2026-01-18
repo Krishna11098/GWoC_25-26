@@ -14,12 +14,13 @@ import {
   Building2,
   Package,
   FerrisWheel,
-  Ring,
+  Gem,              // ✅ valid icon
   MessageSquare,
   Palette,
   Rocket,
   PartyPopper,
 } from "lucide-react";
+
 
 
 const categories = [
@@ -46,12 +47,13 @@ const categories = [
       "Carnivals & Experience Zones: Large-scale experience zones & activities",
     icon: <FerrisWheel className="text-purple-500" />,
   },
-  {
-    id: "weddings",
-    label:
-      "Weddings & Entertainment Hampers: Custom games, entertainment hampers & interactive setups",
-    icon: <Ring className="text-yellow-600" />,
-  },
+ {
+  id: "weddings",
+  label:
+    "Weddings & Entertainment Hampers: Custom games, entertainment hampers & interactive setups",
+  icon: <Gem className="text-yellow-600" />,
+},
+
 ];
 
 const eventTypes = [
