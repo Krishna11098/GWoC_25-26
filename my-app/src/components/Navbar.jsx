@@ -92,12 +92,12 @@ const Navbar = () => {
   return (
     <header
       className={
-        "fixed inset-x-0 top-0 z-50 mt-4 md:mt-6 flex justify-center px-5 md:px-12 py-0 transition-all duration-300 bg-transparent"
+        "fixed inset-x-0 top-0 z-50 md:mt-6 flex justify-center md:px-12 py-0 transition-all duration-300 bg-transparent"
       }
     >
-      <div className="mx-auto w-full max-w-6xl px-4 md:px-10">
+      <div className="mx-auto w-full md:max-w-6xl md:px-10">
         <div
-          className={`flex items-center rounded-2xl border border-white/60 bg-dark-teal shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 text-bg ${
+          className={`flex items-center md:rounded-2xl md:border border-white/60 bg-dark-teal shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 text-bg ${
             scrolled ? "py-0" : "py-0.5 md:py-1"
           }`}
         >
@@ -320,7 +320,7 @@ const Navbar = () => {
           mobileOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex flex-col items-center gap-6 py-20 w-full px-8 text-center">
+        <div className="flex flex-col items-center gap-6 py-2 w-full px-8 text-center">
           {navLinks.map((link) => (
             <Link
               key={link.name}
